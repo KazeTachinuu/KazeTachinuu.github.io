@@ -1,5 +1,5 @@
 # Base information
-baseURL = "kazetachinuu.github.io/"
+baseURL = "kazetachinuu.github.io"
 languageCode = "en-gb"
 title = "Hugo Sibony"
 googleAnalytics = ""
