@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Hugo Sibony&#39; Website on Hugo Sibony</title>
-    <link>https://hugosibony.com/</link>
+    <link>kazetachinuu.github.io/</link>
     <description>Recent content in Hugo Sibony&#39; Website on Hugo Sibony</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-gb</language>
-    <lastBuildDate>Thu, 19 Oct 2017 15:26:15 +0000</lastBuildDate><atom:link href="https://hugosibony.com/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 19 Oct 2017 15:26:15 +0000</lastBuildDate><atom:link href="kazetachinuu.github.io/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Hugo Portfolio Website</title>
-      <link>https://hugosibony.com/portfolio/hugo-portfolio-website/</link>
+      <link>kazetachinuu.github.io/portfolio/hugo-portfolio-website/</link>
       <pubDate>Fri, 19 Jun 2020 23:00:00 +0000</pubDate>
       
-      <guid>https://hugosibony.com/portfolio/hugo-portfolio-website/</guid>
+      <guid>kazetachinuu.github.io/portfolio/hugo-portfolio-website/</guid>
       <description>I created my portfolio website using Hugo and UIKit, it serves as an online resume containing all my work.
 This has been created as a theme so that others can use and adapt it.
 Sections Homepage The homepage provides the basic information about you, including links to social media, skills you have, things you&amp;rsquo;ve done and your education. This page makes good use of UIKit grid and cards for organising all the information and ensuring it is responsive to work on mobile devices.</description>
@@ -20,19 +20,19 @@ Sections Homepage The homepage provides the basic information about you, includi
     
     <item>
       <title>Team project without GitHub</title>
-      <link>https://hugosibony.com/portfolio/example-team-no-github/</link>
+      <link>kazetachinuu.github.io/portfolio/example-team-no-github/</link>
       <pubDate>Fri, 19 Jun 2020 23:00:00 +0000</pubDate>
       
-      <guid>https://hugosibony.com/portfolio/example-team-no-github/</guid>
+      <guid>kazetachinuu.github.io/portfolio/example-team-no-github/</guid>
       <description>This is some content</description>
     </item>
     
     <item>
       <title>Making a new Website</title>
-      <link>https://hugosibony.com/blog/first-blog/</link>
+      <link>kazetachinuu.github.io/blog/first-blog/</link>
       <pubDate>Tue, 31 Dec 2019 12:14:34 +0600</pubDate>
       
-      <guid>https://hugosibony.com/blog/first-blog/</guid>
+      <guid>kazetachinuu.github.io/blog/first-blog/</guid>
       <description>For a long time this website has had a couple of links to contact me, but those days are over.
 Now I have a brand new Hugo website with a custom written theme complete with
 A homepage with more social links, and description of my skills An about page with description of who I am A portfolio page to showcase all my projects A blog Why Hugo? The first question is why a site builder?</description>

@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Categories on Hugo Sibony</title>
-    <link>https://hugosibony.com/categories/</link>
+    <link>kazetachinuu.github.io/categories/</link>
     <description>Recent content in Categories on Hugo Sibony</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-gb</language>
-    <lastBuildDate>Fri, 19 Jun 2020 23:00:00 +0000</lastBuildDate><atom:link href="https://hugosibony.com/categories/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 19 Jun 2020 23:00:00 +0000</lastBuildDate><atom:link href="kazetachinuu.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>web-dev</title>
-      <link>https://hugosibony.com/categories/web-dev/</link>
+      <link>kazetachinuu.github.io/categories/web-dev/</link>
       <pubDate>Fri, 19 Jun 2020 23:00:00 +0000</pubDate>
       
-      <guid>https://hugosibony.com/categories/web-dev/</guid>
+      <guid>kazetachinuu.github.io/categories/web-dev/</guid>
       <description></description>
     </item>
     

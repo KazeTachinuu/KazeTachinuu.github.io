@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Portfolio on Hugo Sibony</title>
-    <link>https://hugosibony.com/portfolio/</link>
+    <link>kazetachinuu.github.io/portfolio/</link>
     <description>Recent content in Portfolio on Hugo Sibony</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-gb</language>
-    <lastBuildDate>Sun, 12 May 2019 12:14:34 +0600</lastBuildDate><atom:link href="https://hugosibony.com/portfolio/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 12 May 2019 12:14:34 +0600</lastBuildDate><atom:link href="kazetachinuu.github.io/portfolio/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Hugo Portfolio Website</title>
-      <link>https://hugosibony.com/portfolio/hugo-portfolio-website/</link>
+      <link>kazetachinuu.github.io/portfolio/hugo-portfolio-website/</link>
       <pubDate>Fri, 19 Jun 2020 23:00:00 +0000</pubDate>
       
-      <guid>https://hugosibony.com/portfolio/hugo-portfolio-website/</guid>
+      <guid>kazetachinuu.github.io/portfolio/hugo-portfolio-website/</guid>
       <description>I created my portfolio website using Hugo and UIKit, it serves as an online resume containing all my work.
 This has been created as a theme so that others can use and adapt it.
 Sections Homepage The homepage provides the basic information about you, including links to social media, skills you have, things you&amp;rsquo;ve done and your education. This page makes good use of UIKit grid and cards for organising all the information and ensuring it is responsive to work on mobile devices.</description>
@@ -20,10 +20,10 @@ Sections Homepage The homepage provides the basic information about you, includi
     
     <item>
       <title>Team project without GitHub</title>
-      <link>https://hugosibony.com/portfolio/example-team-no-github/</link>
+      <link>kazetachinuu.github.io/portfolio/example-team-no-github/</link>
       <pubDate>Fri, 19 Jun 2020 23:00:00 +0000</pubDate>
       
-      <guid>https://hugosibony.com/portfolio/example-team-no-github/</guid>
+      <guid>kazetachinuu.github.io/portfolio/example-team-no-github/</guid>
       <description>This is some content</description>
     </item>
     
