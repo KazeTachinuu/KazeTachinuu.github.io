@@ -4,3 +4,6 @@
 [submodule "themes/hugo-developer-portfolio"]
 	path = themes/hugo-developer-portfolio
 	url = https://github.com/samrobbins85/hugo-developer-portfolio
+[submodule "hugo-developer-portfolio"]
+	path = hugo-developer-portfolio
+	url = git@github.com:KazeTachinuu/hugo-developer-portfolio.git
