@@ -46,7 +46,7 @@ experience:
       duration: July 2022 - Present
       description: Prometech is a French startup I created with a friend of mine. We simply had the idea to create AI Tools such as automatic Pen-Testing analysis and automatic code review. We are currently working on some project requests from companies.
 hackathons:
-  enable: true
+  enable: false
   item:
     - title: Hack Cambridge 2019
       description: Climate change simulator
@@ -58,13 +58,13 @@ ctf:
     - title: 404CTF 2023
       description: Top 350
       image: https://res.cloudinary.com/dd9rwcqim/image/upload/v1684940900/hex404_viax68.png
-      url: https://ctf.404ctf.fr/
+      url: none
     - title: Security Valley 2023
       description: Top 200
       image: https://res.cloudinary.com/dd9rwcqim/image/upload/v1684940464/SecVal_r2tbzy.jpg
-      url: https://ctf.securityvalley.org/
+      url: none
 certifications:
-  enable: true
+  enable: false
   item:
     - title: Microsoft Azure Fundamentals
       image: https://res.cloudinary.com/samrobbins/image/upload/v1592501459/microsoft-certified-fundamentals-badge_cpcgyn.svg

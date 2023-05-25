@@ -2,10 +2,10 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Contact on Hugo Sibony</title>
-    <link>kazetachinuu.github.io/contact/</link>
+    <link>https://kazetachinuu.github.io/contact/</link>
     <description>Recent content in Contact on Hugo Sibony</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 12 May 2019 12:14:34 +0600</lastBuildDate><atom:link href="kazetachinuu.github.io/contact/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 12 May 2019 12:14:34 +0600</lastBuildDate><atom:link href="https://kazetachinuu.github.io/contact/index.xml" rel="self" type="application/rss+xml" />
   </channel>
 </rss>
