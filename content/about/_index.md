@@ -3,7 +3,7 @@ title: "About"
 date: 2019-05-12T12:14:34+06:00
 description: "This is meta description."
 author : "Hugo Sibony"
-authorImage : "images/about/profile.jpg"
+authorImage : "https://res.cloudinary.com/dd9rwcqim/image/upload/v1685023822/JiroPP_hqakyf.jpg"
 ---
 
 Hi! I'm Hugo, a second year Computer Engineer student from EPITA, France. 
