@@ -6,7 +6,17 @@
     <description>Recent content on Hugo Sibony</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 01 Jan 2023 19:49:32 -0500</lastBuildDate><atom:link href="https://hugosibony.com/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 26 May 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://hugosibony.com/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Alias Manager Project</title>
+      <link>https://hugosibony.com/portfolio/project/alias_manager/</link>
+      <pubDate>Fri, 26 May 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://hugosibony.com/portfolio/project/alias_manager/</guid>
+      <description>Alias Manager Project Why this project I wanted to learn Rust and I needed a simple project to start with. I also reset my computer and changes OS from time to time, so I wanted to have a simple way to manage my aliases. Thus I created this project.
+Features Add new aliases with custom commands List existing aliases Remove aliases by name Requirements Rust programming language (https://www.rust-lang.org/) Cargo package manager (usually bundled with Rust) Installation Clone this repository to your local machine: git clone https://github.</description>
+    </item>
+    
     <item>
       <title>How to properly mount Google Drive with RClone</title>
       <link>https://hugosibony.com/blog/memos/rclone/</link>
@@ -18,16 +28,6 @@ For arch, run
 sudo pacman -S rclone Set up Google Drive Remote We need to link RClone with your Google account. Run the following command to start the configuration:
 rclone config Press n to create a new remote.
 Enter name for new remote. name&amp;gt; TEST Option Storage. Type of storage to configure. Choose a number from below, or type in your own value.</description>
-    </item>
-    
-    <item>
-      <title>EECS 494 Project 3: Cavelit</title>
-      <link>https://hugosibony.com/portfolio/eecs494/project3/</link>
-      <pubDate>Thu, 01 Dec 2022 20:53:13 -0500</pubDate>
-      
-      <guid>https://hugosibony.com/portfolio/eecs494/project3/</guid>
-      <description>Hosico Game Studio Presented Trailer What makes Cavelit Exciting? Your mission is to get out of the cave at the end. But remember, it is a real cave! It is dark, humid and dangerous. You might encounter various unexpected dangers such as lava, collapses and spikes. YOUR BATTERY IS DYING! Hurry up and get out.
-PLAY IT! Click here if the game does not load </description>
     </item>
     
     <item>
@@ -91,56 +91,6 @@ I think I will try it.</description>
       <guid>https://hugosibony.com/blog/eecs388notes/integrity/</guid>
       <description>Threat Model Alice computes v=f(m), where v is a verifier of the message m. Alice sends the message to Bob via Mallory. Bob verifies that v&#39;=f(m&#39;). Random Function (RF) Set up a random map f: {Fixed size input}-&amp;gt;{Fixed size output}. This function is only known by Alice and Bob, but unknown to Mallory.
 Provably secure: Mallory cannot find out the verifier of a message that he has never seen (he cannot do it better than guessing).</description>
-    </item>
-    
-    <item>
-      <title>SilverFOCS-web</title>
-      <link>https://hugosibony.com/portfolio/vg100/silverfocs/</link>
-      <pubDate>Mon, 17 Oct 2022 23:56:19 -0400</pubDate>
-      
-      <guid>https://hugosibony.com/portfolio/vg100/silverfocs/</guid>
-      <description>Project Description The project was created at the request of Professor Manuel Charlemagne of Shanghai Jiaotong University. We expect the website to demonstrate the masterpieces created by our students in a web game development course. The website is designed to automatically fetch, deploy and demonstrate the student projects. I am currently in charge of leading the general development process.
-The website is currently hosted at: https://focs.ji.sjtu.edu.cn/silverfocs/. The accessibility from the US depends on the network status of Shanghai Jiaotong University.</description>
-    </item>
-    
-    <item>
-      <title>EECS 494 Porject 1: Legend of Adlez</title>
-      <link>https://hugosibony.com/portfolio/eecs494/project1/</link>
-      <pubDate>Mon, 17 Oct 2022 23:40:00 -0400</pubDate>
-      
-      <guid>https://hugosibony.com/portfolio/eecs494/project1/</guid>
-      <description>This is a remake of the first version of Legend of Zelda released by Nintendo in 1986 on NES. This remake includes a revision of the original Dungeon level and most of the core mechanics shipped with the game.
-We also added a few new features to the game. I want to keep it a secret here. You can play and explore it all by yourself.
-Press X to use your sword and Z to use your alternative weapon (exactly what it was in the original NES game).</description>
-    </item>
-    
-    <item>
-      <title>EECS 494 Project 2: Swapper</title>
-      <link>https://hugosibony.com/portfolio/eecs494/project2/</link>
-      <pubDate>Mon, 17 Oct 2022 23:40:00 -0400</pubDate>
-      
-      <guid>https://hugosibony.com/portfolio/eecs494/project2/</guid>
-      <description>How to play How to play this 2-player platform puzzle game? Use WASD for one player and arrow keys for the other. (Sorry I don&amp;rsquo;t have enough time to implement game controller support)
-What&amp;rsquo;s new The most interesting part of a platform puzzle game is that the 2 players should cooperate as much as possible! They should think hard together to find a path. In this game, I introduced a new way to cooperate: the players can switch their colors and therefore, their abilities to pass the levels.</description>
-    </item>
-    
-    <item>
-      <title>Jaseci Project</title>
-      <link>https://hugosibony.com/portfolio/clarity/jaseci/</link>
-      <pubDate>Mon, 17 Oct 2022 23:32:51 -0400</pubDate>
-      
-      <guid>https://hugosibony.com/portfolio/clarity/jaseci/</guid>
-      <description>The Jaseci Mission The mission of Jaseci is to accelerate and democratize the development and deployments of end-to-end scalable AI applications. To this end, Jaseci presents a novel set of higher level abstractions for programming sophisticated software in a micro-service/serverless AI and a full stack architecture and programming model that abstracts away and automates much of the complexity of building applications on a distributed compute substrate of potentially thousands of compute nodes.</description>
-    </item>
-    
-    <item>
-      <title>SilverFOCS Calypso</title>
-      <link>https://hugosibony.com/portfolio/vg100/silverfocs-calypso/</link>
-      <pubDate>Thu, 23 Jul 2020 00:00:00 +0800</pubDate>
-      
-      <guid>https://hugosibony.com/portfolio/vg100/silverfocs-calypso/</guid>
-      <description>What is this Calypso is a game that we submitted as our project for the game development and management course called VG100 at Shanghai Jiaotong University. It is an exploration game where the player can walk around and interact with NPCs. The entire game is a single-page web application written in Elm.
-Technical ELM: A newly-introduced functional programming language Git: Basic skills to manipulate git repositories Project Management: When starting a project, coding comes last: Otherwise, we may waste our efforts on useless development.</description>
     </item>
     
   </channel>

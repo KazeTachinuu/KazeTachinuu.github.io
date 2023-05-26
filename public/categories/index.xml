@@ -6,49 +6,22 @@
     <description>Recent content in Categories on Hugo Sibony</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 01 Dec 2022 20:53:13 -0500</lastBuildDate><atom:link href="https://hugosibony.com/categories/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 26 May 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://hugosibony.com/categories/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>eecs494</title>
-      <link>https://hugosibony.com/categories/eecs494/</link>
-      <pubDate>Thu, 01 Dec 2022 20:53:13 -0500</pubDate>
+      <title>linux</title>
+      <link>https://hugosibony.com/categories/linux/</link>
+      <pubDate>Fri, 26 May 2023 00:00:00 +0000</pubDate>
       
-      <guid>https://hugosibony.com/categories/eecs494/</guid>
+      <guid>https://hugosibony.com/categories/linux/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>unity</title>
-      <link>https://hugosibony.com/categories/unity/</link>
-      <pubDate>Thu, 01 Dec 2022 20:53:13 -0500</pubDate>
+      <title>rust</title>
+      <link>https://hugosibony.com/categories/rust/</link>
+      <pubDate>Fri, 26 May 2023 00:00:00 +0000</pubDate>
       
-      <guid>https://hugosibony.com/categories/unity/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>web-dev</title>
-      <link>https://hugosibony.com/categories/web-dev/</link>
-      <pubDate>Mon, 17 Oct 2022 23:56:19 -0400</pubDate>
-      
-      <guid>https://hugosibony.com/categories/web-dev/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>ai</title>
-      <link>https://hugosibony.com/categories/ai/</link>
-      <pubDate>Mon, 17 Oct 2022 23:32:51 -0400</pubDate>
-      
-      <guid>https://hugosibony.com/categories/ai/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>k8s</title>
-      <link>https://hugosibony.com/categories/k8s/</link>
-      <pubDate>Mon, 17 Oct 2022 23:32:51 -0400</pubDate>
-      
-      <guid>https://hugosibony.com/categories/k8s/</guid>
+      <guid>https://hugosibony.com/categories/rust/</guid>
       <description></description>
     </item>
     

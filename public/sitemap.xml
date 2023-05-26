@@ -2,23 +2,23 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://hugosibony.com/blog/memos/rclone/</loc>
-    <lastmod>2023-01-01T19:49:32-05:00</lastmod>
-  </url><url>
-    <loc>https://hugosibony.com/</loc>
-    <lastmod>2023-01-01T19:49:32-05:00</lastmod>
+    <loc>https://hugosibony.com/portfolio/project/alias_manager/</loc>
+    <lastmod>2023-05-26T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://hugosibony.com/categories/</loc>
-    <lastmod>2022-12-01T20:53:13-05:00</lastmod>
+    <lastmod>2023-05-26T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://hugosibony.com/portfolio/eecs494/project3/</loc>
-    <lastmod>2022-12-01T20:53:13-05:00</lastmod>
+    <loc>https://hugosibony.com/</loc>
+    <lastmod>2023-05-26T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://hugosibony.com/categories/eecs494/</loc>
-    <lastmod>2022-12-01T20:53:13-05:00</lastmod>
+    <loc>https://hugosibony.com/categories/linux/</loc>
+    <lastmod>2023-05-26T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://hugosibony.com/categories/unity/</loc>
-    <lastmod>2022-12-01T20:53:13-05:00</lastmod>
+    <loc>https://hugosibony.com/categories/rust/</loc>
+    <lastmod>2023-05-26T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://hugosibony.com/blog/memos/rclone/</loc>
+    <lastmod>2023-01-01T19:49:32-05:00</lastmod>
   </url><url>
     <loc>https://hugosibony.com/blog/eecs388notes/accesscontrolandisolation/</loc>
     <lastmod>2022-11-03T12:13:38-04:00</lastmod>
@@ -35,35 +35,11 @@
     <loc>https://hugosibony.com/blog/eecs388notes/integrity/</loc>
     <lastmod>2022-10-22T14:15:02-04:00</lastmod>
   </url><url>
-    <loc>https://hugosibony.com/portfolio/vg100/silverfocs/</loc>
-    <lastmod>2022-10-17T23:56:19-04:00</lastmod>
-  </url><url>
-    <loc>https://hugosibony.com/categories/web-dev/</loc>
-    <lastmod>2022-10-17T23:56:19-04:00</lastmod>
-  </url><url>
-    <loc>https://hugosibony.com/portfolio/eecs494/project1/</loc>
-    <lastmod>2022-10-17T23:40:00-04:00</lastmod>
-  </url><url>
-    <loc>https://hugosibony.com/portfolio/eecs494/project2/</loc>
-    <lastmod>2022-10-17T23:40:00-04:00</lastmod>
-  </url><url>
-    <loc>https://hugosibony.com/categories/ai/</loc>
-    <lastmod>2022-10-17T23:32:51-04:00</lastmod>
-  </url><url>
-    <loc>https://hugosibony.com/portfolio/clarity/jaseci/</loc>
-    <lastmod>2022-10-17T23:32:51-04:00</lastmod>
-  </url><url>
-    <loc>https://hugosibony.com/categories/k8s/</loc>
-    <lastmod>2022-10-17T23:32:51-04:00</lastmod>
-  </url><url>
     <loc>https://hugosibony.com/contact/</loc>
     <lastmod>2022-10-17T22:51:16-04:00</lastmod>
   </url><url>
     <loc>https://hugosibony.com/portfolio/</loc>
     <lastmod>2022-10-17T17:41:36-04:00</lastmod>
-  </url><url>
-    <loc>https://hugosibony.com/portfolio/vg100/silverfocs-calypso/</loc>
-    <lastmod>2020-07-23T00:00:00+08:00</lastmod>
   </url><url>
     <loc>https://hugosibony.com/about/</loc>
     <lastmod>2019-05-12T12:14:34+06:00</lastmod>
