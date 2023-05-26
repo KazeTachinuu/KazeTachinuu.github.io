@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>ai on Baichuan Li</title>
+    <link>https://www.patrickli.one/categories/ai/</link>
+    <description>Recent content in ai on Baichuan Li</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-gb</language>
+    <lastBuildDate>Mon, 17 Oct 2022 23:32:51 -0400</lastBuildDate><atom:link href="https://www.patrickli.one/categories/ai/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Jaseci Project</title>
+      <link>https://www.patrickli.one/portfolio/clarity/jaseci/</link>
+      <pubDate>Mon, 17 Oct 2022 23:32:51 -0400</pubDate>
+      
+      <guid>https://www.patrickli.one/portfolio/clarity/jaseci/</guid>
+      <description>The Jaseci Mission The mission of Jaseci is to accelerate and democratize the development and deployments of end-to-end scalable AI applications. To this end, Jaseci presents a novel set of higher level abstractions for programming sophisticated software in a micro-service/serverless AI and a full stack architecture and programming model that abstracts away and automates much of the complexity of building applications on a distributed compute substrate of potentially thousands of compute nodes.</description>
+    </item>
+    
+  </channel>
+</rss>

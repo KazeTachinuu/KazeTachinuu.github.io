@@ -1,21 +1,46 @@
----
 banner:
-  title: Hi! I’m Hugo
+  title: <center>Hi there! I am Hugo Sibony</center>
+  image: https://res.cloudinary.com/dd9rwcqim/image/upload/v1685023822/JiroPP_hqakyf.jpg
+
 social:
-  twitter: ""
-  linkedin: hsibony
   github: kazetachinuu
-  gitlab: ""
-  facebook: ""
-  instagram: ""
-  gmail: ""
-  mail: "hugo@hugosibony.com"
+  linkedin: hsibony
+  mail: hugo@hugosibony.com
+
+
 about:
   enable: true
-  content: 2nd Year Computer Engineering Student at EPITA in France
+  content: Computer Science Undergraduate Student</br>In-coming Master of Cybersecurity</br>@ EPITA, Paris
   button:
-    btnText: Find out more
+    btnText: Find out more about me
     URL: "/about"
+
+skill:
+  enable: true
+  item:
+    - title: Linux
+      logo: /static/blog/Linux.svg
+      description: I use Linux as my main Operating System (ArchCraft with bspwm)
+    - title: Python
+      logo: /static/blog/python.svg 
+      description: I write in Python for penetration testing, personal projects and more.
+    - title: C / C++ / C#
+      logo: /static/static/blog/c-logo.png
+      description: I have been learning and using C/C++ for 2 years now.
+    - title: Java / C#
+      logo: /static/blog/docker.webp
+      description: Docker provides the safety for all my services running on my personal server.
+    - title: Kubernetes
+      logo: /static/blog/kubernetes.svg
+      description: I am one of the developers of a Kubernetes Project called Jaseci.
+    - title: Flask
+      logo: /static/blog/flask.png
+      description: I am experienced with Python Flask backend development. 
+    - title: Unity
+      logo: /static/blog/unity.svg
+      description: I enrolled in EECS 494 @ University of Michigan, a game development course.
+
+
 education:
   enable: true
   item:
@@ -31,27 +56,7 @@ education:
       year: 2021 - Present
       academy: EPITA, Paris
       image: https://res.cloudinary.com/dd9rwcqim/image/upload/v1684927619/EPITA_School_of_Engineering_and_Computer_Science_Logo_iyayne.png
-skill:
-  enable: true
-  item:
-    - title: Ethical Hacking
-      logo: https://res.cloudinary.com/dd9rwcqim/image/upload/v1685017529/RedTeam_logo_k0e2ys.png
-      description: Offensive Security, Penetration Testing, Red Teaming, Network Security. Preparing for CEH and CompTIA Security+.
-experience:
-  enable: true
-  item:
-    - logo: https://res.cloudinary.com/dd9rwcqim/image/upload/v1684937963/logo_jdtf39.png
-      title: CEO & Co-Founder
-      company: Prometech
-      duration: July 2022 - Present
-      description: Prometech is a French startup I created with a friend of mine. We simply had the idea to create AI Tools such as automatic Pen-Testing analysis and automatic code review. We are currently working on some project requests from companies.
-hackathons:
-  enable: false
-  item:
-    - title: Hack Cambridge 2019
-      description: Climate change simulator
-      image: https://res.cloudinary.com/samrobbins/image/upload/f_auto,q_auto/v1591793405/stickers/Hack_Cambridge_101_ozoq5d.png
-      url: none
+
 ctf: 
   enable: true
   item:
@@ -63,20 +68,11 @@ ctf:
       description: Top 200
       image: https://res.cloudinary.com/dd9rwcqim/image/upload/v1684940464/SecVal_r2tbzy.jpg
       url: none
-certifications:
+
+publications:
   enable: false
   item:
-    - title: Microsoft Azure Fundamentals
-      image: https://res.cloudinary.com/samrobbins/image/upload/v1592501459/microsoft-certified-fundamentals-badge_cpcgyn.svg
-      url: https://www.youracclaim.com/badges/b4cf7a86-eb83-478e-bfd0-9f427c3474a0/public_url
-leadership:
-  enable: false
-  item:
-    - logo: https://res.cloudinary.com/samrobbins/image/upload/f_auto,q_auto/v1591793280/logos/logos_yl_qozav6.webp
-      title: Young Leader
-      company: The Scout Association
-      duration: September 2014 - July 2018
-portfolio:
-  filter:
-    - label: Web Dev
-      value: web-dev
+    - image: /static/blog/portfolio/jaseci.png
+      title: "Jaseci: A Programming Paradigm and Runtime Stack for Building Scale-out Production Applications Easy and Fast"
+      description: The mission of Jaseci is to accelerate and democratize the development and deployments of end-to-end scalable AI applications. To this end, Jaseci presents a novel set of higher level abstractions for programming sophisticated software in a micro-service/serverless AI and a full stack architecture and programming model that abstracts away and automates much of the complexity of building applications on a distributed compute substrate of potentially thousands of compute nodes. The design of Jaseci includes two major innovations. The submission is still pending. 
+      code_link: https://github.com/Jaseci-Labs/jaseci

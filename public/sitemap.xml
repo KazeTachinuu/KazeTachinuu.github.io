@@ -2,36 +2,75 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://kazetachinuu.github.io/categories/</loc>
-    <lastmod>2020-06-19T23:00:00+00:00</lastmod>
+    <loc>https://www.patrickli.one/</loc>
+    <lastmod>2023-01-01T19:49:32-05:00</lastmod>
   </url><url>
-    <loc>https://kazetachinuu.github.io/portfolio/hugo-portfolio-website/</loc>
-    <lastmod>2020-06-19T23:00:00+00:00</lastmod>
+    <loc>https://www.patrickli.one/blog/memos/rclone/</loc>
+    <lastmod>2023-01-01T19:49:32-05:00</lastmod>
   </url><url>
-    <loc>https://kazetachinuu.github.io/portfolio/example-team-no-github/</loc>
-    <lastmod>2020-06-19T23:00:00+00:00</lastmod>
+    <loc>https://www.patrickli.one/categories/</loc>
+    <lastmod>2022-12-01T20:53:13-05:00</lastmod>
   </url><url>
-    <loc>https://kazetachinuu.github.io/categories/web-dev/</loc>
-    <lastmod>2020-06-19T23:00:00+00:00</lastmod>
+    <loc>https://www.patrickli.one/portfolio/eecs494/project3/</loc>
+    <lastmod>2022-12-01T20:53:13-05:00</lastmod>
   </url><url>
-    <loc>https://kazetachinuu.github.io/blog/first-blog/</loc>
-    <lastmod>2019-12-31T12:14:34+06:00</lastmod>
+    <loc>https://www.patrickli.one/categories/eecs494/</loc>
+    <lastmod>2022-12-01T20:53:13-05:00</lastmod>
   </url><url>
-    <loc>https://kazetachinuu.github.io/about/</loc>
+    <loc>https://www.patrickli.one/categories/unity/</loc>
+    <lastmod>2022-12-01T20:53:13-05:00</lastmod>
+  </url><url>
+    <loc>https://www.patrickli.one/blog/eecs388notes/accesscontrolandisolation/</loc>
+    <lastmod>2022-11-03T12:13:38-04:00</lastmod>
+  </url><url>
+    <loc>https://www.patrickli.one/blog/eecs388notes/controlhijacking/</loc>
+    <lastmod>2022-11-01T00:09:30-04:00</lastmod>
+  </url><url>
+    <loc>https://www.patrickli.one/blog/kubecon2022/day2/</loc>
+    <lastmod>2022-10-27T00:09:31-04:00</lastmod>
+  </url><url>
+    <loc>https://www.patrickli.one/blog/kubecon2022/day1/</loc>
+    <lastmod>2022-10-26T00:00:08-04:00</lastmod>
+  </url><url>
+    <loc>https://www.patrickli.one/blog/eecs388notes/integrity/</loc>
+    <lastmod>2022-10-22T14:15:02-04:00</lastmod>
+  </url><url>
+    <loc>https://www.patrickli.one/portfolio/vg100/silverfocs/</loc>
+    <lastmod>2022-10-17T23:56:19-04:00</lastmod>
+  </url><url>
+    <loc>https://www.patrickli.one/categories/web-dev/</loc>
+    <lastmod>2022-10-17T23:56:19-04:00</lastmod>
+  </url><url>
+    <loc>https://www.patrickli.one/portfolio/eecs494/project1/</loc>
+    <lastmod>2022-10-17T23:40:00-04:00</lastmod>
+  </url><url>
+    <loc>https://www.patrickli.one/portfolio/eecs494/project2/</loc>
+    <lastmod>2022-10-17T23:40:00-04:00</lastmod>
+  </url><url>
+    <loc>https://www.patrickli.one/categories/ai/</loc>
+    <lastmod>2022-10-17T23:32:51-04:00</lastmod>
+  </url><url>
+    <loc>https://www.patrickli.one/portfolio/clarity/jaseci/</loc>
+    <lastmod>2022-10-17T23:32:51-04:00</lastmod>
+  </url><url>
+    <loc>https://www.patrickli.one/categories/k8s/</loc>
+    <lastmod>2022-10-17T23:32:51-04:00</lastmod>
+  </url><url>
+    <loc>https://www.patrickli.one/contact/</loc>
+    <lastmod>2022-10-17T22:51:16-04:00</lastmod>
+  </url><url>
+    <loc>https://www.patrickli.one/portfolio/</loc>
+    <lastmod>2022-10-17T17:41:36-04:00</lastmod>
+  </url><url>
+    <loc>https://www.patrickli.one/portfolio/vg100/silverfocs-calypso/</loc>
+    <lastmod>2020-07-23T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://www.patrickli.one/about/</loc>
     <lastmod>2019-05-12T12:14:34+06:00</lastmod>
   </url><url>
-    <loc>https://kazetachinuu.github.io/blog/</loc>
+    <loc>https://www.patrickli.one/blog/</loc>
     <lastmod>2019-05-12T12:14:34+06:00</lastmod>
   </url><url>
-    <loc>https://kazetachinuu.github.io/contact/</loc>
-    <lastmod>2019-05-12T12:14:34+06:00</lastmod>
-  </url><url>
-    <loc>https://kazetachinuu.github.io/portfolio/</loc>
-    <lastmod>2019-05-12T12:14:34+06:00</lastmod>
-  </url><url>
-    <loc>https://kazetachinuu.github.io/</loc>
-    <lastmod>2019-10-26T15:26:15+00:00</lastmod>
-  </url><url>
-    <loc>https://kazetachinuu.github.io/tags/</loc>
+    <loc>https://www.patrickli.one/tags/</loc>
   </url>
 </urlset>

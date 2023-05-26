@@ -1,30 +1,30 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>web-dev on Hugo Sibony</title>
-    <link>https://kazetachinuu.github.io/categories/web-dev/</link>
-    <description>Recent content in web-dev on Hugo Sibony</description>
+    <title>web-dev on Baichuan Li</title>
+    <link>https://www.patrickli.one/categories/web-dev/</link>
+    <description>Recent content in web-dev on Baichuan Li</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
-    <lastBuildDate>Fri, 19 Jun 2020 23:00:00 +0000</lastBuildDate><atom:link href="https://kazetachinuu.github.io/categories/web-dev/index.xml" rel="self" type="application/rss+xml" />
+    <language>en-gb</language>
+    <lastBuildDate>Mon, 17 Oct 2022 23:56:19 -0400</lastBuildDate><atom:link href="https://www.patrickli.one/categories/web-dev/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Hugo Portfolio Website</title>
-      <link>https://kazetachinuu.github.io/portfolio/hugo-portfolio-website/</link>
-      <pubDate>Fri, 19 Jun 2020 23:00:00 +0000</pubDate>
+      <title>SilverFOCS-web</title>
+      <link>https://www.patrickli.one/portfolio/vg100/silverfocs/</link>
+      <pubDate>Mon, 17 Oct 2022 23:56:19 -0400</pubDate>
       
-      <guid>https://kazetachinuu.github.io/portfolio/hugo-portfolio-website/</guid>
-      <description>I created my portfolio website using Hugo and UIKit, it serves as an online resume containing all my work.
-This has been created as a theme so that others can use and adapt it.
-Sections Homepage The homepage provides the basic information about you, including links to social media, skills you have, things you&amp;rsquo;ve done and your education. This page makes good use of UIKit grid and cards for organising all the information and ensuring it is responsive to work on mobile devices.</description>
+      <guid>https://www.patrickli.one/portfolio/vg100/silverfocs/</guid>
+      <description>Project Description The project was created at the request of Professor Manuel Charlemagne of Shanghai Jiaotong University. We expect the website to demonstrate the masterpieces created by our students in a web game development course. The website is designed to automatically fetch, deploy and demonstrate the student projects. I am currently in charge of leading the general development process.
+The website is currently hosted at: https://focs.ji.sjtu.edu.cn/silverfocs/. The accessibility from the US depends on the network status of Shanghai Jiaotong University.</description>
     </item>
     
     <item>
-      <title>Team project without GitHub</title>
-      <link>https://kazetachinuu.github.io/portfolio/example-team-no-github/</link>
-      <pubDate>Fri, 19 Jun 2020 23:00:00 +0000</pubDate>
+      <title>SilverFOCS Calypso</title>
+      <link>https://www.patrickli.one/portfolio/vg100/silverfocs-calypso/</link>
+      <pubDate>Thu, 23 Jul 2020 00:00:00 +0800</pubDate>
       
-      <guid>https://kazetachinuu.github.io/portfolio/example-team-no-github/</guid>
-      <description>This is some content</description>
+      <guid>https://www.patrickli.one/portfolio/vg100/silverfocs-calypso/</guid>
+      <description>What is this Calypso is a game that we submitted as our project for the game development and management course called VG100 at Shanghai Jiaotong University. It is an exploration game where the player can walk around and interact with NPCs. The entire game is a single-page web application written in Elm.
+Technical ELM: A newly-introduced functional programming language Git: Basic skills to manipulate git repositories Project Management: When starting a project, coding comes last: Otherwise, we may waste our efforts on useless development.</description>
     </item>
     
   </channel>

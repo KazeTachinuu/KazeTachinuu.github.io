@@ -1,9 +1,7 @@
-# Base information
-baseURL = "https://kazetachinuu.github.io/"
-languageCode = "en-us"
-title = "Hugo Sibony"
-googleAnalytics = ""
-theme="hugo-developer-portfolio"
+baseURL = "https://www.patrickli.one" # The URL of your site
+languageCode = "en-gb" # The language you want to display the site in
+title = "Baichuan Li" # The title you want to appear in the address bar
+theme = "hugo-developer-portfolio" # The theme, don't change this
 
 [params.plugins]
   # CSS Plugins
@@ -15,7 +13,7 @@ theme="hugo-developer-portfolio"
   [[params.plugins.js]]
   URL = "https://cdn.jsdelivr.net/npm/uikit@3.2.6/dist/js/uikit-icons.min.js"
 
-  # navigation
+# navigation
 [menu]
   [[menu.main]]
   name = "About"
@@ -30,18 +28,20 @@ theme="hugo-developer-portfolio"
   name = "Contact"
   URL = "contact"
 
-  [params]
+
+[markup.goldmark.renderer]
+    unsafe= true
+[params]
 home = "Home" # What you want the homepage to show up as in the menu bar
 # Meta data
-description = "The website of Hugo Sibony, 2nd Year Computer Engineer Student in CyberSecurity at EPITA, Paris, France."
-author = "Hugo Sibony"
+description = "Portfolio of Baichuan Li" # The description of your site
+author = "Baichuan Li"
 
 
-  [params.contact]
-  formAction = "https://formspree.io/f/xrgvvkge" # Add your formspree URL here to get emails
+    [params.contact]
+    formAction = "https://formspree.io/f/xqkjdalw"
 
-  # This contains the contact information for the footer
-  [params.footer]
-  email = "hugo@hugosibony.com"
-  address = "Paris, France"
-  googlemaps = "https://www.google.com/maps/embed/v1/place?q=place_id:ChIJwbHYJaUqfEgRK0Ui9dVGimc&key=AIzaSyAE_4rVAKux_DSPcb_OdSRDaovtPOSk_3U"
+    # This contains the contact information for the footer
+    [params.footer]
+    email = "public@patrickli.one"
+    address = "Ann Arbor, MI, USA"

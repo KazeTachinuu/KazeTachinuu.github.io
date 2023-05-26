@@ -1,3 +1,11 @@
 filter:
-  - label: Web Dev
+  - label: Unity
+    value: unity
+  - label: EECS 494
+    value: eecs494
+  - label: Kubernetes
+    value: k8s
+  - label: AI
+    value: ai
+  - label: Web Development
     value: web-dev

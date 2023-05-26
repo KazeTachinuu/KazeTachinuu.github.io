@@ -1,41 +1,146 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Hugo Sibony&#39; Website on Hugo Sibony</title>
-    <link>https://kazetachinuu.github.io/</link>
-    <description>Recent content in Hugo Sibony&#39; Website on Hugo Sibony</description>
+    <title>Baichuan Li</title>
+    <link>https://www.patrickli.one/</link>
+    <description>Recent content on Baichuan Li</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
-    <lastBuildDate>Thu, 19 Oct 2017 15:26:15 +0000</lastBuildDate><atom:link href="https://kazetachinuu.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <language>en-gb</language>
+    <lastBuildDate>Sun, 01 Jan 2023 19:49:32 -0500</lastBuildDate><atom:link href="https://www.patrickli.one/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Hugo Portfolio Website</title>
-      <link>https://kazetachinuu.github.io/portfolio/hugo-portfolio-website/</link>
-      <pubDate>Fri, 19 Jun 2020 23:00:00 +0000</pubDate>
+      <title>How to properly mount Google Drive with RClone</title>
+      <link>https://www.patrickli.one/blog/memos/rclone/</link>
+      <pubDate>Sun, 01 Jan 2023 19:49:32 -0500</pubDate>
       
-      <guid>https://kazetachinuu.github.io/portfolio/hugo-portfolio-website/</guid>
-      <description>I created my portfolio website using Hugo and UIKit, it serves as an online resume containing all my work.
-This has been created as a theme so that others can use and adapt it.
-Sections Homepage The homepage provides the basic information about you, including links to social media, skills you have, things you&amp;rsquo;ve done and your education. This page makes good use of UIKit grid and cards for organising all the information and ensuring it is responsive to work on mobile devices.</description>
+      <guid>https://www.patrickli.one/blog/memos/rclone/</guid>
+      <description>Install RClone Before we start, you need to install RClone on your computer.
+For arch, run
+sudo pacman -S rclone Set up Google Drive Remote We need to link RClone with your Google account. Run the following command to start the configuration:
+rclone config Press n to create a new remote.
+Enter name for new remote. name&amp;gt; TEST Option Storage. Type of storage to configure. Choose a number from below, or type in your own value.</description>
     </item>
     
     <item>
-      <title>Team project without GitHub</title>
-      <link>https://kazetachinuu.github.io/portfolio/example-team-no-github/</link>
-      <pubDate>Fri, 19 Jun 2020 23:00:00 +0000</pubDate>
+      <title>EECS 494 Project 3: Cavelit</title>
+      <link>https://www.patrickli.one/portfolio/eecs494/project3/</link>
+      <pubDate>Thu, 01 Dec 2022 20:53:13 -0500</pubDate>
       
-      <guid>https://kazetachinuu.github.io/portfolio/example-team-no-github/</guid>
-      <description>This is some content</description>
+      <guid>https://www.patrickli.one/portfolio/eecs494/project3/</guid>
+      <description>Hosico Game Studio Presented Trailer What makes Cavelit Exciting? Your mission is to get out of the cave at the end. But remember, it is a real cave! It is dark, humid and dangerous. You might encounter various unexpected dangers such as lava, collapses and spikes. YOUR BATTERY IS DYING! Hurry up and get out.
+PLAY IT! Click here if the game does not load </description>
     </item>
     
     <item>
-      <title>Making a new Website</title>
-      <link>https://kazetachinuu.github.io/blog/first-blog/</link>
-      <pubDate>Tue, 31 Dec 2019 12:14:34 +0600</pubDate>
+      <title>Access Control And Isolation</title>
+      <link>https://www.patrickli.one/blog/eecs388notes/accesscontrolandisolation/</link>
+      <pubDate>Thu, 03 Nov 2022 12:13:38 -0400</pubDate>
       
-      <guid>https://kazetachinuu.github.io/blog/first-blog/</guid>
-      <description>For a long time this website has had a couple of links to contact me, but those days are over.
-Now I have a brand new Hugo website with a custom written theme complete with
-A homepage with more social links, and description of my skills An about page with description of who I am A portfolio page to showcase all my projects A blog Why Hugo? The first question is why a site builder?</description>
+      <guid>https://www.patrickli.one/blog/eecs388notes/accesscontrolandisolation/</guid>
+      <description>Access Control We aim for: Principle of Least Privilege.
+Limit the damage of an accident Reduce interaction to the minimum operator Minimized the number of the program audited. ( e.g: My office key can only open my office door. )
+( e.g: Classified information of &amp;ldquo;need-to-know&amp;rdquo; )
+Models and Policies Security Model
+Subject (Who); Apps, Users, Web Origins Objects (What): Files, Processes, Devices, DB Tables, Cookies Operations: Read, Write, Call This security model defines an Access Control Matrix.</description>
+    </item>
+    
+    <item>
+      <title>Control Hijacking</title>
+      <link>https://www.patrickli.one/blog/eecs388notes/controlhijacking/</link>
+      <pubDate>Tue, 01 Nov 2022 00:09:30 -0400</pubDate>
+      
+      <guid>https://www.patrickli.one/blog/eecs388notes/controlhijacking/</guid>
+      <description>Basic Knowledge Registers General Purpose Registers EAX: Used to store return values EBX ECX EDX ESI Special Purpose Registers EIP: Instruction Pointer ESP: Stack Pointer, indicate the top of the function EBP: Frame / Base Pointer, indicate the bottom of the function CPU Instructions (Intel Syntax) Move a value to a register: mov eax, 0x34 Add a value to a register: add eax 10 Jump to a line of code: jmp 0x123 Call a function (returns to the next line): call 0x1234 Stack push 0x0a push 0x6c push 0xff pop eax pop eax push 0x88 overwrite the original value Note that the pop does not eliminate the value of the stack.</description>
+    </item>
+    
+    <item>
+      <title>KubeCon Day2</title>
+      <link>https://www.patrickli.one/blog/kubecon2022/day2/</link>
+      <pubDate>Thu, 27 Oct 2022 00:09:31 -0400</pubDate>
+      
+      <guid>https://www.patrickli.one/blog/kubecon2022/day2/</guid>
+      <description>This is my second day of the KubeCon Event. I love KubeCon. The opening keynote of KubeCon | CloudNativeCon
+KubeCon supports Ukrain
+Definitely Something I will need: Kubernetes tutorial
+Border between US and Canada
+Best activity today: Solution Showcase. A varierty of product from dozens of companies
+This is a lovely microK8s cluster built with 4 Raspberry Pi and a switch
+The impact of Prometheus. We should use Prometheus to get data in order to utilize our resources as much as possible</description>
+    </item>
+    
+    <item>
+      <title>KubeCon Day 1</title>
+      <link>https://www.patrickli.one/blog/kubecon2022/day1/</link>
+      <pubDate>Wed, 26 Oct 2022 00:00:08 -0400</pubDate>
+      
+      <guid>https://www.patrickli.one/blog/kubecon2022/day1/</guid>
+      <description>This is the first time I have ever paid a visit to a formal academic conference
+My Badge of KubeCon
+Conference about In-Time data analysis
+A nice fuzz generator that can generate random test cases to make your program robust
+A high schooler sharing his ideas about open-source development
+Gavin said that it reminded him of his high school age.
+An online encyclopedia for Cloud Native terminology
+I think I will try it.</description>
+    </item>
+    
+    <item>
+      <title>Message Integrity</title>
+      <link>https://www.patrickli.one/blog/eecs388notes/integrity/</link>
+      <pubDate>Sat, 22 Oct 2022 14:15:02 -0400</pubDate>
+      
+      <guid>https://www.patrickli.one/blog/eecs388notes/integrity/</guid>
+      <description>Threat Model Alice computes v=f(m), where v is a verifier of the message m. Alice sends the message to Bob via Mallory. Bob verifies that v&#39;=f(m&#39;). Random Function (RF) Set up a random map f: {Fixed size input}-&amp;gt;{Fixed size output}. This function is only known by Alice and Bob, but unknown to Mallory.
+Provably secure: Mallory cannot find out the verifier of a message that he has never seen (he cannot do it better than guessing).</description>
+    </item>
+    
+    <item>
+      <title>SilverFOCS-web</title>
+      <link>https://www.patrickli.one/portfolio/vg100/silverfocs/</link>
+      <pubDate>Mon, 17 Oct 2022 23:56:19 -0400</pubDate>
+      
+      <guid>https://www.patrickli.one/portfolio/vg100/silverfocs/</guid>
+      <description>Project Description The project was created at the request of Professor Manuel Charlemagne of Shanghai Jiaotong University. We expect the website to demonstrate the masterpieces created by our students in a web game development course. The website is designed to automatically fetch, deploy and demonstrate the student projects. I am currently in charge of leading the general development process.
+The website is currently hosted at: https://focs.ji.sjtu.edu.cn/silverfocs/. The accessibility from the US depends on the network status of Shanghai Jiaotong University.</description>
+    </item>
+    
+    <item>
+      <title>EECS 494 Porject 1: Legend of Adlez</title>
+      <link>https://www.patrickli.one/portfolio/eecs494/project1/</link>
+      <pubDate>Mon, 17 Oct 2022 23:40:00 -0400</pubDate>
+      
+      <guid>https://www.patrickli.one/portfolio/eecs494/project1/</guid>
+      <description>This is a remake of the first version of Legend of Zelda released by Nintendo in 1986 on NES. This remake includes a revision of the original Dungeon level and most of the core mechanics shipped with the game.
+We also added a few new features to the game. I want to keep it a secret here. You can play and explore it all by yourself.
+Press X to use your sword and Z to use your alternative weapon (exactly what it was in the original NES game).</description>
+    </item>
+    
+    <item>
+      <title>EECS 494 Project 2: Swapper</title>
+      <link>https://www.patrickli.one/portfolio/eecs494/project2/</link>
+      <pubDate>Mon, 17 Oct 2022 23:40:00 -0400</pubDate>
+      
+      <guid>https://www.patrickli.one/portfolio/eecs494/project2/</guid>
+      <description>How to play How to play this 2-player platform puzzle game? Use WASD for one player and arrow keys for the other. (Sorry I don&amp;rsquo;t have enough time to implement game controller support)
+What&amp;rsquo;s new The most interesting part of a platform puzzle game is that the 2 players should cooperate as much as possible! They should think hard together to find a path. In this game, I introduced a new way to cooperate: the players can switch their colors and therefore, their abilities to pass the levels.</description>
+    </item>
+    
+    <item>
+      <title>Jaseci Project</title>
+      <link>https://www.patrickli.one/portfolio/clarity/jaseci/</link>
+      <pubDate>Mon, 17 Oct 2022 23:32:51 -0400</pubDate>
+      
+      <guid>https://www.patrickli.one/portfolio/clarity/jaseci/</guid>
+      <description>The Jaseci Mission The mission of Jaseci is to accelerate and democratize the development and deployments of end-to-end scalable AI applications. To this end, Jaseci presents a novel set of higher level abstractions for programming sophisticated software in a micro-service/serverless AI and a full stack architecture and programming model that abstracts away and automates much of the complexity of building applications on a distributed compute substrate of potentially thousands of compute nodes.</description>
+    </item>
+    
+    <item>
+      <title>SilverFOCS Calypso</title>
+      <link>https://www.patrickli.one/portfolio/vg100/silverfocs-calypso/</link>
+      <pubDate>Thu, 23 Jul 2020 00:00:00 +0800</pubDate>
+      
+      <guid>https://www.patrickli.one/portfolio/vg100/silverfocs-calypso/</guid>
+      <description>What is this Calypso is a game that we submitted as our project for the game development and management course called VG100 at Shanghai Jiaotong University. It is an exploration game where the player can walk around and interact with NPCs. The entire game is a single-page web application written in Elm.
+Technical ELM: A newly-introduced functional programming language Git: Basic skills to manipulate git repositories Project Management: When starting a project, coding comes last: Otherwise, we may waste our efforts on useless development.</description>
     </item>
     
   </channel>

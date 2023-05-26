@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>unity on Baichuan Li</title>
+    <link>https://www.patrickli.one/categories/unity/</link>
+    <description>Recent content in unity on Baichuan Li</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-gb</language>
+    <lastBuildDate>Thu, 01 Dec 2022 20:53:13 -0500</lastBuildDate><atom:link href="https://www.patrickli.one/categories/unity/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>EECS 494 Project 3: Cavelit</title>
+      <link>https://www.patrickli.one/portfolio/eecs494/project3/</link>
+      <pubDate>Thu, 01 Dec 2022 20:53:13 -0500</pubDate>
+      
+      <guid>https://www.patrickli.one/portfolio/eecs494/project3/</guid>
+      <description>Hosico Game Studio Presented Trailer What makes Cavelit Exciting? Your mission is to get out of the cave at the end. But remember, it is a real cave! It is dark, humid and dangerous. You might encounter various unexpected dangers such as lava, collapses and spikes. YOUR BATTERY IS DYING! Hurry up and get out.
+PLAY IT! Click here if the game does not load </description>
+    </item>
+    
+    <item>
+      <title>EECS 494 Porject 1: Legend of Adlez</title>
+      <link>https://www.patrickli.one/portfolio/eecs494/project1/</link>
+      <pubDate>Mon, 17 Oct 2022 23:40:00 -0400</pubDate>
+      
+      <guid>https://www.patrickli.one/portfolio/eecs494/project1/</guid>
+      <description>This is a remake of the first version of Legend of Zelda released by Nintendo in 1986 on NES. This remake includes a revision of the original Dungeon level and most of the core mechanics shipped with the game.
+We also added a few new features to the game. I want to keep it a secret here. You can play and explore it all by yourself.
+Press X to use your sword and Z to use your alternative weapon (exactly what it was in the original NES game).</description>
+    </item>
+    
+    <item>
+      <title>EECS 494 Project 2: Swapper</title>
+      <link>https://www.patrickli.one/portfolio/eecs494/project2/</link>
+      <pubDate>Mon, 17 Oct 2022 23:40:00 -0400</pubDate>
+      
+      <guid>https://www.patrickli.one/portfolio/eecs494/project2/</guid>
+      <description>How to play How to play this 2-player platform puzzle game? Use WASD for one player and arrow keys for the other. (Sorry I don&amp;rsquo;t have enough time to implement game controller support)
+What&amp;rsquo;s new The most interesting part of a platform puzzle game is that the 2 players should cooperate as much as possible! They should think hard together to find a path. In this game, I introduced a new way to cooperate: the players can switch their colors and therefore, their abilities to pass the levels.</description>
+    </item>
+    
+  </channel>
+</rss>

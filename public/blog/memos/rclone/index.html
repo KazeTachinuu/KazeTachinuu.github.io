@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<style>
+    html {
+        height: 100vh;
+    }
+    body {
+        min-height: 100vh;
+        display: grid;
+        grid-template-rows: 1fr auto;
+    }
+    .footer {
+        grid-row-start: 2;
+        grid-row-end: 3;
+    }
+</style>
+<html lang="en-gb"><head>
+  <meta charset="utf-8">
+  <title>Baichuan Li</title>
+
+  <!-- mobile responsive meta -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta name="description" property="og:description" content="Mount Google Drive with security and cache">
+  <meta name="image" property="og:image" content="/">
+  <meta name="author" content="Baichuan Li">
+  <meta name="generator" content="Hugo 0.111.3">
+
+  <!-- plugins -->
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.2.6/dist/css/uikit.min.css ">
+  
+
+  <!-- Main Stylesheet -->
+  
+  <link rel="stylesheet" href="/css/style.min.css" integrity="" media="screen">
+  
+  <link rel="stylesheet" href="/css/syntax.min.css" integrity="" media="screen">
+
+  <script src="https://cdn.jsdelivr.net/npm/mailgo@0.9.14/dist/mailgo.min.js" defer></script>
+
+  <!--Favicon-->
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+
+</head>
+<body class="blog">
+    <div class="wrapper"><div uk-sticky="sel-target: .uk-navbar-container; cls-active: uk-navbar-sticky; bottom: #transparent-sticky-navbar">
+    <nav class="uk-navbar-container uk-margin" uk-navbar="mode: click;" style="padding-right: 3rem">
+        <div class="uk-navbar-right">
+            <ul class="uk-navbar-nav uk-visible@s">
+                
+                <li><a style="font-size: 18px; text-transform: none" href="/"> Home
+                        </a></li>
+
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a style="font-size: 18px; text-transform: none" href="/about">About</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li class="uk-active"><a style="font-size: 18px; text-transform:none"
+                        href="/blog">Blog</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a style="font-size: 18px; text-transform: none" href="/contact">Contact</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a style="font-size: 18px; text-transform: none" href="/portfolio">Portfolio</a></li>
+                
+                
+            </ul>
+
+            <a class="uk-navbar-toggle uk-hidden@s" uk-toggle="target: #sidenav" uk-navbar-toggle-icon href="#"></a>
+
+        </div>
+    </nav>
+</div>
+
+<div id="sidenav" uk-offcanvas="overlay: true">
+    <div class="uk-offcanvas-bar uk-flex uk-flex-column">
+
+        <ul class="uk-nav uk-nav-primary uk-nav-center uk-margin-auto-vertical">
+            
+            <li><a style="font-size: 18px" href="https://www.patrickli.one"> Home </a></li>
+
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <li><a style="font-size: 18px" href="/about">About</a></li>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <li class="uk-active"><a style="font-size: 18px" href="/blog">Blog</a></li>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <li><a style="font-size: 18px" href="/contact">Contact</a></li>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <li><a style="font-size: 18px" href="/portfolio">Portfolio</a></li>
+            
+            
+        </ul>
+
+    </div>
+</div>
+
+
+
+
+<style>
+  p {
+    margin: 0
+  }
+
+  .people-wrap {
+    display: inline-flex;
+    margin-top: 10px;
+  }
+
+  .people-image {
+    display: block;
+    border-radius: 50%;
+     
+  }
+
+  .people {
+    margin-left: 20px;
+    margin-right: 20px;
+  }
+
+  .name {
+    margin: auto;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    color: #000;
+    font-family: Roboto, sans-serif;
+    line-height: 1.2;
+    margin-top: 2rem;
+  }
+
+  .content img {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom:30px;
+  }
+
+  p { margin-bottom: 1em; }
+
+  body p:last-child { margin-bottom: 0em; }
+
+  img.skills{
+    height: 80px;
+  }
+
+  @media only screen and (min-width: 960px) {
+    .content img{max-width:60vw; max-height:60vh}
+
+  .content img{
+      max-width:60vw;
+      max-height:60vh
+  }
+  }
+  .content{
+      width: 90vw;
+      max-width: 1200px
+  }
+
+  table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+  }
+
+  td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+  }
+
+</style>
+
+
+<section>
+  <div class="uk-container uk-margin-large-bottom uk-margin-medium-top">
+    <h1 class="uk-text-center uk-heading-medium">How to properly mount Google Drive with RClone</h1>
+    <p class="uk-text-center uk-text-lead">Mount Google Drive with security and cache</p>
+    <p class="uk-text-center">Published on Jan 01, 2023</p>
+    <p class="uk-text-center">Reading time: 4 minutes.</p>
+    
+
+    <hr class="full-width">
+    
+
+    <div class="content">
+      <h2 id="install-rclone">Install RClone</h2>
+<p>Before we start, you need to install RClone on your computer.</p>
+<p>For arch, run</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo pacman -S rclone
+</span></span></code></pre></div><h2 id="set-up-google-drive-remote">Set up Google Drive Remote</h2>
+<p>We need to link RClone with your Google account. Run the following command to start the configuration:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>rclone config
+</span></span></code></pre></div><p>Press n to create a new remote.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>Enter name <span style="color:#66d9ef">for</span> new remote.
+</span></span><span style="display:flex;"><span>name&gt; TEST
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Option Storage.
+</span></span><span style="display:flex;"><span>Type of storage to configure.
+</span></span><span style="display:flex;"><span>Choose a number from below, or type in your own value.
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">1</span> / 1Fichier
+</span></span><span style="display:flex;"><span>   <span style="color:#ae81ff">\ </span><span style="color:#f92672">(</span>fichier<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">2</span> / Akamai NetStorage
+</span></span><span style="display:flex;"><span>   <span style="color:#ae81ff">\ </span><span style="color:#f92672">(</span>netstorage<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>...
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">17</span> / Google Cloud Storage <span style="color:#f92672">(</span>this is not Google Drive<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#ae81ff">\ </span><span style="color:#f92672">(</span>google cloud storage<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">18</span> / Google Drive
+</span></span><span style="display:flex;"><span>   <span style="color:#ae81ff">\ </span><span style="color:#f92672">(</span>drive<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">19</span> / Google Photos
+</span></span><span style="display:flex;"><span>   <span style="color:#ae81ff">\ </span><span style="color:#f92672">(</span>google photos<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>...
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">49</span> / premiumize.me
+</span></span><span style="display:flex;"><span>   <span style="color:#ae81ff">\ </span><span style="color:#f92672">(</span>premiumizeme<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">50</span> / seafile
+</span></span><span style="display:flex;"><span>   <span style="color:#ae81ff">\ </span><span style="color:#f92672">(</span>seafile<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>Storage&gt; drive
+</span></span></code></pre></div><p>Enter a name for the new remote and then select Google Drive for Storage.</p>
+<p>Follow the <a href="https://rclone.org/drive/#making-your-own-client-id">tutorial</a> provided by RClone to create a Google Application Client ID. Copy and paste the client ID and the client secret.</p>
+<p>Select full access for RClone:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>Scope that rclone should use when requesting access from drive.
+</span></span><span style="display:flex;"><span>Choose a number from below, or type in your own value.
+</span></span><span style="display:flex;"><span>Press Enter to leave empty.
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">1</span> / Full access all files, excluding Application Data Folder.
+</span></span><span style="display:flex;"><span>   <span style="color:#ae81ff">\ </span><span style="color:#f92672">(</span>drive<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">2</span> / Read-only access to file metadata and file contents.
+</span></span><span style="display:flex;"><span>   <span style="color:#ae81ff">\ </span><span style="color:#f92672">(</span>drive.readonly<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>   / Access to files created by rclone only.
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">3</span> | These are visible in the drive website.
+</span></span><span style="display:flex;"><span>   | File authorization is revoked when the user deauthorizes the app.
+</span></span><span style="display:flex;"><span>   <span style="color:#ae81ff">\ </span><span style="color:#f92672">(</span>drive.file<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>   / Allows read and write access to the Application Data folder.
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">4</span> | This is not visible in the drive website.
+</span></span><span style="display:flex;"><span>   <span style="color:#ae81ff">\ </span><span style="color:#f92672">(</span>drive.appfolder<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>   / Allows read-only access to file metadata but
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">5</span> | does not allow any access to read or download file content.
+</span></span><span style="display:flex;"><span>   <span style="color:#ae81ff">\ </span><span style="color:#f92672">(</span>drive.metadata.readonly<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>scope&gt; <span style="color:#ae81ff">1</span>
+</span></span></code></pre></div><p>Then go with the default setting in the following steps (Just press ENTER).</p>
+<h2 id="encrypt-google-drive-contents">Encrypt Google Drive Contents</h2>
+<p>Start the configuration again by <code>rclone config</code>, and create another remote with a different name. Choose crypt for type:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>Enter name <span style="color:#66d9ef">for</span> new remote.
+</span></span><span style="display:flex;"><span>name&gt; TEST_ENCRYPTED
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Option Storage.
+</span></span><span style="display:flex;"><span>Type of storage to configure.
+</span></span><span style="display:flex;"><span>Choose a number from below, or type in your own value.
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">1</span> / 1Fichier
+</span></span><span style="display:flex;"><span>   <span style="color:#ae81ff">\ </span><span style="color:#f92672">(</span>fichier<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">2</span> / Akamai NetStorage
+</span></span><span style="display:flex;"><span>   <span style="color:#ae81ff">\ </span><span style="color:#f92672">(</span>netstorage<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">3</span> / Alias <span style="color:#66d9ef">for</span> an existing remote
+</span></span><span style="display:flex;"><span>   <span style="color:#ae81ff">\ </span><span style="color:#f92672">(</span>alias<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>...
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">13</span> / Dropbox
+</span></span><span style="display:flex;"><span>   <span style="color:#ae81ff">\ </span><span style="color:#f92672">(</span>dropbox<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">14</span> / Encrypt/Decrypt a remote
+</span></span><span style="display:flex;"><span>   <span style="color:#ae81ff">\ </span><span style="color:#f92672">(</span>crypt<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">15</span> / Enterprise File Fabric
+</span></span><span style="display:flex;"><span>   <span style="color:#ae81ff">\ </span><span style="color:#f92672">(</span>filefabric<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>...
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">49</span> / premiumize.me
+</span></span><span style="display:flex;"><span>   <span style="color:#ae81ff">\ </span><span style="color:#f92672">(</span>premiumizeme<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">50</span> / seafile
+</span></span><span style="display:flex;"><span>   <span style="color:#ae81ff">\ </span><span style="color:#f92672">(</span>seafile<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>Storage&gt; crypt
+</span></span></code></pre></div><p>Enter a path where you want to store the encrypted files. For example,</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>Option remote.
+</span></span><span style="display:flex;"><span>Remote to encrypt/decrypt.
+</span></span><span style="display:flex;"><span>Normally should contain a <span style="color:#e6db74">&#39;:&#39;</span> and a path, e.g. <span style="color:#e6db74">&#34;myremote:path/to/dir&#34;</span>,
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;myremote:bucket&#34;</span> or maybe <span style="color:#e6db74">&#34;myremote:&#34;</span> <span style="color:#f92672">(</span>not recommended<span style="color:#f92672">)</span>.
+</span></span><span style="display:flex;"><span>Enter a value.
+</span></span><span style="display:flex;"><span>remote&gt; TEST:encrypted
+</span></span></code></pre></div><p>You may replace the <code>TEST</code> with the name of the remote that you just created.</p>
+<p>Ask the system to encrypt both filenames and directory names for safety:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>Option filename_encryption.
+</span></span><span style="display:flex;"><span>How to encrypt the filenames.
+</span></span><span style="display:flex;"><span>Choose a number from below, or type in your own string value.
+</span></span><span style="display:flex;"><span>Press Enter <span style="color:#66d9ef">for</span> the default <span style="color:#f92672">(</span>standard<span style="color:#f92672">)</span>.
+</span></span><span style="display:flex;"><span>   / Encrypt the filenames.
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">1</span> | See the docs <span style="color:#66d9ef">for</span> the details.
+</span></span><span style="display:flex;"><span>   <span style="color:#ae81ff">\ </span><span style="color:#f92672">(</span>standard<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">2</span> / Very simple filename obfuscation.
+</span></span><span style="display:flex;"><span>   <span style="color:#ae81ff">\ </span><span style="color:#f92672">(</span>obfuscate<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>   / Don<span style="color:#ae81ff">\&#39;</span>t encrypt the file names.
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">3</span> | Adds a <span style="color:#e6db74">&#34;.bin&#34;</span> extension only.
+</span></span><span style="display:flex;"><span>   <span style="color:#ae81ff">\ </span><span style="color:#f92672">(</span>off<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>filename_encryption&gt; <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Option directory_name_encryption.
+</span></span><span style="display:flex;"><span>Option to either encrypt directory names or leave them intact.
+</span></span><span style="display:flex;"><span>NB If filename_encryption is <span style="color:#e6db74">&#34;off&#34;</span> <span style="color:#66d9ef">then</span> this option will <span style="color:#66d9ef">do</span> nothing.
+</span></span><span style="display:flex;"><span>Choose a number from below, or type in your own boolean value <span style="color:#f92672">(</span>true or false<span style="color:#f92672">)</span>.
+</span></span><span style="display:flex;"><span>Press Enter <span style="color:#66d9ef">for</span> the default <span style="color:#f92672">(</span>true<span style="color:#f92672">)</span>.
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">1</span> / Encrypt directory names.
+</span></span><span style="display:flex;"><span>   <span style="color:#ae81ff">\ </span><span style="color:#f92672">(</span>true<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">2</span> / Don<span style="color:#ae81ff">\&#39;</span>t encrypt directory names, leave them intact.
+</span></span><span style="display:flex;"><span>   <span style="color:#ae81ff">\ </span><span style="color:#f92672">(</span>false<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>directory_name_encryption&gt; <span style="color:#ae81ff">1</span>
+</span></span></code></pre></div><p>Generate a secure random password and store it somewhere secure:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>Option password.
+</span></span><span style="display:flex;"><span>Password or pass phrase <span style="color:#66d9ef">for</span> encryption.
+</span></span><span style="display:flex;"><span>Choose an alternative below.
+</span></span><span style="display:flex;"><span>y<span style="color:#f92672">)</span> Yes, type in my own password
+</span></span><span style="display:flex;"><span>g<span style="color:#f92672">)</span> Generate random password
+</span></span><span style="display:flex;"><span>y/g&gt; g
+</span></span><span style="display:flex;"><span>Password strength in bits.
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">64</span> is just about memorable
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">128</span> is secure
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">1024</span> is the maximum
+</span></span><span style="display:flex;"><span>Bits&gt; <span style="color:#ae81ff">1024</span>
+</span></span><span style="display:flex;"><span>Your password is: bkXMPG0rVMRQNInuxRpixHBT0kV-pCTAXCb1mZVwSQQ_zYiv2Upu6er8qS00ifQd3MJIGmfZPBhhYlV8mqylCZOwPhvo_UVL_tZBx7HuHU65og4lu-MISvjaal7F95CsxWIW1K9nGfK2B-vE-0PMi93y_HPnjtf2q5wX7-iGPRs
+</span></span><span style="display:flex;"><span>Use this password? Please note that an obscured version of this
+</span></span><span style="display:flex;"><span>password <span style="color:#f92672">(</span>and not the password itself<span style="color:#f92672">)</span> will be stored under your
+</span></span><span style="display:flex;"><span>configuration file, so keep this generated password in a safe place.
+</span></span><span style="display:flex;"><span>y<span style="color:#f92672">)</span> Yes <span style="color:#f92672">(</span>default<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>n<span style="color:#f92672">)</span> No
+</span></span><span style="display:flex;"><span>y/n&gt; y
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Option password2.
+</span></span><span style="display:flex;"><span>Password or pass phrase <span style="color:#66d9ef">for</span> salt.
+</span></span><span style="display:flex;"><span>Optional but recommended.
+</span></span><span style="display:flex;"><span>Should be different to the previous password.
+</span></span><span style="display:flex;"><span>Choose an alternative below. Press Enter <span style="color:#66d9ef">for</span> the default <span style="color:#f92672">(</span>n<span style="color:#f92672">)</span>.
+</span></span><span style="display:flex;"><span>y<span style="color:#f92672">)</span> Yes, type in my own password
+</span></span><span style="display:flex;"><span>g<span style="color:#f92672">)</span> Generate random password
+</span></span><span style="display:flex;"><span>n<span style="color:#f92672">)</span> No, leave this optional password blank <span style="color:#f92672">(</span>default<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>y/g/n&gt; n
+</span></span></code></pre></div><p>Then go with the default setting in the following steps (Just press ENTER).</p>
+<h2 id="mount-the-remote-onto-your-system">Mount the remote onto your system</h2>
+<p>Whenever you want to mount the Google Drive onto your system, you can run:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>rclone mount TEST_ENCRYPTED: <span style="color:#f92672">{</span>THE PATH YOU WANT TO MOUNT ON<span style="color:#f92672">}</span> --vfs-cache-mode full --allow-non-empty
+</span></span></code></pre></div><p>You may replace the <code>TEST_ENCRYPTED</code> with the name of the crypt remote that you just created. You can run this command when your system starts.</p>
+
+    </div>
+  </div>
+  </div>
+</section>
+
+
+
+    </div>
+<footer class="footer">
+  <div class="uk-container">
+
+    <div class="uk-grid-small uk-child-width-1-4@m uk-text-center uk-flex-center uk-margin-medium-bottom" uk-grid>
+      <div class="uk-margin-small-bottom">
+        <h5 class="uk-margin-small-bottom">Email</h5>
+        <a href="mailto:public@patrickli.one">public@patrickli.one</a>
+
+      </div>
+      <div>
+        <h5 class="uk-margin-small-bottom">Address</h5>
+          <div uk-lightbox>
+            <a href="" data-caption="Ann Arbor, MI, USA"
+               data-type="iframe">Ann Arbor, MI, USA</a>
+          </div>
+      </div>
+    </div>
+
+
+    <div class="footer-copyright uk-text-center" style="padding-bottom: 1rem">
+      <img loading="lazy" src="https://mirrors.creativecommons.org/presskit/icons/cc.svg" style="height: 1.2em;
+  width: 1.2em;" alt="Creative Commons">
+      <img loading="lazy" src="https://mirrors.creativecommons.org/presskit/icons/by.svg" style="height: 1.2em;
+  width: 1.2em;" alt="CC-BY">
+      2023
+      Baichuan Li
+    </div>
+  </div>
+</footer>
+
+
+<!-- JS Plugins -->
+
+<script src="https://cdn.jsdelivr.net/npm/uikit@3.2.6/dist/js/uikit.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/uikit@3.2.6/dist/js/uikit-icons.min.js"></script>
+
+</body>
+</html>
