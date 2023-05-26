@@ -1,18 +1,9 @@
 leadership:
   enable: true
   item:
-    - logo: /static/blog/sjtu.png
-      title: Teaching Assistant & Web Engineer
-      company: SJTU VG100 course staff
-      duration: May 2021 - Current
+    - logo: https://res.cloudinary.com/dd9rwcqim/image/upload/v1685067695/epiambassador_qljeaw.png
+      title: International Ambassador (EpiAmbassador)
+      company: EPITA, for Berkeley, USA and JCU, Singapore
+      duration: June 2022 - Current
 
-    - logo: /static/blog/um_logo.svg
-      title: Research Assistant
-      company: UM Clarity Lab
-      duration: April 2022 - Current
-
-    - logo: /static/blog/about/hosico.png
-      title: DevOps Engineer
-      company: Hosico Student Association
-      duration: July 2022 - Current
 

@@ -1,54 +1,54 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Categories on Baichuan Li</title>
-    <link>https://www.patrickli.one/categories/</link>
-    <description>Recent content in Categories on Baichuan Li</description>
+    <title>Categories on Hugo Sibony</title>
+    <link>https://hugosibony.com/categories/</link>
+    <description>Recent content in Categories on Hugo Sibony</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-gb</language>
-    <lastBuildDate>Thu, 01 Dec 2022 20:53:13 -0500</lastBuildDate><atom:link href="https://www.patrickli.one/categories/index.xml" rel="self" type="application/rss+xml" />
+    <language>en-us</language>
+    <lastBuildDate>Thu, 01 Dec 2022 20:53:13 -0500</lastBuildDate><atom:link href="https://hugosibony.com/categories/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>eecs494</title>
-      <link>https://www.patrickli.one/categories/eecs494/</link>
+      <link>https://hugosibony.com/categories/eecs494/</link>
       <pubDate>Thu, 01 Dec 2022 20:53:13 -0500</pubDate>
       
-      <guid>https://www.patrickli.one/categories/eecs494/</guid>
+      <guid>https://hugosibony.com/categories/eecs494/</guid>
       <description></description>
     </item>
     
     <item>
       <title>unity</title>
-      <link>https://www.patrickli.one/categories/unity/</link>
+      <link>https://hugosibony.com/categories/unity/</link>
       <pubDate>Thu, 01 Dec 2022 20:53:13 -0500</pubDate>
       
-      <guid>https://www.patrickli.one/categories/unity/</guid>
+      <guid>https://hugosibony.com/categories/unity/</guid>
       <description></description>
     </item>
     
     <item>
       <title>web-dev</title>
-      <link>https://www.patrickli.one/categories/web-dev/</link>
+      <link>https://hugosibony.com/categories/web-dev/</link>
       <pubDate>Mon, 17 Oct 2022 23:56:19 -0400</pubDate>
       
-      <guid>https://www.patrickli.one/categories/web-dev/</guid>
+      <guid>https://hugosibony.com/categories/web-dev/</guid>
       <description></description>
     </item>
     
     <item>
       <title>ai</title>
-      <link>https://www.patrickli.one/categories/ai/</link>
+      <link>https://hugosibony.com/categories/ai/</link>
       <pubDate>Mon, 17 Oct 2022 23:32:51 -0400</pubDate>
       
-      <guid>https://www.patrickli.one/categories/ai/</guid>
+      <guid>https://hugosibony.com/categories/ai/</guid>
       <description></description>
     </item>
     
     <item>
       <title>k8s</title>
-      <link>https://www.patrickli.one/categories/k8s/</link>
+      <link>https://hugosibony.com/categories/k8s/</link>
       <pubDate>Mon, 17 Oct 2022 23:32:51 -0400</pubDate>
       
-      <guid>https://www.patrickli.one/categories/k8s/</guid>
+      <guid>https://hugosibony.com/categories/k8s/</guid>
       <description></description>
     </item>
     

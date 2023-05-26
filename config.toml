@@ -1,6 +1,6 @@
-baseURL = "https://www.patrickli.one" # The URL of your site
-languageCode = "en-gb" # The language you want to display the site in
-title = "Baichuan Li" # The title you want to appear in the address bar
+baseURL = "https://hugosibony.com" # The URL of your site
+languageCode = "en-us" # The language you want to display the site in
+title = "Hugo Sibony" # The title you want to appear in the address bar
 theme = "hugo-developer-portfolio" # The theme, don't change this
 
 [params.plugins]
@@ -34,14 +34,14 @@ theme = "hugo-developer-portfolio" # The theme, don't change this
 [params]
 home = "Home" # What you want the homepage to show up as in the menu bar
 # Meta data
-description = "Portfolio of Baichuan Li" # The description of your site
-author = "Baichuan Li"
+description = "Portfolio of Hugo Sibony" # The description of your site
+author = "Hugo Sibony"
 
 
     [params.contact]
-    formAction = "https://formspree.io/f/xqkjdalw"
+    formAction = "https://formspree.io/f/xrgvvkge"
 
     # This contains the contact information for the footer
     [params.footer]
-    email = "public@patrickli.one"
-    address = "Ann Arbor, MI, USA"
+    email = "hugo@hugosibony.com"
+    address = "Paris, France"

@@ -19,26 +19,17 @@ skill:
   enable: true
   item:
     - title: Linux
-      logo: /static/blog/Linux.svg
+      logo: /Archcraft-logo.png
       description: I use Linux as my main Operating System (ArchCraft with bspwm)
     - title: Python
-      logo: /static/blog/python.svg 
-      description: I write in Python for penetration testing, personal projects and more.
-    - title: C / C++ / C#
-      logo: /static/static/blog/c-logo.png
+      logo: /Python.png 
+      description: I enroled in CS61A @ UC Berkeley, a Python course. I also use Python for my personal projects such as penetration testing tools.
+    - title: C / C++ 
+      logo: /C_Logo.png
       description: I have been learning and using C/C++ for 2 years now.
-    - title: Java / C#
-      logo: /static/blog/docker.webp
-      description: Docker provides the safety for all my services running on my personal server.
-    - title: Kubernetes
-      logo: /static/blog/kubernetes.svg
-      description: I am one of the developers of a Kubernetes Project called Jaseci.
-    - title: Flask
-      logo: /static/blog/flask.png
-      description: I am experienced with Python Flask backend development. 
-    - title: Unity
-      logo: /static/blog/unity.svg
-      description: I enrolled in EECS 494 @ University of Michigan, a game development course.
+    - title: Ethical Hacking
+      logo: https://res.cloudinary.com/dd9rwcqim/image/upload/v1685017529/RedTeam_logo_k0e2ys.png
+      description: Offensive Security, Penetration Testing, Red Teaming, Network Security. Preparing for CEH and CompTIA Security+.
 
 
 education:

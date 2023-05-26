@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Blog on Baichuan Li</title>
-    <link>https://www.patrickli.one/blog/</link>
-    <description>Recent content in Blog on Baichuan Li</description>
+    <title>Blog on Hugo Sibony</title>
+    <link>https://hugosibony.com/blog/</link>
+    <description>Recent content in Blog on Hugo Sibony</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-gb</language>
-    <lastBuildDate>Sun, 12 May 2019 12:14:34 +0600</lastBuildDate><atom:link href="https://www.patrickli.one/blog/index.xml" rel="self" type="application/rss+xml" />
+    <language>en-us</language>
+    <lastBuildDate>Sun, 12 May 2019 12:14:34 +0600</lastBuildDate><atom:link href="https://hugosibony.com/blog/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>How to properly mount Google Drive with RClone</title>
-      <link>https://www.patrickli.one/blog/memos/rclone/</link>
+      <link>https://hugosibony.com/blog/memos/rclone/</link>
       <pubDate>Sun, 01 Jan 2023 19:49:32 -0500</pubDate>
       
-      <guid>https://www.patrickli.one/blog/memos/rclone/</guid>
+      <guid>https://hugosibony.com/blog/memos/rclone/</guid>
       <description>Install RClone Before we start, you need to install RClone on your computer.
 For arch, run
 sudo pacman -S rclone Set up Google Drive Remote We need to link RClone with your Google account. Run the following command to start the configuration:
@@ -22,10 +22,10 @@ Enter name for new remote. name&amp;gt; TEST Option Storage. Type of storage to 
     
     <item>
       <title>Access Control And Isolation</title>
-      <link>https://www.patrickli.one/blog/eecs388notes/accesscontrolandisolation/</link>
+      <link>https://hugosibony.com/blog/eecs388notes/accesscontrolandisolation/</link>
       <pubDate>Thu, 03 Nov 2022 12:13:38 -0400</pubDate>
       
-      <guid>https://www.patrickli.one/blog/eecs388notes/accesscontrolandisolation/</guid>
+      <guid>https://hugosibony.com/blog/eecs388notes/accesscontrolandisolation/</guid>
       <description>Access Control We aim for: Principle of Least Privilege.
 Limit the damage of an accident Reduce interaction to the minimum operator Minimized the number of the program audited. ( e.g: My office key can only open my office door. )
 ( e.g: Classified information of &amp;ldquo;need-to-know&amp;rdquo; )
@@ -35,19 +35,19 @@ Subject (Who); Apps, Users, Web Origins Objects (What): Files, Processes, Device
     
     <item>
       <title>Control Hijacking</title>
-      <link>https://www.patrickli.one/blog/eecs388notes/controlhijacking/</link>
+      <link>https://hugosibony.com/blog/eecs388notes/controlhijacking/</link>
       <pubDate>Tue, 01 Nov 2022 00:09:30 -0400</pubDate>
       
-      <guid>https://www.patrickli.one/blog/eecs388notes/controlhijacking/</guid>
+      <guid>https://hugosibony.com/blog/eecs388notes/controlhijacking/</guid>
       <description>Basic Knowledge Registers General Purpose Registers EAX: Used to store return values EBX ECX EDX ESI Special Purpose Registers EIP: Instruction Pointer ESP: Stack Pointer, indicate the top of the function EBP: Frame / Base Pointer, indicate the bottom of the function CPU Instructions (Intel Syntax) Move a value to a register: mov eax, 0x34 Add a value to a register: add eax 10 Jump to a line of code: jmp 0x123 Call a function (returns to the next line): call 0x1234 Stack push 0x0a push 0x6c push 0xff pop eax pop eax push 0x88 overwrite the original value Note that the pop does not eliminate the value of the stack.</description>
     </item>
     
     <item>
       <title>KubeCon Day2</title>
-      <link>https://www.patrickli.one/blog/kubecon2022/day2/</link>
+      <link>https://hugosibony.com/blog/kubecon2022/day2/</link>
       <pubDate>Thu, 27 Oct 2022 00:09:31 -0400</pubDate>
       
-      <guid>https://www.patrickli.one/blog/kubecon2022/day2/</guid>
+      <guid>https://hugosibony.com/blog/kubecon2022/day2/</guid>
       <description>This is my second day of the KubeCon Event. I love KubeCon. The opening keynote of KubeCon | CloudNativeCon
 KubeCon supports Ukrain
 Definitely Something I will need: Kubernetes tutorial
@@ -59,10 +59,10 @@ The impact of Prometheus. We should use Prometheus to get data in order to utili
     
     <item>
       <title>KubeCon Day 1</title>
-      <link>https://www.patrickli.one/blog/kubecon2022/day1/</link>
+      <link>https://hugosibony.com/blog/kubecon2022/day1/</link>
       <pubDate>Wed, 26 Oct 2022 00:00:08 -0400</pubDate>
       
-      <guid>https://www.patrickli.one/blog/kubecon2022/day1/</guid>
+      <guid>https://hugosibony.com/blog/kubecon2022/day1/</guid>
       <description>This is the first time I have ever paid a visit to a formal academic conference
 My Badge of KubeCon
 Conference about In-Time data analysis
@@ -75,10 +75,10 @@ I think I will try it.</description>
     
     <item>
       <title>Message Integrity</title>
-      <link>https://www.patrickli.one/blog/eecs388notes/integrity/</link>
+      <link>https://hugosibony.com/blog/eecs388notes/integrity/</link>
       <pubDate>Sat, 22 Oct 2022 14:15:02 -0400</pubDate>
       
-      <guid>https://www.patrickli.one/blog/eecs388notes/integrity/</guid>
+      <guid>https://hugosibony.com/blog/eecs388notes/integrity/</guid>
       <description>Threat Model Alice computes v=f(m), where v is a verifier of the message m. Alice sends the message to Bob via Mallory. Bob verifies that v&#39;=f(m&#39;). Random Function (RF) Set up a random map f: {Fixed size input}-&amp;gt;{Fixed size output}. This function is only known by Alice and Bob, but unknown to Mallory.
 Provably secure: Mallory cannot find out the verifier of a message that he has never seen (he cannot do it better than guessing).</description>
     </item>
