@@ -59,6 +59,10 @@ ctf:
       description: Top 200
       image: https://res.cloudinary.com/dd9rwcqim/image/upload/v1684940464/SecVal_r2tbzy.jpg
       url: none
+    - title: TryHackMe
+      description: Top 15%
+      image: https://res.cloudinary.com/dd9rwcqim/image/upload/v1685444022/TryHackMe_zs5mvp.png
+      url: none
 
 publications:
   enable: false
