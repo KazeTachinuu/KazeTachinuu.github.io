@@ -52,15 +52,15 @@ ctf:
   enable: true
   item:
     - title: 404CTF 2023
-      description: Top 350
+      description: Top 15%
       image: https://res.cloudinary.com/dd9rwcqim/image/upload/v1684940900/hex404_viax68.png
       url: none
     - title: Security Valley 2023
-      description: Top 200
+      description: Top 5%
       image: https://res.cloudinary.com/dd9rwcqim/image/upload/v1684940464/SecVal_r2tbzy.jpg
       url: none
     - title: TryHackMe
-      description: Top 15%
+      description: Top 10%
       image: https://res.cloudinary.com/dd9rwcqim/image/upload/v1685444022/TryHackMe_zs5mvp.png
       url: none
 
