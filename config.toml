@@ -1,4 +1,4 @@
-baseURL = "https://hugosibony.com" # The URL of your site
+baseURL = "https://www.hugosibony.com" # The URL of your site
 languageCode = "en-us" # The language you want to display the site in
 title = "Hugo Sibony" # The title you want to appear in the address bar
 theme = "hugo-developer-portfolio" # The theme, don't change this
