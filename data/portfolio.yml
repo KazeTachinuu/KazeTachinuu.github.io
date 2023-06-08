@@ -1,10 +1,8 @@
 filter:
   - label: Linux
     value: linux
-  - label: Rust
-    value: rust
+  - label: Programming
+    value: prog
   - label: Coursework
     value: coursework
-  - label: Java
-    value: java
 

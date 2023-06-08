@@ -35,18 +35,19 @@ skill:
 education:
   enable: true
   item:
-    - title: Mathematics and Computer Science
-      year: June 2022 - August 2022
-      academy: UC Berkeley Summer Session 2022
-      image: https://res.cloudinary.com/dd9rwcqim/image/upload/v1684927917/UCBerkeley_g4whgq.png
-    - title: Ethical Hacking and Network Security
-      year: March 2023 - June 2023
-      academy: James Cook University - Singapore
-      image: https://res.cloudinary.com/dd9rwcqim/image/upload/v1684928063/JCU_guyjjn.jpg
     - title: Engineering Degree in Cybersecurity
       year: 2021 - Present
       academy: EPITA, Paris
       image: https://res.cloudinary.com/dd9rwcqim/image/upload/v1684927619/EPITA_School_of_Engineering_and_Computer_Science_Logo_iyayne.png
+    - title: Ethical Hacking and Network Security
+      year: March 2023 - June 2023
+      academy: James Cook University - Singapore
+      image: https://res.cloudinary.com/dd9rwcqim/image/upload/v1684928063/JCU_guyjjn.jpg
+    - title: Mathematics and Computer Science
+      year: June 2022 - August 2022
+      academy: UC Berkeley Summer Session 2022
+      image: https://res.cloudinary.com/dd9rwcqim/image/upload/v1684927917/UCBerkeley_g4whgq.png
+
 
 ctf: 
   enable: true
