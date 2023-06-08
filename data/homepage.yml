@@ -1,6 +1,6 @@
 banner:
   title: <center>Hi there! I am Hugo Sibony</center>
-  image: /JiroPP.jpg
+  image: /Home/JiroPP.jpg
 
 social:
   github: kazetachinuu
@@ -19,13 +19,13 @@ skill:
   enable: true
   item:
     - title: Linux
-      logo: /Archcraft-logo.png
+      logo: /Home/Archcraft-logo.png
       description: I use Linux as my main Operating System (ArchCraft with bspwm)
     - title: Python
-      logo: /Python.png 
+      logo: /Home/Python.png 
       description: I enroled in CS61A @ UC Berkeley, a Python course. I also use Python for my personal projects such as penetration testing tools.
     - title: C / C++ 
-      logo: /C_Logo.png
+      logo: /Home/C_Logo.png
       description: I have been learning and using C/C++ for 2 years now.
     - title: Ethical Hacking
       logo: https://res.cloudinary.com/dd9rwcqim/image/upload/v1685017529/RedTeam_logo_k0e2ys.png
@@ -64,10 +64,4 @@ ctf:
       image: https://res.cloudinary.com/dd9rwcqim/image/upload/v1685444022/TryHackMe_zs5mvp.png
       url: none
 
-publications:
-  enable: false
-  item:
-    - image: /static/blog/portfolio/jaseci.png
-      title: "Jaseci: A Programming Paradigm and Runtime Stack for Building Scale-out Production Applications Easy and Fast"
-      description: The mission of Jaseci is to accelerate and democratize the development and deployments of end-to-end scalable AI applications. To this end, Jaseci presents a novel set of higher level abstractions for programming sophisticated software in a micro-service/serverless AI and a full stack architecture and programming model that abstracts away and automates much of the complexity of building applications on a distributed compute substrate of potentially thousands of compute nodes. The design of Jaseci includes two major innovations. The submission is still pending. 
-      code_link: https://github.com/Jaseci-Labs/jaseci
+

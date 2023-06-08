@@ -3,4 +3,8 @@ filter:
     value: linux
   - label: Rust
     value: rust
+  - label: Coursework
+    value: coursework
+  - label: Java
+    value: java
 

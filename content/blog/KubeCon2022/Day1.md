@@ -23,11 +23,11 @@ This is the first time I have ever paid a visit to a formal academic conference
 Gavin said that it reminded him of his high school age.
 
 
-![](/static/blog/kubeconday1/photo_2022-10-26_00-03-49.jpg)
+![](/project/Archcraft-logo.png)
 **An online encyclopedia for Cloud Native terminology**
 
 I think I will try it.
 
 
-![](/static/blog/kubeconday1/photo_2022-10-26_00-04-01.jpg)
+![](/project/Bash.png)
 **A guy solving "Kube" at KubeCon**

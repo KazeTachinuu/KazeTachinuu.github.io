@@ -4,22 +4,18 @@ coders = ["kazetachinuu"]
 date = 2023-05-26T00:00:00Z
 description = "A simple alias manager for linux shells written in Rust"
 github = ["https://github.com/kazetachinuu/alias_manager"]
-image = "Bash.png"
-title = "Alias Manager Project"
+image = "/project/Bash.png"
+title = "Alias Manager"
 type = "post"
 [[tech]]
-logo = "/Rust.png"
+logo = "/Home/Rust.png"
 name = "Rust"
 url = "https://www.rust-lang.org/"
 +++
+<div style="max-width: 900px; margin: 0 auto;">
+Alias Manager is a simple alias manager for Linux shells written in Rust. It provides an easy way to manage aliases, which can be useful for users who frequently change operating systems or need to manage multiple aliases.
 
-# Alias Manager Project
-
-## Why this project
-
-I wanted to learn Rust and I needed a simple project to start with. I also reset my computer and changes OS from time to time, so I wanted to have a simple way to manage my aliases. Thus I created this project.
-
-
+I wanted to learn Rust thus I created this project.
 
 ## Features
 
@@ -27,10 +23,6 @@ I wanted to learn Rust and I needed a simple project to start with. I also reset
 - List existing aliases
 - Remove aliases by name
 
-## Requirements
-
-- Rust programming language (https://www.rust-lang.org/)
-- Cargo package manager (usually bundled with Rust)
 
 ## Installation
 
@@ -58,7 +50,7 @@ Alias Manager provides several subcommands for managing aliases. Here's a summar
 
 
 ```sh
-aliasmanager [SUBCOMMAND] [OPTIONS] [ARGS]```
+aliasmanager [SUBCOMMAND] [OPTIONS] [ARGS]
 ```
 
 
@@ -99,7 +91,7 @@ aliasmanager add -n am -c aliasmanager
 
 Note: The alias names are case-sensitive, so make sure to provide the correct case when using alias names.
 
-
+</div>
 
 
 

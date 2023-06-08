@@ -28,6 +28,8 @@ theme = "hugo-developer-portfolio" # The theme, don't change this
 
 [markup.goldmark.renderer]
     unsafe= true
+[markup.highlight]
+    style = 'friendly'
 [params]
 home = "Home" # What you want the homepage to show up as in the menu bar
 # Meta data
