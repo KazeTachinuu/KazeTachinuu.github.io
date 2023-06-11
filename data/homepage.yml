@@ -1,6 +1,6 @@
 banner:
   title: <center>Hi there! I am Hugo Sibony</center>
-  image: /Home/JiroPP.jpg
+  # image: /Home/JiroPP.jpg
 
 social:
   github: kazetachinuu
