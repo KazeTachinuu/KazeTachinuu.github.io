@@ -22,8 +22,9 @@ theme = "hugo-developer-portfolio" # The theme, don't change this
   name = "Portfolio"
   URL = "portfolio"
   [[menu.main]]
-  name = "Contact"
-  URL = "contact"
+  name = "Writeups"
+  URL = "writeups"
+
 
 
 [markup.goldmark.renderer]
