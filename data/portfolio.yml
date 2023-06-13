@@ -5,4 +5,6 @@ filter:
     value: prog
   - label: Coursework
     value: coursework
+  - label: Prometech
+    value: prometech
 
