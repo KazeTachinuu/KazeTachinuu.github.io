@@ -1,11 +1,11 @@
 +++
 draft = false
-categories = ["linux","prog","prometech"]
+categories = ["prometech"]
 coders = ["kazetachinuu","cargaison"]
 date = 2023-06-13T00:00:00Z
-description = "A cloud-based scraping tool"
+description = "A cloud-based scraping tool with discord"
 image = "/project/Track/TrackLogo.png"
-title = "Track a nice scrapping tool"
+title = "Track by Prometech"
 type = "post"
 [[tech]]
 logo = "/Home/Python.png"
@@ -21,8 +21,9 @@ name = "Discord"
 
 Track is a cloud-based scraping tool that allows you to scrape data from any website and send it to your Discord server.
 
+Click on the logo to go to the project's website.
 
-<img src="/project/Track/TrackLogo.png" alt="Track Logo" style="max-width: 300px; margin: 0 auto; display: block;">
+<a href="https://prometech.in/" target="_blank"><img src="/project/Track/TrackLogo.png" alt="Track"></a>
 
 
 ## How does it work?

@@ -1,4 +1,6 @@
 filter:
+  - label: Rust
+    value: rust 
   - label: Linux
     value: linux
   - label: Programming
