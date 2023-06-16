@@ -17,4 +17,4 @@ I'm an undergraduate studying cybersecurity in Singapore as part of an exchange 
 
 I am interested in CyberSecurity, AI, and entrepreneurship. I am also interested in the intersection of these fields, for example using AI to improve CyberSecurity. I like to do Capture the Flag from time to time.
 
-Click <a href="/resume_eng.pdf">here</a> to download my resume. You can also find my resume in French <a href="/resume_fr.pdf">here</a>.
+You can download <a href="/resume_eng.pdf">my resume</a>. You can also find my  <a href="/resume_fr.pdf">resume in French</a>.
