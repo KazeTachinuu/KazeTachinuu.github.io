@@ -32,7 +32,9 @@ Track uses Discord Webhooks to send the data to Prometech's servers, which then 
 
 ## How do I use it?
 
-You can send a <a href="https://www prometech.in/contact" target="_blank">project request</a> on Prometech website or simply contact me on Discord (@hugosib) to get a Track instance for your server. 
+You can send a <a href="https://www.prometech.in/contact" target="_blank">project request</a> on Prometech website.
+
+You can also simply contact me on Discord (@hugosib) to get a Track instance for your server. 
 
 The price is **15€ per month per website scraped**.
 
