@@ -12,7 +12,7 @@ Hi! I am Hugo Sibony. I am a second year undergraduate student from EPITA, schoo
 
 ## My Education Experiences
 
-I'm an undergraduate studying cybersecurity in Singapore as part of an exchange program. I'm also creating a startup, Prometech, with a friend. We're trying to create new tools using AI for computing, for example my latest project is a tool that uses reinforcement learning to do pentesting.
+I'm an undergraduate studying cybersecurity in Singapore as part of an exchange program. I'm also creating a startup, <a href="https://www.prometech.in">Prometech</a>, with a friend. We're trying to create new tools using AI for computing, for example my latest project is a tool that uses reinforcement learning to do pentesting.
 ## My Interests
 
 I am interested in CyberSecurity, AI, and entrepreneurship. I am also interested in the intersection of these fields, for example using AI to improve CyberSecurity. I like to do Capture the Flag from time to time.
