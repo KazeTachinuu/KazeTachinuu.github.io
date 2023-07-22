@@ -1,11 +1,11 @@
 +++
 draft = false
-categories = ["prometech"]
+categories = ["truefalse"]
 coders = ["kazetachinuu","cargaison"]
 date = 2023-06-13T00:00:00Z
 description = "A cloud-based scraping tool with discord"
 image = "/project/Track/TrackLogo.png"
-title = "Track by Prometech"
+title = "Track by TrueFalse"
 type = "post"
 [[tech]]
 logo = "/Home/Python.png"
@@ -32,7 +32,7 @@ Track uses Discord Webhooks to send the data to Prometech's servers, which then 
 
 ## How do I use it?
 
-You can send a <a href="https://www.prometech.in/contact" target="_blank">project request</a> on Prometech website.
+You can send a <a href="https://www.truefalse.fr/contact" target="_blank">project request</a> on Prometech website.
 
 You can also simply contact me on Discord (@hugosib) to get a Track instance for your server. 
 
