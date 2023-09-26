@@ -68,5 +68,9 @@ ctf:
       description: Top 9%
       image: /Home/ctf/anoCTF.png
       url: none
+    - title: Rezoleo CTF
+      description: Top 1 
+      image: /Home/ctf/rezoleoCTF.png
+      url: none
 
 
