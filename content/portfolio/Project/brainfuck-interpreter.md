@@ -1,5 +1,5 @@
 +++
-categories = ["linux","prog","project"]
+categories = ["prog","project"]
 coders = ["kazetachinuu"]
 date = 2023-10-01T00:00:00Z
 description = "A simple BrainFuck Interpreter written in C"
@@ -12,7 +12,7 @@ logo = "/project/C.svg"
 name = "C"
 +++
 <div style="max-width: 900px; margin: 0 auto;">
-
+TODO
 </div>
 
 

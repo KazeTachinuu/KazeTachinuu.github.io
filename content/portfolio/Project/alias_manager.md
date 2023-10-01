@@ -1,5 +1,5 @@
 +++
-categories = ["linux","prog"]
+categories = ["linux","prog","project"]
 coders = ["kazetachinuu"]
 date = 2023-05-26T00:00:00Z
 description = "A simple alias manager for linux shells written in Rust"
