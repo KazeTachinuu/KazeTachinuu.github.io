@@ -1,7 +1,7 @@
 +++
 categories = ["coursework","prog"]
 coders = ["kazetachinuu"]
-date = 2023-06-08T00:00:00Z
+date = 2022-12-08T00:00:00Z
 description = "An Optical Character Recognition (OCR) to solve Sudoku"
 github = ["https://github.com/KazeTachinuu/OCR_EPITA"]
 image = "/project/OCR/Logo.png"
