@@ -7,4 +7,5 @@ filter:
     value: coursework
   - label: TrueFalse
     value: truefalse
-
+  - label: Projects
+    value: projects
