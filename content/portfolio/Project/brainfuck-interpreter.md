@@ -1,5 +1,5 @@
 +++
-categories = ["prog","project"]
+categories = ["prog","projects"]
 coders = ["kazetachinuu"]
 date = 2023-10-01T00:00:00Z
 description = "A simple BrainFuck Interpreter written in C"
