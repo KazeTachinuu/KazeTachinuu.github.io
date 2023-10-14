@@ -64,11 +64,11 @@ aliasmanager add -n <ALIAS_NAME> -c <COMMAND>
 ```
 
 
-- `list`: List all existing aliases.
+- `ls`: List all existing aliases.
 
 
 ```sh
-aliasmanager list
+aliasmanager ls
 ```
 
 - `rm`: Remove an alias by name.
