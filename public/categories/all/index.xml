@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>all on Hugo Sibony</title>
+    <link>https://www.hugosibony.com/categories/all/</link>
+    <description>Recent content in all on Hugo Sibony</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 28 Oct 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://www.hugosibony.com/categories/all/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Stage 01</title>
+      <link>https://www.hugosibony.com/writeups/ctforange_2023/stages/stage01/</link>
+      <pubDate>Sat, 28 Oct 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.hugosibony.com/writeups/ctforange_2023/stages/stage01/</guid>
+      <description>Stage 01 We were instructed to enter stage1 in the command line interface (CLI) to initiate the challenges.
+Upon executing the command, we received the following output in binary:
+$ stage1 01011111 01101101 01100001 01101001 01101110 01011111 00100000 01111011 00001010 01000011 01101111 01101110 01101110 01100101 01100011 01110100 00101000 00100111 01101000 01110100 01110100 01110000 01110011 00111010 00101111 00101111 01100011 01110100 01100110 00101110 01110101 01101110 01101001 01110100 00110100 00110001 00101110 01100110 01110010 00101111 01101001 01100100 01100101 01101110 01110100 00100111 00101001 00001010 01111101 It appeared to be in binary format, so we decoded it using a tool like CyberChef to get a URL:</description>
+    </item>
+    
+    <item>
+      <title>Stage 02</title>
+      <link>https://www.hugosibony.com/writeups/ctforange_2023/stages/stage02/</link>
+      <pubDate>Sat, 28 Oct 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.hugosibony.com/writeups/ctforange_2023/stages/stage02/</guid>
+      <description>Stage 02 After validating in the terminal, we received this output:
+$ validate part0 w00t Thanks for this validation. Now I can share a little more about myself. I am part of a special team called &amp;#34;Unit41&amp;#34;. You will know more when the time comes. It is not very important... I need your help again; my team intercepted a secure communication. Do you know what it is? Seems to be a little strange.</description>
+    </item>
+    
+    <item>
+      <title>Stage 03</title>
+      <link>https://www.hugosibony.com/writeups/ctforange_2023/stages/stage03/</link>
+      <pubDate>Sat, 28 Oct 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.hugosibony.com/writeups/ctforange_2023/stages/stage03/</guid>
+      <description>Stage03 After the validation, we received the following message:
+$ validate part1 IamAnHacker! Ok ok... I don&amp;#39;t understand what&amp;#39;s going on. Your IP doesn&amp;#39;t seem to be legitimate, and yet you are validating all accesses for the moment... Please logon : https://ctf.unit41.fr/logon We need a password. Let&amp;rsquo;s check the source code for any useful information:
+&amp;lt;div style=&amp;#39;text-align:center;margin-top:100px;&amp;#39;&amp;gt; &amp;lt;b&amp;gt;You need to enter the valid password to access to this private area. &amp;lt;/b&amp;gt;&amp;lt;br /&amp;gt;&amp;lt;br /&amp;gt; Password : &amp;lt;input type=&amp;#34;password&amp;#34; value=&amp;#34;&amp;#34; id=&amp;#39;password&amp;#39;&amp;gt;&amp;lt;br /&amp;gt;&amp;lt;br /&amp;gt; &amp;lt;input type=&amp;#34;button&amp;#34; onclick=&amp;#34;Validate()&amp;#34; value=&amp;#34;Connect&amp;#34;&amp;gt; &amp;lt;br /&amp;gt; &amp;lt;/div&amp;gt; &amp;lt;script src=&amp;#34;https://ajax.</description>
+    </item>
+    
+    <item>
+      <title>Stage 04</title>
+      <link>https://www.hugosibony.com/writeups/ctforange_2023/stages/stage04/</link>
+      <pubDate>Sat, 28 Oct 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.hugosibony.com/writeups/ctforange_2023/stages/stage04/</guid>
+      <description>Stage04 After validating we get the following:
+$ validate part42 WeAreNotAlone Hey! Are you still there? Top! You really don&amp;#39;t look bad to me. I think we&amp;#39;ll work well together in the future... But let&amp;#39;s figure out what we&amp;#39;re doing here first... I received a message that seems to be addressed to you. But I don&amp;#39;t understand it. Can you give me a hand? Zyeb myxdsxeob, sv do pkenbk kxkvicob vo psmrsob nsczyxslvo sms : Boqkbno vo lsox, no zbod, cyec dyedoc coc myedeboc.</description>
+    </item>
+    
+    <item>
+      <title>Stage 05</title>
+      <link>https://www.hugosibony.com/writeups/ctforange_2023/stages/stage05/</link>
+      <pubDate>Sat, 28 Oct 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.hugosibony.com/writeups/ctforange_2023/stages/stage05/</guid>
+      <description>Stage05 $ validate part33 PleaseHelpMe Well done. Now it&amp;#39;s time to be better, harder. Our colleagues investigated on behalf of a customer on a malicious act detected. They wrote a mini crisis report, but it seems that some words have been erased... Could this be a malicious act as well? For my part, I tried to download the file, but it still tells me that it is corrupted... I don&amp;#39;t understand.</description>
+    </item>
+    
+    <item>
+      <title>Stage 06</title>
+      <link>https://www.hugosibony.com/writeups/ctforange_2023/stages/stage06/</link>
+      <pubDate>Sat, 28 Oct 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.hugosibony.com/writeups/ctforange_2023/stages/stage06/</guid>
+      <description>Final Stage $ validate part55 Anal-Liste Heyy, I&amp;#39;m very impressed with your skills! I feel like we are going to make a great team together. Come on, let&amp;#39;s go to the two finals, and then you get the reward. A friend told me that there was access to the file system of this terminal. It would be interesting to take a look at it. We could probably become root? I&amp;#39;m not sure where to look?</description>
+    </item>
+    
+  </channel>
+</rss>

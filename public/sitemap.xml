@@ -2,51 +2,75 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://hugosibony.com/portfolio/project/alias_manager/</loc>
+    <loc>https://www.hugosibony.com/categories/all/</loc>
+    <lastmod>2023-10-28T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://www.hugosibony.com/categories/</loc>
+    <lastmod>2023-10-28T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://www.hugosibony.com/</loc>
+    <lastmod>2023-10-28T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://www.hugosibony.com/writeups/ctforange_2023/stages/stage01/</loc>
+    <lastmod>2023-10-28T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://www.hugosibony.com/writeups/ctforange_2023/stages/stage02/</loc>
+    <lastmod>2023-10-28T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://www.hugosibony.com/writeups/ctforange_2023/stages/stage03/</loc>
+    <lastmod>2023-10-28T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://www.hugosibony.com/writeups/ctforange_2023/stages/stage04/</loc>
+    <lastmod>2023-10-28T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://www.hugosibony.com/writeups/ctforange_2023/stages/stage05/</loc>
+    <lastmod>2023-10-28T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://www.hugosibony.com/writeups/ctforange_2023/stages/stage06/</loc>
+    <lastmod>2023-10-28T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://www.hugosibony.com/portfolio/project/brainfuck-interpreter/</loc>
+    <lastmod>2023-10-01T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://www.hugosibony.com/categories/prog/</loc>
+    <lastmod>2023-10-01T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://www.hugosibony.com/categories/projects/</loc>
+    <lastmod>2023-10-01T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://www.hugosibony.com/portfolio/project/trackbyprometech/</loc>
+    <lastmod>2023-06-13T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://www.hugosibony.com/categories/truefalse/</loc>
+    <lastmod>2023-06-13T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://www.hugosibony.com/categories/coursework/</loc>
+    <lastmod>2023-06-08T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://www.hugosibony.com/portfolio/project/rainfallanalyser/</loc>
+    <lastmod>2023-06-08T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://www.hugosibony.com/portfolio/project/alias_manager/</loc>
     <lastmod>2023-05-26T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://hugosibony.com/categories/</loc>
+    <loc>https://www.hugosibony.com/categories/linux/</loc>
     <lastmod>2023-05-26T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://hugosibony.com/</loc>
-    <lastmod>2023-05-26T00:00:00+00:00</lastmod>
+    <loc>https://www.hugosibony.com/portfolio/project/ocr/</loc>
+    <lastmod>2022-12-08T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://hugosibony.com/categories/linux/</loc>
-    <lastmod>2023-05-26T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://hugosibony.com/categories/rust/</loc>
-    <lastmod>2023-05-26T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://hugosibony.com/blog/memos/rclone/</loc>
-    <lastmod>2023-01-01T19:49:32-05:00</lastmod>
-  </url><url>
-    <loc>https://hugosibony.com/blog/eecs388notes/accesscontrolandisolation/</loc>
-    <lastmod>2022-11-03T12:13:38-04:00</lastmod>
-  </url><url>
-    <loc>https://hugosibony.com/blog/eecs388notes/controlhijacking/</loc>
-    <lastmod>2022-11-01T00:09:30-04:00</lastmod>
-  </url><url>
-    <loc>https://hugosibony.com/blog/kubecon2022/day2/</loc>
-    <lastmod>2022-10-27T00:09:31-04:00</lastmod>
-  </url><url>
-    <loc>https://hugosibony.com/blog/kubecon2022/day1/</loc>
-    <lastmod>2022-10-26T00:00:08-04:00</lastmod>
-  </url><url>
-    <loc>https://hugosibony.com/blog/eecs388notes/integrity/</loc>
-    <lastmod>2022-10-22T14:15:02-04:00</lastmod>
-  </url><url>
-    <loc>https://hugosibony.com/contact/</loc>
-    <lastmod>2022-10-17T22:51:16-04:00</lastmod>
-  </url><url>
-    <loc>https://hugosibony.com/portfolio/</loc>
+    <loc>https://www.hugosibony.com/writeups/ctforange_2023/</loc>
     <lastmod>2022-10-17T17:41:36-04:00</lastmod>
   </url><url>
-    <loc>https://hugosibony.com/about/</loc>
+    <loc>https://www.hugosibony.com/portfolio/</loc>
+    <lastmod>2022-10-17T17:41:36-04:00</lastmod>
+  </url><url>
+    <loc>https://www.hugosibony.com/writeups/</loc>
+    <lastmod>2022-10-17T17:41:36-04:00</lastmod>
+  </url><url>
+    <loc>https://www.hugosibony.com/about/</loc>
     <lastmod>2019-05-12T12:14:34+06:00</lastmod>
   </url><url>
-    <loc>https://hugosibony.com/blog/</loc>
-    <lastmod>2019-05-12T12:14:34+06:00</lastmod>
-  </url><url>
-    <loc>https://hugosibony.com/tags/</loc>
+    <loc>https://www.hugosibony.com/tags/</loc>
   </url>
 </urlset>

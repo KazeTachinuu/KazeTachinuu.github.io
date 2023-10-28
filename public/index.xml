@@ -2,95 +2,124 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Hugo Sibony</title>
-    <link>https://hugosibony.com/</link>
+    <link>https://www.hugosibony.com/</link>
     <description>Recent content on Hugo Sibony</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 26 May 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://hugosibony.com/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 28 Oct 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://www.hugosibony.com/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Alias Manager Project</title>
-      <link>https://hugosibony.com/portfolio/project/alias_manager/</link>
+      <title>Stage 01</title>
+      <link>https://www.hugosibony.com/writeups/ctforange_2023/stages/stage01/</link>
+      <pubDate>Sat, 28 Oct 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.hugosibony.com/writeups/ctforange_2023/stages/stage01/</guid>
+      <description>Stage 01 We were instructed to enter stage1 in the command line interface (CLI) to initiate the challenges.
+Upon executing the command, we received the following output in binary:
+$ stage1 01011111 01101101 01100001 01101001 01101110 01011111 00100000 01111011 00001010 01000011 01101111 01101110 01101110 01100101 01100011 01110100 00101000 00100111 01101000 01110100 01110100 01110000 01110011 00111010 00101111 00101111 01100011 01110100 01100110 00101110 01110101 01101110 01101001 01110100 00110100 00110001 00101110 01100110 01110010 00101111 01101001 01100100 01100101 01101110 01110100 00100111 00101001 00001010 01111101 It appeared to be in binary format, so we decoded it using a tool like CyberChef to get a URL:</description>
+    </item>
+    
+    <item>
+      <title>Stage 02</title>
+      <link>https://www.hugosibony.com/writeups/ctforange_2023/stages/stage02/</link>
+      <pubDate>Sat, 28 Oct 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.hugosibony.com/writeups/ctforange_2023/stages/stage02/</guid>
+      <description>Stage 02 After validating in the terminal, we received this output:
+$ validate part0 w00t Thanks for this validation. Now I can share a little more about myself. I am part of a special team called &amp;#34;Unit41&amp;#34;. You will know more when the time comes. It is not very important... I need your help again; my team intercepted a secure communication. Do you know what it is? Seems to be a little strange.</description>
+    </item>
+    
+    <item>
+      <title>Stage 03</title>
+      <link>https://www.hugosibony.com/writeups/ctforange_2023/stages/stage03/</link>
+      <pubDate>Sat, 28 Oct 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.hugosibony.com/writeups/ctforange_2023/stages/stage03/</guid>
+      <description>Stage03 After the validation, we received the following message:
+$ validate part1 IamAnHacker! Ok ok... I don&amp;#39;t understand what&amp;#39;s going on. Your IP doesn&amp;#39;t seem to be legitimate, and yet you are validating all accesses for the moment... Please logon : https://ctf.unit41.fr/logon We need a password. Let&amp;rsquo;s check the source code for any useful information:
+&amp;lt;div style=&amp;#39;text-align:center;margin-top:100px;&amp;#39;&amp;gt; &amp;lt;b&amp;gt;You need to enter the valid password to access to this private area. &amp;lt;/b&amp;gt;&amp;lt;br /&amp;gt;&amp;lt;br /&amp;gt; Password : &amp;lt;input type=&amp;#34;password&amp;#34; value=&amp;#34;&amp;#34; id=&amp;#39;password&amp;#39;&amp;gt;&amp;lt;br /&amp;gt;&amp;lt;br /&amp;gt; &amp;lt;input type=&amp;#34;button&amp;#34; onclick=&amp;#34;Validate()&amp;#34; value=&amp;#34;Connect&amp;#34;&amp;gt; &amp;lt;br /&amp;gt; &amp;lt;/div&amp;gt; &amp;lt;script src=&amp;#34;https://ajax.</description>
+    </item>
+    
+    <item>
+      <title>Stage 04</title>
+      <link>https://www.hugosibony.com/writeups/ctforange_2023/stages/stage04/</link>
+      <pubDate>Sat, 28 Oct 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.hugosibony.com/writeups/ctforange_2023/stages/stage04/</guid>
+      <description>Stage04 After validating we get the following:
+$ validate part42 WeAreNotAlone Hey! Are you still there? Top! You really don&amp;#39;t look bad to me. I think we&amp;#39;ll work well together in the future... But let&amp;#39;s figure out what we&amp;#39;re doing here first... I received a message that seems to be addressed to you. But I don&amp;#39;t understand it. Can you give me a hand? Zyeb myxdsxeob, sv do pkenbk kxkvicob vo psmrsob nsczyxslvo sms : Boqkbno vo lsox, no zbod, cyec dyedoc coc myedeboc.</description>
+    </item>
+    
+    <item>
+      <title>Stage 05</title>
+      <link>https://www.hugosibony.com/writeups/ctforange_2023/stages/stage05/</link>
+      <pubDate>Sat, 28 Oct 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.hugosibony.com/writeups/ctforange_2023/stages/stage05/</guid>
+      <description>Stage05 $ validate part33 PleaseHelpMe Well done. Now it&amp;#39;s time to be better, harder. Our colleagues investigated on behalf of a customer on a malicious act detected. They wrote a mini crisis report, but it seems that some words have been erased... Could this be a malicious act as well? For my part, I tried to download the file, but it still tells me that it is corrupted... I don&amp;#39;t understand.</description>
+    </item>
+    
+    <item>
+      <title>Stage 06</title>
+      <link>https://www.hugosibony.com/writeups/ctforange_2023/stages/stage06/</link>
+      <pubDate>Sat, 28 Oct 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.hugosibony.com/writeups/ctforange_2023/stages/stage06/</guid>
+      <description>Final Stage $ validate part55 Anal-Liste Heyy, I&amp;#39;m very impressed with your skills! I feel like we are going to make a great team together. Come on, let&amp;#39;s go to the two finals, and then you get the reward. A friend told me that there was access to the file system of this terminal. It would be interesting to take a look at it. We could probably become root? I&amp;#39;m not sure where to look?</description>
+    </item>
+    
+    <item>
+      <title>BrainFuck Interpreter</title>
+      <link>https://www.hugosibony.com/portfolio/project/brainfuck-interpreter/</link>
+      <pubDate>Sun, 01 Oct 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.hugosibony.com/portfolio/project/brainfuck-interpreter/</guid>
+      <description>Brainfuck Interpreter This is a simple Brainfuck interpreter written in C.
+Table of Contents  Brainfuck Interpreter  Table of Contents Introduction Usage Building Adding the Executable to PATH    Introduction Brainfuck is an esoteric programming language created in 1993 by Urban Müller. It is known for its extreme minimalism, with the language using only eight simple commands, an instruction pointer, and an array of memory cells, each initialized to zero.</description>
+    </item>
+    
+    <item>
+      <title>Track by TrueFalse</title>
+      <link>https://www.hugosibony.com/portfolio/project/trackbyprometech/</link>
+      <pubDate>Tue, 13 Jun 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.hugosibony.com/portfolio/project/trackbyprometech/</guid>
+      <description>Track Track is a cloud-based scraping tool that allows you to scrape data from any website and send it to your Discord server.
+Click on the logo to go to the project&amp;rsquo;s website.
+
+How does it work? Track uses Discord Webhooks to send the data to Prometech&amp;rsquo;s servers, which then sends it to your Discord server.
+How do I use it? You can send a project request on Prometech website.</description>
+    </item>
+    
+    <item>
+      <title>Rainfall Analyser</title>
+      <link>https://www.hugosibony.com/portfolio/project/rainfallanalyser/</link>
+      <pubDate>Thu, 08 Jun 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.hugosibony.com/portfolio/project/rainfallanalyser/</guid>
+      <description>Rainfall Analyser / Visualizer This is a coursework for my Java course at JCU.
+I have to implement a rainfall analyser that can read data from a csv file and output the result to another file.
+I also implemented a visualizer that can visualize the rainfall data in a bar chart.
+We had to build a GUI for this project using JavaFX.
+Features  Read data from a csv file Visualize the rainfall data in a bar chart  The GUI allows the user to select a csv file.</description>
+    </item>
+    
+    <item>
+      <title>Alias Manager</title>
+      <link>https://www.hugosibony.com/portfolio/project/alias_manager/</link>
       <pubDate>Fri, 26 May 2023 00:00:00 +0000</pubDate>
       
-      <guid>https://hugosibony.com/portfolio/project/alias_manager/</guid>
-      <description>Alias Manager Project Why this project I wanted to learn Rust and I needed a simple project to start with. I also reset my computer and changes OS from time to time, so I wanted to have a simple way to manage my aliases. Thus I created this project.
-Features Add new aliases with custom commands List existing aliases Remove aliases by name Requirements Rust programming language (https://www.rust-lang.org/) Cargo package manager (usually bundled with Rust) Installation Clone this repository to your local machine: git clone https://github.</description>
+      <guid>https://www.hugosibony.com/portfolio/project/alias_manager/</guid>
+      <description>Alias Manager is a simple alias manager for Linux shells written in Rust. It provides an easy way to manage aliases, which can be useful for users who frequently change operating systems or need to manage multiple aliases. I wanted to learn Rust thus I created this project.
+Features  Add new aliases with custom commands List existing aliases Remove aliases by name  Installation  Clone this repository to your local machine:  git clone https://github.</description>
     </item>
     
     <item>
-      <title>How to properly mount Google Drive with RClone</title>
-      <link>https://hugosibony.com/blog/memos/rclone/</link>
-      <pubDate>Sun, 01 Jan 2023 19:49:32 -0500</pubDate>
+      <title>OCR Sudoku Solver</title>
+      <link>https://www.hugosibony.com/portfolio/project/ocr/</link>
+      <pubDate>Thu, 08 Dec 2022 00:00:00 +0000</pubDate>
       
-      <guid>https://hugosibony.com/blog/memos/rclone/</guid>
-      <description>Install RClone Before we start, you need to install RClone on your computer.
-For arch, run
-sudo pacman -S rclone Set up Google Drive Remote We need to link RClone with your Google account. Run the following command to start the configuration:
-rclone config Press n to create a new remote.
-Enter name for new remote. name&amp;gt; TEST Option Storage. Type of storage to configure. Choose a number from below, or type in your own value.</description>
-    </item>
-    
-    <item>
-      <title>Access Control And Isolation</title>
-      <link>https://hugosibony.com/blog/eecs388notes/accesscontrolandisolation/</link>
-      <pubDate>Thu, 03 Nov 2022 12:13:38 -0400</pubDate>
-      
-      <guid>https://hugosibony.com/blog/eecs388notes/accesscontrolandisolation/</guid>
-      <description>Access Control We aim for: Principle of Least Privilege.
-Limit the damage of an accident Reduce interaction to the minimum operator Minimized the number of the program audited. ( e.g: My office key can only open my office door. )
-( e.g: Classified information of &amp;ldquo;need-to-know&amp;rdquo; )
-Models and Policies Security Model
-Subject (Who); Apps, Users, Web Origins Objects (What): Files, Processes, Devices, DB Tables, Cookies Operations: Read, Write, Call This security model defines an Access Control Matrix.</description>
-    </item>
-    
-    <item>
-      <title>Control Hijacking</title>
-      <link>https://hugosibony.com/blog/eecs388notes/controlhijacking/</link>
-      <pubDate>Tue, 01 Nov 2022 00:09:30 -0400</pubDate>
-      
-      <guid>https://hugosibony.com/blog/eecs388notes/controlhijacking/</guid>
-      <description>Basic Knowledge Registers General Purpose Registers EAX: Used to store return values EBX ECX EDX ESI Special Purpose Registers EIP: Instruction Pointer ESP: Stack Pointer, indicate the top of the function EBP: Frame / Base Pointer, indicate the bottom of the function CPU Instructions (Intel Syntax) Move a value to a register: mov eax, 0x34 Add a value to a register: add eax 10 Jump to a line of code: jmp 0x123 Call a function (returns to the next line): call 0x1234 Stack push 0x0a push 0x6c push 0xff pop eax pop eax push 0x88 overwrite the original value Note that the pop does not eliminate the value of the stack.</description>
-    </item>
-    
-    <item>
-      <title>KubeCon Day2</title>
-      <link>https://hugosibony.com/blog/kubecon2022/day2/</link>
-      <pubDate>Thu, 27 Oct 2022 00:09:31 -0400</pubDate>
-      
-      <guid>https://hugosibony.com/blog/kubecon2022/day2/</guid>
-      <description>This is my second day of the KubeCon Event. I love KubeCon. The opening keynote of KubeCon | CloudNativeCon
-KubeCon supports Ukrain
-Definitely Something I will need: Kubernetes tutorial
-Border between US and Canada
-Best activity today: Solution Showcase. A varierty of product from dozens of companies
-This is a lovely microK8s cluster built with 4 Raspberry Pi and a switch
-The impact of Prometheus. We should use Prometheus to get data in order to utilize our resources as much as possible</description>
-    </item>
-    
-    <item>
-      <title>KubeCon Day 1</title>
-      <link>https://hugosibony.com/blog/kubecon2022/day1/</link>
-      <pubDate>Wed, 26 Oct 2022 00:00:08 -0400</pubDate>
-      
-      <guid>https://hugosibony.com/blog/kubecon2022/day1/</guid>
-      <description>This is the first time I have ever paid a visit to a formal academic conference
-My Badge of KubeCon
-Conference about In-Time data analysis
-A nice fuzz generator that can generate random test cases to make your program robust
-A high schooler sharing his ideas about open-source development
-Gavin said that it reminded him of his high school age.
-An online encyclopedia for Cloud Native terminology
-I think I will try it.</description>
-    </item>
-    
-    <item>
-      <title>Message Integrity</title>
-      <link>https://hugosibony.com/blog/eecs388notes/integrity/</link>
-      <pubDate>Sat, 22 Oct 2022 14:15:02 -0400</pubDate>
-      
-      <guid>https://hugosibony.com/blog/eecs388notes/integrity/</guid>
-      <description>Threat Model Alice computes v=f(m), where v is a verifier of the message m. Alice sends the message to Bob via Mallory. Bob verifies that v&#39;=f(m&#39;). Random Function (RF) Set up a random map f: {Fixed size input}-&amp;gt;{Fixed size output}. This function is only known by Alice and Bob, but unknown to Mallory.
-Provably secure: Mallory cannot find out the verifier of a message that he has never seen (he cannot do it better than guessing).</description>
+      <guid>https://www.hugosibony.com/portfolio/project/ocr/</guid>
+      <description>TODO </description>
     </item>
     
   </channel>

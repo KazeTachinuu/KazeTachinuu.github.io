@@ -2,19 +2,19 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>linux on Hugo Sibony</title>
-    <link>https://hugosibony.com/categories/linux/</link>
+    <link>https://www.hugosibony.com/categories/linux/</link>
     <description>Recent content in linux on Hugo Sibony</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 26 May 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://hugosibony.com/categories/linux/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 26 May 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://www.hugosibony.com/categories/linux/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Alias Manager Project</title>
-      <link>https://hugosibony.com/portfolio/project/alias_manager/</link>
+      <title>Alias Manager</title>
+      <link>https://www.hugosibony.com/portfolio/project/alias_manager/</link>
       <pubDate>Fri, 26 May 2023 00:00:00 +0000</pubDate>
       
-      <guid>https://hugosibony.com/portfolio/project/alias_manager/</guid>
-      <description>Alias Manager Project Why this project I wanted to learn Rust and I needed a simple project to start with. I also reset my computer and changes OS from time to time, so I wanted to have a simple way to manage my aliases. Thus I created this project.
-Features Add new aliases with custom commands List existing aliases Remove aliases by name Requirements Rust programming language (https://www.rust-lang.org/) Cargo package manager (usually bundled with Rust) Installation Clone this repository to your local machine: git clone https://github.</description>
+      <guid>https://www.hugosibony.com/portfolio/project/alias_manager/</guid>
+      <description>Alias Manager is a simple alias manager for Linux shells written in Rust. It provides an easy way to manage aliases, which can be useful for users who frequently change operating systems or need to manage multiple aliases. I wanted to learn Rust thus I created this project.
+Features  Add new aliases with custom commands List existing aliases Remove aliases by name  Installation  Clone this repository to your local machine:  git clone https://github.</description>
     </item>
     
   </channel>

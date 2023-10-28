@@ -23,7 +23,7 @@
   <meta name="description" property="og:description" content="Portfolio of Hugo Sibony">
   <meta name="image" property="og:image" content="/">
   <meta name="author" content="Hugo Sibony">
-  <meta name="generator" content="Hugo 0.111.3">
+  <meta name="generator" content="Hugo 0.92.2" />
 
   <!-- plugins -->
   
@@ -36,7 +36,7 @@
   
   <link rel="stylesheet" href="/css/syntax.min.css" integrity="" media="screen">
 
-  <link rel="alternate" type="application/rss+xml" href="https://hugosibony.com/portfolio/index.xml" title="Hugo Sibony" />
+  <link rel="alternate" type="application/rss+xml" href="https://www.hugosibony.com/portfolio/index.xml" title="Hugo Sibony" />
 <script src="https://cdn.jsdelivr.net/npm/mailgo@0.9.14/dist/mailgo.min.js" defer></script>
 
   <!--Favicon-->
@@ -74,18 +74,18 @@
                 
                 
                 
-                <li><a style="font-size: 18px; text-transform: none" href="/contact">Contact</a></li>
-                
-                
-                
-                
-                
-                
-                
-                
-                
                 <li class="uk-active"><a style="font-size: 18px; text-transform:none"
                         href="/portfolio">Portfolio</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a style="font-size: 18px; text-transform: none" href="/writeups">Writeups</a></li>
                 
                 
             </ul>
@@ -101,7 +101,7 @@
 
         <ul class="uk-nav uk-nav-primary uk-nav-center uk-margin-auto-vertical">
             
-            <li><a style="font-size: 18px" href="https://hugosibony.com"> Home </a></li>
+            <li><a style="font-size: 18px" href="https://www.hugosibony.com"> Home </a></li>
 
             
             
@@ -122,17 +122,17 @@
             
             
             
-            <li><a style="font-size: 18px" href="/contact">Contact</a></li>
-            
-            
-            
-            
-            
-            
-            
-            
-            
             <li class="uk-active"><a style="font-size: 18px" href="/portfolio">Portfolio</a></li>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <li><a style="font-size: 18px" href="/writeups">Writeups</a></li>
             
             
         </ul>
@@ -161,8 +161,26 @@
 
         
 
-        <li uk-filter-control="[data-tags*='rust']">
-          <a href="#">Rust</a>
+        <li uk-filter-control="[data-tags*='prog']">
+          <a href="#">Programming</a>
+        </li>
+
+        
+
+        <li uk-filter-control="[data-tags*='coursework']">
+          <a href="#">Coursework</a>
+        </li>
+
+        
+
+        <li uk-filter-control="[data-tags*='truefalse']">
+          <a href="#">TrueFalse</a>
+        </li>
+
+        
+
+        <li uk-filter-control="[data-tags*='projects']">
+          <a href="#">Projects</a>
         </li>
 
         
@@ -174,24 +192,120 @@
         uk-height-match="target: > li > div > .fixy"
       >
         
-        <li data-tags="linux32rust">
+        <li data-tags="prog32projects">
           <div class="uk-card uk-card-default" style="position: relative;">
             <div class="fixy">
               <div class="uk-card-media-top">
                 <img
                   class="contain experience"
-                  src="https://hugosibony.com/Bash.png"
+                  src="https://www.hugosibony.com/project/brainfuck/BrainFuck.png"
                   alt=""
                 />
               </div>
               <div class="uk-card-body">
-                <h3 class="uk-card-title">Alias Manager Project</h3>
+                <h3 class="uk-card-title">BrainFuck Interpreter</h3>
+                <p>A simple BrainFuck Interpreter written in C</p>
+              </div>
+            </div>
+
+            <div class="uk-card-footer">
+              <a href="/portfolio/project/brainfuck-interpreter/" class="uk-button uk-button-text"
+                >Read more</a
+              >
+            </div>
+          </div>
+        </li>
+        
+        <li data-tags="truefalse">
+          <div class="uk-card uk-card-default" style="position: relative;">
+            <div class="fixy">
+              <div class="uk-card-media-top">
+                <img
+                  class="contain experience"
+                  src="https://www.hugosibony.com/project/Track/TrackLogo.png"
+                  alt=""
+                />
+              </div>
+              <div class="uk-card-body">
+                <h3 class="uk-card-title">Track by TrueFalse</h3>
+                <p>A cloud-based scraping tool with discord</p>
+              </div>
+            </div>
+
+            <div class="uk-card-footer">
+              <a href="/portfolio/project/trackbyprometech/" class="uk-button uk-button-text"
+                >Read more</a
+              >
+            </div>
+          </div>
+        </li>
+        
+        <li data-tags="coursework32prog">
+          <div class="uk-card uk-card-default" style="position: relative;">
+            <div class="fixy">
+              <div class="uk-card-media-top">
+                <img
+                  class="contain experience"
+                  src="https://www.hugosibony.com/project/Rainfall/rain.png"
+                  alt=""
+                />
+              </div>
+              <div class="uk-card-body">
+                <h3 class="uk-card-title">Rainfall Analyser</h3>
+                <p>A simple rainfall analyser GUI written in Java</p>
+              </div>
+            </div>
+
+            <div class="uk-card-footer">
+              <a href="/portfolio/project/rainfallanalyser/" class="uk-button uk-button-text"
+                >Read more</a
+              >
+            </div>
+          </div>
+        </li>
+        
+        <li data-tags="linux32prog32projects">
+          <div class="uk-card uk-card-default" style="position: relative;">
+            <div class="fixy">
+              <div class="uk-card-media-top">
+                <img
+                  class="contain experience"
+                  src="https://www.hugosibony.com/project/Bash.png"
+                  alt=""
+                />
+              </div>
+              <div class="uk-card-body">
+                <h3 class="uk-card-title">Alias Manager</h3>
                 <p>A simple alias manager for linux shells written in Rust</p>
               </div>
             </div>
 
             <div class="uk-card-footer">
               <a href="/portfolio/project/alias_manager/" class="uk-button uk-button-text"
+                >Read more</a
+              >
+            </div>
+          </div>
+        </li>
+        
+        <li data-tags="coursework32prog">
+          <div class="uk-card uk-card-default" style="position: relative;">
+            <div class="fixy">
+              <div class="uk-card-media-top">
+                <img
+                  class="contain experience"
+                  src="https://www.hugosibony.com/project/OCR/Logo.png"
+                  alt=""
+                />
+              </div>
+              <div class="uk-card-body">
+                <h3 class="uk-card-title">OCR Sudoku Solver</h3>
+                <p>An Optical Character Recognition (OCR) to solve Sudoku</p>
+              </div>
+            </div>
+
+            <div class="uk-card-footer">
+              <a href="/portfolio/project/ocr/" class="uk-button uk-button-text"
                 >Read more</a
               >
             </div>

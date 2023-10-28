@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<style>
+    html {
+        height: 100vh;
+    }
+    body {
+        min-height: 100vh;
+        display: grid;
+        grid-template-rows: 1fr auto;
+    }
+    .footer {
+        grid-row-start: 2;
+        grid-row-end: 3;
+    }
+</style>
+<html lang="en-us"><head>
+  <meta charset="utf-8">
+  <title>Hugo Sibony</title>
+
+  <!-- mobile responsive meta -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta name="description" property="og:description" content="Portfolio of Hugo Sibony">
+  <meta name="image" property="og:image" content="/">
+  <meta name="author" content="Hugo Sibony">
+  <meta name="generator" content="Hugo 0.92.2" />
+
+  <!-- plugins -->
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.2.6/dist/css/uikit.min.css ">
+  
+
+  <!-- Main Stylesheet -->
+  
+  <link rel="stylesheet" href="/css/style.min.css" integrity="" media="screen">
+  
+  <link rel="stylesheet" href="/css/syntax.min.css" integrity="" media="screen">
+
+  <script src="https://cdn.jsdelivr.net/npm/mailgo@0.9.14/dist/mailgo.min.js" defer></script>
+
+  <!--Favicon-->
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+
+</head>
+<body class="writeups">
+    <div class="wrapper"><div uk-sticky="sel-target: .uk-navbar-container; cls-active: uk-navbar-sticky; bottom: #transparent-sticky-navbar">
+    <nav class="uk-navbar-container uk-margin" uk-navbar="mode: click;" style="padding-right: 3rem">
+        <div class="uk-navbar-right">
+            <ul class="uk-navbar-nav uk-visible@s">
+                
+                <li><a style="font-size: 18px; text-transform: none" href="/"> Home
+                        </a></li>
+
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a style="font-size: 18px; text-transform: none" href="/about">About</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li><a style="font-size: 18px; text-transform: none" href="/portfolio">Portfolio</a></li>
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                <li class="uk-active"><a style="font-size: 18px; text-transform:none"
+                        href="/writeups">Writeups</a></li>
+                
+                
+            </ul>
+
+            <a class="uk-navbar-toggle uk-hidden@s" uk-toggle="target: #sidenav" uk-navbar-toggle-icon href="#"></a>
+
+        </div>
+    </nav>
+</div>
+
+<div id="sidenav" uk-offcanvas="overlay: true">
+    <div class="uk-offcanvas-bar uk-flex uk-flex-column">
+
+        <ul class="uk-nav uk-nav-primary uk-nav-center uk-margin-auto-vertical">
+            
+            <li><a style="font-size: 18px" href="https://www.hugosibony.com"> Home </a></li>
+
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <li><a style="font-size: 18px" href="/about">About</a></li>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <li><a style="font-size: 18px" href="/portfolio">Portfolio</a></li>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <li class="uk-active"><a style="font-size: 18px" href="/writeups">Writeups</a></li>
+            
+            
+        </ul>
+
+    </div>
+</div>
+
+
+
+
+<style>
+  p {
+    margin: 0
+  }
+
+  .people-wrap {
+    display: inline-flex;
+    margin-top: 10px;
+  }
+
+  .people-image {
+    display: block;
+    border-radius: 50%;
+     
+  }
+
+  .people {
+    margin-left: 20px;
+    margin-right: 20px;
+  }
+
+  .name {
+    margin: auto;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    color: #000;
+    font-family: Roboto, sans-serif;
+    line-height: 1.2;
+    margin-top: 2rem;
+  }
+
+  .content img {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom:30px;
+  }
+
+  p { margin-bottom: 1em; }
+
+  body p:last-child { margin-bottom: 0em; }
+
+  img.skills{
+    height: 80px;
+  }
+
+  @media only screen and (min-width: 960px) {
+    .content img{max-width:60vw; max-height:60vh}
+
+  .content img{
+      max-width:60vw;
+      max-height:60vh
+  }
+  }
+  .content{
+      width: 90vw;
+      max-width: 1200px
+  }
+
+  table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+  }
+
+  td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+  }
+
+</style>
+
+
+<section>
+  <div class="uk-container uk-margin-large-bottom uk-margin-medium-top">
+    <h1 class="uk-text-center uk-heading-medium">Stage 04</h1>
+    <p class="uk-text-center uk-text-lead"></p>
+    <p class="uk-text-center">Published on Oct 28, 2023</p>
+    <p class="uk-text-center">Reading time: 3 minutes.</p>
+    
+
+    <hr class="full-width">
+    
+
+    <div class="content">
+      <h2 id="stage04">Stage04</h2>
+<p>After validating we get the following:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ validate part42 WeAreNotAlone
+Hey! Are you still there? Top!
+You really don<span style="color:#4070a0">&#39;t look bad to me. I think we&#39;</span>ll work well together in the future...
+But let<span style="color:#4070a0">&#39;s figure out what we&#39;</span>re doing here first...
+
+I received a message that seems to be addressed to you. But I don<span style="color:#4070a0">&#39;t understand it.
+</span><span style="color:#4070a0">Can you give me a hand?
+</span><span style="color:#4070a0">
+</span><span style="color:#4070a0">Zyeb myxdsxeob, sv do pkenbk kxkvicob vo psmrsob nsczyxslvo sms :
+</span><span style="color:#4070a0">Boqkbno vo lsox, no zbod, cyec dyedoc coc myedeboc...
+</span><span style="color:#4070a0">Sv i&#39;</span>k pybmowoxd aeovaeo mryco à v<span style="">&#39;</span>sxdobsoeb, nkxc ck dêdo.
+mdp.
+exsd41.
+pb
+/Wkvgkbo/
+WkiloXydKWkvgkbo.
+jsz
+</code></pre></div><p>This clearly looks like a rot cipher, but let’s make computer do the heavy work for us.</p>
+<p><a href="https://www.dcode.fr/rot-cipher">Dcode rot cipher</a> decipher this :</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">Pour continuer, il te faudra analyser le fichier disponible ici :
+Regarde le bien, de pret, sous toutes ses coutures...
+Il y&#39;a forcement quelque chose q l&#39;interieur, dans sa tute.
+ctf.
+unit41.
+fr
+/Malware/
+MaybeNotAMalware.
+zip
+</code></pre></div><p>We get a new file :</p>
+<p><a href="/writeups/OrangeCTF-2023/Files/MaybeNotAMalware.zip">MaybeNotAMalware.zip</a></p>
+<p>Upon unzipping the file, we discovered what seemed to be a Windows executable. This was confirmed by using the <strong><code>file</code></strong> command:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ file MaybeNotAMalware.Exe
+MaybeNotAMalware.Exe: PE32 executable <span style="color:#666">(</span>console<span style="color:#666">)</span> Intel 80386, <span style="color:#007020;font-weight:bold">for</span> MS Windows, <span style="color:#40a070">5</span> sections
+</code></pre></div><p>At first, I attempted to examine the disassembled executable code using Ghidra, hoping to find something insightful. However, after spending some time exploring the code, it started to seem unusual. All the previous challenges were relatively simple, and this one appeared to require reverse engineering skills. I doubted if that was the intended approach, so I decided to simplify my approach.</p>
+<p>Instead of delving into the code, I opted to check the properties of the file in a Windows environment. To my surprise, this straightforward step revealed the crucial information:</p>
+<p><img src="/writeups/OrangeCTF-2023/Files/Untitled%204.png" alt="Untitled"></p>
+<p>Indeed, the solution was as simple as inspecting the file properties.</p>
+<p>Upon typing the word in the terminal we get this message:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ callmeplease
+Dring... Dring... Sorry but i<span style="color:#4070a0">&#39;m not a phone server.
+</span><span style="color:#4070a0">So you need to send a Discord Message to someone you can trust. Go on it, and find he.
+</span><span style="color:#4070a0">Do not give your name or any sensitive informations.
+</span><span style="color:#4070a0">Just say, &#39;</span>I know who you are!<span style="">&#39;</span>
+
+If OK, the contact must respond with a secret.
+If no response on the next 24h, or any other reason, please send a Discord message again
+
+Then <span style="color:#007020">type</span> this word as a secret command.
+</code></pre></div><p>As written we have to send a message to one of the organizers of the ctf.</p>
+<p>After a few minutes i got the password :</p>
+<p><img src="/writeups/OrangeCTF-2023/Files/Untitled%205.png" alt="Untitled"></p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ microsoc
+Do you think joining the UNIT41 team is that easy?
+I don<span style="color:#4070a0">&#39;t think so... It&#39;</span>s going to take a little more effort!
+
+Someone give me an encrypted string, many of Microsoc expert now what to <span style="color:#007020;font-weight:bold">do</span>.
+
+The person who sent me this is called Joan Daemen. He was very close to the U.S. government in 2000.
+He just passed me a piece of paper with the word <span style="color:#4070a0">&#39;microsoc&#39;</span> attached twice. Maybe a hint?
+
+F8dmeMlB+TyOSKZvcl1sVV8ZikqGUZZqSDxwH/80qKI<span style="color:#666">=</span>
+</code></pre></div><p>Upon encountering the encrypted string and consulting the <strong><code>dcode</code></strong> cipher identifier</p>
+<p><img src="/writeups/OrangeCTF-2023/Files/Untitled%206.png" alt="Untitled"></p>
+<p>It suggested a possible base64 encoding. However, decoding it yielded a seemingly random set of characters.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">�ÇfxÉAù&lt;�H¦or]lU_��J�Q�jH&lt;p�ÿ4¨¢
+</code></pre></div><p>Taking a closer look at the challenge text and considering the person who shared the encrypted string, Joan Daemen, a notable cryptographer known for co-designing the Rijndael cipher (selected as AES), provided an important clue (Thanks Wikipedia). Joan Daemen handed over a piece of paper with the word &lsquo;microsoc&rsquo; repeated twice, hinting towards the encryption key.</p>
+<p>Realizing this, we used &lsquo;microsocmicrosoc&rsquo; as the potential key to unlock the encrypted string, and as expected, it led to a new URL.</p>
+<p><img src="/writeups/OrangeCTF-2023/Files/Untitled%207.png" alt="Untitled"></p>
+<p><img src="/writeups/OrangeCTF-2023/Files/Untitled%208.png" alt="Untitled"></p>
+<p>Following the link, we encountered another interface, prompting us to examine the source code for potential clues. Hidden within the source code was an error message, subtly camouflaged to blend with the background color.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">ERROR 1 : An error occured somewhere.
+&lt;<span style="color:#062873;font-weight:bold">br</span> /&gt;&lt;<span style="color:#062873;font-weight:bold">br</span> /&gt;
+&lt;<span style="color:#062873;font-weight:bold">body</span> <span style="color:#4070a0">style</span><span style="color:#666">=</span><span style="color:#4070a0">&#39;background-color:black;&#39;</span>&gt;
+    &lt;<span style="color:#062873;font-weight:bold">div</span> <span style="color:#4070a0">style</span><span style="color:#666">=</span><span style="color:#4070a0">&#39;text-align:center; color:cornsilk; width:300px; margin:auto;&#39;</span>&gt;
+        Connect to the administration :&lt;<span style="color:#062873;font-weight:bold">br</span> /&gt;&lt;<span style="color:#062873;font-weight:bold">br</span> /&gt;
+        &lt;<span style="color:#062873;font-weight:bold">form</span> <span style="color:#4070a0">action</span><span style="color:#666">=</span><span style="color:#4070a0">&#34;&#34;</span> <span style="color:#4070a0">method</span><span style="color:#666">=</span><span style="color:#4070a0">&#34;POST&#34;</span>&gt;
+        &lt;<span style="color:#062873;font-weight:bold">table</span> <span style="color:#4070a0">style</span><span style="color:#666">=</span><span style="color:#4070a0">&#39;color:cornsilk;&#39;</span>&gt;
+            &lt;<span style="color:#062873;font-weight:bold">tr</span>&gt;
+                &lt;<span style="color:#062873;font-weight:bold">td</span> <span style="color:#4070a0">width</span><span style="color:#666">=</span><span style="color:#4070a0">&#39;150px&#39;</span>&gt;Login : &lt;/<span style="color:#062873;font-weight:bold">td</span>&gt;&lt;<span style="color:#062873;font-weight:bold">td</span>&gt;&lt;<span style="color:#062873;font-weight:bold">input</span> <span style="color:#4070a0">type</span><span style="color:#666">=</span><span style="color:#4070a0">&#39;text&#39;</span> <span style="color:#4070a0">name</span><span style="color:#666">=</span><span style="color:#4070a0">&#39;user&#39;</span> /&gt;&lt;<span style="color:#062873;font-weight:bold">br</span> /&gt;&lt;/<span style="color:#062873;font-weight:bold">td</span>&gt;
+            &lt;/<span style="color:#062873;font-weight:bold">tr</span>&gt;
+            &lt;<span style="color:#062873;font-weight:bold">tr</span>&gt;
+                &lt;<span style="color:#062873;font-weight:bold">td</span>&gt;Pass : &lt;/<span style="color:#062873;font-weight:bold">td</span>&gt;&lt;<span style="color:#062873;font-weight:bold">td</span>&gt;&lt;<span style="color:#062873;font-weight:bold">input</span> <span style="color:#4070a0">type</span><span style="color:#666">=</span><span style="color:#4070a0">&#39;password&#39;</span> <span style="color:#4070a0">name</span><span style="color:#666">=</span><span style="color:#4070a0">&#39;pass&#39;</span> /&gt;&lt;<span style="color:#062873;font-weight:bold">br</span> /&gt;&lt;/<span style="color:#062873;font-weight:bold">td</span>&gt;
+            &lt;/<span style="color:#062873;font-weight:bold">tr</span>&gt;
+            &lt;<span style="color:#062873;font-weight:bold">tr</span>&gt;
+                &lt;<span style="color:#062873;font-weight:bold">td</span>&gt;&lt;/<span style="color:#062873;font-weight:bold">td</span>&gt;&lt;<span style="color:#062873;font-weight:bold">td</span>&gt;&lt;<span style="color:#062873;font-weight:bold">br</span> /&gt;&lt;<span style="color:#062873;font-weight:bold">br</span> /&gt;&lt;<span style="color:#062873;font-weight:bold">input</span> <span style="color:#4070a0">type</span><span style="color:#666">=</span><span style="color:#4070a0">&#39;submit&#39;</span> <span style="color:#4070a0">value</span><span style="color:#666">=</span><span style="color:#4070a0">&#39;Connect&#39;</span> /&gt;&lt;<span style="color:#062873;font-weight:bold">br</span> /&gt;&lt;/<span style="color:#062873;font-weight:bold">td</span>&gt;
+            &lt;/<span style="color:#062873;font-weight:bold">tr</span>&gt;
+            &lt;<span style="color:#062873;font-weight:bold">tr</span>&gt;
+                &lt;<span style="color:#062873;font-weight:bold">td</span>&gt;&lt;/<span style="color:#062873;font-weight:bold">td</span>&gt;&lt;<span style="color:#062873;font-weight:bold">td</span>&gt;&lt;<span style="color:#062873;font-weight:bold">br</span> /&gt;&lt;<span style="color:#062873;font-weight:bold">br</span> /&gt;&lt;<span style="color:#062873;font-weight:bold">span</span> <span style="color:#4070a0">style</span><span style="color:#666">=</span><span style="color:#4070a0">&#34;color:red&#34;</span>&gt;Unable to connect&lt;/<span style="color:#062873;font-weight:bold">span</span>&gt;&lt;/<span style="color:#062873;font-weight:bold">td</span>&gt;
+            &lt;/<span style="color:#062873;font-weight:bold">tr</span>&gt;
+        &lt;/<span style="color:#062873;font-weight:bold">table</span>&gt;
+        &lt;/<span style="color:#062873;font-weight:bold">form</span>&gt;
+    &lt;/<span style="color:#062873;font-weight:bold">div</span>&gt;
+&lt;/<span style="color:#062873;font-weight:bold">body</span>&gt;
+</code></pre></div><p><img src="/writeups/OrangeCTF-2023/Files/Untitled%209.png" alt="Untitled"></p>
+<p>This concealed error message provided us with a username and password, but the password seems to be hashed.</p>
+<p><img src="/writeups/OrangeCTF-2023/Files/Untitled%2010.png" alt="Untitled"></p>
+<p>Thanks  to <a href="https://crackstation.net/">CrackStation</a> we get the password → <strong><code>cyberdefense</code></strong></p>
+<p>So using the credentials we can move on</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">BINGO ! !
+You can now validate this part with the common command on your terminal :
+part name : part33
+password : PleaseHelpMe
+</code></pre></div><p>Flag : <strong><code>validate part33 PleaseHelpMe</code></strong></p>
+
+    </div>
+  </div>
+  </div>
+</section>
+
+
+
+    </div>
+<footer class="footer">
+  <div class="uk-container">
+
+    <div class="uk-grid-small uk-child-width-1-4@m uk-text-center uk-flex-center uk-margin-medium-bottom" uk-grid>
+      <div class="uk-margin-small-bottom">
+        <h5 class="uk-margin-small-bottom">Email</h5>
+        <a href="mailto:hugo@hugosibony.com">hugo@hugosibony.com</a>
+
+      </div>
+      <div>
+        <h5 class="uk-margin-small-bottom">Address</h5>
+          <div uk-lightbox>
+            <a href="" data-caption="Paris, France"
+               data-type="iframe">Paris, France</a>
+          </div>
+      </div>
+    </div>
+
+
+    <div class="footer-copyright uk-text-center" style="padding-bottom: 1rem">
+      <img loading="lazy" src="https://mirrors.creativecommons.org/presskit/icons/cc.svg" style="height: 1.2em;
+  width: 1.2em;" alt="Creative Commons">
+      <img loading="lazy" src="https://mirrors.creativecommons.org/presskit/icons/by.svg" style="height: 1.2em;
+  width: 1.2em;" alt="CC-BY">
+      2023
+      Hugo Sibony
+    </div>
+  </div>
+</footer>
+
+
+<!-- JS Plugins -->
+
+<script src="https://cdn.jsdelivr.net/npm/uikit@3.2.6/dist/js/uikit.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/uikit@3.2.6/dist/js/uikit-icons.min.js"></script>
+
+</body>
+</html>
