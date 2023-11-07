@@ -2,7 +2,7 @@
 categories = ["linux","prog","projects"]
 coders = ["kazetachinuu"]
 date = 2023-05-26T00:00:00Z
-description = "A simple alias manager for linux shells written in Rust"
+description = "A simple alias manager for linux shells written in C"
 github = ["https://github.com/kazetachinuu/alias_manager"]
 image = "/project/Bash.png"
 title = "Alias Manager"
