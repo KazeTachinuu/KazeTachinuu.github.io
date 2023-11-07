@@ -8,14 +8,18 @@ image = "/project/Bash.png"
 title = "Alias Manager"
 type = "post"
 [[tech]]
-logo = "/Home/Rust.png"
-name = "Rust"
-url = "https://www.rust-lang.org/"
+logo = "/Home/C_Logo.png"
+name = "C"
+url = "https://en.wikipedia.org/wiki/C_(programming_language)"
+[[tech]]
+logo = "/project/Bash.png"
+name = "Shell"
+url = "https://en.wikipedia.org/wiki/Bash_(Unix_shell)"
 +++
 <div style="max-width: 900px; margin: 0 auto;">
-Alias Manager is a simple alias manager for Linux shells written in Rust. It provides an easy way to manage aliases, which can be useful for users who frequently change operating systems or need to manage multiple aliases.
 
-I wanted to learn Rust thus I created this project.
+Alias Manager is a simple alias manager for Linux shells written in C. It provides an easy way to manage aliases, which can be useful for users who frequently change operating systems or need to manage multiple aliases.
+
 
 ## Features
 
@@ -50,7 +54,7 @@ Alias Manager provides several subcommands for managing aliases. Here's a summar
 
 
 ```sh
-aliasmanager [SUBCOMMAND] [OPTIONS] [ARGS]
+aliasmanager [SUBCOMMAND] [ARGS]
 ```
 
 
@@ -60,7 +64,7 @@ aliasmanager [SUBCOMMAND] [OPTIONS] [ARGS]
 
 
 ```sh
-aliasmanager add -n <ALIAS_NAME> -c <COMMAND>
+aliasmanager add <ALIAS_NAME> <COMMAND>
 ```
 
 
@@ -74,17 +78,17 @@ aliasmanager ls
 - `rm`: Remove an alias by name.
 
 ```sh
-aliasmanager rm -n <ALIAS_NAME>
+aliasmanager rm  <ALIAS_NAME> [-f|--force]
 ```
 ### Example
 
 ```sh
-aliasmanager add -n am -c aliasmanager
+aliasmanager add  am  aliasmanager
+aliasmanager add bonjour "echo 'Hello World!'"
 ```
 ### Options:
 
-- `-n, --name <ALIAS_NAME>`: Specifies the name of the alias.
-- `-c, --command <COMMAND>`: Specifies the command associated with the alias.
+- `-V, --version`: Prints version information
 - `-h, --help`: Prints help information for the subcommand.
 
 
@@ -92,7 +96,3 @@ aliasmanager add -n am -c aliasmanager
 Note: The alias names are case-sensitive, so make sure to provide the correct case when using alias names.
 
 </div>
-
-
-
-
