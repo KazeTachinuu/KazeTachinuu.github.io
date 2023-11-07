@@ -1,6 +1,6 @@
 +++
 categories = ["linux","prog","projects"]
-coders = ["kazetachinuu"]
+coders = ["kazetachinuu","dooobii"]
 date = 2023-05-26T00:00:00Z
 description = "A simple alias manager for linux shells written in C"
 github = ["https://github.com/kazetachinuu/alias_manager"]
