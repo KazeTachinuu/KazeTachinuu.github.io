@@ -1,0 +1,55 @@
+{{ define "main" }}
+{{ partial "page-title.html" . }}
+
+<section>
+	<div class="uk-container uk-margin-xlarge-bottom">
+		<div uk-filter="target: .js-filter">
+			{{ $currentDir := .File.Dir }}
+			{{ $filterOptions := slice }}
+
+			{{ if strings.Contains $currentDir "ctf404_2023" }}
+				{{ $filterOptions = .Site.Data.ctf.ctf404_2023.filter }}
+			{{ else if strings.Contains $currentDir "hsctf_2023" }}
+				{{ $filterOptions = .Site.Data.ctf.hsctf_2023.filter }}
+			{{ else if strings.Contains $currentDir "yet_another_subdirectory" }}
+				{{ $filterOptions = .Site.Data.yet_another_subdirectory.filter }}
+			{{ end }}
+
+			{{ if gt (len $filterOptions) 0 }}
+				<ul class="uk-subnav uk-subnav-pill uk-subnav-divider">
+					<li uk-filter-control><a href="#">All</a></li>
+					{{ range $filterOptions }}
+						<li uk-filter-control="[data-tags*='{{.value}}']">
+							<a href="#">{{.label}}</a>
+						</li>
+					{{ end }}
+				</ul>
+			{{ end }}
+
+			<ul class="js-filter uk-child-width-1-1 uk-child-width-1-4@m uk-text-center" uk-grid uk-height-match="target: > li > div > .fixy">
+				{{ range .Data.Pages }}
+					<li data-tags="{{ delimit (union .Params.categories (slice .File.Dir)) ' ' }}">
+						<div class="uk-card uk-card-default" style="position: relative">
+							<div class="fixy">
+								{{ with .Params.Image }}
+									<div class="uk-card-media-top">
+										<img class="contain experience" src="{{ . | absURL }}" alt="" />
+									</div>
+								{{ end }}
+								<div class="uk-card-body">
+									<h3 class="uk-card-title">{{ .Title }}</h3>
+									<p>{{ .Params.Description }}</p>
+								</div>
+							</div>
+							<div class="uk-card-footer">
+								<a href="{{ .Permalink | relURL }}" class="uk-button uk-button-text">Read more</a>
+							</div>
+						</div>
+					</li>
+				{{ end }}
+			</ul>
+		</div>
+	</div>
+</section>
+
+{{ end }}
