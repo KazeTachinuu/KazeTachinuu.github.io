@@ -2,6 +2,7 @@
     <nav class="uk-navbar-container uk-margin" uk-navbar="mode: click;" style="padding-right: 3rem">
         <div class="uk-navbar-right">
             <ul class="uk-navbar-nav uk-visible@s">
+                <!-- <li><a style="font-size: 18px; text-transform: none" href="javascript:history.back()">Back</a></li> -->
                 {{if .IsHome}}
                 <li class="uk-active "><a style="font-size: 18px; text-transform: none"
                         href="{{.Site.BaseURL}}">{{ with .Site.Params.Home }} {{ . }} {{ end }}</a></li>
