@@ -1,0 +1,4 @@
+{{ $url := .Get "url" }}
+{{ $fileContent := getJSON $url }}
+{{ $decodedContent := base64Decode $fileContent.content }}
+{{ $decodedContent | markdownify }}
