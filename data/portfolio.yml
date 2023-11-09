@@ -3,6 +3,8 @@ filter:
     value: linux
   - label: Programming
     value: prog
+  - label: Cybersecurity
+    value: cybersecurity
   - label: Coursework
     value: coursework
   - label: TrueFalse
