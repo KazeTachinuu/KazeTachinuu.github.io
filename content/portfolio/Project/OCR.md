@@ -13,9 +13,7 @@ name = "C"
 url = "https://en.wikipedia.org/wiki/C_(programming_language)"
 +++
 
-<div style="max-width: 900px; margin: 0 auto;">
-
-# TODO
+{{< github_readme url="https://api.github.com/repos/KazeTachinuu/OCR_EPITA/readme" >}}
 
 
 
