@@ -15,6 +15,8 @@ logo = "/project/AD/Powershell.png"
 name = "PowerShell"
 +++
 
+<div style="max-width: 900px; margin: 0 auto;">
+
 {{< github_readme url="https://api.github.com/repos/KazeTachinuu/ActiveDirectory/readme" >}}
 
 

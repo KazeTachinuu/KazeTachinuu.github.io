@@ -17,6 +17,8 @@ name = "Shell"
 url = "https://en.wikipedia.org/wiki/Bash_(Unix_shell)"
 +++
 
+<div style="max-width: 900px; margin: 0 auto;">
+
 {{< github_readme url="https://api.github.com/repos/KazeTachinuu/alias_manager/readme" >}}
 
 

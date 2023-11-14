@@ -12,6 +12,8 @@ logo = "/project/C.svg"
 name = "C"
 +++
 
+<div style="max-width: 900px; margin: 0 auto;">
+
 {{< github_readme url="https://api.github.com/repos/KazeTachinuu/brainfuck-interpreter/readme" >}}
 
 
