@@ -6,7 +6,17 @@
     <description>Recent content in prog on Hugo Sibony</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 01 Oct 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://www.hugosibony.com/categories/prog/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 07 Nov 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://www.hugosibony.com/categories/prog/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Alias Manager</title>
+      <link>https://www.hugosibony.com/portfolio/project/alias_manager/</link>
+      <pubDate>Tue, 07 Nov 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.hugosibony.com/portfolio/project/alias_manager/</guid>
+      <description>Alias Manager Alias Manager is a simple command-line tool written in C for managing aliases in your shell. It supports adding, listing and removing aliases in your shell
+Features  Add new aliases with custom commands List existing aliases Remove aliases by name  Installation  Clone this repository to your local machine:  git clone https://github.com/kazetachinuu/alias_manager.git cd alias_manager Install the Alias Manager binary by running the install script:  .</description>
+    </item>
+    
     <item>
       <title>BrainFuck Interpreter</title>
       <link>https://www.hugosibony.com/portfolio/project/brainfuck-interpreter/</link>
@@ -14,7 +24,8 @@
       
       <guid>https://www.hugosibony.com/portfolio/project/brainfuck-interpreter/</guid>
       <description>Brainfuck Interpreter This is a simple Brainfuck interpreter written in C.
-Table of Contents  Brainfuck Interpreter  Table of Contents Introduction Usage Building Adding the Executable to PATH    Introduction Brainfuck is an esoteric programming language created in 1993 by Urban Müller. It is known for its extreme minimalism, with the language using only eight simple commands, an instruction pointer, and an array of memory cells, each initialized to zero.</description>
+Table of Contents  Introduction Usage Building  Introduction Brainfuck is an esoteric programming language created in 1993 by Urban Müller. It is known for its extreme minimalism, with the language using only eight simple commands, an instruction pointer, and an array of memory cells, each initialized to zero.
+This project provides a basic Brainfuck interpreter that can execute Brainfuck programs.</description>
     </item>
     
     <item>
@@ -31,22 +42,15 @@ Features  Read data from a csv file Visualize the rainfall data in a bar chart  
     </item>
     
     <item>
-      <title>Alias Manager</title>
-      <link>https://www.hugosibony.com/portfolio/project/alias_manager/</link>
-      <pubDate>Fri, 26 May 2023 00:00:00 +0000</pubDate>
-      
-      <guid>https://www.hugosibony.com/portfolio/project/alias_manager/</guid>
-      <description>Alias Manager is a simple alias manager for Linux shells written in Rust. It provides an easy way to manage aliases, which can be useful for users who frequently change operating systems or need to manage multiple aliases. I wanted to learn Rust thus I created this project.
-Features  Add new aliases with custom commands List existing aliases Remove aliases by name  Installation  Clone this repository to your local machine:  git clone https://github.</description>
-    </item>
-    
-    <item>
       <title>OCR Sudoku Solver</title>
       <link>https://www.hugosibony.com/portfolio/project/ocr/</link>
       <pubDate>Thu, 08 Dec 2022 00:00:00 +0000</pubDate>
       
       <guid>https://www.hugosibony.com/portfolio/project/ocr/</guid>
-      <description>TODO </description>
+      <description>OneToNine First defence for OCR Project at EPITA by four A2 students.
+How to use Solve a Sudoku Board cd Solver/ make ./solver &amp;lt;boardFilename&amp;gt; It will write the solution in the file &amp;lt;boardFilename&amp;gt;.result.
+The XOR Perceptron cd Neural_Network/ make ./perceptron &amp;lt;nbEpochs&amp;gt; (or by default 10_000) It will train the XOR perceptron and display the result of the training each 100 epochs and save the result in xor.nn.
+Image Processing cd IMGProcess/ make .</description>
     </item>
     
   </channel>

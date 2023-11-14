@@ -6,15 +6,15 @@
     <description>Recent content in linux on Hugo Sibony</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 26 May 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://www.hugosibony.com/categories/linux/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 07 Nov 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://www.hugosibony.com/categories/linux/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Alias Manager</title>
       <link>https://www.hugosibony.com/portfolio/project/alias_manager/</link>
-      <pubDate>Fri, 26 May 2023 00:00:00 +0000</pubDate>
+      <pubDate>Tue, 07 Nov 2023 00:00:00 +0000</pubDate>
       
       <guid>https://www.hugosibony.com/portfolio/project/alias_manager/</guid>
-      <description>Alias Manager is a simple alias manager for Linux shells written in Rust. It provides an easy way to manage aliases, which can be useful for users who frequently change operating systems or need to manage multiple aliases. I wanted to learn Rust thus I created this project.
-Features  Add new aliases with custom commands List existing aliases Remove aliases by name  Installation  Clone this repository to your local machine:  git clone https://github.</description>
+      <description>Alias Manager Alias Manager is a simple command-line tool written in C for managing aliases in your shell. It supports adding, listing and removing aliases in your shell
+Features  Add new aliases with custom commands List existing aliases Remove aliases by name  Installation  Clone this repository to your local machine:  git clone https://github.com/kazetachinuu/alias_manager.git cd alias_manager Install the Alias Manager binary by running the install script:  .</description>
     </item>
     
   </channel>

@@ -26,7 +26,10 @@ Features  Read data from a csv file Visualize the rainfall data in a bar chart  
       <pubDate>Thu, 08 Dec 2022 00:00:00 +0000</pubDate>
       
       <guid>https://www.hugosibony.com/portfolio/project/ocr/</guid>
-      <description>TODO </description>
+      <description>OneToNine First defence for OCR Project at EPITA by four A2 students.
+How to use Solve a Sudoku Board cd Solver/ make ./solver &amp;lt;boardFilename&amp;gt; It will write the solution in the file &amp;lt;boardFilename&amp;gt;.result.
+The XOR Perceptron cd Neural_Network/ make ./perceptron &amp;lt;nbEpochs&amp;gt; (or by default 10_000) It will train the XOR perceptron and display the result of the training each 100 epochs and save the result in xor.nn.
+Image Processing cd IMGProcess/ make .</description>
     </item>
     
   </channel>

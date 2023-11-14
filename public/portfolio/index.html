@@ -52,6 +52,7 @@
         <div class="uk-navbar-right">
             <ul class="uk-navbar-nav uk-visible@s">
                 
+                
                 <li><a style="font-size: 18px; text-transform: none" href="/"> Home
                         </a></li>
 
@@ -167,6 +168,12 @@
 
         
 
+        <li uk-filter-control="[data-tags*='cybersecurity']">
+          <a href="#">Cybersecurity</a>
+        </li>
+
+        
+
         <li uk-filter-control="[data-tags*='coursework']">
           <a href="#">Coursework</a>
         </li>
@@ -191,6 +198,54 @@
         uk-grid
         uk-height-match="target: > li > div > .fixy"
       >
+        
+        <li data-tags="projects32cybersecurity">
+          <div class="uk-card uk-card-default" style="position: relative;">
+            <div class="fixy">
+              <div class="uk-card-media-top">
+                <img
+                  class="contain experience"
+                  src="https://www.hugosibony.com/project/AD/AD.svg"
+                  alt=""
+                />
+              </div>
+              <div class="uk-card-body">
+                <h3 class="uk-card-title">Active Directory Home Lab</h3>
+                <p></p>
+              </div>
+            </div>
+
+            <div class="uk-card-footer">
+              <a href="/portfolio/project/active_directory/" class="uk-button uk-button-text"
+                >Read more</a
+              >
+            </div>
+          </div>
+        </li>
+        
+        <li data-tags="linux32prog32projects">
+          <div class="uk-card uk-card-default" style="position: relative;">
+            <div class="fixy">
+              <div class="uk-card-media-top">
+                <img
+                  class="contain experience"
+                  src="https://www.hugosibony.com/project/Bash.png"
+                  alt=""
+                />
+              </div>
+              <div class="uk-card-body">
+                <h3 class="uk-card-title">Alias Manager</h3>
+                <p>A simple alias manager for linux shells written in C</p>
+              </div>
+            </div>
+
+            <div class="uk-card-footer">
+              <a href="/portfolio/project/alias_manager/" class="uk-button uk-button-text"
+                >Read more</a
+              >
+            </div>
+          </div>
+        </li>
         
         <li data-tags="prog32projects">
           <div class="uk-card uk-card-default" style="position: relative;">
@@ -258,30 +313,6 @@
 
             <div class="uk-card-footer">
               <a href="/portfolio/project/rainfallanalyser/" class="uk-button uk-button-text"
-                >Read more</a
-              >
-            </div>
-          </div>
-        </li>
-        
-        <li data-tags="linux32prog32projects">
-          <div class="uk-card uk-card-default" style="position: relative;">
-            <div class="fixy">
-              <div class="uk-card-media-top">
-                <img
-                  class="contain experience"
-                  src="https://www.hugosibony.com/project/Bash.png"
-                  alt=""
-                />
-              </div>
-              <div class="uk-card-body">
-                <h3 class="uk-card-title">Alias Manager</h3>
-                <p>A simple alias manager for linux shells written in Rust</p>
-              </div>
-            </div>
-
-            <div class="uk-card-footer">
-              <a href="/portfolio/project/alias_manager/" class="uk-button uk-button-text"
                 >Read more</a
               >
             </div>

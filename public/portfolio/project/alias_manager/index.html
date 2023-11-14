@@ -20,7 +20,7 @@
   <!-- mobile responsive meta -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <meta name="description" property="og:description" content="A simple alias manager for linux shells written in Rust">
+  <meta name="description" property="og:description" content="A simple alias manager for linux shells written in C">
   <meta name="image" property="og:image" content="/">
   <meta name="author" content="Hugo Sibony">
   <meta name="generator" content="Hugo 0.92.2" />
@@ -50,6 +50,7 @@
     <nav class="uk-navbar-container uk-margin" uk-navbar="mode: click;" style="padding-right: 3rem">
         <div class="uk-navbar-right">
             <ul class="uk-navbar-nav uk-visible@s">
+                
                 
                 <li><a style="font-size: 18px; text-transform: none" href="/"> Home
                         </a></li>
@@ -226,8 +227,8 @@
 <section>
   <div class="uk-container uk-margin-large-bottom uk-margin-medium-top">
     <h1 class="uk-text-center uk-heading-medium">Alias Manager</h1>
-    <p class="uk-text-center uk-text-lead">A simple alias manager for linux shells written in Rust</p>
-    <p class="uk-text-center">Published on May 26, 2023</p>
+    <p class="uk-text-center uk-text-lead">A simple alias manager for linux shells written in C</p>
+    <p class="uk-text-center">Published on Nov 07, 2023</p>
     <p class="uk-text-center">Reading time: 1 minutes.</p>
     
 
@@ -243,6 +244,9 @@
                 
                 <li><a href="https://github.com/kazetachinuu"> <img src="https://github.com/kazetachinuu.png" alt="Smiley face"
                       width="42" height="42" style="border-radius: 50%"> kazetachinuu</a></li>
+                
+                <li><a href="https://github.com/dooobii"> <img src="https://github.com/dooobii.png" alt="Smiley face"
+                      width="42" height="42" style="border-radius: 50%"> dooobii</a></li>
                 
               </ul>
             </div>
@@ -279,8 +283,14 @@
              uk-grid>
           
           <div class="imagemargin">
-            <a href="https://www.rust-lang.org/">
-            <img class="contain skills" src="/Home/Rust.png" alt="Rust" loading="lazy" style="cursor: pointer">
+            <a href="https://en.wikipedia.org/wiki/C_%28programming_language%29">
+            <img class="contain skills" src="/Home/C_Logo.png" alt="C" loading="lazy" style="cursor: pointer">
+            </a>
+          </div>
+          
+          <div class="imagemargin">
+            <a href="https://en.wikipedia.org/wiki/Bash_%28Unix_shell%29">
+            <img class="contain skills" src="/project/Bash.png" alt="Shell" loading="lazy" style="cursor: pointer">
             </a>
           </div>
           
@@ -295,9 +305,11 @@
     
 
     <div class="content">
-      <div style="max-width: 900px; margin: 0 auto;">
-Alias Manager is a simple alias manager for Linux shells written in Rust. It provides an easy way to manage aliases, which can be useful for users who frequently change operating systems or need to manage multiple aliases.
-<p>I wanted to learn Rust thus I created this project.</p>
+      
+
+
+<h1 id="alias-manager">Alias Manager</h1>
+<p>Alias Manager is a simple command-line tool written in C for managing aliases in your shell. It supports adding, listing and removing aliases in your shell</p>
 <h2 id="features">Features</h2>
 <ul>
 <li>Add new aliases with custom commands</li>
@@ -313,33 +325,44 @@ Alias Manager is a simple alias manager for Linux shells written in Rust. It pro
 </code></pre></div><ol start="2">
 <li>Install the Alias Manager binary by running the install script:</li>
 </ol>
-<div class="highlight"><pre tabindex="0" style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">sudo ./install.sh
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">./install.sh
 </code></pre></div><h2 id="usage">Usage</h2>
 <p>Alias Manager provides several subcommands for managing aliases. Here&rsquo;s a summary of the available subcommands:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">aliasmanager <span style="color:#666">[</span>SUBCOMMAND<span style="color:#666">]</span> <span style="color:#666">[</span>OPTIONS<span style="color:#666">]</span> <span style="color:#666">[</span>ARGS<span style="color:#666">]</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">am <span style="color:#666">[</span>SUBCOMMAND<span style="color:#666">]</span> <span style="color:#666">[</span>ARGS<span style="color:#666">]</span>
 </code></pre></div><h3 id="subcommands">Subcommands:</h3>
 <ul>
 <li><code>add</code>: Add a new alias with a custom command.</li>
 </ul>
-<div class="highlight"><pre tabindex="0" style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">aliasmanager add -n &lt;ALIAS_NAME&gt; -c &lt;COMMAND&gt;
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">am add &lt;ALIAS_NAME&gt; &lt;COMMAND&gt;
 </code></pre></div><ul>
-<li><code>ls</code>: List all existing aliases.</li>
+<li><code>ls</code>: List all existing aliases with optionnal matching string.</li>
 </ul>
-<div class="highlight"><pre tabindex="0" style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">aliasmanager ls
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">am ls <span style="color:#666">[</span>STRING<span style="color:#666">]</span>
 </code></pre></div><ul>
 <li><code>rm</code>: Remove an alias by name.</li>
 </ul>
-<div class="highlight"><pre tabindex="0" style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">aliasmanager rm -n &lt;ALIAS_NAME&gt;
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">am rm  &lt;ALIAS_NAME&gt; <span style="color:#666">[</span>-f|--force<span style="color:#666">]</span>
 </code></pre></div><h3 id="example">Example</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">aliasmanager add -n am -c aliasmanager
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ am add gp <span style="color:#4070a0">&#34;git push&#34;</span>
+$ am ls git
+
+Aliases matching <span style="color:#4070a0">&#34;git&#34;</span>:
+<span style="color:#bb60d5">gca</span><span style="color:#666">=</span><span style="color:#4070a0">&#39;git commit -a -m&#39;</span>
+<span style="color:#bb60d5">gs</span><span style="color:#666">=</span><span style="color:#4070a0">&#39;git status&#39;</span>
+<span style="color:#bb60d5">gp</span><span style="color:#666">=</span><span style="color:#4070a0">&#39;git push&#39;</span>
+<span style="color:#bb60d5">gpl</span><span style="color:#666">=</span><span style="color:#4070a0">&#39;git pull&#39;</span>
+<span style="color:#bb60d5">gpt</span><span style="color:#666">=</span><span style="color:#4070a0">&#39;git push --follow-tags&#39;</span>
 </code></pre></div><h3 id="options">Options:</h3>
 <ul>
-<li><code>-n, --name &lt;ALIAS_NAME&gt;</code>: Specifies the name of the alias.</li>
-<li><code>-c, --command &lt;COMMAND&gt;</code>: Specifies the command associated with the alias.</li>
+<li><code>-V, --version</code>: Prints version information</li>
 <li><code>-h, --help</code>: Prints help information for the subcommand.</li>
 </ul>
 <p>Note: The alias names are case-sensitive, so make sure to provide the correct case when using alias names.</p>
-</div>
+<h2 id="contributing">Contributing</h2>
+<p>Contributions are welcome! If you would like to contribute to the Alias Manager project, please open an issue or submit a pull request on GitHub.</p>
+<h2 id="license">License</h2>
+<p>This project is licensed under the <a href="LICENSE">MIT License</a>.</p>
+
 
     </div>
   </div>
