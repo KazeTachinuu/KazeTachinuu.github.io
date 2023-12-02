@@ -1,7 +1,7 @@
 +++
 categories = ["cybersecurity","prog","projects"]
 coders = ["kazetachinuu"]
-date = 2023-11-02T00:00:00Z
+date = 2023-12-02T00:00:00Z
 description = "A simple TCP Proxy Server"
 github = ["https://github.com/KazeTachinuu/Snowpack-proxy-test"]
 image = "/project/OCR/Logo.png"
