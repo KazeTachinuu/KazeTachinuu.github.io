@@ -53,5 +53,16 @@ The XOR Perceptron cd Neural_Network/ make ./perceptron &amp;lt;nbEpochs&amp;gt;
 Image Processing cd IMGProcess/ make .</description>
     </item>
     
+    <item>
+      <title>Snowpack Proxy Server</title>
+      <link>https://www.hugosibony.com/portfolio/project/snowpack-proxy/</link>
+      <pubDate>Thu, 08 Dec 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.hugosibony.com/portfolio/project/snowpack-proxy/</guid>
+      <description>Snowpack Proxy Server Snowpack Proxy Server is a simple proxy server implementation using Boost.Asio.
+Table of Contents  Introduction Features Getting Started Usage Commands  Introduction Snowpack Proxy Server is a lightweight proxy server built with Boost.Asio, designed to facilitate communication between multiple users. It allows users to connect and exchange messages through a central proxy, providing a basic foundation for distributed systems and communication testing.
+Features  Basic proxy server functionality Asynchronous communication using Boost.</description>
+    </item>
+    
   </channel>
 </rss>
