@@ -2,10 +2,10 @@
 categories = ["cybersecurity","prog","projects"]
 coders = ["kazetachinuu"]
 date = 2023-12-02T00:00:00Z
-description = "A simple TCP Proxy for messages"
-github = ["https://github.com/KazeTachinuu/Snowpack-proxy-test"]
+description = "A simple TCP Proxy for communication handling"
+github = ["https://github.com/KazeTachinuu/Proxy-Messages"]
 image = "/project/Snowpack/Logo.png"
-title = "Snowpack Proxy Server"
+title = "Messaging App Proxy Server"
 type = "post"
 [[tech]]
 logo = "/project/Snowpack/CPP_Logo.png"
