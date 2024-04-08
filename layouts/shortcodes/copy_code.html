@@ -1,0 +1,66 @@
+<div class="code-container">
+    <button class="copy-button" onclick="copyCode(this)">Copy Code</button>
+    <div class="notification" style="display: none;">Code copied to clipboard!</div>
+    {{ .Inner }}
+</div>
+
+<style>
+    .code-container {
+        position: relative;
+        margin-bottom: 20px; /* Removed margin-top */
+    }
+
+    .copy-button {
+        position: absolute;
+        top: 10px; /* Adjust top position as needed */
+        right: 10px; /* Adjust right position as needed */
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .copy-button:hover {
+        background-color: #0056b3;
+    }
+
+    .notification {
+        position: absolute;
+        top: 0;
+        right: 0;
+        padding: 10px 20px;
+        background-color: #28a745;
+        color: #fff;
+        border-radius: 5px;
+        display: none;
+        transition: opacity 0.5s;
+    }
+</style>
+
+<script>
+    // Function to copy code to clipboard
+    function copyCode(button) {
+        const codeBlock = button.parentElement.querySelector('.highlight');
+        const selection = window.getSelection();
+        const range = document.createRange();
+        range.selectNodeContents(codeBlock);
+        selection.removeAllRanges();
+        selection.addRange(range);
+        document.execCommand('copy');
+        selection.removeAllRanges();
+
+        // Show notification
+        const notification = button.parentElement.querySelector('.notification');
+        notification.style.display = 'block';
+        setTimeout(function () {
+            notification.style.opacity = '0';
+            setTimeout(function () {
+                notification.style.display = 'none';
+                notification.style.opacity = '1';
+            }, 1000);
+        }, 2000);
+    }
+</script>

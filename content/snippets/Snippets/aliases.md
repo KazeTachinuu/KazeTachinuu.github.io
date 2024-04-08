@@ -1,0 +1,28 @@
++++
+title = "Useful Aliases"
+language = "bash"
++++
+
+{{< copy_code >}}
+{{< highlight shell "linenos=inline" >}}
+# Sytem Shortcuts
+alias config='cd $HOME/.config/'
+alias zshalias='$EDITOR $HOME/.my_aliases.txt'
+alias vimrc='$EDITOR ~/.vimrc'
+alias zshrc='$EDITOR $HOME/.zshrc'
+
+# clang-format all files in subdirectories
+alias cfa='if clang-format-all .; then echo "All Files Formatted"; fi'
+
+# Check Current IP Address
+alias checkip='curl http://checkip.amazonaws.com/'
+
+# Git Aliases
+alias gca='git commit -a -m'
+alias gpl='git pull'
+alias gcl='git clean -f -d -x'
+alias gl='git log'
+alias gs='git status'
+alias gp='git push'
+{{< /highlight >}}
+{{< /copy_code >}}
