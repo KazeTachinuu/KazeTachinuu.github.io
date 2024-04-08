@@ -1,5 +1,6 @@
 +++
 title = "Useful Aliases"
+description = "A list of useful aliases I use everyday"
 language = "bash"
 +++
 

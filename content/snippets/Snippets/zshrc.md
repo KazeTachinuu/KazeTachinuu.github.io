@@ -1,5 +1,6 @@
 +++
 title = "ZshRC config file"
+description = ""
 language = "zshrc"
 +++
 
