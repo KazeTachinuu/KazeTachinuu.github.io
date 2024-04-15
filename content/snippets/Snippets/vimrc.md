@@ -1,5 +1,5 @@
 +++
-title = "VimRC config file"
+title = ".vimrc config file"
 description = ""
 language = "vimrc"
 +++

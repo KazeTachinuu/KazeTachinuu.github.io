@@ -1,5 +1,5 @@
 +++
-title = "ZshRC config file"
+title = ".zshrc config file"
 description = ""
 language = "zshrc"
 +++
