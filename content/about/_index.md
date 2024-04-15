@@ -29,4 +29,4 @@ I am interested in CyberSecurity, I'm currently learning about blue teaming, Net
 
 I also like to do some programming, I'm currently doing some open source projects, you can find them on my <a href="https://github.com/KazeTachinuu">Github</a> or on my <a href="/portfolio">Portfolio</a>.
 
-You can download <a href="/resume_eng.pdf">my resume</a>. You can also find my  <a href="/resume_fr.pdf">resume in French</a>.
+<!-- You can download <a href="/resume_eng.pdf">my resume</a>. You can also find my  <a href="/resume_fr.pdf">resume in French</a>. -->
