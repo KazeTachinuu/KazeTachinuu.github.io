@@ -1,0 +1,30 @@
+{
+  "CTF": "FCSC",
+  "year": 2024,
+  "data": [
+    {
+      "name": "Netcat",
+      "value": 1,
+      "solves": 500,
+      "solved_by_me": true,
+      "flag": "FCSC{NetCat}",
+      "category": "Misc"
+    },
+    {
+      "name": "test",
+      "value": 45,
+      "solves": 45,
+      "solved_by_me": true,
+      "flag": "qwe",
+      "category": "pwn"
+    },
+    {
+      "name": "last",
+      "value": 45,
+      "solves": 65,
+      "solved_by_me": false,
+      "flag": "",
+      "category": "OSINT"
+    }
+  ]
+}
