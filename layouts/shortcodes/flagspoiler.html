@@ -1,0 +1,56 @@
+<!-- flagspoiler.html -->
+{{ $flag := .Get "flag" }}
+<div class="flag-container">
+    <div class="flag-spoiler" onclick="revealFlag()">
+        <span class="spoiler-text">🚩 Spoiler</span>
+        <div id="flag-spoiler" class="spoiler-content">
+            <pre>{{ $flag }}</pre>
+        </div>
+    </div>
+</div>
+
+<style>
+    .flag-container {
+        position: relative;
+    }
+
+    .flag-spoiler {
+        cursor: pointer;
+        border-radius: 5px;
+        background-color: #f0f0f0; /* Light gray background */
+        padding: 10px;
+        transition: background-color 0.3s ease;
+    }
+
+    .flag-spoiler:hover {
+        background-color: #ddd; /* Darker gray background on hover */
+    }
+
+    .spoiler-text {
+        font-weight: bold;
+    }
+
+    .spoiler-content {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(255, 255, 255, 0.9); /* Translucent white overlay */
+        backdrop-filter: blur(5px); /* Apply a blur effect to the background */
+        display: none;
+        padding: 10px;
+        border-radius: 5px;
+    }
+
+    .flag-spoiler.active .spoiler-content {
+        display: block;
+    }
+</style>
+
+<script>
+    function revealFlag() {
+        var spoiler = document.querySelector('.flag-spoiler');
+        spoiler.classList.toggle('active');
+    }
+</script>

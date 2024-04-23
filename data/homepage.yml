@@ -30,7 +30,11 @@ skill:
     - title: Ethical Hacking
       logo: https://res.cloudinary.com/dd9rwcqim/image/upload/v1685017529/RedTeam_logo_k0e2ys.png
       description: Offensive Security, Penetration Testing, Red Teaming, Network Security. Preparing for CEH and CompTIA Security+.
-
+    - title: Network Security
+      logo: /project/Snowpack/CEA.png
+      description: |
+       I did an internship at CEA as a C++ network security developer, working on a new technology called VIPN (Virtual Invisible Private Network) and trying to break TLS 1.3.
+       I've helped to develop a secure, invisible connection protocol using our own TOR-like protocol called "Snowflakes".
 
 education:
   enable: true

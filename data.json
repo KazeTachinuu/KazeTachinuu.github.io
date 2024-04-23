@@ -1,30 +1,14 @@
 {
-  "CTF": "FCSC",
+  "CTF": "404CTF",
   "year": 2024,
   "data": [
     {
-      "name": "Netcat",
-      "value": 1,
-      "solves": 500,
+      "name": "B\u00e9b\u00e9 nageur",
+      "value": 100,
+      "solves": 592,
       "solved_by_me": true,
-      "flag": "FCSC{NetCat}",
-      "category": "Misc"
-    },
-    {
-      "name": "test",
-      "value": 45,
-      "solves": 45,
-      "solved_by_me": true,
-      "flag": "qwe",
-      "category": "pwn"
-    },
-    {
-      "name": "last",
-      "value": 45,
-      "solves": 65,
-      "solved_by_me": false,
-      "flag": "",
-      "category": "OSINT"
+      "flag": "404CTF{Th3_r3vEnGE_1S_c0minG_S0oN_4nD_w1Ll_b3_TErRiBl3_!}",
+      "category": "Crypto"
     }
   ]
 }

@@ -1,5 +1,0 @@
----
-title: FCSC
-type: ctf
----
-

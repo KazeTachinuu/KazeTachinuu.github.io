@@ -1,18 +1,22 @@
 ---
-title: "test"
+title: "Bébé nageur"
 type: "chal"
 solved: True
 description: "Brief description of the challenge."
-points: 45
-solves: 45
+points: 100
+solves: 592
 author: "Author name"
-date: 2024-04-19T00:00:00Z
+date: 2024-04-22T00:00:00Z
 draft: false
 ---
 
 ## Overview
 
-Brief overview of the challenge and its objective.
+Vous ressortez de votre premier cours de natation et quelqu'un vous a laissé un petit mot dans votre casier. Vous suspectez votre rival que vous venez juste de battre à plate couture lors d'une course effrénée dans le bassin des bébés nageurs.
+
+Déchiffrez ce message.
+
+Auteurs : @Little_endi4ane & @acmo0
 
 ## Solution Approach
 
@@ -28,7 +32,4 @@ Final thoughts or summary of the challenge and its solution.
 
 ## Flag
 
-```plaintext
-qwe
-```
-
+{{< flagspoiler flag="404CTF{Th3_r3vEnGE_1S_c0minG_S0oN_4nD_w1Ll_b3_TErRiBl3_!}" >}}

@@ -1,0 +1,72 @@
+{{ define "main" }}
+
+<div class="writeup">
+  <!-- Challenge Overview Card -->
+  <div class="challenge-card">
+    <h1>{{.Title}}</h1>
+    <p>{{.Params.description}}</p>
+    <p>Published on {{ .PublishDate.Format "Jan 02, 2006" }}</p>
+    <p>Reading time: {{ math.Round (div (countwords .Content) 220.0) }} minutes.</p>
+    <hr>
+  </div>
+
+  <!-- Solution Sections -->
+  <div class="solution">
+    <h2>Overview</h2>
+    <p>Brief overview of the challenge and its objective.</p>
+
+    <h2>Solution Approach</h2>
+    <p>Explanation of the approach taken to solve the challenge. Include any key insights or techniques used.</p>
+
+    <h2>Detailed Explanation</h2>
+    <p>Provide a step-by-step breakdown of the solution process. Include code snippets, diagrams, or any other relevant details.</p>
+
+    <h2>Conclusion</h2>
+    <p>Final thoughts or summary of the challenge and its solution.</p>
+
+    <!-- Flag Spoiler -->
+    <details>
+      <summary>Flag</summary>
+      <p>{{.Params.flag}}</p>
+    </details>
+  </div>
+</div>
+
+<style>
+  .writeup {
+    width: 90%;
+    margin: 0 auto;
+  }
+
+  .challenge-card {
+    background-color: #f0f0f0;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+  }
+
+  .challenge-card h1 {
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+
+  .solution {
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+
+  .solution h2 {
+    margin-top: 20px;
+  }
+
+  details {
+    margin-top: 10px;
+  }
+
+  summary {
+    cursor: pointer;
+  }
+</style>
+
+{{ end }}
