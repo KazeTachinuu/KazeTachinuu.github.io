@@ -104,7 +104,6 @@ form .button-area{
   margin-top: 25px;
   display: block;
   text-align: center;
-
 }
 .button-area button{
   color: #fff;
@@ -116,6 +115,7 @@ form .button-area{
   padding: 13px 25px;
   background: #3C5B6F;
   transition: background 0.3s ease;
+  margin-bottom: 20px; /* Added margin at the bottom */
 }
 .button-area button:hover{
   background: #025ce3;

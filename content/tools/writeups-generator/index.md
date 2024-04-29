@@ -4,7 +4,7 @@
   <link rel="stylesheet" href="styles.css">
   <script src="scripts.js"></script>
 </head>
-
+<div>
 <body>
   <div class="wrapper">
     <header>WriteUps Generator</header>
@@ -29,8 +29,6 @@
           <i class='bi bi-question-circle-fill'></i>
         </div>
       </div>
-      <!--bi bi-lightbulb-fill --- Hints--->
-
       <div class="buttons">
         <button type="button" id="boldBtn_desc" class="optionsBtn" title="Bold" onclick="boldInput_desc()"><i
             class="bi bi-type-bold"></i></button>
@@ -55,7 +53,6 @@
         <textarea placeholder="Description" id="description" name="description"></textarea>
         <i class='bi bi-text-indent-left'></i>
       </div>
-
       <div class="buttons">
         <button type="button" id="boldBtn_soluce" class="optionsBtn" title="Bold" onclick="boldInput_soluce()"><i
             class="bi bi-type-bold"></i></button>
@@ -76,12 +73,10 @@
         <button type="button" id="enterBtn_soluce" class="optionsBtn" title="Enter (new line)"
           onclick="enterInput_soluce()"><i class="bi bi-arrow-return-left"></i></button>
       </div>
-
       <div class="message">
         <textarea placeholder="Solution" id="solution" name="solution"></textarea>
         <i class='bi bi-body-text'></i>
       </div>
-
       <div class="dbl-field">
         <div class="field">
           <input type="text" id="txtFlag" name="txtFlag" placeholder="Flag">
@@ -89,8 +84,9 @@
         </div>
       </div>
       <div class="button-area">
-        <button type="button" id="bt" onclick="markdownBuild()">Generate Readme</button>
-        <span></span>
+        <button type="button" id="bt" onclick="markdownBuild()">Generate WriteUp</button>
+        <span>
+        </span>
       </div>
     </form>
   </div>
