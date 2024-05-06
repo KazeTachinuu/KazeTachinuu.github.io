@@ -8,7 +8,7 @@
     <div class="uk-grid uk-child-width-1-3@m uk-child-width-1-2@s uk-grid-match" uk-grid>
       {{ range .Data.Pages }}
       <div>
-        <a href="{{ .Permalink | relURL }}" class="uk-link-reset" target="_blank">
+        <a href="{{ .Permalink | relURL }}" class="uk-link-reset">
           <div class="uk-card uk-card-default uk-card-hover uk-border-rounded uk-box-shadow-small uk-inline uk-width-1-1 snippet-card" style="background-color: #333333;">
             <span class="uk-label uk-label-success uk-position-top-left" style="color: #000;">{{ .Params.Language }}</span>
             <div class="uk-card-body">

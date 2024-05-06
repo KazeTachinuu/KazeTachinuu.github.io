@@ -124,8 +124,5 @@ let markdownBuild = () => {
     newLink.click(); 
 }
 
-function returnToHome() {
-    // Adjust this URL to your home page URL
-    window.location.href = "/"; 
-  }
+
   

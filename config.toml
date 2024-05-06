@@ -3,6 +3,11 @@ languageCode = "en-us" # The language you want to display the site in
 title = "Hugo Sibony" # The title you want to appear in the address bar
 theme = "hugo-developer-portfolio" # The theme, don't change this
 
+[module]
+    [[module.mounts]]
+        source = "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
+        target = "assets/js/bootstrap.bundle.min.js"
+
 [params.plugins]
   # CSS Plugins
   [[params.plugins.css]]

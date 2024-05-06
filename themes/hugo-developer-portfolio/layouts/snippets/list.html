@@ -24,28 +24,35 @@
   document.addEventListener("DOMContentLoaded", function() {
     const snippetLanguages = document.querySelectorAll(".snippet-language");
 
+    const pastelColors = [
+      "#A37FAA", "#7DA9B3", "#E57373", "#D46A97", "#FF8C8C",
+      "#FFA1A1", "#FFBB9E", "#FFD878", "#7FAF9D", "#6B7BCB",
+      "#FFDAB9", "#FFA769", "#7FAF9D", "#B06969", "#8FAEC4",
+      "#DAA691", "#A6816C", "#E6E682", "#8FAEC4", "#5967A8",
+      "#FFB84D", "#7FAF9D", "#6B7BCB", "#67ACA6", "#A37FAA",
+      "#7DA9B3", "#E57373", "#D46A97", "#FF8C8C", "#FFA1A1"
+    ];
+    
+    
+
     snippetLanguages.forEach(function(language) {
       const languageName = language.innerText.trim().toLowerCase();
-      switch (languageName) {
-        case "python":
-          language.style.backgroundColor = "#3572A5"; // Blue
-          break;
-        case "bash":
-          language.style.backgroundColor = "#AC87C5"; // Yellow
-          break;
-        case "c/c++":
-          language.style.backgroundColor = "#00ADD8"; // Cyan
-          break;
-        case "vimrc":
-          language.style.backgroundColor = "#EF9595"; // Pastel Orange
-          break;
-        default:
-          language.style.backgroundColor = "#6CB86E"; // Default: Green
-      }
+      const colorIndex = hash(languageName) % pastelColors.length;
+      const color = pastelColors[colorIndex];
+      language.style.backgroundColor = color;
       language.style.color = "#ffffff"; // White text color for labels
     });
   });
+
+  function hash(str) {
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) {
+      hash = str.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    return hash;
+  }
 </script>
+
 
 
 {{ end }}

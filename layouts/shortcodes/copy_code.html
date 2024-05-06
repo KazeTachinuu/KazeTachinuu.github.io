@@ -1,44 +1,17 @@
-<div class="code-container">
-    <button class="copy-button" onclick="copyCode(this)">Copy Code</button>
-    <div class="notification" style="display: none;">Code copied to clipboard!</div>
+<!-- Markdown div with embedded Bootstrap button -->
+<div class="code-container position-relative">
+    <button class="btn btn-primary position-absolute top-0 end-0 mt-2 me-2" onclick="copyCode(this)">Copy Code</button>
     {{ .Inner }}
 </div>
 
-<style>
-    .code-container {
-        position: relative;
-        margin-bottom: 20px; /* Removed margin-top */
-    }
+<!-- Include Bootstrap CSS -->
+{{ $options := (dict "targetPath" "css/styles.css" "outputStyle" "compressed") }}
+{{ $style := resources.Get "sass/main.scss" | toCSS  $options | minify }}
+<link rel="stylesheet" href="{{ $style.RelPermalink }}" media="screen">
 
-    .copy-button {
-        position: absolute;
-        top: 10px; /* Adjust top position as needed */
-        right: 10px; /* Adjust right position as needed */
-        padding: 10px 20px;
-        background-color: #007bff;
-        color: #fff;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: background-color 0.3s;
-    }
-
-    .copy-button:hover {
-        background-color: #0056b3;
-    }
-
-    .notification {
-        position: absolute;
-        top: 0;
-        right: 0;
-        padding: 10px 20px;
-        background-color: #28a745;
-        color: #fff;
-        border-radius: 5px;
-        display: none;
-        transition: opacity 0.5s;
-    }
-</style>
+<!-- Include Bootstrap JavaScript -->
+{{ $bootstrap := resources.Get "js/bootstrap.bundle.min.js" }}
+{{ $js := slice $bootstrap | resources.Concat "js/bundle.js" | resources.Minify }}
 
 <script>
     // Function to copy code to clipboard
@@ -52,15 +25,17 @@
         document.execCommand('copy');
         selection.removeAllRanges();
 
-        // Show notification
-        const notification = button.parentElement.querySelector('.notification');
-        notification.style.display = 'block';
-        setTimeout(function () {
-            notification.style.opacity = '0';
-            setTimeout(function () {
-                notification.style.display = 'none';
-                notification.style.opacity = '1';
-            }, 1000);
+        // Replace button text with notification
+        const originalText = button.innerText;
+        button.innerText = 'Copied to clipboard';
+        button.classList.remove('btn-primary');
+        button.classList.add('btn-success');
+
+        // Restore button text after 2 seconds
+        setTimeout(() => {
+            button.innerText = originalText;
+            button.classList.remove('btn-success');
+            button.classList.add('btn-primary');
         }, 2000);
     }
 </script>

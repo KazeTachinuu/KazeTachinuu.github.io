@@ -6,6 +6,7 @@
 </head>
 <div>
 <body>
+{{< return_home >}}
   <div class="wrapper">
     <header>WriteUps Generator</header>
     <form action="#">
