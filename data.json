@@ -1,14 +1,6 @@
 {
-  "CTF": "404CTF",
-  "year": 2024,
-  "data": [
-    {
-      "name": "B\u00e9b\u00e9 nageur",
-      "value": 100,
-      "solves": 592,
-      "solved_by_me": true,
-      "flag": "404CTF{Th3_r3vEnGE_1S_c0minG_S0oN_4nD_w1Ll_b3_TErRiBl3_!}",
-      "category": "Crypto"
-    }
-  ]
+  "name": "PW Crack 2",
+  "category": "General Skills",
+  "value": 100,
+  "solves": 38514
 }

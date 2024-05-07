@@ -1,0 +1,25 @@
+{{ define "main" }}
+
+<!-- Header -->
+<section>
+  <div class="uk-container uk-margin-large-bottom uk-margin-medium-top">
+    <h1 class="uk-text-center uk-heading-medium">{{.Title}}</h1>
+    <p class="uk-text-center uk-text-lead">{{.Params.description}}</p>
+    <p class="uk-text-center">Published on {{ .PublishDate.Format "Jan 02, 2006" }}</p>
+
+    <!-- Points and Solves -->
+    <div class="uk-text-center">
+      <p><strong>Points:</strong> {{ .Params.points }}</p>
+      <p><strong>Solves:</strong> {{ .Params.solves }}</p>
+    </div>
+
+    <hr class="full-width">
+
+    <!-- Writeup Content -->
+    <div class="content">
+      {{ .Content }}
+    </div>
+  </div>
+</section>
+
+{{ end }}

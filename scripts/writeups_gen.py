@@ -1,126 +1,119 @@
-import json
 import os
+import json
+import argparse
 from urllib.parse import unquote
 from datetime import datetime, timedelta
+import re
 
+def parse_writeup(writeup):
+    lines = writeup.split("\n")
+    challenge_info = {}
 
-def load_data(file_path):
-    with open(file_path, "r") as file:
-        data = json.load(file)
-    return data
+    for line in lines:
+        if "**Category:**" in line:
+            category_match = re.search(r"\*\*Category:\*\* (.+?) - \*\*Points:\*\* (\d+) - \*\*Solves:\*\* (\d+)", line)
+            if category_match:
+                challenge_info["category"] = category_match.group(1).strip()
+                challenge_info["value"] = int(category_match.group(2).strip())
+                challenge_info["solves"] = int(category_match.group(3).strip())
+        elif "###" in line:
+            challenge_info["name"] = line.split("### ")[1].strip()
 
+    return challenge_info
 
-def load_template(template_path):
-    with open(template_path, "r") as file:
-        template = file.read()
-    return template
+def create_challenge_file(challenge_info, ctf_name, year, writeup_content):
+    name = challenge_info["name"]
+    category = challenge_info["category"]
+    value = challenge_info["value"]
+    solves = challenge_info["solves"]
 
+    # Prepare directory path
+    ctf_dir = os.path.join("content", "writeups", ctf_name.replace(" ", "_"))
+    os.makedirs(ctf_dir, exist_ok=True)
 
-def create_challenge_files(challenge, template, ctf_name, year):
-    name_decoded = unquote(challenge["name"])
-    name_with_dash = name_decoded.lower().replace(" ", "-")
-    challenge_file_path = os.path.join(
-        "content",
-        "writeups",
-        ctf_name,
-        str(year),
-        challenge["category"].lower().replace(" ", "-"),
-        f"{name_with_dash}.md",
-    )
-    solved_by_me = challenge["solved_by_me"]
+    # Create or update _index.md in CTF directory
+    ctf_index_path = os.path.join(ctf_dir, "_index.md")
+    if not os.path.exists(ctf_index_path):
+        with open(ctf_index_path, "w") as index_file:
+            index_file.write(f"---\n")
+            index_file.write(f"title: {ctf_name}\n")
+            index_file.write(f"type: ctf\n")
+            index_file.write(f"draft: false\n")
+            index_file.write(f"---\n\n")
 
-    content = template.format(
-        solved_by_me=solved_by_me,
-        challenge_title=name_decoded,
-        points_value=challenge["value"],
-        number_of_solves=challenge["solves"],
-        current_date=(datetime.now() - timedelta(days=1)).strftime("%Y-%m-%dT00:00:00Z")
-,
-        flag=challenge["flag"],
-    )
-
-    with open(challenge_file_path, "w") as f:
-        f.write(content)
-
-
-def create_category_index(category, challenges, ctf_name, year):
-    category_dir = os.path.join(
-        "content", "writeups", ctf_name, str(year), category.lower().replace(" ", "-")
-    )
+    # Prepare category directory path
+    category_dir = os.path.join(ctf_dir, str(year), category.lower().replace(" ", "_"))
     os.makedirs(category_dir, exist_ok=True)
 
-    with open(os.path.join(category_dir, "_index.md"), "w") as index_file:
-        index_file.write(f"---\n")
-        index_file.write(f'title: "{category.capitalize()}"\n')
-        index_file.write(f"type: categories\n")  # Add type information
-        index_file.write(f"---\n\n")
-        index_file.write(f"List of challenges in the {category} category:\n\n")
-        for challenge in challenges:
-            name_decoded = unquote(challenge["name"])
-            name_with_dash = name_decoded.lower().replace(" ", "-")
-            index_file.write(
-                f"- [{name_decoded}]({category.lower().replace(' ', '-')}/{name_with_dash}/) - Solves: {challenge['solves']}\n"
-            )
+    # Prepare file path
+    file_name = name.lower().replace(" ", "_") + ".md"
+    file_path = os.path.join(category_dir, file_name)
 
+    # Prepare frontmatter
+    frontmatter = f"""---
+title: "{name}"
+type: "chal"
+solved: true
+points: {value}
+solves: {solves}
+date: {(datetime.now() - timedelta(days=1)).strftime("%Y-%m-%dT00:00:00Z")}
+draft: false
+---\n\n"""
 
-def generate_writeup(data, year):
-    categories = {}
-    ctf_name = data.get(
-        "CTF", "UnknownCTF"
-    )  # Default to "UnknownCTF" if "CTF" field is missing
-    template = load_template("layouts/_default/template.md")
+    # Write frontmatter and writeup content to file
+    with open(file_path, "w") as f:
+        f.write(frontmatter)
+        f.write(writeup_content)
 
-    for challenge in data["data"]:
-        category = challenge["category"]
-        if category not in categories:
-            categories[category] = []
-        categories[category].append(challenge)
+    print(f"Challenge file created: {file_path}")
 
-    for category, challenges in categories.items():
-        create_category_index(category, challenges, ctf_name, year)
-        for challenge in challenges:
-            create_challenge_files(challenge, template, ctf_name, year)
+def create_year_index(ctf_name, year):
+    # Prepare directory path
+    year_dir = os.path.join("content", "writeups", ctf_name.replace(" ", "_"), str(year))
+    os.makedirs(year_dir, exist_ok=True)
 
-    create_year_index(categories, ctf_name, year)
+    # Prepare file path
+    year_index_path = os.path.join(year_dir, "_index.md")
 
-    create_ctf_index(ctf_name)  # Create the CTF index
+    # Prepare frontmatter
+    frontmatter = f"""---
+title: "{ctf_name} {year}"
+type: year
+draft: false
+---\n"""
 
+    # Write frontmatter to file
+    with open(year_index_path, "w") as f:
+        f.write(frontmatter)
 
-def create_year_index(categories, ctf_name, year):
-    with open(
-        os.path.join("content", "writeups", ctf_name, str(year), "_index.md"), "w"
-    ) as year_index_file:
-        year_index_file.write(f"---\n")
-        year_index_file.write(f'title: "{ctf_name} {year}"\n')
-        year_index_file.write(f"type: year\n")  # Add type information
-        year_index_file.write(f"---\n\n")
-
-        for category, challenges in categories.items():
-            year_index_file.write(f"## {category.capitalize()}\n\n")
-            for challenge in challenges:
-                name_decoded = unquote(challenge["name"])
-                name_with_dash = name_decoded.lower().replace(" ", "-")
-                year_index_file.write(
-                    f"- [{name_decoded}]({category.lower().replace(' ', '-')}/{name_with_dash}/) ({challenge['value']} points) - Solved: {'✔' if challenge['solved_by_me'] else '❌'} - Solves: {challenge['solves']}\n\n"
-                )
-
-
-def create_ctf_index(ctf_name):
-    ctf_index_path = os.path.join("content", "writeups", ctf_name, "_index.md")
-    with open(ctf_index_path, "w") as ctf_index_file:
-        ctf_index_file.write(f"---\n")
-        ctf_index_file.write(f"title: {ctf_name}\n")
-        ctf_index_file.write(f"type: ctf\n")  # Add type information
-        ctf_index_file.write(f"---\n\n")
-
+    print(f"Year index file created: {year_index_path}")
 
 def main():
-    data = load_data("data.json")
-    year = data.get("year", datetime.now().year)
-    generate_writeup(data, year)
+    parser = argparse.ArgumentParser(description="Generate challenge writeup file.")
+    parser.add_argument("-n", "--name", type=str, help="Name of the CTF")
+    parser.add_argument("-y", "--year", type=int, help="Year of the CTF")
+    parser.add_argument("file", type=str, help="Path to the challenge writeup file")
+    args = parser.parse_args()
 
-    print("Writeup directory structure created successfully.")
+    # Get CTF name
+    ctf_name = args.name or input("Enter the CTF name: ")
+    ctf_name = ctf_name.strip()
 
+    # Get year
+    year = args.year or int(input("Enter the year: "))
+
+    # Load challenge data
+    with open(args.file, "r") as file:
+        writeup_content = file.read()
+
+    # Parse writeup to JSON
+    challenge_info = parse_writeup(writeup_content)
+
+    # Create challenge file
+    create_challenge_file(challenge_info, ctf_name, year, writeup_content)
+
+    # Create year index file
+    create_year_index(ctf_name, year)
 
 if __name__ == "__main__":
     main()
