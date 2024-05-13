@@ -16,7 +16,7 @@ draft: false
 Can you crack the password to get the flag? Download the password checker here and you'll need the encrypted flag in the same directory too.   
 
 **Solution:**  
-We are tasked to decrypt a file, when checking the code provided we see that its asking for a password to get the decrypted flag :
+This is basically the same challenge as the last one, except that the password is not immediatly evident as it is written in an hex format:
 
 ```python
 def level_2_pw_check():
@@ -29,10 +29,24 @@ def level_2_pw_check():
     print("That password is incorrect")
 ```
 
-Here the solution is trivial, we should simply input the password and it will reveal the flag:
+Here the solution is trivial, we should simply print the password in ascii from hex and input it in the python script:
 
 ```sh
-$ python3 -c "print(chr(0x33) + chr(0x39) + chr(0x63) + chr(0x65))" | python3 level2.py
+>>> python3 -c "print(chr(0x33) + chr(0x39) + chr(0x63) + chr(0x65))"
+39ce
+
+>>> python3 level2.py
+Please enter correct password for flag: 39ce
+Welcome back... your flag, user:
+picoCTF{tr45h_51ng1ng_502ec42e}
+```
+
+Note that we could also simply pipe the print to the python script directly like that:
+
+```sh
+>>> python3 -c "print(chr(0x33) + chr(0x39) + chr(0x63) + chr(0x65))" | python3 level2.py
+Please enter correct password for flag: Welcome back... your flag, user:
+picoCTF{tr45h_51ng1ng_502ec42e}
 ```
    
 
