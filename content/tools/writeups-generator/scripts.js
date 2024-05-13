@@ -94,8 +94,7 @@ let markdownBuild = () => {
     // Mise en forme des données
     const data = 
     '### ' + title.value + '   \n' + 
-    '**Category:** ' + category.value + ' - **Points:** ' + points.value + ' - **Solves:** ' + solves.value + '   \n' + 
-    //'**Hint:**   \n' + '   \n' +
+    '**Category:** ' + category.value + ' - **Points:** ' + points.value + ' - **Solves:** ' + solves.value + '   \n\n' + 
     '**Description:**   \n' + description.value + '   \n\n' +
     '**Solution:**  \n' + solution.value + '   \n\n' +
     "<details><summary>🚩 FLAG</summary>  \n\n" +
