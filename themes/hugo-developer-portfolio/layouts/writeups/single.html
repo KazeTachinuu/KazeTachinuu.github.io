@@ -8,12 +8,55 @@
     <p class="uk-text-center">Published on {{ .PublishDate.Format "Jan 02, 2006" }}</p>
 
     <!-- Points and Solves -->
-    <div class="uk-text-center">
-      <p><strong>Points:</strong> {{ .Params.points }}</p>
-      <p><strong>Solves:</strong> {{ .Params.solves }}</p>
+    <div class="uk-flex uk-flex-center uk-margin-bottom">
+      <div class="uk-margin-right">
+        <strong>Points:</strong> {{ .Params.points }}
+      </div>
+      <div>
+        <strong>Solves:</strong> {{ .Params.solves }}
+      </div>
     </div>
 
-    <hr class="full-width">
+    <!-- Challenge Files -->
+    <div class="uk-margin-top uk-flex uk-flex-right uk-flex-middle uk-margin-bottom">
+      <ul class="uk-list uk-list-divider">
+        {{ $files := readDir (printf "/static%s" .Path) }}
+        {{ range $files }}
+        {{ $extension := path.Ext .Name }}
+        {{ $icon := "" }}
+        {{ if or (eq $extension ".txt") (eq $extension ".md") }}
+        {{ $icon = "file-text" }}
+        {{ else if or (eq $extension ".py") (eq $extension ".sh") (eq $extension ".exe") }}
+        {{ $icon = "code" }}
+        {{ else if or (eq $extension ".png") (eq $extension ".jpg") (eq $extension ".jpeg") }}
+        {{ $icon = "image" }}
+        {{ else if or (eq $extension ".pdf") }}
+        {{ $icon = "file-pdf" }}
+        {{ else if or (eq $extension ".zip") (eq $extension ".rar") (eq $extension ".tar.gz") }}
+        {{ $icon = "folder" }}
+        {{ else }}
+        {{ $icon = "download" }}
+        {{ end }}
+
+        <li class="file-item">
+          <div class="file-wrapper">
+            <span class="uk-margin-right" uk-icon={{ $icon }}></span>
+            <a href="#" class="file-link">{{ .Name }}</a>
+            <!-- Dropdown menu -->
+            <div class="dropdown-content">
+              <!-- View link -->
+              <a href="{{ .Name }}" class="view-link" target="_blank">View</a>
+              <!-- Download link -->
+              <a href="{{ .Name }}" download class="download-link">Download</a>
+            </div>
+          </div>
+        </li>
+        {{ end }}
+      </ul>
+    </div>
+
+    <!-- Divider -->
+    <hr class="uk-divider-icon">
 
     <!-- Writeup Content -->
     <div class="content">
@@ -21,5 +64,36 @@
     </div>
   </div>
 </section>
+
+<!-- CSS for dropdown menu -->
+<style>
+  /* Hide dropdown content by default */
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 80px;
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+    z-index: 1;
+  }
+
+  /* Show dropdown content on hover */
+  .file-item:hover .dropdown-content {
+    display: block;
+  }
+
+  /* Style links inside the dropdown */
+  .dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+  }
+
+  /* Change color of dropdown links on hover */
+  .dropdown-content a:hover {
+    background-color: #f1f1f1;
+  }
+</style>
 
 {{ end }}
