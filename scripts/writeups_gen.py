@@ -31,10 +31,7 @@ def create_challenge_file(challenge_info, ctf_name, year, writeup_content):
 
     # Prepare directory path
     ctf_dir = os.path.join("content", "writeups", ctf_name.replace(" ", "_"))
-    os.makedirs(ctf_dir, exist_ok=True)
-    print(f"CTF directory created: {ctf_dir}")
-
-    # Create or update _index.md in CTF directory
+    os.makedirs(ctf_dir, exist_ok=True)    # Create or update _index.md in CTF directory
     ctf_index_path = os.path.join(ctf_dir, "_index.md")
     if not os.path.exists(ctf_index_path):
         with open(ctf_index_path, "w") as index_file:
@@ -44,6 +41,9 @@ def create_challenge_file(challenge_info, ctf_name, year, writeup_content):
             index_file.write(f"draft: false\n")
             index_file.write(f"---\n\n")
         print(f"CTF index file created: {ctf_index_path}")
+    print(f"CTF directory created: {ctf_dir}")
+
+
 
     # Prepare category directory path
     category_dir = os.path.join(ctf_dir, str(year), category.lower().replace(" ", "_"))
@@ -80,6 +80,18 @@ draft: false
     with open(file_path, "w") as f:
         f.write(frontmatter)
         f.write(writeup_content)
+        
+    # Create or update _index.md in Category directory
+    cat_index_path = os.path.join(category_dir, "_index.md")
+    if not os.path.exists(cat_index_path):
+        with open(cat_index_path, "w") as index_file:
+            index_file.write(f"---\n")
+            index_file.write(f"title: {category}\n")
+            index_file.write(f"cat: categories\n")
+            index_file.write(f"draft: false\n")
+            index_file.write(f"---\n\n")
+        print(f"Category index file created: {ctf_index_path}")
+    
 
     print(f"Challenge file created: {file_path}")
 
@@ -107,6 +119,8 @@ draft: false
         f.write(frontmatter)
 
     print(f"Year index file created: {year_index_path}")
+
+
 
 
 def main():
