@@ -11,6 +11,8 @@ export ZSH="/$HOME/.oh-my-zsh"
 
 prompt default &> /dev/null
 
+export EDITOR='vim'
+
 # Load version control information
 
 autoload -Uz vcs_info
