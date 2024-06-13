@@ -2,7 +2,7 @@
 title = ".zshrc config file"
 description = ""
 language = "zshrc"
-date = 2024-04-13T17:41:36-04:00
+date = 2024-06-13T17:41:36-04:00
 +++
 
 {{< copy_code >}}
