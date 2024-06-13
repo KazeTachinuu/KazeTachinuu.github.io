@@ -7,45 +7,48 @@ date = 2024-04-03T17:41:36-04:00
 
 {{< copy_code >}}
 {{< highlight shell "linenos=inline" >}}
-export ZSH="/$HOME/.oh-my-zsh"
+# Enable extended globbing, ignore duplicates in history, and enable prompt substitutions
+setopt extended_glob hist_ignore_all_dups prompt_subst
 
-prompt default &> /dev/null
+# Path settings
+export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:$HOME/bin"
 
-export EDITOR='vim'
+# Aliases
+alias ll='ls -alF'
+alias la='ls -A'
+alias l='ls -CF'
 
-# Load version control information
-
+# Prompt configuration
 autoload -Uz vcs_info
 precmd() { vcs_info }
+zstyle ':vcs_info:*' enable git
+zstyle ':vcs_info:*' formats '%b'
+PROMPT='%{$fg_bold[cyan]%}%n@%m%{$reset_color%}:%{$fg_bold[green]%}%c%{$reset_color%} $(git_prompt_info)%{$reset_color%}$ '
+git_prompt_info() { [[ -n "$vcs_info_msg_0_" ]] && echo " [%{$fg[yellow]%}$vcs_info_msg_0_%{$reset_color%}]"; }
 
-# Format the vcs*info_msg_0* variable
+# Tab completion
+autoload -Uz compinit && compinit
 
-zstyle ':vcs_info:git:\*' formats '%b'
+# History settings
+HISTSIZE=10000
+SAVEHIST=10000
+HISTIGNORE="ls:cd:exit"
 
-# Set up the prompt (with git branch name)
+# Editor
+export EDITOR='vim'
 
-setopt PROMPT_SUBST
+# Load oh-my-zsh if available
+[[ -d "$HOME/.oh-my-zsh" ]] && source "$HOME/.oh-my-zsh/oh-my-zsh.sh"
 
-plugins=(
-zsh-autosuggestions
-git
-history
-sudo
-web-search
-copyfile
-copybuffer
-dirhistory
-);
+# Load additional plugins if available
+[[ -f "$HOME/.local/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ]] && source "$HOME/.local/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 
-source $ZSH/oh-my-zsh.sh
+# Load custom aliases if available
+[[ -f "$HOME/.my_aliases.txt" ]] && source "$HOME/.my_aliases.txt"
 
-source $HOME/.local/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-
-PROMPT='%{$fg_bold[cyan]%}>%{$fg_bold[green]%}>%{$fg_bold[magenta]%}>% %{$fg_bold[cyan]%} %c %{$fg_bold[yellow]%}$(git_prompt_info) %{$fg_bold[gray]%}%{$reset_color%}'
-
-ZSH_THEME_GIT_PROMPT_PREFIX="%{$fg[green]%}[%{$fg[yellow]%}"
-ZSH_THEME_GIT_PROMPT_SUFFIX="%{$reset_color%}"
-ZSH_THEME_GIT_PROMPT_DIRTY="%{$fg[green]%}]"
-ZSH_THEME_GIT_PROMPT_CLEAN="%{$fg[green]%}]"
+# Custom functions
+# function example_function() {
+#     echo "This is an example function."
+# }
 {{< /highlight >}}
 {{< /copy_code >}}
