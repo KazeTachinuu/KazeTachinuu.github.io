@@ -2,7 +2,7 @@
 title = "Cool Install Script"
 description= "Single File Install Config"
 language = "bash"
-date = 2024-06-06T17:41:36-04:00
+date = 2024-06-13T17:41:36-04:00
 +++
 
 
