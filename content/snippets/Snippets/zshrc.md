@@ -11,7 +11,7 @@ date = 2024-06-13T17:41:36-04:00
 setopt extended_glob hist_ignore_all_dups prompt_subst
 
 # Path settings
-export PATH=$PATH:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:$HOME/bin
+export PATH=$PATH:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:$HOME/bin:$HOME/.local/bin
 
 # Aliases
 alias ll='ls -alF'
