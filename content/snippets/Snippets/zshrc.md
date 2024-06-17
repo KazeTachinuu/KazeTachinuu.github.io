@@ -58,10 +58,14 @@ export EDITOR='vim'
 # Load custom aliases if available
 [[ -f "$HOME/.my_aliases.txt" ]] && source "$HOME/.my_aliases.txt"
 
+# Load ZSH profile if available
+[[ -f "$HOME/.zsh_profile" ]] && source "$HOME/.zsh_profile"
+
 # Custom functions
 # function example_function() {
 #     echo "This is an example function."
 # }
+
 
 {{< /highlight >}}
 {{< /copy_code >}}
