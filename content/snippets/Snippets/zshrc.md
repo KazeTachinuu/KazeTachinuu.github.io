@@ -13,6 +13,7 @@ setopt extended_glob hist_ignore_all_dups prompt_subst
 # Path settings
 export PATH=$PATH:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:$HOME/bin:$HOME/.local/bin
 
+
 # Aliases
 alias ll='ls -alF'
 alias la='ls -A'
@@ -61,7 +62,6 @@ export EDITOR='vim'
 # function example_function() {
 #     echo "This is an example function."
 # }
-
 
 {{< /highlight >}}
 {{< /copy_code >}}

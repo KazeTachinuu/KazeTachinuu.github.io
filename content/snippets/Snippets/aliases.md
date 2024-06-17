@@ -13,12 +13,13 @@ alias config='cd $HOME/.config/'
 alias zshalias='$EDITOR $HOME/.my_aliases.txt'
 alias vimrc='$EDITOR ~/.vimrc'
 alias zshrc='$EDITOR $HOME/.zshrc'
+alias tmif='tmux attach -t $1 || tmux new -s $1'
 
 # clang-format all files in subdirectories
 alias cfa='if clang-format-all .; then echo "All Files Formatted"; fi'
 
 # Check Current IP Address
-alias checkip='curl http://checkip.amazonaws.com/'
+alias checkip='curl http://api.ipify.org/'
 
 # Git Aliases
 alias gca='git commit -a -m'

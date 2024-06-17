@@ -39,7 +39,7 @@ set showmatch           " Highlight matching parentheses / brackets [{()}]
 set laststatus=2        " Always show statusline
 set ruler               " Show line and column number of the cursor
 set signcolumn=yes      " Show sign column for LSP diagnostics
-set clipboard+=unnamedplus  " Use system clipboard
+set clipboard=unnamedplus  " Use system clipboard
 
 " Key Bindings
 nnoremap j gj           " Move down by visual line (don't skip wrapped lines)
@@ -48,13 +48,11 @@ nnoremap <C-d> <C-d>zz  " Scroll down half screen
 nnoremap <C-u> <C-u>zz  " Scroll up half screen
 nnoremap Q <nop>        " Disable Ex mode
 nnoremap <C-a> ggVG     " Select all text
-nnoremap <C-c> <cmd>%y+<CR> " Copy all text
-" Remap <leader>y in normal and visual mode to yank to system clipboard
-nnoremap <leader>y "+y
-vnoremap <leader>y "+y
+nnoremap <C-c> <cmd>%y<CR> " Copy all text
 
-" Remap <leader>Y in normal mode to yank to system clipboard from current line
-nnoremap <leader>Y "+Y
+vnoremap J :m '>+1<CR>gv=gv
+vnoremap K :m '<-2<CR>gv=gv
+
 
 " Toggle NERDTree file tree
 nnoremap <C-n> :NERDTreeToggle<CR>
@@ -63,7 +61,7 @@ nnoremap <C-n> :NERDTreeToggle<CR>
 inoremap <C-f> <C-x><C-f>
 
 " Find and replace in all files with CTRL+S in normal mode
-nnoremap <C-s> :bufdo %s///g<left><left>
+nnoremap <C-s> :%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>
 
 " Vim Appearance
 colorscheme sonokai     " Set colorscheme
@@ -107,6 +105,7 @@ set nowb                " No write backup files
 set noswapfile          " No swap files
 
 let g:snipMate = { 'snippet_version' : 1 }
+nnoremap <SPACE> <Nop>
 let mapleader=" "
 set ph=10               " Max height of windows appearing
 
@@ -136,7 +135,6 @@ augroup lsp_install
     " Call s:on_lsp_buffer_enabled only for languages that have the server registered.
     autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
 augroup END
-
 
 {{< /highlight >}}
 {{< /copy_code >}}
