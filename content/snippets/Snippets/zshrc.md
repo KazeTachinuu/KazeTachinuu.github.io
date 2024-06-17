@@ -11,7 +11,7 @@ date = 2024-06-13T17:41:36-04:00
 setopt extended_glob hist_ignore_all_dups prompt_subst
 
 # Path settings
-export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:$HOME/bin"
+export PATH=$PATH:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:$HOME/bin
 
 # Aliases
 alias ll='ls -alF'
@@ -34,6 +34,17 @@ HISTSIZE=10000
 SAVEHIST=10000
 HISTIGNORE="ls:cd:exit"
 
+plugins=(
+    zsh-autosuggestions
+    git
+    history
+    sudo
+    web-search
+    copyfile
+    copybuffer
+    dirhistory
+)
+
 # Editor
 export EDITOR='vim'
 
@@ -50,5 +61,7 @@ export EDITOR='vim'
 # function example_function() {
 #     echo "This is an example function."
 # }
+
+
 {{< /highlight >}}
 {{< /copy_code >}}
