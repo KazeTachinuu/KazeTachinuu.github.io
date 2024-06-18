@@ -21,9 +21,7 @@ Plugin 'garbas/vim-snipmate'       " Snippet management (deprecated, consider us
 Plugin 'tomtom/tlib_vim'           " Required for some plugins
 Plugin 'MarcWeber/vim-addon-mw-utils' " More utilities for Vim
 Plugin 'sainnhe/sonokai'           " Beautiful colorscheme
-Plugin 'prabirshrestha/asyncomplete.vim'   " Async completion framework
-Plugin 'prabirshrestha/vim-lsp'     " Language Server Protocol support
-Plugin 'mattn/vim-lsp-settings'    " Settings for LSP plugins
+Plugin 'neoclide/coc.nvim'         " Intellisense engine
 call vundle#end()
 
 " INSTALL PLUGINS WITH :PluginInstall
@@ -53,12 +51,8 @@ nnoremap <C-c> <cmd>%y<CR> " Copy all text
 vnoremap J :m '>+1<CR>gv=gv
 vnoremap K :m '<-2<CR>gv=gv
 
-
 " Toggle NERDTree file tree
 nnoremap <C-n> :NERDTreeToggle<CR>
-
-" Remap CTRL+F in insert mode for file path completion
-inoremap <C-f> <C-x><C-f>
 
 " Find and replace in all files with CTRL+S in normal mode
 nnoremap <C-s> :%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>
@@ -109,32 +103,56 @@ nnoremap <SPACE> <Nop>
 let mapleader=" "
 set ph=10               " Max height of windows appearing
 
-let g:lsp_diagnostics_enabled = 0   " Disable LSP diagnostics by default
+" CoC.nvim configuration
+" Autocomplete and diagnostics settings
+inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm() : "\<CR>"
+inoremap <silent><expr> <C-j> coc#pum#visible() ? coc#pum#next(1) : "\<C-j>"
+inoremap <silent><expr> <C-k> coc#pum#visible() ? coc#pum#prev(1) : "\<C-k>"
 
-function! s:on_lsp_buffer_enabled() abort
-    setlocal omnifunc=lsp#complete
-    setlocal signcolumn=yes
-    if exists('+tagfunc')
-        setlocal tagfunc=lsp#tagfunc
-    endif
-    nmap <buffer> gd <plug>(lsp-definition)
-    nmap <buffer> gs <plug>(lsp-document-symbol-search)
-    nmap <buffer> gS <plug>(lsp-workspace-symbol-search)
-    nmap <buffer> gr <plug>(lsp-references)
-    nmap <buffer> gi <plug>(lsp-implementation)
-    nmap <buffer> gt <plug>(lsp-type-definition)
-    nmap <buffer> <leader>rn <plug>(lsp-rename)
-    nmap <buffer> [g <plug>(lsp-previous-diagnostic)
-    nmap <buffer> ]g <plug>(lsp-next-diagnostic)
-    nmap <buffer> K <plug>(lsp-hover)
-    nmap <buffer> <leader>f :LspDocumentFormatSync<CR>
+" GoTo code navigation.
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+
+" Use K to show documentation in preview window.
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+function! s:show_documentation()
+  if CocAction('hasProvider', 'hover')
+    call CocActionAsync('doHover')
+  else
+    call feedkeys('K', 'in')
+  endif
 endfunction
 
-augroup lsp_install
-    au!
-    " Call s:on_lsp_buffer_enabled only for languages that have the server registered.
-    autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
-augroup END
+" Highlight the symbol and its references when holding the cursor.
+" autocmd CursorHold * silent call CocActionAsync('highlight')
+
+" Symbol renaming.
+nmap <leader>rn <Plug>(coc-rename)
+
+" Formatting selected code.
+xmap <leader>f  <Plug>(coc-format-selected)
+nmap <leader>f  <Plug>(coc-format-selected)
+nnoremap <silent> <C-f> :call CocAction('format')<CR>
+
+" Update signature help on jump placeholder.
+autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
+
+" Applying code actions to the selected code block.
+nmap <leader>ac  <Plug>(coc-codeaction-selected)
+xmap <leader>ac  <Plug>(coc-codeaction-selected)
+" Remap keys for applying code actions at the current cursor position.
+nmap <leader>ca  <Plug>(coc-codeaction)
+
+" Remap keys for applying code actions for the current buffer.
+nmap <leader>cA  <Plug>(coc-codeaction-all)
+
+" Use `[g` and `]g` to navigate diagnostics
+" Use `:CocDiagnostics` to get all diagnostics of current buffer in location list.
+nmap <silent> [g <Plug>(coc-diagnostic-prev)
+nmap <silent> ]g <Plug>(coc-diagnostic-next)
 
 {{< /highlight >}}
 {{< /copy_code >}}
