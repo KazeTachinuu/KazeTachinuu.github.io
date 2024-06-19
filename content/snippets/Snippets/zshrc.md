@@ -10,9 +10,6 @@ date = 2024-06-13T17:41:36-04:00
 # Enable extended globbing, ignore duplicates in history, and enable prompt substitutions
 setopt extended_glob hist_ignore_all_dups prompt_subst
 
-# Path settings
-export PATH=$PATH:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:$HOME/bin:$HOME/.local/bin
-
 
 # Aliases
 alias ll='ls -alF'
