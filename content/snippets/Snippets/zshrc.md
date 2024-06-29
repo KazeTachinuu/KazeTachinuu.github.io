@@ -7,6 +7,13 @@ date = 2024-06-13T17:41:36-04:00
 
 {{< copy_code >}}
 {{< highlight shell "linenos=inline" >}}
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/KazeTachinuu/config/master/installzsh.sh)"
+{{< /highlight >}}
+{{< /copy_code >}}
+
+
+{{< copy_code >}}
+{{< highlight shell "linenos=inline" >}}
 # Enable extended globbing, ignore duplicates in history, and enable prompt substitutions
 setopt extended_glob hist_ignore_all_dups prompt_subst
 

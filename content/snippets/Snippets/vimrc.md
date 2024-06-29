@@ -5,12 +5,23 @@ language = "vimrc"
 date = 2024-06-13T17:41:36-04:00
 +++
 
+
+{{< copy_code >}}
+{{< highlight shell "linenos=inline" >}}
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/KazeTachinuu/config/master/installvim.sh)"
+{{< /highlight >}}
+{{< /copy_code >}}
+
+
+
 {{< copy_code >}}
 {{< highlight shell "linenos=inline" >}}
 
 " Enable Vundle: Vim plugin manager
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
+
+" Basic plugins
 Plugin 'VundleVim/Vundle.vim'
 Plugin 'scrooloose/nerdtree'       " File tree explorer with Ctrl+N
 Plugin 'vim-airline/vim-airline'   " Stylish status bar
@@ -21,7 +32,14 @@ Plugin 'garbas/vim-snipmate'       " Snippet management (deprecated, consider us
 Plugin 'tomtom/tlib_vim'           " Required for some plugins
 Plugin 'MarcWeber/vim-addon-mw-utils' " More utilities for Vim
 Plugin 'sainnhe/sonokai'           " Beautiful colorscheme
-Plugin 'neoclide/coc.nvim'         " Intellisense engine
+
+" Conditionally load coc.nvim
+let g:use_coc = 0 " Set to 1 to enable coc.nvim
+
+if g:use_coc
+    Plugin 'neoclide/coc.nvim' " Intellisense engine
+endif
+
 call vundle#end()
 
 " INSTALL PLUGINS WITH :PluginInstall
@@ -103,56 +121,59 @@ nnoremap <SPACE> <Nop>
 let mapleader=" "
 set ph=10               " Max height of windows appearing
 
-" CoC.nvim configuration
-" Autocomplete and diagnostics settings
-inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm() : "\<CR>"
-inoremap <silent><expr> <C-j> coc#pum#visible() ? coc#pum#next(1) : "\<C-j>"
-inoremap <silent><expr> <C-k> coc#pum#visible() ? coc#pum#prev(1) : "\<C-k>"
+if g:use_coc
+    " CoC.nvim configuration
+    " Autocomplete and diagnostics settings
+    inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm() : "\<CR>"
+    inoremap <silent><expr> <C-j> coc#pum#visible() ? coc#pum#next(1) : "\<C-j>"
+    inoremap <silent><expr> <C-k> coc#pum#visible() ? coc#pum#prev(1) : "\<C-k>"
 
-" GoTo code navigation.
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gy <Plug>(coc-type-definition)
-nmap <silent> gi <Plug>(coc-implementation)
-nmap <silent> gr <Plug>(coc-references)
+    " GoTo code navigation.
+    nmap <silent> gd <Plug>(coc-definition)
+    nmap <silent> gy <Plug>(coc-type-definition)
+    nmap <silent> gi <Plug>(coc-implementation)
+    nmap <silent> gr <Plug>(coc-references)
 
-" Use K to show documentation in preview window.
-nnoremap <silent> K :call <SID>show_documentation()<CR>
+    " Use K to show documentation in preview window.
+    nnoremap <silent> K :call <SID>show_documentation()<CR>
 
-function! s:show_documentation()
-  if CocAction('hasProvider', 'hover')
-    call CocActionAsync('doHover')
-  else
-    call feedkeys('K', 'in')
-  endif
-endfunction
+    function! s:show_documentation()
+      if CocAction('hasProvider', 'hover')
+        call CocActionAsync('doHover')
+      else
+        call feedkeys('K', 'in')
+      endif
+    endfunction
 
-" Highlight the symbol and its references when holding the cursor.
-" autocmd CursorHold * silent call CocActionAsync('highlight')
+    " Highlight the symbol and its references when holding the cursor.
+    " autocmd CursorHold * silent call CocActionAsync('highlight')
 
-" Symbol renaming.
-nmap <leader>rn <Plug>(coc-rename)
+    " Symbol renaming.
+    nmap <leader>rn <Plug>(coc-rename)
 
-" Formatting selected code.
-xmap <leader>f  <Plug>(coc-format-selected)
-nmap <leader>f  <Plug>(coc-format-selected)
-nnoremap <silent> <C-f> :call CocAction('format')<CR>
+    " Formatting selected code.
+    xmap <leader>f  <Plug>(coc-format-selected)
+    nmap <leader>f  <Plug>(coc-format-selected)
+    nnoremap <silent> <C-f> :call CocAction('format')<CR>
 
-" Update signature help on jump placeholder.
-autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
+    " Update signature help on jump placeholder.
+    autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
 
-" Applying code actions to the selected code block.
-nmap <leader>ac  <Plug>(coc-codeaction-selected)
-xmap <leader>ac  <Plug>(coc-codeaction-selected)
-" Remap keys for applying code actions at the current cursor position.
-nmap <leader>ca  <Plug>(coc-codeaction)
+    " Applying code actions to the selected code block.
+    nmap <leader>ac  <Plug>(coc-codeaction-selected)
+    xmap <leader>ac  <Plug>(coc-codeaction-selected)
+    " Remap keys for applying code actions at the current cursor position.
+    nmap <leader>ca  <Plug>(coc-codeaction)
 
-" Remap keys for applying code actions for the current buffer.
-nmap <leader>cA  <Plug>(coc-codeaction-all)
+    " Remap keys for applying code actions for the current buffer.
+    nmap <leader>cA  <Plug>(coc-codeaction-all)
 
-" Use `[g` and `]g` to navigate diagnostics
-" Use `:CocDiagnostics` to get all diagnostics of current buffer in location list.
-nmap <silent> [g <Plug>(coc-diagnostic-prev)
-nmap <silent> ]g <Plug>(coc-diagnostic-next)
+    " Use `[g` and `]g` to navigate diagnostics
+    " Use `:CocDiagnostics` to get all diagnostics of current buffer in location list.
+    nmap <silent> [g <Plug>(coc-diagnostic-prev)
+    nmap <silent> ]g <Plug>(coc-diagnostic-next)
+endif
+
 
 {{< /highlight >}}
 {{< /copy_code >}}

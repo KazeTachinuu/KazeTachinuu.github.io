@@ -29,15 +29,22 @@ YELLOW='\033[1;33m'
 NC='\033[0m' # No Color
 
 # List of packages to be installed
-PACKAGES="vim zsh git curl"
+PACKAGES="vim zsh"
 
-# Function to install packages based on package manager
 install_packages() {
     package_manager=$1
     echo -e "${YELLOW}Installing packages using $package_manager...${NC}"
-    sudo "$package_manager" install -y $PACKAGES
+    case $package_manager in
+        apk) sudo apk add --no-cache $packagesNeeded ;;
+        apt-get) sudo apt-get update && sudo apt-get install -y $packagesNeeded ;;
+        dnf) sudo dnf install -y $packagesNeeded ;;
+        zypper) sudo zypper install -y $packagesNeeded ;;
+        pacman) sudo pacman -Sy --noconfirm $packagesNeeded ;;
+        *) echo -e "${RED}FAILED TO INSTALL PACKAGES: Unsupported package manager.${NC}" >&2; return 1 ;;
+    esac
     echo -e "${GREEN}Packages installed successfully.${NC}"
 }
+
 
 # Function to change the default shell
 change_default_shell() {
@@ -79,6 +86,13 @@ main() {
     curl -fsSL "https://raw.githubusercontent.com/KazeTachinuu/config/master/.vimrc" -o "$HOME/.vimrc"
     echo -e "${GREEN}vimrc updated successfully.${NC}"
 
+    # Create ~/.vimundo directory
+    if [ ! -d "$HOME/.vimundo" ]; then
+        echo -e "${YELLOW}Creating ~/.vimundo directory...${NC}"
+        mkdir -p "$HOME/.vimundo"
+        echo -e "${GREEN}~/.vimundo directory created successfully.${NC}"
+    fi
+
     # Install Oh-My-Zsh
     echo -e "${YELLOW}Installing Oh-My-Zsh...${NC}"
     sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh | sed '/\s*exec\s\s*zsh\s*-l\s*/d')" --unattended --skip-chsh
@@ -100,6 +114,12 @@ main() {
         echo -e "${GREEN}Aliases installed successfully.${NC}"
     fi
 
+    # Create Vim plugin directory and clone vim-commentary plugin
+    echo -e "${YELLOW}Installing vim-commentary plugin...${NC}"
+    mkdir -p "$HOME/.vim/pack/tpope/start/commentary"
+    fetch_and_install "https://tpope.io/vim/commentary.git" "$HOME/.vim/pack/tpope/start/commentary"
+    echo -e "${GREEN}vim-commentary plugin installed successfully.${NC}"
+
     # Notify completion
     echo -e "${GREEN}All tasks completed successfully.${NC}"
     env zsh  # Start zsh shell
@@ -107,6 +127,8 @@ main() {
 
 # Execute main function
 main
+
+
 
 {{< /highlight >}}
 {{< /copy_code >}}
