@@ -134,6 +134,38 @@ button:hover {
   text-align: left; /* Center align text */
 }
 
+/* Toggle Styles */
+.toggle-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.toggle-container input[type="radio"] {
+  display: none;
+}
+
+.toggle-container label {
+  cursor: pointer;
+  padding: 10px 15px;
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  border-radius: 30px;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.toggle-container label:hover {
+  background-color: #e0e0e0;
+}
+
+.toggle-container input[type="radio"]:checked + label {
+  background-color: #28a745;
+  color: #fff;
+  border-color: #28a745;
+}
+
 /* Media Query for Tablets and Mobile Devices */
 @media (max-width: 768px) {
   .container {
@@ -156,6 +188,8 @@ button:hover {
       margin-bottom: 10px;
   }
 
+  
+
   .result {
       display: block;
       margin-top: 20px;
@@ -175,3 +209,10 @@ button:hover {
       color: #ccc;
   }
 }
+
+.mode-toggle {
+  margin-bottom: 20px;
+
+}
+
+

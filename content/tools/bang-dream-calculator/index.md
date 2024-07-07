@@ -7,22 +7,33 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-{{< return_home >}}
     <div class="container">
         <div class="main-content">
             <h1>BanG Dream! Points Calculator</h1>
+            <div class="mode-toggle">
+                <label>
+                    <input type="radio" name="mode" value="max" checked> Max Points
+                </label>
+                <label>
+                    <input type="radio" name="mode" value="goal"> Specific Goal
+                </label>
+            </div>
+            <div class="input-group" id="maxPointsMode">
+                <label for="numberOfBoosts">Number of Live Boosts:</label>
+                <input type="text" id="numberOfBoosts" value="0" required>
+            </div>
+            <div class="input-group" id="specificGoalMode" style="display: none;">
+                <label for="goalPoints">Target Score:</label>
+                <input type="text" id="goalPoints" value="0" required>
+            </div>
             <form id="pointsForm">
                 <div class="input-group">
-                    <label for="numberOfBoosts">Number of Live Boosts:</label>
-                    <input type="text" id="numberOfBoosts" required>
-                </div>
-                <div class="input-group">
                     <label for="currentScore">Current Score:</label>
-                    <input type="text" id="currentScore" required>
+                    <input type="text" id="currentScore" value="0" required>
                 </div>
                 <div class="input-group">
                     <label for="currentBadges">Current Badges:</label>
-                    <input type="text" id="currentBadges" required>
+                    <input type="text" id="currentBadges" value="0" required>
                 </div>
                 <button type="button" id="calculateButton">Calculate</button>
             </form>
@@ -30,23 +41,19 @@
                 <div class="result-box">
                     <p class="result-title">Results</p>
                     <div class="result-item">
-                        <span>Current Score:</span>
-                        <span id="resultCurrentScore"></span>
-                    </div>
-                    <div class="result-item">
-                        <span>Current Badges:</span>
-                        <span id="resultCurrentBadges"></span>
+                        <span>Remaining Badges:</span>
+                        <span id="resultRemainingBadges"></span>
                     </div>
                     <div class="result-item">
                         <span>Live Boosts Used:</span>
                         <span id="resultBoostsUsed"></span>
                     </div>
                     <div class="result-item">
-                        <span>Multi Lives Used:</span>
+                        <span>Multi Lives Done:</span>
                         <span id="resultMultiLiveRuns"></span>
                     </div>
                     <div class="result-item">
-                        <span>Challenge Lives Used:</span>
+                        <span>Challenge Lives Done:</span>
                         <span id="resultChallengeLiveRuns"></span>
                     </div>
                     <div class="result-item final-score">

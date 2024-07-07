@@ -10,53 +10,107 @@ function parseNumber(numberString) {
 
 // Function to calculate points based on input values
 function calculatePoints() {
-    const numberOfBoosts = parseNumber(document.getElementById('numberOfBoosts').value);
+    const mode = getCurrentMode();
     const currentScore = parseNumber(document.getElementById('currentScore').value);
     const currentBadges = parseNumber(document.getElementById('currentBadges').value);
-    const pointsPerMultiLive = parseNumber(document.getElementById('pointsPerMultiLive').value);
-    const pointsPerChallengeLive = parseNumber(document.getElementById('pointsPerChallengeLive').value);
-    const badgesPerMultiLive = parseNumber(document.getElementById('badgesPerMultiLive').value);
-    const badgesForChallengeLive = parseNumber(document.getElementById('badgesForChallengeLive').value);
 
-    let multiLiveRuns = 0;
-    let totalBadges = currentBadges;
-    let totalPoints = currentScore;
-    let challengeLiveRuns = 0;
-    let boostsUsed = 0;
+    if (mode === 'max') {
+        const numberOfBoosts = parseNumber(document.getElementById('numberOfBoosts').value);
+        const pointsPerMultiLive = parseNumber(document.getElementById('pointsPerMultiLive').value);
+        const pointsPerChallengeLive = parseNumber(document.getElementById('pointsPerChallengeLive').value);
+        const badgesPerMultiLive = parseNumber(document.getElementById('badgesPerMultiLive').value);
+        const badgesForChallengeLive = parseNumber(document.getElementById('badgesForChallengeLive').value);
 
-    // Calculate points based on the number of boosts
-    while (boostsUsed < numberOfBoosts) {
-        if (totalBadges >= badgesForChallengeLive) {
-            totalPoints += pointsPerChallengeLive;
-            totalBadges -= badgesForChallengeLive;
-            challengeLiveRuns += 1;
-            boostsUsed += 3; // 3 boosts = 1 live
-        } else {
-            totalPoints += pointsPerMultiLive;
-            totalBadges += badgesPerMultiLive;
-            multiLiveRuns += 1;
-            boostsUsed += 3; // 3 boosts = 1 live
+        let multiLiveRuns = 0;
+        let totalBadges = currentBadges;
+        let totalPoints = currentScore;
+        let challengeLiveRuns = 0;
+        let boostsUsed = 0;
+
+        while (boostsUsed < numberOfBoosts || totalBadges >= badgesForChallengeLive) {
+            if (totalBadges >= badgesForChallengeLive) {
+                totalPoints += pointsPerChallengeLive;
+                totalBadges -= badgesForChallengeLive;
+                challengeLiveRuns += 1;
+            } else {
+                totalPoints += pointsPerMultiLive;
+                totalBadges += badgesPerMultiLive;
+                multiLiveRuns += 1;
+                boostsUsed += 3;
+            }
         }
-    }
 
-    // Display the results only if there are results to show
-    if (multiLiveRuns > 0 || challengeLiveRuns > 0) {
-        displayResult(multiLiveRuns, challengeLiveRuns, totalPoints, currentScore, currentBadges, boostsUsed);
-        document.querySelector('.result').style.display = 'block'; // Show the result section
-    } else {
-        document.querySelector('.result').style.display = 'none'; // Hide the result section if no results
+        if (multiLiveRuns > 0 || challengeLiveRuns > 0) {
+            displayResult(multiLiveRuns, challengeLiveRuns, totalPoints, totalBadges, boostsUsed);
+            document.querySelector('.result').style.display = 'block';
+        } else {
+            document.querySelector('.result').style.display = 'none';
+        }
+    } else if (mode === 'goal') {
+        const goalPoints = parseNumber(document.getElementById('goalPoints').value);
+        const pointsPerMultiLive = parseNumber(document.getElementById('pointsPerMultiLive').value);
+        const pointsPerChallengeLive = parseNumber(document.getElementById('pointsPerChallengeLive').value);
+        const badgesPerMultiLive = parseNumber(document.getElementById('badgesPerMultiLive').value);
+        const badgesForChallengeLive = parseNumber(document.getElementById('badgesForChallengeLive').value);
+
+        let multiLiveRuns = 0;
+        let totalBadges = currentBadges;
+        let totalPoints = currentScore;
+        let challengeLiveRuns = 0;
+        let boostsUsed = 0;
+
+        while (totalPoints < goalPoints) {
+            if (totalBadges >= badgesForChallengeLive) {
+                totalPoints += pointsPerChallengeLive;
+                totalBadges -= badgesForChallengeLive;
+                challengeLiveRuns += 1;
+            } else {
+                totalPoints += pointsPerMultiLive;
+                totalBadges += badgesPerMultiLive;
+                multiLiveRuns += 1;
+                boostsUsed += 3;
+            }
+        }
+
+        displayResult(multiLiveRuns, challengeLiveRuns, totalPoints, totalBadges, boostsUsed);
+        document.querySelector('.result').style.display = 'block';
     }
 }
 
 // Function to display results in the result section
-function displayResult(multiLiveRuns, challengeLiveRuns, finalScore, currentScore, currentBadges, boostsUsed) {
-    document.getElementById('resultCurrentScore').innerText = formatNumber(currentScore);
-    document.getElementById('resultCurrentBadges').innerText = formatNumber(currentBadges);
+function displayResult(multiLiveRuns, challengeLiveRuns, finalScore, remainingBadges, boostsUsed) {
+    document.getElementById('resultRemainingBadges').innerText = formatNumber(remainingBadges);
     document.getElementById('resultBoostsUsed').innerText = boostsUsed;
     document.getElementById('resultMultiLiveRuns').innerText = multiLiveRuns;
     document.getElementById('resultChallengeLiveRuns').innerText = challengeLiveRuns;
     document.getElementById('resultFinalScore').innerText = formatNumber(finalScore);
 }
+
+// Function to check which mode is selected
+function getCurrentMode() {
+    return document.querySelector('input[name="mode"]:checked').value;
+}
+
+// Function to update inputs based on the selected mode
+function updateInputs() {
+    const mode = getCurrentMode();
+
+    if (mode === 'max') {
+        document.getElementById('maxPointsMode').style.display = 'block';
+        document.getElementById('specificGoalMode').style.display = 'none';
+    } else if (mode === 'goal') {
+        document.getElementById('maxPointsMode').style.display = 'none';
+        document.getElementById('specificGoalMode').style.display = 'block';
+    }
+}
+
+// Event listener for mode change
+document.querySelectorAll('input[name="mode"]').forEach(input => {
+    input.addEventListener('change', updateInputs);
+});
+
+// Event listener for Calculate button click
+document.getElementById('calculateButton').addEventListener('click', calculatePoints);
 
 // Event listener for Enter key press (optional)
 document.addEventListener('keypress', function (e) {
@@ -74,12 +128,6 @@ document.querySelectorAll('input[type="text"]').forEach(input => {
 
 // Wait for the DOM to be fully loaded
 document.addEventListener("DOMContentLoaded", function() {
-    // Find the Calculate button by its ID and add a click event listener
-    var calculateButton = document.getElementById("calculateButton");
-    calculateButton.addEventListener("click", function() {
-        calculatePoints();
-    });
-
     // Initially hide the result section on page load
     document.querySelector('.result').style.display = 'none';
 });
