@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+{{< return_home >}}
     <div class="container">
         <div class="main-content">
             <h1>BanG Dream! Points Calculator</h1>
