@@ -8,7 +8,7 @@ authorImage : /Home/JiroPP.jpg
 
 ## Who am I
 
-Hi! I am Hugo Sibony. I am a second year undergraduate student from <a href="https://www.epita.fr/">EPITA, school of Computer Engineering</a>, majoring in CyberSecurity. Currently looking for a 36 months work-study program (internship) in CyberSecurity starting September 2024 and a 4-6 months internship starting January 2024.
+Hi! I am Hugo Sibony. I am a second year undergraduate student from <a href="https://www.epita.fr/">EPITA, school of Computer Engineering</a>, majoring in CyberSecurity. Currently working in a 36 months work-study program (internship) in CyberSecurity.
 
 ## My Education Experiences
 
