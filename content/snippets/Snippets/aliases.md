@@ -22,6 +22,8 @@ alias cfa='if clang-format-all .; then echo "All Files Formatted"; fi'
 alias checkip='curl http://api.ipify.org/'
 
 # Git Aliases
+alias gpt='git push --follow-tags'
+alias gt='git tag -ma'
 alias gca='git commit -a -m'
 alias gpl='git pull'
 alias gcl='git clean -f -d -x'
