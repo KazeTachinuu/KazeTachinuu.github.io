@@ -14,6 +14,7 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/KazeTachinuu/config/master
 
 {{< copy_code >}}
 {{< highlight shell "linenos=inline" >}}
+
 # Enable extended globbing, ignore duplicates in history, and enable prompt substitutions
 setopt extended_glob hist_ignore_all_dups prompt_subst
 
@@ -28,8 +29,15 @@ autoload -Uz vcs_info
 precmd() { vcs_info }
 zstyle ':vcs_info:*' enable git
 zstyle ':vcs_info:*' formats '%b'
-PROMPT='%{$fg_bold[cyan]%}%n@%m%{$reset_color%}:%{$fg_bold[green]%}%c%{$reset_color%} $(git_prompt_info)%{$reset_color%}$ '
-git_prompt_info() { [[ -n "$vcs_info_msg_0_" ]] && echo " [%{$fg[yellow]%}$vcs_info_msg_0_%{$reset_color%}]"; }
+
+# Function to include Git info in the prompt
+git_prompt_info() {
+  [[ -n "$vcs_info_msg_0_" ]] && echo " [%F{yellow}$vcs_info_msg_0_%f]"
+}
+
+# Enhanced prompt with Git info
+PROMPT=$'%F{%(#.blue.green)}┌──${debian_chroot:+($debian_chroot)──}(%B%F{%(#.red.blue)}%n%(#.💀.㉿)%m%b%F{%(#.blue.green)})-[%B%F{reset}%(6~.%-1~/…/%4~.%5~)%b%F{%(#.blue.green)}] $(git_prompt_info)\n└─%B%(#.%F{red}#.%F{blue}$)%b%F{reset} '
+RPROMPT=$'%(?.. %? %F{red}%B⨯%b%F{reset})%(1j. %j %F{yellow}%B⚙%b%F{reset}.)'
 
 # Tab completion
 autoload -Uz compinit && compinit
@@ -69,7 +77,5 @@ export EDITOR='vim'
 # function example_function() {
 #     echo "This is an example function."
 # }
-
-
 {{< /highlight >}}
 {{< /copy_code >}}
