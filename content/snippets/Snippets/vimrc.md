@@ -33,7 +33,7 @@ Plugin 'MarcWeber/vim-addon-mw-utils' " More utilities for Vim
 Plugin 'sainnhe/sonokai'           " Beautiful colorscheme
 Plugin 'rhysd/vim-clang-format'    " Auto-Format buffer on save
 "Conditionally load coc.nvim
-let g:use_coc = 1 " Set to 1 to enable coc.nvim
+let g:use_coc = 0 " Set to 1 to enable coc.nvim
 
 if g:use_coc
     Plugin 'neoclide/coc.nvim' " Intellisense engine
