@@ -54,5 +54,5 @@ author = "Hugo Sibony"
 
     # This contains the contact information for the footer
     [params.footer]
-    email = "hugo@hugosibony.com"
+    email = "hugo.sibony@epita.fr"
     address = "Paris, France"
