@@ -1,4 +1,6 @@
 {{ $url := .Get "url" }}
-{{ $fileContent := getJSON $url }}
-{{ $decodedContent := base64Decode $fileContent.content }}
-{{ $decodedContent | markdownify }}
+{{ with resources.GetRemote $url }}
+  {{ .Content | markdownify }}
+{{ else }}
+  {{ errorf "Failed to get readme from %q" $url }}
+{{ end }}

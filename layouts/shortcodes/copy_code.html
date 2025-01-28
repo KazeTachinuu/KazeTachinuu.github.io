@@ -1,6 +1,14 @@
-<!-- Markdown div with embedded Bootstrap button -->
+<!-- Markdown div with embedded copy button -->
 <div class="code-container position-relative">
-    <button class="btn btn-primary position-absolute top-0 end-0 mt-2 me-2" onclick="copyCode(this)">Copy Code</button>
+    <button class="copy-btn" onclick="copyCode(this)" aria-label="Copy code">
+        <svg class="copy-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+        </svg>
+        <svg class="check-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+    </button>
     {{ .Inner }}
 </div>
 
@@ -13,29 +21,84 @@
 {{ $bootstrap := resources.Get "js/bootstrap.bundle.min.js" }}
 {{ $js := slice $bootstrap | resources.Concat "js/bundle.js" | resources.Minify }}
 
+<style>
+.code-container {
+    position: relative;
+    margin: 1em 0;
+}
+
+.copy-btn {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    padding: 0.4rem;
+    border: none;
+    background: rgba(255, 255, 255, 0.12);
+    border-radius: 4px;
+    color: #8b949e;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(4px);
+}
+
+.copy-btn:hover {
+    background: rgba(255, 255, 255, 0.25);
+    color: #ffffff;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.copy-btn:active {
+    transform: translateY(0);
+}
+
+.copy-btn svg {
+    filter: drop-shadow(0 0 0.5px rgba(0, 0, 0, 0.1));
+}
+
+.copy-btn .check-icon {
+    display: none;
+}
+
+.copy-btn.copied .copy-icon {
+    display: none;
+}
+
+.copy-btn.copied .check-icon {
+    display: block;
+    color: #7ee787;
+}
+
+.copy-btn.copied {
+    background: rgba(126, 231, 135, 0.15);
+    box-shadow: 0 0 8px rgba(126, 231, 135, 0.2);
+}
+</style>
+
 <script>
-    // Function to copy code to clipboard
-    function copyCode(button) {
-        const codeBlock = button.parentElement.querySelector('.highlight');
-        const selection = window.getSelection();
-        const range = document.createRange();
-        range.selectNodeContents(codeBlock);
-        selection.removeAllRanges();
-        selection.addRange(range);
-        document.execCommand('copy');
-        selection.removeAllRanges();
-
-        // Replace button text with notification
-        const originalText = button.innerText;
-        button.innerText = 'Copied to clipboard';
-        button.classList.remove('btn-primary');
-        button.classList.add('btn-success');
-
-        // Restore button text after 2 seconds
-        setTimeout(() => {
-            button.innerText = originalText;
-            button.classList.remove('btn-success');
-            button.classList.add('btn-primary');
-        }, 2000);
+function copyCode(button) {
+    // First try to get the highlighted code content
+    const highlightedCode = button.parentElement.querySelector('.highlight code');
+    if (highlightedCode) {
+        // For highlighted code, we need to get the actual text without line numbers
+        const lines = Array.from(highlightedCode.textContent.split('\n'));
+        // Remove line numbers and any extra whitespace
+        const code = lines
+            .map(line => line.replace(/^\s*\d+\s*/, '')) // Remove line numbers
+            .join('\n')
+            .trim();
+        
+        navigator.clipboard.writeText(code).then(() => {
+            button.classList.add('copied');
+            setTimeout(() => {
+                button.classList.remove('copied');
+            }, 2000);
+        }).catch(err => {
+            console.error('Failed to copy:', err);
+        });
     }
+}
 </script>

@@ -14,7 +14,7 @@ url = "https://think-async.com/Asio/"
 +++
 
 <div style="max-width: 900px; margin: 0 auto;">
-{{< github_readme url="https://api.github.com/repos/KazeTachinuu/Snowpack-proxy-test/readme" >}}
+{{< github_readme url="https://raw.githubusercontent.com/KazeTachinuu/Snowpack-proxy-test/master/README.md" >}}
 </div>
 
 

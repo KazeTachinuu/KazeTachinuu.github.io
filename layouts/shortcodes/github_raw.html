@@ -1,0 +1,6 @@
+{{ $url := .Get "url" }}
+{{ with resources.GetRemote $url }}
+  {{ .Content | safeHTML }}
+{{ else }}
+  {{ errorf "Failed to get content from %q" $url }}
+{{ end }} 
