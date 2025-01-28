@@ -20,6 +20,8 @@
   <link rel="stylesheet" href="{{ $styles.Permalink | relURL}}" integrity="{{ $styles.Data.Integrity }}" media="screen">
   {{ $syntax := resources.Get "css/syntax.css" | minify }}
   <link rel="stylesheet" href="{{ $syntax.Permalink | relURL}}" integrity="{{ $syntax.Data.Integrity }}" media="screen">
+  {{ $theme := resources.Get "css/theme.css" | minify }}
+  <link rel="stylesheet" href="{{ $theme.Permalink | relURL}}" integrity="{{ $theme.Data.Integrity }}" media="screen">
 
   {{ range .AlternativeOutputFormats -}}
     {{ printf `<link rel="%s" type="%s" href="%s" title="%s" />` .Rel .MediaType.Type .Permalink $.Site.Title | safeHTML }}
@@ -32,5 +34,19 @@
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
   <link rel="manifest" href="/site.webmanifest">
+
+  <script>
+    // Check for saved theme preference, otherwise use system preference
+    function initTheme() {
+      const savedTheme = localStorage.getItem('theme');
+      if (savedTheme) {
+        document.documentElement.setAttribute('data-theme', savedTheme);
+      } else {
+        const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        document.documentElement.setAttribute('data-theme', systemTheme);
+      }
+    }
+    initTheme();
+  </script>
 
 </head>

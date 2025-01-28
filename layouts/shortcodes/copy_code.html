@@ -12,15 +12,6 @@
     {{ .Inner }}
 </div>
 
-<!-- Include Bootstrap CSS -->
-{{ $options := (dict "targetPath" "css/styles.css" "outputStyle" "compressed") }}
-{{ $style := resources.Get "sass/main.scss" | toCSS  $options | minify }}
-<link rel="stylesheet" href="{{ $style.RelPermalink }}" media="screen">
-
-<!-- Include Bootstrap JavaScript -->
-{{ $bootstrap := resources.Get "js/bootstrap.bundle.min.js" }}
-{{ $js := slice $bootstrap | resources.Concat "js/bundle.js" | resources.Minify }}
-
 <style>
 .code-container {
     position: relative;
@@ -35,7 +26,7 @@
     border: none;
     background: rgba(255, 255, 255, 0.12);
     border-radius: 4px;
-    color: #8b949e;
+    color: var(--text-color, #8b949e);
     cursor: pointer;
     transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     display: flex;
@@ -46,7 +37,7 @@
 
 .copy-btn:hover {
     background: rgba(255, 255, 255, 0.25);
-    color: #ffffff;
+    color: var(--text-color, #ffffff);
     transform: translateY(-1px);
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
