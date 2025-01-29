@@ -1,43 +1,230 @@
-{{ define "main" }} {{ partial "page-title.html" . }}
+{{ define "main" }}
+{{ partial "page-title.html" . }}
 
-<section>
-  <div class="uk-container uk-margin-xlarge-bottom">
-    <div uk-filter="target: .js-filter">
-      <ul class="uk-subnav uk-subnav-pill uk-subnav-divider">
-        <li uk-filter-control><a href="#">All</a></li>
-        {{ range .Site.Data.portfolio.filter }}
+<section class="uk-section uk-section-small">
+  <div class="uk-container">
+    <!-- Search and Filter -->
+    <div class="uk-margin-medium-bottom">
+      <div class="uk-flex uk-flex-middle uk-flex-center uk-flex-wrap">
+        <!-- Search -->
+        <div class="uk-width-1-3@m uk-margin-right">
+          <div class="uk-inline uk-width-1-1">
+            <span class="uk-form-icon" uk-icon="icon: search"></span>
+            <input class="uk-input uk-form-small" type="text" id="searchInput" placeholder="Search projects...">
+          </div>
+        </div>
+        <!-- Filter Pills -->
+        <ul class="uk-subnav uk-subnav-pill filter-nav">
+          <li class="uk-active" data-filter="all"><a href="#">All</a></li>
+          {{ range .Site.Data.portfolio.filter }}
+          <li data-filter="{{.value}}"><a href="#">{{.label}}</a></li>
+          {{end}}
+        </ul>
+      </div>
+    </div>
 
-        <li uk-filter-control="[data-tags*='{{.value}}']">
-          <a href="#">{{.label}}</a>
-        </li>
-
-        {{end}}
-      </ul>
-
-      <ul class="js-filter uk-child-width-1-1 uk-child-width-1-4@m uk-text-center" uk-grid
-        uk-height-match="target: > li > div > .fixy">
-        {{ range .Data.Pages }}
-        <li data-tags="{{delimit .Params.categories  ' '}}">
-          <div class="uk-card uk-card-default" style="position: relative;">
-            <div class="fixy">
-              <div class="uk-card-media-top">
-                <img class="contain experience" src="{{.Params.Image | absURL}}" alt="" />
-              </div>
-              <div class="uk-card-body">
-                <h3 class="uk-card-title">{{.Title}}</h3>
-                <p>{{.Params.Description}}</p>
-              </div>
+    <!-- Projects Grid -->
+    <div class="uk-grid uk-child-width-1-3@l uk-child-width-1-2@m uk-child-width-1-1@s uk-grid-medium" uk-grid uk-height-match="target: > div > a > .project-card">
+      {{ range .Data.Pages }}
+      <div class="project-item" data-tags="{{delimit .Params.categories ' '}}">
+        <a href="{{.Permalink | relURL}}" class="uk-link-reset">
+          <div class="uk-card uk-card-default uk-card-hover uk-border-rounded project-card">
+            <div class="uk-card-media-top uk-inline uk-light">
+              <img class="uk-border-rounded" src="{{.Params.Image | absURL}}" alt="{{ .Title }}">
             </div>
-
-            <div class="uk-card-footer">
-              <a href="{{.Permalink| relURL}}" class="uk-button uk-button-text">Read more</a>
+            <div class="uk-card-body">
+              <div class="uk-flex uk-flex-between uk-flex-middle">
+                <h3 class="uk-card-title">{{.Title}}</h3>
+                <span class="uk-icon" uk-icon="icon: chevron-right"></span>
+              </div>
+              <p class="uk-text-small uk-text-muted project-description">{{.Params.Description}}</p>
+              <div class="uk-margin-small-top">
+                {{ range .Params.categories }}
+                <span class="uk-label category-tag">{{ . }}</span>
+                {{ end }}
+              </div>
             </div>
           </div>
-        </li>
-        {{end}}
-      </ul>
+        </a>
+      </div>
+      {{end}}
+    </div>
+
+    <!-- No Results Message -->
+    <div id="noResults" class="uk-text-center uk-margin-large-top uk-hidden">
+      <span class="uk-text-muted">No projects found</span>
     </div>
   </div>
 </section>
+
+<style>
+.uk-section-small {
+  padding-top: 20px;
+}
+
+/* Filter Navigation */
+.filter-nav {
+  gap: 8px;
+}
+
+.filter-nav li a {
+  padding: 4px 12px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  background: var(--card-hover-bg);
+  color: var(--text-color-muted);
+  transition: all 0.2s ease;
+}
+
+.filter-nav li.uk-active a {
+  background: var(--link-color);
+  color: var(--card-bg);
+}
+
+/* Project Cards */
+.project-card {
+  background-color: var(--card-bg);
+  border: 1px solid var(--card-border);
+  transition: all 0.2s ease;
+  height: 100%;
+}
+
+.project-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--link-color);
+  background-color: var(--card-hover-bg);
+}
+
+.project-card:hover .uk-icon {
+  color: var(--link-color);
+  transform: translateX(2px);
+}
+
+.project-card .uk-card-media-top {
+  position: relative;
+}
+
+.project-card .uk-card-media-top img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.project-card .uk-overlay {
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.project-card:hover .uk-overlay {
+  opacity: 1;
+}
+
+.uk-card-title {
+  color: var(--card-heading) !important;
+  font-size: 1.1rem !important;
+  line-height: 1.4;
+  margin: 0;
+}
+
+.project-description {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  line-height: 1.4;
+  margin: 8px 0;
+}
+
+.category-tag {
+  font-size: 0.7rem;
+  padding: 1px 8px;
+  border-radius: 4px;
+  background: var(--card-hover-bg);
+  color: var(--text-color-muted);
+  margin-right: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Search Input */
+.uk-input.uk-form-small {
+  height: 32px;
+  border-radius: 6px;
+  background-color: var(--card-hover-bg) !important;
+  border: 1px solid var(--card-border) !important;
+  color: var(--text-color) !important;
+  font-size: 0.875rem;
+  padding-left: 32px;
+}
+
+.uk-input.uk-form-small:focus {
+  background-color: var(--card-bg) !important;
+  border-color: var(--link-color) !important;
+}
+
+.uk-form-icon {
+  color: var(--text-color-muted);
+  width: 32px;
+}
+
+/* Dark Mode Adjustments */
+[data-theme="dark"] .project-card {
+  background-color: var(--card-bg);
+}
+
+[data-theme="dark"] .project-card:hover {
+  background-color: var(--card-hover-bg);
+}
+
+[data-theme="dark"] .category-tag {
+  background: var(--card-hover-bg);
+  color: var(--card-text-muted);
+}
+</style>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const searchInput = document.getElementById('searchInput');
+  const projectItems = document.querySelectorAll('.project-item');
+  const filterButtons = document.querySelectorAll('.filter-nav li');
+  const noResults = document.getElementById('noResults');
+  let currentFilter = 'all';
+
+  function filterProjects() {
+    const searchTerm = searchInput.value.toLowerCase();
+    let visibleItems = 0;
+
+    projectItems.forEach(item => {
+      const title = item.querySelector('.uk-card-title').textContent.toLowerCase();
+      const description = item.querySelector('.project-description').textContent.toLowerCase();
+      const tags = item.dataset.tags.toLowerCase();
+      
+      const matchesSearch = searchTerm === '' || 
+                           title.includes(searchTerm) || 
+                           description.includes(searchTerm);
+      const matchesFilter = currentFilter === 'all' || tags.includes(currentFilter);
+
+      const shouldShow = matchesSearch && matchesFilter;
+      item.style.display = shouldShow ? '' : 'none';
+      if (shouldShow) visibleItems++;
+    });
+
+    noResults.classList.toggle('uk-hidden', visibleItems > 0);
+  }
+
+  filterButtons.forEach(button => {
+    button.addEventListener('click', (e) => {
+      e.preventDefault();
+      filterButtons.forEach(btn => btn.classList.remove('uk-active'));
+      button.classList.add('uk-active');
+      currentFilter = button.dataset.filter;
+      filterProjects();
+    });
+  });
+
+  searchInput.addEventListener('input', filterProjects);
+});
+</script>
 
 {{ end }}
