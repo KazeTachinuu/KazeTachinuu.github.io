@@ -92,4 +92,8 @@
     </form>
   </div>
   <script src="js/writeups-generator/scripts.js"></script>
+  <details class="flag-container">
+    <summary>Flag</summary>
+    <pre><code>picoCTF{tr45h_51ng1ng_502ec42e}</code></pre>
+  </details>
 </body>

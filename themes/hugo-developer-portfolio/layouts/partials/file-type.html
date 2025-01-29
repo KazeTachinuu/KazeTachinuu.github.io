@@ -1,0 +1,123 @@
+{{ $extension := path.Ext . }}
+{{ $fileType := dict
+  "type" "text"
+  "label" "Text File"
+}}
+
+{{/* Programming Languages */}}
+{{ if or (eq $extension ".py") (eq $extension ".pyw") }}
+{{ $fileType = dict
+  "type" "python"
+  "label" "Python Source Code"
+}}
+{{ else if or (eq $extension ".js") (eq $extension ".jsx") (eq $extension ".ts") (eq $extension ".tsx") }}
+{{ $fileType = dict
+  "type" "javascript"
+  "label" "JavaScript Source Code"
+}}
+{{ else if or (eq $extension ".html") (eq $extension ".htm") }}
+{{ $fileType = dict
+  "type" "html"
+  "label" "HTML File"
+}}
+{{ else if or (eq $extension ".css") (eq $extension ".scss") (eq $extension ".sass") }}
+{{ $fileType = dict
+  "type" "css"
+  "label" "CSS Stylesheet"
+}}
+{{ else if or (eq $extension ".sh") (eq $extension ".bash") }}
+{{ $fileType = dict
+  "type" "shell"
+  "label" "Shell Script"
+}}
+{{ else if eq $extension ".php" }}
+{{ $fileType = dict
+  "type" "php"
+  "label" "PHP Source Code"
+}}
+{{ else if or (eq $extension ".rb") (eq $extension ".rbw") }}
+{{ $fileType = dict
+  "type" "ruby"
+  "label" "Ruby Source Code"
+}}
+{{ else if or (eq $extension ".java") (eq $extension ".class") }}
+{{ $fileType = dict
+  "type" "java"
+  "label" "Java Source Code"
+}}
+{{ else if eq $extension ".go" }}
+{{ $fileType = dict
+  "type" "go"
+  "label" "Go Source Code"
+}}
+
+{{/* Binary and Compiled Files */}}
+{{ else if or (eq $extension ".exe") (eq $extension ".dll") (eq $extension ".so") (eq $extension ".dylib") }}
+{{ $fileType = dict
+  "type" "binary"
+  "label" "Binary Executable"
+}}
+{{ else if or (eq $extension ".enc") (eq $extension ".bin") }}
+{{ $fileType = dict
+  "type" "encrypted"
+  "label" "Encrypted/Binary File"
+}}
+
+{{/* Data and Document Files */}}
+{{ else if or (eq $extension ".json") (eq $extension ".yaml") (eq $extension ".yml") }}
+{{ $fileType = dict
+  "type" "json"
+  "label" "Data File"
+}}
+{{ else if or (eq $extension ".xml") (eq $extension ".svg") }}
+{{ $fileType = dict
+  "type" "xml"
+  "label" "XML/SVG File"
+}}
+{{ else if or (eq $extension ".md") (eq $extension ".markdown") }}
+{{ $fileType = dict
+  "type" "markdown"
+  "label" "Markdown Document"
+}}
+{{ else if eq $extension ".pdf" }}
+{{ $fileType = dict
+  "type" "pdf"
+  "label" "PDF Document"
+}}
+{{ else if or (eq $extension ".doc") (eq $extension ".docx") }}
+{{ $fileType = dict
+  "type" "word"
+  "label" "Word Document"
+}}
+
+{{/* Media Files */}}
+{{ else if or (eq $extension ".jpg") (eq $extension ".jpeg") (eq $extension ".png") (eq $extension ".gif") (eq $extension ".webp") }}
+{{ $fileType = dict
+  "type" "image"
+  "label" "Image File"
+}}
+{{ else if or (eq $extension ".mp3") (eq $extension ".wav") (eq $extension ".ogg") }}
+{{ $fileType = dict
+  "type" "audio"
+  "label" "Audio File"
+}}
+{{ else if or (eq $extension ".mp4") (eq $extension ".webm") (eq $extension ".avi") }}
+{{ $fileType = dict
+  "type" "video"
+  "label" "Video File"
+}}
+
+{{/* Archive and Config Files */}}
+{{ else if or (eq $extension ".zip") (eq $extension ".tar") (eq $extension ".gz") (eq $extension ".7z") (eq $extension ".rar") }}
+{{ $fileType = dict
+  "type" "archive"
+  "label" "Archive File"
+}}
+{{ else if or (eq $extension ".conf") (eq $extension ".config") (eq $extension ".ini") }}
+{{ $fileType = dict
+  "type" "config"
+  "label" "Configuration File"
+}}
+{{ end }}
+
+{{ return $fileType }} 

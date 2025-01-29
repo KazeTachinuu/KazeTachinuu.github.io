@@ -1,0 +1,74 @@
+{{ $type := .type }}
+<div class="file-icon" style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;">
+  {{ if eq $type "python" }}
+  <i class="fab fa-python fa-lg" style="color: #89b4fa; font-size: 24px;"></i>
+  {{ else if eq $type "javascript" }}
+  <i class="fab fa-js fa-lg" style="color: #f9e2af; font-size: 24px;"></i>
+  {{ else if eq $type "html" }}
+  <i class="fab fa-html5 fa-lg" style="color: #fab387; font-size: 24px;"></i>
+  {{ else if eq $type "css" }}
+  <i class="fab fa-css3-alt fa-lg" style="color: #89dceb; font-size: 24px;"></i>
+  {{ else if eq $type "shell" }}
+  <i class="fas fa-terminal fa-lg" style="color: #a6e3a1; font-size: 24px;"></i>
+  {{ else if eq $type "binary" }}
+  <i class="fas fa-microchip fa-lg" style="color: #94e2d5; font-size: 24px;"></i>
+  {{ else if eq $type "encrypted" }}
+  <i class="fas fa-lock fa-lg" style="color: #f38ba8; font-size: 24px;"></i>
+  {{ else if eq $type "markdown" }}
+  <i class="fab fa-markdown fa-lg" style="color: #b4befe; font-size: 24px;"></i>
+  {{ else if eq $type "json" }}
+  <i class="fas fa-code fa-lg" style="color: #f5c2e7; font-size: 24px;"></i>
+  {{ else if eq $type "yaml" }}
+  <i class="fas fa-stream fa-lg" style="color: #eba0ac; font-size: 24px;"></i>
+  {{ else if eq $type "xml" }}
+  <i class="fas fa-code fa-lg" style="color: #f2cdcd; font-size: 24px;"></i>
+  {{ else if eq $type "sql" }}
+  <i class="fas fa-database fa-lg" style="color: #cba6f7; font-size: 24px;"></i>
+  {{ else if eq $type "php" }}
+  <i class="fab fa-php fa-lg" style="color: #b4befe; font-size: 24px;"></i>
+  {{ else if eq $type "java" }}
+  <i class="fab fa-java fa-lg" style="color: #fab387; font-size: 24px;"></i>
+  {{ else if eq $type "ruby" }}
+  <i class="fas fa-gem fa-lg" style="color: #f38ba8; font-size: 24px;"></i>
+  {{ else if eq $type "rust" }}
+  <i class="fas fa-cog fa-lg" style="color: #f2cdcd; font-size: 24px;"></i>
+  {{ else if eq $type "go" }}
+  <i class="fab fa-golang fa-lg" style="color: #89dceb; font-size: 24px;"></i>
+  {{ else if eq $type "docker" }}
+  <i class="fab fa-docker fa-lg" style="color: #89b4fa; font-size: 24px;"></i>
+  {{ else if eq $type "git" }}
+  <i class="fab fa-git-alt fa-lg" style="color: #f38ba8; font-size: 24px;"></i>
+  {{ else if eq $type "npm" }}
+  <i class="fab fa-npm fa-lg" style="color: #f38ba8; font-size: 24px;"></i>
+  {{ else if eq $type "image" }}
+  <i class="far fa-image fa-lg" style="color: #94e2d5; font-size: 24px;"></i>
+  {{ else if eq $type "video" }}
+  <i class="far fa-file-video fa-lg" style="color: #fab387; font-size: 24px;"></i>
+  {{ else if eq $type "audio" }}
+  <i class="far fa-file-audio fa-lg" style="color: #f5c2e7; font-size: 24px;"></i>
+  {{ else if eq $type "pdf" }}
+  <i class="far fa-file-pdf fa-lg" style="color: #f38ba8; font-size: 24px;"></i>
+  {{ else if eq $type "word" }}
+  <i class="far fa-file-word fa-lg" style="color: #89b4fa; font-size: 24px;"></i>
+  {{ else if eq $type "excel" }}
+  <i class="far fa-file-excel fa-lg" style="color: #a6e3a1; font-size: 24px;"></i>
+  {{ else if eq $type "powerpoint" }}
+  <i class="far fa-file-powerpoint fa-lg" style="color: #fab387; font-size: 24px;"></i>
+  {{ else if eq $type "archive" }}
+  <i class="far fa-file-archive fa-lg" style="color: #f9e2af; font-size: 24px;"></i>
+  {{ else if eq $type "config" }}
+  <i class="fas fa-cogs fa-lg" style="color: #89dceb; font-size: 24px;"></i>
+  {{ else if eq $type "font" }}
+  <i class="fas fa-font fa-lg" style="color: #cba6f7; font-size: 24px;"></i>
+  {{ else if eq $type "certificate" }}
+  <i class="fas fa-certificate fa-lg" style="color: #a6e3a1; font-size: 24px;"></i>
+  {{ else if eq $type "key" }}
+  <i class="fas fa-key fa-lg" style="color: #f9e2af; font-size: 24px;"></i>
+  {{ else if eq $type "log" }}
+  <i class="fas fa-clipboard-list fa-lg" style="color: #bac2de; font-size: 24px;"></i>
+  {{ else if eq $type "text" }}
+  <i class="far fa-file-alt fa-lg" style="color: #cdd6f4; font-size: 24px;"></i>
+  {{ else }}
+  <i class="fas fa-file fa-lg" style="color: #a6adc8; font-size: 24px;"></i>
+  {{ end }}
+</div>

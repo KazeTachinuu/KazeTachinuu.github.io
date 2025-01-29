@@ -50,9 +50,7 @@ picoCTF{tr45h_51ng1ng_502ec42e}
 ```
    
 
-<details><summary>🚩 FLAG</summary>  
-
-```  
-picoCTF{tr45h_51ng1ng_502ec42e}
-```  
+<details class="flag-container">
+<summary>Flag</summary>
+<pre><code>picoCTF{tr45h_51ng1ng_502ec42e}</code></pre>
 </details>

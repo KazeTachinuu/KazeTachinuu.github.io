@@ -67,9 +67,7 @@ picoCTF{fl45h_5pr1ng1ng_ae0fb77c}
 ```
 
 
-<details><summary>🚩 FLAG</summary>  
-
-```  
-picoCTF{fl45h_5pr1ng1ng_ae0fb77c}
-```  
+<details class="flag-container">
+<summary>Flag</summary>
+<pre><code>picoCTF{fl45h_5pr1ng1ng_ae0fb77c}</code></pre>
 </details>

@@ -63,10 +63,9 @@ Password Matching Hash found ! : 865e
 picoCTF{m45h_fl1ng1ng_2b072a90}
 ```
 
-<details><summary>🚩 FLAG</summary>
+We got the flag :)
 
-```
-picoCTF{m45h_fl1ng1ng_2b072a90}
-```
-
+<details class="flag-container">
+<summary>Flag</summary>
+<pre><code>picoCTF{m45h_fl1ng1ng_2b072a90}</code></pre>
 </details>

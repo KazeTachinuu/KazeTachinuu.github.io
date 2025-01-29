@@ -59,9 +59,7 @@ picoCTF{h45h_sl1ng1ng_36e992a6}
 
 And just like that we are done with this series of challenges. Congrats. :)   
 
-<details><summary>🚩 FLAG</summary>  
-
-```  
-picoCTF{h45h_sl1ng1ng_36e992a6}  
-```  
+<details class="flag-container">
+<summary>Flag</summary>
+<pre><code>picoCTF{h45h_sl1ng1ng_36e992a6}</code></pre>
 </details>

@@ -18,36 +18,34 @@
     </div>
 
     <!-- Challenge Files -->
-    <div class="uk-margin-top uk-flex uk-flex-right uk-flex-middle uk-margin-bottom">
-      <ul class="uk-list uk-list-divider">
+    <div class="files-container">
+      <ul class="files-grid">
         {{ $files := readDir (printf "/static%s" .Path) }}
         {{ range $files }}
-        {{ $extension := path.Ext .Name }}
-        {{ $icon := "" }}
-        {{ if or (eq $extension ".txt") (eq $extension ".md") }}
-        {{ $icon = "file-text" }}
-        {{ else if or (eq $extension ".py") (eq $extension ".sh") (eq $extension ".exe") }}
-        {{ $icon = "code" }}
-        {{ else if or (eq $extension ".png") (eq $extension ".jpg") (eq $extension ".jpeg") }}
-        {{ $icon = "image" }}
-        {{ else if or (eq $extension ".pdf") }}
-        {{ $icon = "file-pdf" }}
-        {{ else if or (eq $extension ".zip") (eq $extension ".rar") (eq $extension ".tar.gz") }}
-        {{ $icon = "folder" }}
-        {{ else }}
-        {{ $icon = "download" }}
-        {{ end }}
-
+        {{ $fileType := partial "file-type.html" .Name }}
         <li class="file-item">
           <div class="file-wrapper">
-            <span class="uk-margin-right" uk-icon={{ $icon }}></span>
-            <a href="#" class="file-link">{{ .Name }}</a>
-            <!-- Dropdown menu -->
-            <div class="dropdown-content">
-              <!-- View link -->
-              <a href="{{ .Name }}" class="view-link" target="_blank">View</a>
-              <!-- Download link -->
-              <a href="{{ .Name }}" download class="download-link">Download</a>
+            <div class="file-icon" data-type="{{ $fileType.type }}">
+              {{ partial "file-icon.html" $fileType }}
+            </div>
+            <div class="file-info">
+              <div class="file-name">{{ .Name }}</div>
+              <div class="file-type">{{ $fileType.label }}</div>
+            </div>
+            <div class="file-actions">
+              <a href="{{ .Name }}" class="file-action" target="_blank" aria-label="View file">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                  <circle cx="12" cy="12" r="3"></circle>
+                </svg>
+              </a>
+              <a href="{{ .Name }}" class="file-action" download aria-label="Download file">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                  <polyline points="7 10 12 15 17 10"></polyline>
+                  <line x1="12" y1="15" x2="12" y2="3"></line>
+                </svg>
+              </a>
             </div>
           </div>
         </li>
@@ -64,36 +62,5 @@
     </div>
   </div>
 </section>
-
-<!-- CSS for dropdown menu -->
-<style>
-  /* Hide dropdown content by default */
-  .dropdown-content {
-    display: none;
-    position: absolute;
-    background-color: #f9f9f9;
-    min-width: 80px;
-    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
-    z-index: 1;
-  }
-
-  /* Show dropdown content on hover */
-  .file-item:hover .dropdown-content {
-    display: block;
-  }
-
-  /* Style links inside the dropdown */
-  .dropdown-content a {
-    color: black;
-    padding: 12px 16px;
-    text-decoration: none;
-    display: block;
-  }
-
-  /* Change color of dropdown links on hover */
-  .dropdown-content a:hover {
-    background-color: #f1f1f1;
-  }
-</style>
 
 {{ end }}
