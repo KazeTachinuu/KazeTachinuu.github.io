@@ -20,16 +20,18 @@ skill:
   item:
     - title: Linux
       logo: /Home/Archcraft-logo.png
-      description: I use Linux as my main Operating System (ArchCraft with bspwm)
+      description: I have been using Linux as my main Operating System for years (ArchCraft with Hyprland). And trying to contribute to the community.
     - title: Python
       logo: /Home/Python.png 
       description: I enroled in CS61A @ UC Berkeley, a Python course. I also use Python for my personal projects such as penetration testing tools.
     - title: C / C++ 
       logo: /Home/C_Logo.png
-      description: I have been learning and using C/C++ for 2 years now.
+      description: I have been learning and using C/C++ for 2 years now. I built some of my projects in C/C++ and learning more about it at EPITA.
     - title: Ethical Hacking
       logo: https://res.cloudinary.com/dd9rwcqim/image/upload/v1685017529/RedTeam_logo_k0e2ys.png
-      description: Offensive Security, Penetration Testing, Red Teaming, Network Security. Preparing for CEH and CompTIA Security+.
+      description: | 
+      Offensive Security, Penetration Testing, Red Teaming, Network Security. Using TryHackMe, and Root-Me as simple learning tools. 
+      Currently learning about Cyber Threat Intelligence at my apprenticeship at WELAN.
     - title: Network Security
       logo: /project/Snowpack/CEA.png
       description: |
@@ -65,7 +67,7 @@ ctf:
       image: https://res.cloudinary.com/dd9rwcqim/image/upload/v1684940900/hex404_viax68.png
       url: none
     - title: TryHackMe
-      description: Top 10%
+      description: Top 8%
       image: https://res.cloudinary.com/dd9rwcqim/image/upload/v1685444022/TryHackMe_zs5mvp.png
       url: none
     - title: 4n0nym0us3 CTF
