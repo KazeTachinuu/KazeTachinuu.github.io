@@ -13,16 +13,21 @@
       </div>
     </div>
 
-    <div class="uk-grid uk-child-width-1-3@m uk-child-width-1-2@s uk-grid-medium" uk-grid>
+    <div class="uk-grid uk-child-width-1-3@m uk-child-width-1-2@s uk-grid-medium" uk-grid uk-height-match="target: > div > a > .snippet-card">
       {{ range .Data.Pages }}
       <div class="snippet-item">
         <a href="{{ .Permalink | relURL }}" class="uk-link-reset">
           <div class="uk-card uk-card-default uk-card-hover uk-border-rounded uk-box-shadow-small snippet-card">
-            <div class="uk-card-body">
-              <span class="uk-label snippet-language">{{ .Params.Language }}</span>
-              <h3 class="uk-card-title uk-margin-small-top">{{ .Title }}</h3>
+            <div class="uk-card-body uk-flex uk-flex-column">
+              <div class="uk-flex uk-flex-between uk-flex-middle">
+                <span class="uk-label snippet-language">{{ .Params.Language }}</span>
+                <span class="uk-icon" uk-icon="icon: chevron-right"></span>
+              </div>
+              <h3 class="uk-card-title uk-margin-small-top uk-margin-remove-bottom">{{ .Title }}</h3>
               {{ if .Description }}
-              <p class="uk-text-small uk-text-muted uk-margin-remove-bottom">{{ .Description }}</p>
+              <p class="uk-text-small uk-text-muted uk-margin-small-top uk-margin-remove-bottom snippet-description">{{ .Description }}</p>
+              {{ else }}
+              <p class="uk-text-small uk-text-muted uk-margin-small-top uk-margin-remove-bottom snippet-description">&nbsp;</p>
               {{ end }}
             </div>
           </div>
@@ -42,12 +47,23 @@
   background-color: var(--card-bg);
   border: 1px solid var(--card-border);
   transition: all 0.2s ease;
+  height: 100%;
+}
+
+.snippet-card .uk-card-body {
+  padding: 1.25rem;
+  height: 100%;
 }
 
 .snippet-card:hover {
   transform: translateY(-2px);
   border-color: var(--link-color);
   background-color: var(--card-hover-bg);
+}
+
+.snippet-card:hover .uk-icon {
+  color: var(--link-color);
+  transform: translateX(2px);
 }
 
 .snippet-language {
@@ -62,8 +78,22 @@
 .uk-card-title {
   color: var(--card-heading) !important;
   font-size: 1.1rem !important;
-  margin-top: 8px;
   line-height: 1.4;
+  flex-grow: 0;
+}
+
+.snippet-description {
+  flex-grow: 1;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  line-height: 1.4;
+}
+
+.uk-icon {
+  color: var(--text-color-muted);
+  transition: all 0.2s ease;
 }
 
 /* Search Input */
