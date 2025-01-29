@@ -29,9 +29,9 @@ skill:
       description: I have been learning and using C/C++ for 2 years now. I built some of my projects in C/C++ and learning more about it at EPITA.
     - title: Ethical Hacking
       logo: https://res.cloudinary.com/dd9rwcqim/image/upload/v1685017529/RedTeam_logo_k0e2ys.png
-      description: | 
-      Offensive Security, Penetration Testing, Red Teaming, Network Security. Using TryHackMe, and Root-Me as simple learning tools. 
-      Currently learning about Cyber Threat Intelligence at my apprenticeship at WELAN.
+      description: >
+        Offensive Security, Penetration Testing, Red Teaming, Network Security. Using TryHackMe, and Root-Me as simple learning tools. 
+        Currently learning about Cyber Threat Intelligence at my apprenticeship at WELAN.
     - title: Network Security
       logo: /project/Snowpack/CEA.png
       description: |
