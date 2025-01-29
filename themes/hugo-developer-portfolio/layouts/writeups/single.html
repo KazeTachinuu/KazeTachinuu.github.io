@@ -1,8 +1,43 @@
 {{ define "main" }}
 
-<!-- Header -->
 <section>
-  <div class="uk-container uk-margin-large-bottom uk-margin-medium-top">
+  <div class="uk-container uk-margin-medium-top">
+    <!-- Layer Navigation with Back Button -->
+    <div class="uk-margin-medium-bottom layer-nav">
+        <div class="uk-flex uk-flex-middle uk-flex-between">
+            <div class="uk-flex uk-flex-middle">
+                {{ if .Parent }}
+                <a href="{{ .Parent.RelPermalink }}" class="back-button" uk-tooltip="Go back to {{ .Parent.Title }}">
+                    <span uk-icon="icon: chevron-left"></span>
+                </a>
+                {{ end }}
+                {{ $ancestors := slice }}
+                {{ $current := . }}
+                {{ if $current.Parent }}
+                    {{ $parent := $current.Parent }}
+                    {{ $ancestors = $ancestors | append $parent }}
+                    {{ if $parent.Parent }}
+                        {{ $grandparent := $parent.Parent }}
+                        {{ $ancestors = $ancestors | append $grandparent }}
+                        {{ if $grandparent.Parent }}
+                            {{ $greatgrandparent := $grandparent.Parent }}
+                            {{ $ancestors = $ancestors | append $greatgrandparent }}
+                        {{ end }}
+                    {{ end }}
+                {{ end }}
+                {{ range after 1 (seq (len $ancestors)) }}
+                    {{ $i := sub (len $ancestors) . }}
+                    {{ with index $ancestors $i }}
+                        <a href="{{ .RelPermalink }}" class="layer-item">{{ .Title }}</a>
+                        <span class="uk-margin-small-left uk-margin-small-right layer-separator" uk-icon="icon: chevron-right"></span>
+                    {{ end }}
+                {{ end }}
+                <span class="layer-item current">{{ .Title }}</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Rest of the content -->
     <h1 class="uk-text-center uk-heading-medium">{{.Title}}</h1>
     <p class="uk-text-center uk-text-lead">{{.Params.description}}</p>
     <p class="uk-text-center">Published on {{ .PublishDate.Format "Jan 02, 2006" }}</p>
@@ -62,5 +97,98 @@
     </div>
   </div>
 </section>
+
+<style>
+/* Layer Navigation Styles */
+.layer-nav {
+    padding: 0.75rem 1.25rem;
+    background: var(--card-bg);
+    border-radius: 12px;
+    border: 1px solid var(--card-border);
+    box-shadow: 0 1px 4px var(--card-shadow);
+}
+
+.layer-item {
+    color: var(--text-color-muted);
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 500;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.layer-item:not(.current):hover {
+    color: var(--link-hover-color);
+    background: var(--card-hover-bg);
+    text-decoration: none;
+}
+
+.layer-item.current {
+    color: var(--link-color);
+    background: var(--card-hover-bg);
+    font-weight: 600;
+}
+
+.layer-separator {
+    color: var(--text-color-muted);
+    opacity: 0.5;
+}
+
+/* Back Button Styles */
+.back-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    color: var(--text-color-muted);
+    background: var(--card-hover-bg);
+    margin-right: 12px;
+    transition: all 0.2s ease;
+}
+
+.back-button:hover {
+    color: var(--link-hover-color);
+    background: var(--card-bg);
+    transform: translateX(-2px);
+}
+
+.back-button .uk-icon {
+    width: 20px;
+    height: 20px;
+}
+
+/* Dark Mode Adjustments */
+[data-theme="dark"] .layer-nav {
+    background: var(--card-bg);
+    border-color: var(--card-border);
+}
+
+[data-theme="dark"] .layer-item {
+    color: var(--card-text-muted);
+}
+
+[data-theme="dark"] .layer-item:not(.current):hover {
+    color: var(--link-hover-color);
+    background: var(--card-hover-bg);
+}
+
+[data-theme="dark"] .layer-item.current {
+    color: var(--link-color);
+    background: var(--card-hover-bg);
+}
+
+[data-theme="dark"] .back-button {
+    color: var(--card-text-muted);
+    background: var(--card-hover-bg);
+}
+
+[data-theme="dark"] .back-button:hover {
+    color: var(--link-hover-color);
+    background: var(--card-bg);
+}
+</style>
 
 {{ end }}
