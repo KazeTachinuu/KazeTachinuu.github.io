@@ -1,16 +1,20 @@
 <div uk-sticky="sel-target: .uk-navbar-container; cls-active: uk-navbar-sticky; bottom: #transparent-sticky-navbar">
-    <nav class="uk-navbar-container uk-margin" uk-navbar="mode: click;" style="padding-right: 3rem">
-        <div class="uk-navbar-right">
-            <ul class="uk-navbar-nav uk-visible@s">
-                <!-- <li><a style="font-size: 18px; text-transform: none" href="javascript:history.back()">Back</a></li> -->
-                {{if .IsHome}}
-                <li class="uk-active "><a style="font-size: 18px; text-transform: none"
-                        href="{{.Site.BaseURL}}">{{ with .Site.Params.Home }} {{ . }} {{ end }}</a></li>
-                {{else}}
-                <li><a style="font-size: 18px; text-transform: none" href="/">{{ with .Site.Params.Home }} {{ . }}
-                        {{ end }}</a></li>
+    <nav class="uk-navbar-container" uk-navbar="mode: click;">
+        <div class="uk-navbar-left">
+            <a class="uk-navbar-item uk-logo" href="{{ .Site.BaseURL }}">
+                {{ .Site.Title }}
+            </a>
+        </div>
 
+        <!-- Desktop Navigation -->
+        <div class="uk-navbar-right uk-visible@m">
+            <ul class="uk-navbar-nav">
+                {{if .IsHome}}
+                <li class="uk-active"><a href="{{.Site.BaseURL}}">{{ with .Site.Params.Home }}{{ . }}{{ end }}</a></li>
+                {{else}}
+                <li><a href="/">{{ with .Site.Params.Home }}{{ . }}{{ end }}</a></li>
                 {{end}}
+                
                 {{ range .Site.Menus.main }}
                 {{$aURL := .URL | relLangURL}}
                 {{$page := $.Page.Permalink | relLangURL}}
@@ -19,41 +23,54 @@
                 {{$aURL3 := index $aURL2 1}}
                 {{$page3 := index $page2 1}}
                 {{if eq $aURL3 $page3}}
-                <li class="uk-active"><a style="font-size: 18px; text-transform:none"
-                        href="{{ .URL | relURL }}">{{.Name}}</a></li>
+                <li class="uk-active"><a href="{{ .URL | relURL }}">{{.Name}}</a></li>
                 {{else}}
-                <li><a style="font-size: 18px; text-transform: none" href="{{ .URL | relURL }}">{{.Name}}</a></li>
+                <li><a href="{{ .URL | relURL }}">{{.Name}}</a></li>
                 {{end}}
                 {{end}}
-                <li>
-                    <button class="theme-toggle" onclick="toggleTheme()">
-                        <svg class="light-icon" style="display: none;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                            <path d="M12 2.25a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0V3a.75.75 0 01.75-.75zM7.5 12a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM18.894 6.166a.75.75 0 00-1.06-1.06l-1.591 1.59a.75.75 0 101.06 1.061l1.591-1.59zM21.75 12a.75.75 0 01-.75.75h-2.25a.75.75 0 010-1.5H21a.75.75 0 01.75.75zM17.834 18.894a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 10-1.061 1.06l1.59 1.591zM12 18a.75.75 0 01.75.75V21a.75.75 0 01-1.5 0v-2.25A.75.75 0 0112 18zM7.758 17.303a.75.75 0 00-1.061-1.06l-1.591 1.59a.75.75 0 001.06 1.061l1.591-1.59zM6 12a.75.75 0 01-.75.75H3a.75.75 0 010-1.5h2.25A.75.75 0 016 12zM6.697 7.757a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 00-1.061 1.06l1.59 1.591z" />
-                        </svg>
-                        <svg class="dark-icon" style="display: none;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                            <path d="M9.528 1.718a.75.75 0 01.162.819A8.97 8.97 0 009 6a9 9 0 009 9 8.97 8.97 0 003.463-.69.75.75 0 01.981.98 10.503 10.503 0 01-9.694 6.46c-5.799 0-10.5-4.701-10.5-10.5 0-4.368 2.667-8.112 6.46-9.694a.75.75 0 01.818.162z" />
-                        </svg>
-                    </button>
-                </li>
             </ul>
+            
+            <!-- Theme Toggle -->
+            <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+                <svg class="light-icon" style="display: none;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <path d="M12 2.25a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0V3a.75.75 0 01.75-.75zM7.5 12a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM18.894 6.166a.75.75 0 00-1.06-1.06l-1.591 1.59a.75.75 0 101.06 1.061l1.591-1.59zM21.75 12a.75.75 0 01-.75.75h-2.25a.75.75 0 010-1.5H21a.75.75 0 01.75.75zM17.834 18.894a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 10-1.061 1.06l1.59 1.591zM12 18a.75.75 0 01.75.75V21a.75.75 0 01-1.5 0v-2.25A.75.75 0 0112 18zM7.758 17.303a.75.75 0 00-1.061-1.06l-1.591 1.59a.75.75 0 001.06 1.061l1.591-1.59zM6 12a.75.75 0 01-.75.75H3a.75.75 0 010-1.5h2.25A.75.75 0 016 12zM6.697 7.757a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 00-1.061 1.06l1.59 1.591z" />
+                </svg>
+                <svg class="dark-icon" style="display: none;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <path d="M9.528 1.718a.75.75 0 01.162.819A8.97 8.97 0 009 6a9 9 0 009 9 8.97 8.97 0 003.463-.69.75.75 0 01.981.98 10.503 10.503 0 01-9.694 6.46c-5.799 0-10.5-4.701-10.5-10.5 0-4.368 2.667-8.112 6.46-9.694a.75.75 0 01.818.162z" />
+                </svg>
+            </button>
+        </div>
 
-            <a class="uk-navbar-toggle uk-hidden@s" uk-toggle="target: #sidenav" uk-navbar-toggle-icon href="#"></a>
-
+        <!-- Mobile Navigation -->
+        <div class="uk-navbar-right uk-hidden@m">
+            <!-- Theme Toggle -->
+            <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+                <svg class="light-icon" style="display: none;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <path d="M12 2.25a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0V3a.75.75 0 01.75-.75zM7.5 12a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM18.894 6.166a.75.75 0 00-1.06-1.06l-1.591 1.59a.75.75 0 101.06 1.061l1.591-1.59zM21.75 12a.75.75 0 01-.75.75h-2.25a.75.75 0 010-1.5H21a.75.75 0 01.75.75zM17.834 18.894a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 10-1.061 1.06l1.59 1.591zM12 18a.75.75 0 01.75.75V21a.75.75 0 01-1.5 0v-2.25A.75.75 0 0112 18zM7.758 17.303a.75.75 0 00-1.061-1.06l-1.591 1.59a.75.75 0 001.06 1.061l1.591-1.59zM6 12a.75.75 0 01-.75.75H3a.75.75 0 010-1.5h2.25A.75.75 0 016 12zM6.697 7.757a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 00-1.061 1.06l1.59 1.591z" />
+                </svg>
+                <svg class="dark-icon" style="display: none;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <path d="M9.528 1.718a.75.75 0 01.162.819A8.97 8.97 0 009 6a9 9 0 009 9 8.97 8.97 0 003.463-.69.75.75 0 01.981.98 10.503 10.503 0 01-9.694 6.46c-5.799 0-10.5-4.701-10.5-10.5 0-4.368 2.667-8.112 6.46-9.694a.75.75 0 01.818.162z" />
+                </svg>
+            </button>
+            
+            <!-- Mobile Menu Button -->
+            <a class="uk-navbar-toggle" uk-toggle="target: #sidenav" uk-navbar-toggle-icon href="#"></a>
         </div>
     </nav>
 </div>
 
-<div id="sidenav" uk-offcanvas="overlay: true">
-    <div class="uk-offcanvas-bar uk-flex uk-flex-column">
-
-        <ul class="uk-nav uk-nav-primary uk-nav-center uk-margin-auto-vertical">
+<!-- Mobile Navigation Sidebar -->
+<div id="sidenav" uk-offcanvas="overlay: true; flip: true">
+    <div class="uk-offcanvas-bar">
+        <button class="uk-offcanvas-close" type="button" uk-close aria-label="Close menu"></button>
+        
+        <ul class="uk-nav uk-nav-primary uk-margin-medium-top">
             {{if .IsHome}}
-            <li class="uk-active"><a style="font-size: 18px" href="{{.Site.BaseURL}}">{{ with .Site.Params.Home }} {{ . }} {{ end }}</a>
-            </li>
+            <li class="uk-active"><a href="{{.Site.BaseURL}}">{{ with .Site.Params.Home }}{{ . }}{{ end }}</a></li>
             {{else}}
-            <li><a style="font-size: 18px" href="{{.Site.BaseURL}}">{{ with .Site.Params.Home }} {{ . }} {{ end }}</a></li>
-
+            <li><a href="{{.Site.BaseURL}}">{{ with .Site.Params.Home }}{{ . }}{{ end }}</a></li>
             {{end}}
+            
             {{ range .Site.Menus.main }}
             {{$aURL := .URL | relLangURL}}
             {{$page := $.Page.Permalink | relLangURL}}
@@ -62,16 +79,156 @@
             {{$aURL3 := index $aURL2 1}}
             {{$page3 := index $page2 1}}
             {{if eq $aURL3 $page3}}
-            <li class="uk-active"><a style="font-size: 18px" href="{{ .URL | relURL }}">{{.Name}}</a></li>
+            <li class="uk-active"><a href="{{ .URL | relURL }}">{{.Name}}</a></li>
             {{else}}
-            <li><a style="font-size: 18px" href="{{ .URL | relURL }}">{{.Name}}</a></li>
+            <li><a href="{{ .URL | relURL }}">{{.Name}}</a></li>
             {{end}}
             {{end}}
         </ul>
-
     </div>
 </div>
+
 {{ template "_internal/google_analytics.html" . }}
+
+<style>
+/* Base Navigation Styles */
+.uk-navbar-container {
+    padding: 0.5rem 1.5rem;
+    transition: padding 0.3s ease;
+}
+
+/* Logo Styles */
+.uk-logo {
+    font-size: clamp(1.2rem, 4vw, 1.5rem);
+    font-weight: 600;
+    color: var(--heading-color) !important;
+}
+
+/* Navigation Links */
+.uk-navbar-nav > li > a {
+    font-size: 1rem;
+    text-transform: none;
+    color: var(--text-color);
+    padding: 0 1rem;
+    transition: color 0.2s ease;
+    position: relative;
+    min-height: 40px;
+}
+
+.uk-navbar-nav > li > a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background: var(--link-color);
+    transition: all 0.3s ease;
+    transform: translateX(-50%);
+}
+
+.uk-navbar-nav > li > a:hover::after,
+.uk-navbar-nav > li.uk-active > a::after {
+    width: 100%;
+}
+
+/* Theme Toggle Button */
+.theme-toggle {
+    background: none;
+    border: none;
+    padding: 0.5rem;
+    margin: 0 0.5rem;
+    cursor: pointer;
+    color: var(--text-color);
+    transition: color 0.2s ease;
+}
+
+.theme-toggle:hover {
+    color: var(--link-hover-color);
+}
+
+.theme-toggle svg {
+    width: 20px;
+    height: 20px;
+    fill: currentColor;
+}
+
+/* Mobile Navigation */
+.uk-navbar-toggle {
+    color: var(--text-color);
+    padding: 0;
+}
+
+.uk-navbar-toggle:hover {
+    color: var(--link-hover-color);
+}
+
+/* Offcanvas Menu */
+.uk-offcanvas-bar {
+    background: var(--card-bg);
+    box-shadow: -2px 0 8px var(--shadow-color);
+    padding: 1.5rem;
+}
+
+.uk-offcanvas-bar .uk-nav-primary > li > a {
+    color: var(--text-color);
+    font-size: 1.1rem;
+    padding: 0.75rem 0;
+    transition: color 0.2s ease;
+}
+
+.uk-offcanvas-bar .uk-nav-primary > li.uk-active > a {
+    color: var(--link-color);
+}
+
+.uk-offcanvas-bar .uk-nav-primary > li > a:hover {
+    color: var(--link-hover-color);
+}
+
+.uk-offcanvas-close {
+    color: var(--text-color) !important;
+}
+
+/* Sticky Header */
+.uk-navbar-sticky {
+    background: var(--card-bg) !important;
+    box-shadow: 0 2px 8px var(--shadow-color);
+}
+
+/* Dark Mode Adjustments */
+[data-theme="dark"] .uk-offcanvas-bar {
+    background: var(--card-bg);
+}
+
+[data-theme="dark"] .uk-offcanvas-bar .uk-nav-primary > li > a {
+    color: var(--text-color);
+}
+
+[data-theme="dark"] .uk-offcanvas-bar .uk-nav-primary > li.uk-active > a {
+    color: var(--link-color);
+}
+
+[data-theme="dark"] .uk-offcanvas-bar .uk-nav-primary > li > a:hover {
+    color: var(--link-hover-color);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 640px) {
+    .uk-navbar-container {
+        padding: 0.5rem 1rem;
+    }
+    
+    .theme-toggle {
+        padding: 0.25rem;
+        margin: 0 0.5rem;
+    }
+    
+    .theme-toggle svg {
+        width: 18px;
+        height: 18px;
+    }
+}
+</style>
 
 <script>
 function toggleTheme() {
@@ -85,18 +242,22 @@ function toggleTheme() {
 
 function updateThemeIcon() {
     const currentTheme = document.documentElement.getAttribute('data-theme');
-    const lightIcon = document.querySelector('.light-icon');
-    const darkIcon = document.querySelector('.dark-icon');
+    const lightIcons = document.querySelectorAll('.light-icon');
+    const darkIcons = document.querySelectorAll('.dark-icon');
     
     if (currentTheme === 'dark') {
-        lightIcon.style.display = 'block';
-        darkIcon.style.display = 'none';
+        lightIcons.forEach(icon => icon.style.display = 'block');
+        darkIcons.forEach(icon => icon.style.display = 'none');
     } else {
-        lightIcon.style.display = 'none';
-        darkIcon.style.display = 'block';
+        lightIcons.forEach(icon => icon.style.display = 'none');
+        darkIcons.forEach(icon => icon.style.display = 'block');
     }
 }
 
-// Initialize the icon on page load
-document.addEventListener('DOMContentLoaded', updateThemeIcon);
+// Initialize theme on page load
+document.addEventListener('DOMContentLoaded', () => {
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    updateThemeIcon();
+});
 </script>

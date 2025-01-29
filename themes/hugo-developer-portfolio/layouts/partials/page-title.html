@@ -1,7 +1,52 @@
 <!-- page title -->
-
-<section class="uk-margin-large-bottom">
-        <h1 class="uk-heading-large uk-text-center">{{.Title}}</h1>
+<section class="page-title uk-margin-medium-bottom uk-margin-large-bottom@m">
+  <div class="uk-container">
+    <h1 class="uk-heading-medium">{{.Title}}</h1>
+    {{ with .Description }}
+    <p class="uk-text-lead uk-margin-medium-top">{{ . }}</p>
+    {{ end }}
+  </div>
 </section>
 
+<style>
+.page-title {
+  padding: 2rem 0;
+}
+
+.page-title h1 {
+  color: var(--heading-color);
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 700;
+  line-height: 1.2;
+  margin: 0;
+  text-align: center;
+}
+
+.page-title .uk-text-lead {
+  color: var(--text-color-muted);
+  font-size: clamp(1.1rem, 2.5vw, 1.25rem);
+  line-height: 1.5;
+  margin: 1rem 0 0;
+  text-align: center;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media (min-width: 960px) {
+  .page-title {
+    padding: 3rem 0;
+  }
+}
+
+@media (max-width: 640px) {
+  .page-title {
+    padding: 1.5rem 0;
+  }
+  
+  .page-title .uk-text-lead {
+    padding: 0 1rem;
+  }
+}
+</style>
 <!-- /page title -->

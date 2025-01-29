@@ -137,6 +137,7 @@ html, body {
   transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
               color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   min-height: 100vh;
+  -webkit-text-size-adjust: 100%;
 }
 
 .wrapper {
@@ -153,14 +154,14 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 h1 {
-  font-size: 3.5rem;
+  font-size: clamp(2rem, 5vw, 3.5rem);
   letter-spacing: -0.02em;
   line-height: 1.2;
   margin-bottom: 1.5rem;
 }
 
 h2 {
-  font-size: 2.5rem;
+  font-size: clamp(1.5rem, 4vw, 2.5rem);
   letter-spacing: -0.01em;
   line-height: 1.3;
   margin-bottom: 1.25rem;
@@ -536,12 +537,24 @@ input:focus, textarea:focus, select:focus {
 /* Responsive adjustments */
 @media (max-width: 960px) {
   .uk-navbar-container {
-    padding: 0 1rem !important;
+    padding: 0.5rem !important;
+  }
+  
+  .uk-navbar-left {
+    padding-left: 0;
+  }
+  
+  .uk-navbar-right {
+    padding-right: 0;
   }
   
   .uk-navbar-nav > li > a {
-    padding: 0 0.5rem !important;
-    font-size: 0.9rem !important;
+    min-height: 40px !important;
+    padding: 0 10px !important;
+  }
+  
+  .theme-toggle {
+    margin-right: 0.5rem;
   }
 }
 
@@ -1541,5 +1554,123 @@ details.flag-container code {
   .file-action {
     width: 36px;
     height: 36px;
+  }
+}
+
+/* Responsive Container */
+.uk-container {
+  padding-left: max(15px, 3vw);
+  padding-right: max(15px, 3vw);
+}
+
+/* Responsive Cards */
+@media (max-width: 640px) {
+  .uk-card {
+    margin-bottom: 1rem;
+  }
+
+  .uk-card-body {
+    padding: 1rem;
+  }
+
+  .uk-card-media-top img {
+    height: 180px !important;
+  }
+
+  .uk-grid {
+    margin-left: -10px;
+  }
+
+  .uk-grid > * {
+    padding-left: 10px;
+  }
+}
+
+/* Responsive Footer */
+@media (max-width: 640px) {
+  .footer {
+    padding: 2rem 0;
+  }
+
+  .footer-social {
+    margin-top: 1rem;
+  }
+
+  .footer-copyright {
+    text-align: center;
+  }
+}
+
+/* Responsive Tables */
+@media (max-width: 640px) {
+  .uk-table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+/* Responsive Images */
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Responsive Code Blocks */
+pre {
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 1rem;
+}
+
+/* Touch-friendly Interactions */
+@media (hover: none) {
+  .uk-card:hover {
+    transform: none !important;
+  }
+  
+  .uk-button:hover {
+    transform: none !important;
+  }
+}
+
+/* Better Mobile Forms */
+@media (max-width: 640px) {
+  input, textarea, select {
+    font-size: 16px !important; /* Prevents iOS zoom on focus */
+  }
+}
+
+/* Responsive Grid Adjustments */
+@media (max-width: 960px) {
+  .uk-child-width-1-2\@m > * {
+    width: 100%;
+  }
+  
+  .uk-grid-medium {
+    margin-left: -15px;
+  }
+  
+  .uk-grid-medium > * {
+    padding-left: 15px;
+  }
+}
+
+/* Mobile Navigation Improvements */
+@media (max-width: 960px) {
+  .uk-navbar-toggle {
+    padding: 0;
+    margin-right: 0.5rem;
+  }
+
+  .uk-offcanvas-bar {
+    padding: 1.5rem;
+    width: 270px;
+  }
+
+  .uk-offcanvas-bar .uk-nav-primary > li > a {
+    padding: 0.5rem 0;
+    font-size: 1.1rem;
   }
 } 

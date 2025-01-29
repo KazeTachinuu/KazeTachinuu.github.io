@@ -5,32 +5,34 @@
   <div class="uk-container">
     <!-- Search and Filter -->
     <div class="uk-margin-medium-bottom">
-      <div class="uk-flex uk-flex-middle uk-flex-center uk-flex-wrap">
+      <div class="uk-flex uk-flex-column uk-flex-middle uk-flex-center">
         <!-- Search -->
-        <div class="uk-width-1-3@m uk-margin-right">
+        <div class="uk-width-1-1 uk-width-1-3@m uk-margin-bottom">
           <div class="uk-inline uk-width-1-1">
             <span class="uk-form-icon" uk-icon="icon: search"></span>
             <input class="uk-input uk-form-small" type="text" id="searchInput" placeholder="Search projects...">
           </div>
         </div>
         <!-- Filter Pills -->
-        <ul class="uk-subnav uk-subnav-pill filter-nav">
-          <li class="uk-active" data-filter="all"><a href="#">All</a></li>
-          {{ range .Site.Data.portfolio.filter }}
-          <li data-filter="{{.value}}"><a href="#">{{.label}}</a></li>
-          {{end}}
-        </ul>
+        <div class="uk-width-1-1 uk-flex uk-flex-center uk-flex-wrap">
+          <ul class="uk-subnav uk-subnav-pill filter-nav">
+            <li class="uk-active" data-filter="all"><a href="#">All</a></li>
+            {{ range .Site.Data.portfolio.filter }}
+            <li data-filter="{{.value}}"><a href="#">{{.label}}</a></li>
+            {{end}}
+          </ul>
+        </div>
       </div>
     </div>
 
     <!-- Projects Grid -->
-    <div class="uk-grid uk-child-width-1-3@l uk-child-width-1-2@m uk-child-width-1-1@s uk-grid-medium" uk-grid uk-height-match="target: > div > a > .project-card">
+    <div class="uk-grid uk-child-width-1-3@l uk-child-width-1-2@m uk-child-width-1-1@s" uk-grid="masonry: true">
       {{ range .Data.Pages }}
       <div class="project-item" data-tags="{{delimit .Params.categories ' '}}">
         <a href="{{.Permalink | relURL}}" class="uk-link-reset">
           <div class="uk-card uk-card-default uk-card-hover uk-border-rounded project-card">
             <div class="uk-card-media-top uk-inline uk-light">
-              <img class="uk-border-rounded" src="{{.Params.Image | absURL}}" alt="{{ .Title }}">
+              <img class="uk-border-rounded" src="{{.Params.Image | absURL}}" alt="{{ .Title }}" loading="lazy">
             </div>
             <div class="uk-card-body">
               <div class="uk-flex uk-flex-between uk-flex-middle">
@@ -38,7 +40,7 @@
                 <span class="uk-icon" uk-icon="icon: chevron-right"></span>
               </div>
               <p class="uk-text-small uk-text-muted project-description">{{.Params.Description}}</p>
-              <div class="uk-margin-small-top">
+              <div class="uk-margin-small-top uk-flex uk-flex-wrap">
                 {{ range .Params.categories }}
                 <span class="uk-label category-tag">{{ . }}</span>
                 {{ end }}
@@ -65,6 +67,9 @@
 /* Filter Navigation */
 .filter-nav {
   gap: 8px;
+  margin: 0;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .filter-nav li a {
@@ -75,6 +80,7 @@
   background: var(--card-hover-bg);
   color: var(--text-color-muted);
   transition: all 0.2s ease;
+  white-space: nowrap;
 }
 
 .filter-nav li.uk-active a {
@@ -90,15 +96,17 @@
   height: 100%;
 }
 
-.project-card:hover {
-  transform: translateY(-2px);
-  border-color: var(--link-color);
-  background-color: var(--card-hover-bg);
-}
+@media (hover: hover) {
+  .project-card:hover {
+    transform: translateY(-2px);
+    border-color: var(--link-color);
+    background-color: var(--card-hover-bg);
+  }
 
-.project-card:hover .uk-icon {
-  color: var(--link-color);
-  transform: translateX(2px);
+  .project-card:hover .uk-icon {
+    color: var(--link-color);
+    transform: translateX(2px);
+  }
 }
 
 .project-card .uk-card-media-top {
@@ -111,13 +119,14 @@
   object-fit: cover;
 }
 
-.project-card .uk-overlay {
-  opacity: 0;
-  transition: opacity 0.2s ease;
-}
+@media (max-width: 640px) {
+  .project-card .uk-card-media-top img {
+    height: 180px;
+  }
 
-.project-card:hover .uk-overlay {
-  opacity: 1;
+  .project-card .uk-card-body {
+    padding: 1rem;
+  }
 }
 
 .uk-card-title {
@@ -142,20 +151,27 @@
   border-radius: 4px;
   background: var(--card-hover-bg);
   color: var(--text-color-muted);
-  margin-right: 4px;
+  margin: 2px 4px 2px 0;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  display: inline-block;
 }
 
 /* Search Input */
 .uk-input.uk-form-small {
-  height: 32px;
+  height: 38px;
   border-radius: 6px;
   background-color: var(--card-hover-bg) !important;
   border: 1px solid var(--card-border) !important;
   color: var(--text-color) !important;
   font-size: 0.875rem;
   padding-left: 32px;
+}
+
+@media (max-width: 640px) {
+  .uk-input.uk-form-small {
+    font-size: 16px !important;
+  }
 }
 
 .uk-input.uk-form-small:focus {
@@ -211,6 +227,7 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     noResults.classList.toggle('uk-hidden', visibleItems > 0);
+    UIkit.update(document, 'grid'); // Update masonry layout
   }
 
   filterButtons.forEach(button => {

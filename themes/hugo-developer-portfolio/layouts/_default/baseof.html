@@ -14,7 +14,11 @@
     }
 </style>
 <html lang="{{ with .Site.LanguageCode }}{{ . }}{{ else }}en-US{{ end }}">
-    {{- partial "head.html" . -}}
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+        {{- partial "head.html" . -}}
+    </head>
     <body class="{{.Section}}">
         <div class="wrapper">
             {{- partial "header.html" . -}}
