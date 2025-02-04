@@ -2,6 +2,7 @@
 categories = ["projects","cybersecurity"]
 coders = ["kazetachinuu"]
 date = 2023-11-09T00:00:00Z
+description = "A home lab for Active Directory"
 github = ["https://github.com/kazetachinuu/ActiveDirectory"]
 image = "/project/AD/AD.svg"
 title = "Active Directory Home Lab"
