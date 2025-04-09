@@ -273,11 +273,13 @@ a:hover {
   border-top: 1px solid var(--footer-border);
   padding: 2rem 0;
   width: 100%;
+  text-align: center;
 }
 
 .footer h5 {
   color: var(--footer-heading-color);
   font-weight: 600;
+  margin-bottom: 1rem;
 }
 
 .footer-link {
@@ -285,6 +287,7 @@ a:hover {
   transition: color 0.3s ease;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 0.5rem;
 }
 
@@ -296,22 +299,29 @@ a:hover {
 .footer-copyright {
   color: var(--footer-text);
   border-top: 1px solid var(--footer-border);
-  padding-top: 1rem;
-  margin-top: 1rem;
+  padding-top: 1.5rem;
+  margin-top: 1.5rem;
+  text-align: center;
 }
 
 .footer-social {
   display: flex;
-  gap: 1rem;
+  gap: 1.5rem;
+  justify-content: center;
+  margin: 1rem 0;
 }
 
 .footer-social a {
   color: var(--footer-text);
-  transition: color 0.3s ease;
+  transition: all 0.3s ease;
+  padding: 0.5rem;
+  border-radius: 8px;
 }
 
 .footer-social a:hover {
   color: var(--footer-link-color);
+  background-color: var(--card-hover-bg);
+  transform: translateY(-2px);
 }
 
 /* Hero section */
@@ -1295,17 +1305,18 @@ a {
 /* Flag Container Styles */
 details.flag-container {
   background-color: var(--card-bg);
-  border: 2px solid var(--card-border);
-  border-radius: 12px;
-  padding: 1rem;
-  margin: 1.5rem 0;
+  border: 1px solid var(--card-border);
+  border-radius: 16px;
+  padding: 1.25rem;
+  margin: 1.75rem 0;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 2px 8px var(--shadow-color);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
 }
 
 details.flag-container:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px var(--hover-shadow);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
   border-color: var(--link-color);
 }
 
@@ -1316,17 +1327,23 @@ details.flag-container summary {
   color: var(--heading-color);
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  padding: 0.5rem;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  margin: -0.75rem;
+  background: linear-gradient(to right, var(--card-bg), transparent);
+  border-radius: 16px 16px 0 0;
+  transition: all 0.2s ease;
 }
 
 details.flag-container summary:hover {
   color: var(--link-hover-color);
+  background: linear-gradient(to right, var(--card-bg), rgba(var(--link-color-rgb), 0.1));
 }
 
 details.flag-container summary::before {
   content: "🚩";
   font-size: 1.2em;
+  filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.1));
 }
 
 details.flag-container summary::marker,
@@ -1335,11 +1352,17 @@ details.flag-container summary::-webkit-details-marker {
 }
 
 details.flag-container pre {
-  margin: 1rem 0 0 0;
+  margin: 1.25rem 0 0 0;
   background-color: var(--syntax-bg);
   border: 1px solid var(--code-border);
-  border-radius: 8px;
-  padding: 1rem;
+  border-radius: 12px;
+  padding: 1.25rem;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+  width: 95%;
+  max-width: calc(100% - 2.5rem);
+  margin-left: auto;
+  margin-right: auto;
 }
 
 details.flag-container code {
@@ -1348,33 +1371,45 @@ details.flag-container code {
   font-size: 1rem;
   background: none !important;
   border: none;
+  letter-spacing: 0.5px;
 }
 
 [data-theme="dark"] details.flag-container {
-  background-color: #313244;
-  border-color: #45475a;
+  background-color: #1e1e2e;
+  border-color: #313244;
 }
 
 [data-theme="dark"] details.flag-container:hover {
   border-color: #89b4fa;
-  background-color: #45475a;
+  background-color: #181825;
 }
 
 [data-theme="dark"] details.flag-container summary {
   color: #cdd6f4;
+  background: linear-gradient(to right, #1e1e2e, transparent);
 }
 
 [data-theme="dark"] details.flag-container summary:hover {
   color: #89b4fa;
+  background: linear-gradient(to right, #1e1e2e, rgba(137, 180, 250, 0.1));
 }
 
 [data-theme="dark"] details.flag-container pre {
-  background-color: #181825;
+  background-color: #11111b;
   border-color: #313244;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 [data-theme="dark"] details.flag-container code {
   color: #a6e3a1 !important;
+}
+
+details.flag-container[open] {
+  padding-right: 2rem;
+}
+
+details.flag-container[open] summary {
+  margin-right: -0.75rem;
 }
 
 /* Challenge Container */
@@ -1589,15 +1624,18 @@ details.flag-container code {
 /* Responsive Footer */
 @media (max-width: 640px) {
   .footer {
-    padding: 2rem 0;
+    padding: 2rem 1rem;
   }
 
   .footer-social {
-    margin-top: 1rem;
+    margin: 1.5rem 0;
+    flex-wrap: wrap;
+    justify-content: center;
   }
 
   .footer-copyright {
     text-align: center;
+    font-size: 0.9rem;
   }
 }
 

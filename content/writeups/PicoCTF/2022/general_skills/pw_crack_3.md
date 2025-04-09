@@ -65,6 +65,8 @@ picoCTF{m45h_fl1ng1ng_2b072a90}
 
 We got the flag :)
 
+{{< flag "picoCTF{m45h_fl1ng1ng_2b072a90}" >}}
+
 <details class="flag-container">
 <summary>Flag</summary>
 <pre><code>picoCTF{m45h_fl1ng1ng_2b072a90}</code></pre>

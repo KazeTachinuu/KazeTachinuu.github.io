@@ -64,10 +64,6 @@ Trying to match each password with provided hash
 15/100 - 231b b',\xde\xfe6\x16\x0b\x18\x19\xcd\x17\xf7\xea\x0bt\xe7R' != b'\x1c\x92A_/\xc0\x8b\x0e\x8a\x0e\xbbo?!\xcd\xcc'
 Password Matching Hash found ! : 973a
 picoCTF{fl45h_5pr1ng1ng_ae0fb77c}
-```
 
 
-<details class="flag-container">
-<summary>Flag</summary>
-<pre><code>picoCTF{fl45h_5pr1ng1ng_ae0fb77c}</code></pre>
-</details>
+{{< flag "picoCTF{fl45h_5pr1ng1ng_ae0fb77c}" >}}

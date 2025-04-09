@@ -4,7 +4,7 @@
   <div class="uk-container uk-margin-medium-top">
     <!-- Layer Navigation with Back Button -->
     <div class="uk-margin-medium-bottom layer-nav">
-        <div class="uk-flex uk-flex-middle uk-flex-wrap breadcrumb-container">
+        <div class="uk-flex uk-flex-left uk-flex-wrap breadcrumb-container">
             {{ if .Parent }}
             <a href="{{ .Parent.RelPermalink }}" class="back-button" uk-tooltip="Go back to {{ .Parent.Title }}">
                 <span uk-icon="icon: chevron-left"></span>
@@ -12,16 +12,13 @@
             {{ end }}
             {{ $ancestors := slice }}
             {{ $current := . }}
-            {{ if $current.Parent }}
-                {{ $parent := $current.Parent }}
-                {{ $ancestors = $ancestors | append $parent }}
-                {{ if $parent.Parent }}
-                    {{ $grandparent := $parent.Parent }}
-                    {{ $ancestors = $ancestors | append $grandparent }}
-                    {{ if $grandparent.Parent }}
-                        {{ $greatgrandparent := $grandparent.Parent }}
-                        {{ $ancestors = $ancestors | append $greatgrandparent }}
-                    {{ end }}
+            {{ range $i, $e := (seq 1 6) }}
+                {{ if $current.Parent }}
+                    {{ $parent := $current.Parent }}
+                    {{ $ancestors = $ancestors | append $parent }}
+                    {{ $current = $parent }}
+                {{ else }}
+                    {{ break }}
                 {{ end }}
             {{ end }}
             {{ range after 1 (seq (len $ancestors)) }}
@@ -39,21 +36,25 @@
     <div class="challenge-header">
         <h1 class="uk-heading-medium">{{.Title}}</h1>
         {{ with .Params.description }}
-        <p class="uk-text-lead">{{.}}</p>
+        <p class="uk-text-lead" style="font-size: 1.2rem; color: var(--text-color); margin-bottom: 1.5rem;">{{.}}</p>
         {{ end }}
         <div class="challenge-meta">
             <div class="meta-item">
                 <span uk-icon="icon: calendar"></span>
                 <span>{{ .PublishDate.Format "Jan 02, 2006" }}</span>
             </div>
+            {{ if .Params.points }}
             <div class="meta-item">
                 <span uk-icon="icon: star"></span>
                 <span>{{ .Params.points }} points</span>
             </div>
+            {{ end }}
+            {{ if .Params.solves }}
             <div class="meta-item">
                 <span uk-icon="icon: users"></span>
                 <span>{{ .Params.solves }} solves</span>
             </div>
+            {{ end }}
         </div>
     </div>
 

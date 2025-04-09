@@ -4,43 +4,37 @@
     <div class="uk-container">
         <!-- Layer Navigation with Back Button -->
         <div class="uk-margin-medium-bottom layer-nav">
-            <div class="uk-flex uk-flex-column uk-flex-row@s uk-flex-middle uk-flex-between">
-                <!-- Breadcrumb Navigation -->
-                <div class="uk-flex uk-flex-middle uk-flex-wrap breadcrumb-container">
-                    {{ if .Parent }}
-                    <a href="{{ .Parent.RelPermalink }}" class="back-button" uk-tooltip="Go back to {{ .Parent.Title }}">
-                        <span uk-icon="icon: chevron-left"></span>
-                    </a>
-                    {{ end }}
-                    {{ $ancestors := slice }}
-                    {{ $current := . }}
+            <div class="uk-flex uk-flex-left uk-flex-wrap breadcrumb-container">
+                {{ if .Parent }}
+                <a href="{{ .Parent.RelPermalink }}" class="back-button" uk-tooltip="Go back to {{ .Parent.Title }}">
+                    <span uk-icon="icon: chevron-left"></span>
+                </a>
+                {{ end }}
+                {{ $ancestors := slice }}
+                {{ $current := . }}
+                {{ range $i, $e := (seq 1 6) }}
                     {{ if $current.Parent }}
                         {{ $parent := $current.Parent }}
                         {{ $ancestors = $ancestors | append $parent }}
-                        {{ if $parent.Parent }}
-                            {{ $grandparent := $parent.Parent }}
-                            {{ $ancestors = $ancestors | append $grandparent }}
-                            {{ if $grandparent.Parent }}
-                                {{ $greatgrandparent := $grandparent.Parent }}
-                                {{ $ancestors = $ancestors | append $greatgrandparent }}
-                            {{ end }}
-                        {{ end }}
+                        {{ $current = $parent }}
+                    {{ else }}
+                        {{ break }}
                     {{ end }}
-                    {{ range after 1 (seq (len $ancestors)) }}
-                        {{ $i := sub (len $ancestors) . }}
-                        {{ with index $ancestors $i }}
-                            <a href="{{ .RelPermalink }}" class="layer-item">{{ .Title }}</a>
-                            <span class="uk-margin-small-left uk-margin-small-right layer-separator" uk-icon="icon: chevron-right"></span>
-                        {{ end }}
+                {{ end }}
+                {{ range after 1 (seq (len $ancestors)) }}
+                    {{ $i := sub (len $ancestors) . }}
+                    {{ with index $ancestors $i }}
+                        <a href="{{ .RelPermalink }}" class="layer-item">{{ .Title }}</a>
+                        <span class="uk-margin-small-left uk-margin-small-right layer-separator" uk-icon="icon: chevron-right"></span>
                     {{ end }}
-                    <span class="layer-item current">{{ .Title }}</span>
-                </div>
-                <!-- Search Input -->
-                <div class="uk-width-medium@s uk-margin-small-top uk-margin-remove-top@s">
-                    <div class="uk-inline uk-width-1-1">
-                        <span class="uk-form-icon" uk-icon="icon: search"></span>
-                        <input class="uk-input uk-form-small" type="text" id="searchInput" placeholder="Search...">
-                    </div>
+                {{ end }}
+                <span class="layer-item current">{{ .Title }}</span>
+            </div>
+            <!-- Search Input -->
+            <div class="uk-width-medium@s uk-margin-small-top uk-margin-remove-top@s">
+                <div class="uk-inline uk-width-1-1">
+                    <span class="uk-form-icon" uk-icon="icon: search"></span>
+                    <input class="uk-input uk-form-small" type="text" id="searchInput" placeholder="Search..." onkeyup="filterList()">
                 </div>
             </div>
         </div>
@@ -74,15 +68,31 @@
                                     </div>
                                     <h3 class="uk-card-title uk-margin-remove">{{ .Title }}</h3>
                                 </div>
+                                {{ if .Params.points }}
                                 <div class="points-badge">
                                     <span>{{ .Params.points }}</span>
                                     <span class="points-label">pts</span>
                                 </div>
+                                {{ else if .Params.categories }}
+                                <div class="category-badge">
+                                    <span>{{ .Params.categories }}</span>
+                                </div>
+                                {{ end }}
                             </div>
+                            {{ if .Params.solves }}
                             <div class="uk-flex uk-flex-middle uk-margin-small-top challenge-meta">
                                 <span class="uk-icon uk-margin-small-right" uk-icon="icon: users"></span>
                                 <span class="uk-text-meta">{{ .Params.solves }} solves</span>
                             </div>
+                            {{ else if .Params.description }}
+                            <div class="uk-flex uk-flex-middle uk-margin-small-top challenge-meta">
+                                <span class="uk-text-meta">{{ .Params.description }}</span>
+                            </div>
+                            {{ else }}
+                            <div class="uk-flex uk-flex-middle uk-margin-small-top challenge-meta">
+                                <span class="uk-text-meta" style="font-style: italic; color: var(--text-color-muted);">No additional information available</span>
+                            </div>
+                            {{ end }}
                         </div>
                     </div>
                 </a>
@@ -352,28 +362,20 @@
 </style>
 
 <script>
-document.addEventListener("DOMContentLoaded", function() {
-    const searchInput = document.getElementById('searchInput');
-    const writeupItems = document.querySelectorAll('.writeup-item');
-    const noResults = document.getElementById('noResults');
-
-    function filterWriteups() {
-        const searchTerm = searchInput.value.toLowerCase();
-        let visibleItems = 0;
-
-        writeupItems.forEach(item => {
-            const title = item.querySelector('.uk-card-title').textContent.toLowerCase();
-            const shouldShow = title.includes(searchTerm);
-            item.style.display = shouldShow ? '' : 'none';
-            if (shouldShow) visibleItems++;
-        });
-
-        noResults.classList.toggle('uk-hidden', visibleItems > 0);
-        UIkit.update(document, 'grid');
+function filterList() {
+    var input, filter, items, i, txtValue;
+    input = document.getElementById('searchInput');
+    filter = input.value.toUpperCase();
+    items = document.querySelectorAll('.writeup-item');
+    for (i = 0; i < items.length; i++) {
+        txtValue = items[i].querySelector('.uk-card-title').textContent || items[i].querySelector('.uk-card-title').innerText;
+        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            items[i].style.display = "";
+        } else {
+            items[i].style.display = "none";
+        }
     }
-
-    searchInput.addEventListener('input', filterWriteups);
-});
+}
 </script>
 
 {{ end }}
