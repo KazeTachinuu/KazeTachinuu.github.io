@@ -8,17 +8,24 @@ date: 2024-05-12T00:00:00Z
 draft: false
 ---
 
-### PW Crack 5   
+# PW Crack 5   
 
-**Category:** General Skills - **Points:** 100 - **Solves:** 24106   
+{{< section type="info" title="Challenge Information" icon="info-circle" >}}
+**Category:** General Skills  
+**Points:** 100  
+**Solves:** 24106   
+
 **Description:**   
 Can you crack the password to get the flag? Download the password checker here and you'll need the encrypted flag and the hash in the same directory too. Here's a dictionary with all possible passwords based on the password conventions we've seen so far.      
+{{< /section >}}
 
-**Solution:**  
-For the fift and final part of the PW Crack saga, we have yet again the same idea so our implementation will still work but we now need to think about how we display results, let's format the printed results so that we have a nice "animation" going on
+{{< section type="blue" title="Challenge Overview" icon="book" >}}
+For the fifth and final part of the PW Crack saga, we have yet again the same idea so our implementation will still work but we now need to think about how we display results, let's format the printed results so that we have a nice "animation" going on.
 
 Let's also modify a bit the code so that it will get the passwords from the txt file.
+{{< /section >}}
 
+{{< section type="document-green" title="Solution Implementation" icon="terminal" >}}
 ```python
 content = open("dictionary.txt", "r").read()
 
@@ -58,5 +65,8 @@ picoCTF{h45h_sl1ng1ng_36e992a6}
 ```
 
 And just like that we are done with this series of challenges. Congrats. :)   
+{{< /section >}}
 
-{{< flag "picoCTF{h45h_sl1ng1ng_36e992a6}" >}}
+{{< section type="success" title="Flag" icon="flag" >}}
+**picoCTF{h45h_sl1ng1ng_36e992a6}**
+{{< /section >}}

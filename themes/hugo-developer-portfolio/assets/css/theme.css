@@ -428,14 +428,31 @@ pre, code {
   color: var(--code-text) !important;
   border: 1px solid var(--code-border);
   border-radius: 8px;
+  font-family: 'JetBrains Mono', monospace, Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  font-size: 1.1rem !important;
+  line-height: 1.5;
 }
 
+/* Inline code */
 :not(pre) > code {
   background-color: var(--inline-code-bg) !important;
   color: var(--inline-code-text) !important;
   padding: 2px 6px;
   border-radius: 4px;
-  font-size: 0.9em;
+  font-size: 0.95em !important;
+  font-weight: normal;
+  white-space: nowrap;
+}
+
+/* Code inside pre blocks */
+pre code {
+  background-color: transparent !important;
+  border: none;
+  padding: 0;
+  font-size: 1.1rem !important;
+  white-space: pre-wrap;
+  word-break: break-word;
+  tab-size: 4;
 }
 
 /* Syntax highlighting container */
@@ -445,6 +462,7 @@ pre, code {
   padding: 1.25rem;
   margin: 1.5rem 0;
   border: 1px solid var(--code-border);
+  overflow-x: auto;
 }
 
 .highlight pre {
@@ -452,12 +470,71 @@ pre, code {
   border: none;
   margin: 0;
   padding: 0;
+  overflow-x: auto;
 }
 
 .highlight code {
   background-color: transparent !important;
   border: none;
   padding: 0;
+  font-size: 1.1rem !important;
+}
+
+/* Code display styling - consistent across all sections */
+code[class*="language-"] {
+  display: block;
+  overflow-x: auto;
+  padding: 1em;
+  background: var(--syntax-bg) !important;
+  color: var(--syntax-text) !important;
+  font-size: 1.1rem !important;
+  line-height: 1.5;
+}
+
+/* Table with line numbers */
+.highlight table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.highlight table td {
+  padding: 0;
+  border: 0;
+}
+
+.highlight table .line-numbers {
+  text-align: right;
+  padding-right: 1em;
+  color: var(--syntax-comment) !important;
+  opacity: 0.7;
+  width: 1.5em;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Code blocks in snippets sections specifically */
+.content pre, .content code {
+  font-size: 1.1rem !important;
+}
+
+/* Mobile adjustments */
+@media (max-width: 640px) {
+  pre, code {
+    font-size: 1rem !important;
+  }
+  
+  pre code, .highlight code, code[class*="language-"] {
+    font-size: 1rem !important;
+  }
+  
+  :not(pre) > code {
+    font-size: 0.9em !important;
+  }
 }
 
 /* UI Elements */
@@ -828,18 +905,6 @@ main {
 
 .content p, .content ul, .content ol, .content li {
   color: var(--text-color);
-}
-
-/* Code display styling */
-code[class*="language-"] {
-  display: block;
-  overflow-x: auto;
-  padding: 1em;
-  background: var(--syntax-bg) !important;
-  color: var(--syntax-text) !important;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.9em;
-  line-height: 1.5;
 }
 
 /* Generic syntax highlighting for all languages */
@@ -1711,4 +1776,356 @@ pre {
     padding: 0.5rem 0;
     font-size: 1.1rem;
   }
+}
+
+/* Code Container Styles for Shortcodes */
+.code-container {
+  position: relative;
+  margin: 1.5rem 0;
+}
+
+.code-container pre {
+  margin: 0 !important;
+  border-radius: 8px;
+  font-size: 1.1rem !important;
+}
+
+.code-container .highlight {
+  margin: 0 !important;
+  padding: 1rem !important;
+}
+
+.code-container code {
+  font-size: 1.1rem !important;
+}
+
+/* Shortcode copy button positioning */
+.code-container .copy-btn {
+  z-index: 10;
+}
+
+/* Fix for highlight shortcode */
+.highlight {
+  background-color: var(--syntax-bg) !important;
+  border-radius: 8px;
+  padding: 1.25rem;
+  margin: 1.5rem 0;
+  border: 1px solid var(--code-border);
+  overflow-x: auto;
+}
+
+/* Code styling consistency fixes */
+.writeup-content .highlight,
+.content .highlight,
+.snippet-content .highlight {
+  background-color: var(--syntax-bg) !important;
+  border: 1px solid var(--code-border);
+  font-size: 1.1rem !important;
+}
+
+/* Common code style for all sections */
+.writeup-content pre code,
+.content pre code,
+.snippet-content pre code,
+div.highlight pre code {
+  font-size: 1.1rem !important;
+}
+
+/* More specific selectors for code blocks */
+.highlight pre code,
+.highlight code,
+pre code,
+div.highlight pre,
+div.highlight code,
+.content div.highlight pre code,
+.writeup-content div.highlight pre code,
+.snippet-content div.highlight pre code,
+div.code-container div.highlight pre code {
+  font-family: 'JetBrains Mono', monospace, Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  font-size: 1.1rem !important;
+  line-height: 1.5;
+  background-color: transparent !important;
+  border: none;
+  padding: 0;
+}
+
+/* Fix for line numbers in code blocks */
+td.lntd pre {
+  margin: 0 !important;
+  padding: 0 0.5rem !important;
+  background: transparent !important;
+  border: none !important;
+}
+
+/* Add slight padding to line numbers column */
+td.lntd:first-child {
+  padding-right: 0.75rem;
+  opacity: 0.7;
+}
+
+/* Color-coded Section Boxes - Base Style */
+.section-box {
+  margin: 1.5rem 0;
+  padding: 1.25rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  border-left: 4px solid #ccd0da; /* Catppuccin Latte - surface2 */
+  background-color: #eff1f5; /* Catppuccin Latte - base */
+  position: relative;
+  overflow: hidden;
+  transition: all 0.2s ease-in-out;
+}
+
+[data-theme="dark"] .section-box {
+  background-color: #1e1e2e; /* Catppuccin Mocha - base */
+  border-left: 4px solid #45475a; /* Catppuccin Mocha - surface2 */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.section-box:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="dark"] .section-box:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+.section-title {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #4c4f69; /* Catppuccin Latte - text */
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.section-title.centered {
+  justify-content: center;
+  text-align: center;
+  font-size: 1.4rem;
+  margin-bottom: 1.2rem;
+}
+
+[data-theme="dark"] .section-title {
+  color: #cdd6f4; /* Catppuccin Mocha - text */
+}
+
+.section-icon {
+  opacity: 0.8;
+  font-size: 0.9em;
+}
+
+.section-content {
+  color: #4c4f69; /* Catppuccin Latte - text */
+  line-height: 1.6;
+}
+
+[data-theme="dark"] .section-content {
+  color: #cdd6f4; /* Catppuccin Mocha - text */
+}
+
+.section-box p:last-child,
+.section-box ul:last-child,
+.section-box ol:last-child {
+  margin-bottom: 0;
+}
+
+/* Document-style sections - Modern Look */
+.section-box.document-blue {
+  background-color: rgba(232, 240, 254, 0.8);
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(25, 118, 210, 0.08);
+  margin: 2rem 0;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.section-box.document-blue .section-title {
+  color: #1976d2;
+  text-align: center;
+  display: block;
+  padding-bottom: 0.8rem;
+  margin-bottom: 1.2rem;
+  font-weight: 600;
+  font-size: 1.35rem;
+  position: relative;
+}
+
+.section-box.document-blue .section-title::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 25%;
+  right: 25%;
+  height: 2px;
+  background: linear-gradient(to right, transparent, rgba(25, 118, 210, 0.5), transparent);
+}
+
+.section-box.document-red {
+  background-color: rgba(255, 235, 238, 0.8);
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(198, 40, 40, 0.08);
+  margin: 2rem 0;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.section-box.document-red .section-title {
+  color: #c62828;
+  text-align: center;
+  display: block;
+  padding-bottom: 0.8rem;
+  margin-bottom: 1.2rem;
+  font-weight: 600;
+  font-size: 1.35rem;
+  position: relative;
+}
+
+.section-box.document-red .section-title::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 25%;
+  right: 25%;
+  height: 2px;
+  background: linear-gradient(to right, transparent, rgba(198, 40, 40, 0.5), transparent);
+}
+
+.section-box.document-green {
+  background-color: rgba(224, 242, 241, 0.8);
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 121, 107, 0.08);
+  margin: 2rem 0;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.section-box.document-green .section-title {
+  color: #00796b;
+  text-align: center;
+  display: block;
+  padding-bottom: 0.8rem;
+  margin-bottom: 1.2rem;
+  font-weight: 600;
+  font-size: 1.35rem;
+  position: relative;
+}
+
+.section-box.document-green .section-title::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 25%;
+  right: 25%;
+  height: 2px;
+  background: linear-gradient(to right, transparent, rgba(0, 121, 107, 0.5), transparent);
+}
+
+.section-box.document-blue:hover,
+.section-box.document-red:hover,
+.section-box.document-green:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Dark mode for document-style sections */
+[data-theme="dark"] .section-box.document-blue {
+  background-color: rgba(25, 118, 210, 0.1);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+[data-theme="dark"] .section-box.document-blue .section-title {
+  color: #64b5f6;
+}
+
+[data-theme="dark"] .section-box.document-blue .section-title::after {
+  background: linear-gradient(to right, transparent, rgba(100, 181, 246, 0.5), transparent);
+}
+
+[data-theme="dark"] .section-box.document-red {
+  background-color: rgba(198, 40, 40, 0.1);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+[data-theme="dark"] .section-box.document-red .section-title {
+  color: #ef9a9a;
+}
+
+[data-theme="dark"] .section-box.document-red .section-title::after {
+  background: linear-gradient(to right, transparent, rgba(239, 154, 154, 0.5), transparent);
+}
+
+[data-theme="dark"] .section-box.document-green {
+  background-color: rgba(0, 121, 107, 0.1);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+[data-theme="dark"] .section-box.document-green .section-title {
+  color: #80cbc4;
+}
+
+[data-theme="dark"] .section-box.document-green .section-title::after {
+  background: linear-gradient(to right, transparent, rgba(128, 203, 196, 0.5), transparent);
+}
+
+/* Section icons */
+.section-icon {
+  margin-right: 0.5rem;
+  opacity: 0.85;
+}
+
+/* Section content styling */
+.section-content {
+  padding: 0.5rem 0;
+  line-height: 1.6;
+}
+
+.section-box.document-blue .section-content,
+.section-box.document-red .section-content,
+.section-box.document-green .section-content {
+  padding: 0 1rem 0.5rem;
+}
+
+.section-content p {
+  margin-bottom: 1rem;
+}
+
+.section-content strong {
+  font-weight: 600;
+}
+
+.section-content code {
+  border-radius: 4px;
+  padding: 0.2rem 0.4rem;
+  font-size: 0.9em;
+}
+
+/* Add subtle animation for the section borders */
+@keyframes pulse-border {
+  0% {
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08), 0 0 0 rgba(0, 0, 0, 0);
+  }
+  50% {
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.12), 0 0 0 rgba(0, 0, 0, 0.02);
+  }
+  100% {
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08), 0 0 0 rgba(0, 0, 0, 0);
+  }
+}
+
+.section-box.document-blue,
+.section-box.document-red,
+.section-box.document-green {
+  animation: pulse-border 4s infinite ease-in-out;
 } 

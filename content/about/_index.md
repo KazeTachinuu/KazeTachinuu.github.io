@@ -6,7 +6,7 @@ author: "Hugo Sibony"
 authorImage: /Home/JiroPP.jpg
 ---
 
-## Who am I
+## whoami
 
 Hi! I am Hugo Sibony. I am a first year engineering student from <a href="https://www.epita.fr/">EPITA, school of Computer Engineering</a>, majoring in CyberSecurity. Currently working in a 36 months work-study program (apprenticeship) in CyberSecurity doing a Cyber Threat Intelligence projects at WELAN as well as Penetration Testing.
 

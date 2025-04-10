@@ -8,14 +8,19 @@ date: 2024-05-12T00:00:00Z
 draft: false
 ---
 
-### PW Crack 3
+# PW Crack 3
 
-**Category:** General Skills - **Points:** 100 - **Solves:** 33230  
+{{< section type="info" title="Challenge Information" icon="info-circle" >}}
+**Category:** General Skills  
+**Points:** 100  
+**Solves:** 33230  
+
 **Description:**  
 Can you crack the password to get the flag? Download the password checker here and you'll need the encrypted flag and the hash in the same directory too. There are 7 potential passwords with 1 being correct. You can find these by examining the password checker script.
+{{< /section >}}
 
-**Solution:**  
-This challenge is here to introduce us to hashing, while with the two previous one we could get the password by looking at the password checking code directly, this one is using MD5 which hash the password. Thankfully in the source code we are provided with a list of password :
+{{< section type="blue" title="Code Analysis" icon="code" >}}
+This challenge is here to introduce us to hashing, while with the two previous one we could get the password by looking at the password checking code directly, this one is using MD5 which hash the password. Thankfully in the source code we are provided with a list of password:
 
 ```python
 # The strings below are 7 possibilities for the correct password.
@@ -23,7 +28,19 @@ This challenge is here to introduce us to hashing, while with the two previous o
 pos_pw_list = ["6997", "3ac8", "f0ac", "4b17", "ec27", "4e66", "865e"]
 ```
 
-As we are told that one of the 7 password is correct, we should simply write a simple function that test all of them until it finds the corresponding hash:
+As we are told that one of the 7 password is correct, we should simply write a simple function that test all of them until it finds the corresponding hash.
+{{< /section >}}
+
+{{< section type="requirements" title="Solution Approach" icon="lightbulb" >}}
+We need to:
+1. Create a script that tries all 7 passwords
+2. For each password, compute its hash using the hash_pw function
+3. Compare the hash with the correct_pw_hash
+4. When a match is found, use it to decrypt the flag
+{{< /section >}}
+
+{{< section type="document-green" title="Implementation" icon="terminal" >}}
+Here's our solution script:
 
 ```python
 pos_pw_list = ["6997", "3ac8", "f0ac", "4b17", "ec27", "4e66", "865e"]
@@ -48,7 +65,7 @@ else:
     print("No password in the list matched the hash")
 ```
 
-Then we run it to match all password :
+Then we run it to match all passwords:
 
 ```sh
 >>> python solve.py
@@ -62,7 +79,8 @@ Trying to match each password with provided hash
 Password Matching Hash found ! : 865e
 picoCTF{m45h_fl1ng1ng_2b072a90}
 ```
+{{< /section >}}
 
-We got the flag :)
-
-{{< flag "picoCTF{m45h_fl1ng1ng_2b072a90}" >}}
+{{< section type="success" title="Flag" icon="flag" >}}
+**picoCTF{m45h_fl1ng1ng_2b072a90}**
+{{< /section >}}

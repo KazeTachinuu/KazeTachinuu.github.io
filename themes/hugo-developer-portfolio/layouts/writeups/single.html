@@ -59,7 +59,11 @@
     </div>
 
     <!-- Challenge Files -->
-    {{ $files := readDir (printf "/static%s" .Path) }}
+    {{ $files := slice }}
+    {{ $staticPath := printf "/static%s" .Path }}
+    {{ if fileExists $staticPath }}
+        {{ $files = readDir $staticPath }}
+    {{ end }}
     {{ if $files }}
     <div class="files-section">
         <h2 class="section-title">Challenge Files</h2>
@@ -341,13 +345,14 @@ section {
 
 /* Writeup Content */
 .writeup-content {
-    margin: 2rem -0.75rem;
-    padding: 0 0.75rem;
-    width: calc(100% + 1.5rem);
+    margin: 2rem 0;
+    padding: 0;
     color: var(--text-color);
-    line-height: 1.6;
+    line-height: 1.7;
     overflow-x: hidden;
     box-sizing: border-box;
+    width: 100%;
+    font-size: 1.2rem;
 }
 
 .writeup-content h1,
@@ -358,7 +363,16 @@ section {
 .writeup-content h6 {
     color: var(--heading-color);
     margin-top: 2em;
-    margin-bottom: 1em;
+    margin-bottom: 0.8em;
+    line-height: 1.3;
+}
+
+.writeup-content h2 {
+    font-size: 1.8rem;
+}
+
+.writeup-content h3 {
+    font-size: 1.5rem;
 }
 
 .writeup-content p {
@@ -371,24 +385,6 @@ section {
     border-radius: 8px;
     margin: 1.5rem 0;
     display: block;
-}
-
-.writeup-content pre {
-    background: var(--code-bg);
-    border: none;
-    border-radius: 8px;
-    padding: 1rem;
-    overflow-x: auto;
-    margin: 1.5rem 0;
-    max-width: 100%;
-    -webkit-overflow-scrolling: touch;
-}
-
-.writeup-content code {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.9em;
-    word-break: break-word;
-    white-space: pre-wrap;
 }
 
 .writeup-content blockquote {
@@ -411,24 +407,25 @@ section {
 /* Mobile Optimizations */
 @media (max-width: 640px) {
     .uk-container {
-        padding: 0 0.75rem;
+        padding: 0 1rem;
         overflow-x: hidden;
         min-width: 320px; /* Prevent container from becoming too narrow */
     }
 
     .layer-nav {
-        margin: 0 -0.75rem 1.5rem;
+        margin: 0 -1rem 1.5rem;
         padding: 0.5rem 0.75rem;
     }
 
     .challenge-header {
-        margin: 0 -0.75rem 2rem;
-        padding: 0 0.75rem;
-        width: calc(100% + 1.5rem);
+        margin: 0 0 2rem;
+        padding: 0;
+        width: 100%;
     }
 
     .files-section {
-        margin: 2rem -0.75rem;
+        margin: 2rem 0;
+        width: 100%;
     }
 
     .files-container {
@@ -436,29 +433,21 @@ section {
     }
 
     .writeup-content {
-        margin: 2rem -0.75rem;
-        padding: 0 0.75rem;
-        width: calc(100% + 1.5rem);
-    }
-
-    .writeup-content pre {
-        margin: 1.5rem -0.75rem;
-        padding: 0.75rem;
-        width: calc(100% + 1.5rem);
-        border: none;
-        border-radius: 0;
+        margin: 2rem 0;
+        padding: 0;
+        width: 100%;
     }
 
     .writeup-content img {
-        margin: 1.5rem -0.75rem;
-        width: calc(100% + 1.5rem);
-        border-radius: 0;
+        margin: 1.5rem 0;
+        width: 100%;
+        border-radius: 6px;
     }
 
     .writeup-content blockquote {
-        margin: 1.5rem -0.75rem;
+        margin: 1.5rem 0;
         padding: 0.5rem 0.75rem;
-        width: calc(100% + 1.5rem);
+        width: 100%;
         border-left: 4px solid var(--link-color);
     }
 }
@@ -488,10 +477,9 @@ section {
     .writeup-content {
         margin: 3rem auto;
         padding: 0;
-        max-width: 800px;
+        max-width: 960px;
     }
 
-    .writeup-content pre,
     .writeup-content img,
     .writeup-content blockquote {
         border-radius: 8px;
@@ -511,10 +499,6 @@ section {
 [data-theme="dark"] .file-item:hover {
     background: var(--card-hover-bg);
     border-color: var(--link-color);
-}
-
-[data-theme="dark"] .writeup-content pre {
-    background: var(--code-bg);
 }
 </style>
 

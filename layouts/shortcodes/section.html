@@ -1,0 +1,70 @@
+{{/* Shortcode to create styled, color-coded sections
+  Usage:
+    {{< section type="any-type" title="Optional Title" >}}
+    Content goes here
+    {{< /section >}}
+
+  Parameters:
+    - type: any CSS class name to apply (or a semantic type that maps to a Catppuccin color)
+    - title: Optional title for the section box
+    - color: Optional custom border color (CSS color value)
+    - bg: Optional custom background color (CSS color value)
+    - icon: Optional icon name to display before the title (uses Font Awesome)
+    - center: Optional boolean to center the title (default: true)
+    - document: Optional boolean to use document-style formatting (default: true)
+    - legacy: Optional boolean to use legacy left-border style instead of document style (default: false)
+*/}}
+
+{{ $type := .Get "type" }}
+{{ $title := .Get "title" }}
+{{ $borderColor := .Get "color" }}
+{{ $bgColor := .Get "bg" }}
+{{ $icon := .Get "icon" }}
+{{ $center := .Get "center" | default true }}
+{{ $document := .Get "document" | default true }}
+{{ $legacy := .Get "legacy" | default false }}
+
+{{/* If legacy mode is true, disable document mode */}}
+{{ if $legacy }}
+  {{ $document = false }}
+  {{ $center = false }}
+{{ end }}
+
+{{/* Map semantic types to their equivalent Catppuccin color if needed */}}
+{{ $typeClass := $type }}
+{{ if eq $type "info" }}{{ $typeClass = "blue" }}{{ end }}
+{{ if eq $type "success" }}{{ $typeClass = "green" }}{{ end }}
+{{ if eq $type "warning" }}{{ $typeClass = "yellow" }}{{ end }}
+{{ if eq $type "danger" }}{{ $typeClass = "red" }}{{ end }}
+{{ if eq $type "note" }}{{ $typeClass = "mauve" }}{{ end }}
+{{ if eq $type "assignment" }}{{ $typeClass = "lavender" }}{{ end }}
+{{ if eq $type "requirements" }}{{ $typeClass = "teal" }}{{ end }}
+{{ if eq $type "evaluation" }}{{ $typeClass = "peach" }}{{ end }}
+
+{{ $finalClass := printf "section-box %s" $type }}
+{{ if ne $type $typeClass }}{{ $finalClass = printf "%s %s" $finalClass $typeClass }}{{ end }}
+{{ if $document }}
+  {{ if eq $type "info" }}{{ $finalClass = printf "%s document-blue" $finalClass }}
+  {{ else if eq $type "warning" }}{{ $finalClass = printf "%s document-red" $finalClass }}
+  {{ else if eq $type "requirements" }}{{ $finalClass = printf "%s document-green" $finalClass }}
+  {{ else if eq $type "evaluation" }}{{ $finalClass = printf "%s document-green" $finalClass }}
+  {{ else if eq $type "assignment" }}{{ $finalClass = printf "%s document-blue" $finalClass }}
+  {{ else if eq $type "success" }}{{ $finalClass = printf "%s document-green" $finalClass }}
+  {{ else if eq $type "danger" }}{{ $finalClass = printf "%s document-red" $finalClass }}
+  {{ else if eq $type "note" }}{{ $finalClass = printf "%s document-blue" $finalClass }}
+  {{ else }}{{ $finalClass = printf "%s document-blue" $finalClass }}
+  {{ end }}
+{{ end }}
+
+<div class="{{ $finalClass }}"
+     {{ if or $borderColor $bgColor }}style="{{ with $borderColor }}border-left-color: {{ . }};{{ end }}{{ with $bgColor }}background-color: {{ . }};{{ end }}"{{ end }}>
+    {{ if $title }}
+    <h3 class="section-title{{ if $center }} centered{{ end }}">
+        {{ if $icon }}<i class="fas fa-{{ $icon }} section-icon"></i>{{ end }}
+        {{ $title }}
+    </h3>
+    {{ end }}
+    <div class="section-content">
+        {{ .Inner | markdownify }}
+    </div>
+</div> 
