@@ -5,7 +5,7 @@ cat: "chal"
 solved: true
 date: 2025-04-08T00:00:00Z
 draft: false
-description: "Trick the AI chatbot to give the ransomware key"
+description: "Trick the AI chatbot to give the leaked data key"
 ---
 
 {{< section type="info" title="Challenge Information" icon="info-circle" >}}
