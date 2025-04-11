@@ -1,1 +1,107 @@
 @import "bootstrap/bootstrap";
+
+/* Clean image styling */
+.writeup-image {
+  margin: 2rem 0;
+  text-align: center;
+}
+
+.writeup-image img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Enhanced section styling */
+.section-box {
+  margin: 2rem 0;
+  padding: 1.5rem;
+  border-radius: 8px;
+  background-color: #f8f9fa;
+  border-left: 4px solid #ccc;
+}
+
+.section-box.blue, .section-box.info {
+  border-left-color: #3498db;
+}
+
+.section-box.green, .section-box.success {
+  border-left-color: #2ecc71;
+}
+
+.section-box.yellow, .section-box.warning {
+  border-left-color: #f1c40f;
+}
+
+.section-box.red, .section-box.danger {
+  border-left-color: #e74c3c;
+}
+
+.section-box.mauve, .section-box.note {
+  border-left-color: #9b59b6;
+}
+
+.section-box.lavender, .section-box.assignment {
+  border-left-color: #8e44ad;
+}
+
+.section-box.teal, .section-box.requirements {
+  border-left-color: #1abc9c;
+}
+
+.section-box.peach, .section-box.evaluation {
+  border-left-color: #e67e22;
+}
+
+/* Document style enhances sections to look like paper */
+.document-blue, .document-green, .document-red {
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+  background-color: white;
+  border: 1px solid #e9ecef;
+  border-left-width: 4px;
+}
+
+.section-title {
+  font-size: 1.25rem;
+  margin-top: 0;
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.section-title.centered {
+  text-align: center;
+}
+
+.section-icon {
+  margin-right: 0.5rem;
+}
+
+/* Code blocks inside sections */
+.section-content pre {
+  background-color: #2d3748;
+  color: #e2e8f0;
+  padding: 1rem;
+  border-radius: 6px;
+  margin: 1rem 0;
+  overflow-x: auto;
+}
+
+.section-content code {
+  font-family: 'Fira Code', Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  font-size: 0.9rem;
+}
+
+/* Ordered lists in sections */
+.section-content ol {
+  padding-left: 1.25rem;
+}
+
+.section-content ol li {
+  margin-bottom: 0.75rem;
+}
+
+/* Timeline-specific styles */
+.section-box.warning ol li strong {
+  color: #e67e22;
+}

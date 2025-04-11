@@ -1,0 +1,7 @@
+{{/* Simple image shortcode */}}
+{{ $src := .Get "src" }}
+{{ $caption := .Get "caption" }}
+
+<div class="writeup-image">
+    <img src="/images/{{ $src }}" alt="{{ $caption }}" loading="lazy">
+</div> 
