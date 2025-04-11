@@ -1,7 +1,10 @@
-{{/* Simple image shortcode */}}
+{{/* Simple image shortcode with grid and caption support */}}
 {{ $src := .Get "src" }}
+{{ $alt := .Get "alt" }}
 {{ $caption := .Get "caption" }}
+{{ $grid := .Get "grid" | default false }}
 
-<div class="writeup-image">
-    <img src="/images/{{ $src }}" alt="{{ $caption }}" loading="lazy">
+<div class="writeup-image{{ if $grid }} grid-item{{ end }}">
+    <img src="/images/{{ $src }}" alt="{{ $alt }}" loading="lazy">
+    {{ $caption }}
 </div> 

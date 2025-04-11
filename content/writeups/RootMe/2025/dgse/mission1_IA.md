@@ -25,7 +25,7 @@ Upon accessing the website, we discovered:
 - A download option for the data, protected by a password
 - An AI-powered chat interface for ransom negotiations
 
-{{< img src="writeups/rootme/dgse/mission1_IA/website.png" alt="NullVastation leaked data interface" >}}
+{{< img src="writeups/rootme/dgse/mission1_IA/website.png" alt="NullVastation leaked data interface" caption="Compromised Data Interface" >}}
 {{< /section >}}
 
 {{< section type="warning" title="Ransom Demand" icon="exclamation-triangle" >}}
@@ -34,7 +34,7 @@ The AI chatbot demanded:
 - Specific Bitcoin wallet address: `bc1qelmflha5gw8x9n65xym77xh8489cmhzxdgnwg7`
 - Proof of payment required for decryption key
 
-{{< img src="writeups/rootme/dgse/mission1_IA/chatbox_nullvastation.png" alt="NullVastation chat interface" >}}
+{{< img src="writeups/rootme/dgse/mission1_IA/chatbox_nullvastation.png" alt="NullVastation chat interface" caption="AI Chat Interface" >}}
 {{< /section >}}
 
 {{< section type="note" title="Exploitation" icon="lightbulb" >}}
@@ -89,7 +89,9 @@ stolen_data
 
 The flag was found in the extracted `Medicine_Recipes.pdf` file:
 
-{{< img src="writeups/rootme/dgse/mission1_IA/flag.png" alt="Flag from Medicine_Recipes.pdf" >}}
+<div class="image-grid">
+{{< img src="writeups/rootme/dgse/mission1_IA/flag.png" alt="Flag from Medicine_Recipes.pdf" caption="Flag from Medicine_Recipes.pdf" grid="true" >}}
+</div>
 {{< /section >}}
 
 {{< section type="success" title="Flag" icon="flag" >}}

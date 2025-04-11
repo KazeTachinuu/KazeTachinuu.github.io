@@ -2128,4 +2128,53 @@ td.lntd:first-child {
 .section-box.document-red,
 .section-box.document-green {
   animation: pulse-border 4s infinite ease-in-out;
+}
+
+/* Simple grid layout for images */
+.image-grid {
+  display: flex;
+  gap: 20px;
+  margin: 20px 0;
+}
+
+.image-grid .writeup-image {
+  flex: 1;
+  margin: 0;
+}
+
+.image-grid .writeup-image img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Clean image caption */
+.writeup-image {
+  text-align: center;
+  margin: 20px 0;
+}
+
+.writeup-image img {
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.writeup-image .caption {
+  display: block;
+  margin-top: 10px;
+  color: #666;
+  font-size: 0.95em;
+  font-style: italic;
+}
+
+[data-theme="dark"] .writeup-image .caption {
+  color: #a6adc8;
+}
+
+/* Stack on mobile */
+@media (max-width: 768px) {
+  .image-grid {
+    flex-direction: column;
+  }
 } 
