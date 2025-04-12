@@ -1,0 +1,91 @@
+---
+title: "Tux Fan Club: Chasse au Trésor Pirate"
+categories: SYS2
+cat: "chal"
+solved: true
+date: 2024-04-12T00:00:00Z
+draft: false
+description: "Une chasse au trésor pirate impliquant des fichiers cachés et de la stéganographie"
+---
+
+
+{{< section type="note" title="Analyse Initiale" icon="search" >}}
+Nous avons décidé d'accepter une *quête secondaire* durant le projet `EpiRootkit`.
+
+En effet, comme tout bon pirate, nous avons téléchargé _légalement_ les fichiers fournis (`given_files`) et nous souhaitions les ignorer avec un fichier `.gitignore`.
+
+Le `.gitignore` ressemblait à :
+
+```bash
+.gitignore
+givenfiles/
+```
+
+Sauf que les fichiers n'étaient pas ignorés (vu que Léa ne sait pas écrire). C'est là que nous découvrons un mystérieux fichier `.README` :
+
+{{< img src="writeups/epita/epirootkit/tux_fan_club/givenfilestree.png" alt="Arborescence révélant le fichier caché" caption="Arborescence révélant le fichier caché" >}}
+{{< /section >}}
+
+{{< section type="note" title="Tentative de lecture du parchemin" icon="lightbulb" >}}
+Après avoir accédé à ce fichier, nous décidons de l'ouvrir. Le déchiffrer était une autre paire de manches... 
+
+Le contenu du fichier mystérieux :
+```bash
+$ head .README
+W3lc0m3 t0 thE 53cR3t p1r4t35 l4ir.
+
+Young pirate, you have find my treasure.
+
+It is yours.
+
+Navigate safely,
+
+--
+Cap'tain René Bojolais
+```
+
+Le reste du parchemin était du langage codé. Grâce à notre expérience en programmation et en langues, nous comprenons qu'il s'agit d'une image encodée en base64.
+
+Avec la commande `base64 -d .README > image.jpg` nous avons pu obtenir l'image (il fallait évidemment garder que la partie en base64 du `.README`).
+
+{{< img src="writeups/epita/epirootkit/tux_fan_club/SOT.jpg" alt="Image déchiffrée" caption="Image déchiffrée" >}}
+{{< /section >}}
+
+{{< section type="note" title="Chanson cachée" icon="search" >}}
+En utilisant le site https://georgeom.net/StegOnline/upload pour extraire les valeurs RGB de l'image et le texte caché, on remarque une chaîne de caractères insolite...
+
+{{< img src="writeups/epita/epirootkit/tux_fan_club/extract.png" alt="Extraction de données cachées" caption="Extraction de données cachées" >}}
+
+
+```
+I am captain Jack Sparrow - Remix high bass quality - SAVAGE MIX.wav
+```
+
+Cela nous rappelle une chanson de pirates bien connue...
+
+Notre première idée est de chercher le remix sur Youtube afin de voir si le Capitaine René n'a pas laissé un petit flag en commentaire. Apparemment, il n'est pas fan d'OSINT, dommage 😔
+
+Notre deuxième idée est de dézipper l'image `unzip image.jpg` et là, bingo !
+> Ce n'est qu'après que j'ai pensé à faire un binwalk... le unzip a été un coup de chance.
+```bash
+$ unzip image.jpg
+Archive:  image.jpg
+warning [image.jpg]:  21054 extra bytes at beginning or within zipfile
+  (attempting to process anyway)
+  inflating: I am captain Jack Sparrow - Remix high bass quality - SAVAGE MIX.wav
+```
+{{< /section >}}
+
+{{< section type="note" title="Audacity time" icon="lightbulb" >}}
+Grâce à notre expérience en CTF, nous avons tout de suite l'idée d'examiner le spectrogramme.
+
+Rien d'anormal sauf sur les dernières secondes du fichier. Et là... nous trouvons le flag !
+
+{{< img src="writeups/epita/epirootkit/tux_fan_club/flag.png" alt="Le trésor caché dans le spectrogramme" caption="Le trésor caché dans le spectrogramme" >}}
+
+Il ne nous reste qu'à transmettre le mot de passe au capitaine et à nous le trésor...
+{{< /section >}}
+
+{{< section type="success" title="Flag" icon="flag" >}}
+{{< flag "WLKOM{C4pt41n_Rene_B0j0laIs}" >}}
+{{< /section >}} 
