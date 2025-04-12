@@ -77,7 +77,7 @@ warning [image.jpg]:  21054 extra bytes at beginning or within zipfile
 {{< /section >}}
 
 {{< section type="note" title="Audacity time" icon="lightbulb" >}}
-Grâce à notre expérience en CTF, nous avons tout de suite l'idée d'examiner le spectrogramme.
+Pendant qu'on vibait sur la musique, nous avons eu l'idée d'examiner le spectrogramme.
 
 Rien d'anormal sauf sur les dernières secondes du fichier. Et là... nous trouvons le flag !
 
