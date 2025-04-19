@@ -1,6 +1,6 @@
 ---
 title: RootMe
 cat: ctf
-draft: false
+draft: true
 ---
 
