@@ -126,12 +126,15 @@ Nous identifions deux fichiers HEIC identiques. Pour les extraire :
 ```bash
 # Recherche du fichier dans Manifest.db
 sqlite3 Manifest.db \
-  "SELECT fileID
+  "SELECT fileID, domain||'/'||relativePath
    FROM Files
-   WHERE relativePath LIKE '%679329D1-12E7-45F2-A082-1E58A6CB454F.HEIC%';"
+   WHERE relativePath LIKE '%Attachments/9e/14/%679329D1-12E7-45F2-A082-1E58A6CB454F.HEIC%';"
+
+# Output:
+# 6f4e34098e00a80fde876c8638fb1d685be2318b|MediaDomain/Library/SMS/Attachments/9e/14/4C3DF366-1CE1-42F1-9570-C76206181041/679329D1-12E7-45F2-A082-1E58A6CB454F.HEIC
 
 # Extraction du fichier
-cp <fileID> msg_6793.heic
+cp 6f4e34098e00a80fde876c8638fb1d685be2318b msg_6793.heic
 ```
 {{< /section >}}
 
