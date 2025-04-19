@@ -4,7 +4,7 @@ categories: IA
 cat: "chal"
 solved: true
 date: 2025-04-08T00:00:00Z
-draft: false
+draft: true
 description: "Mission 1: Trick the AI chatbot to give the leaked data key"
 ---
 
