@@ -84,41 +84,63 @@ MathJax.Hub.Config({
     </div>
 
     <!-- Challenge Files -->
-    {{ $files := slice }}
-    {{ $staticPath := printf "/static%s" .Path }}
-    {{ if fileExists $staticPath }}
-        {{ $files = readDir $staticPath }}
-    {{ end }}
-    {{ if $files }}
-    <div class="files-section">
-        <h2 class="section-title">Challenge Files</h2>
-        <div class="files-container">
-            <ul class="files-grid">
-                {{ range $files }}
-                {{ $fileType := partial "file-type.html" .Name }}
-                <li class="file-item">
-                    <div class="file-wrapper">
-                        <div class="file-icon" data-type="{{ $fileType.type }}">
-                            {{ partial "file-icon.html" $fileType }}
-                        </div>
-                        <div class="file-info">
-                            <div class="file-name">{{ .Name }}</div>
-                            <div class="file-type">{{ $fileType.label }}</div>
-                        </div>
-                        <div class="file-actions">
-                            <a href="{{ .Name }}" class="file-action" target="_blank" uk-tooltip="View file">
-                                <span uk-icon="icon: link"></span>
-                            </a>
-                            <a href="{{ .Name }}" class="file-action" download uk-tooltip="Download file">
-                                <span uk-icon="icon: download"></span>
-                            </a>
-                        </div>
-                    </div>
-                </li>
-                {{ end }}
-            </ul>
-        </div>
-    </div>
+    {{ if .Params.filedir }}
+        {{ $filePath := printf "static/writeups/%s" .Params.filedir }}
+        {{ if fileExists $filePath }}
+            <div class="files-section">
+                <h2 class="section-title">Challenge Files</h2>
+                <div class="files-container">
+                    <ul class="files-grid">
+                        {{ range (readDir $filePath) }}
+                            {{ if not (hasPrefix .Name ".") }}
+                                {{ $ext := path.Ext .Name | strings.TrimPrefix "." }}
+                                <li class="file-item">
+                                    <div class="file-wrapper">
+                                        <div class="file-icon">
+                                            {{ if eq $ext "wav" "mp3" "ogg" }}
+                                                <span uk-icon="icon: play-circle"></span>
+                                            {{ else if eq $ext "png" "jpg" "jpeg" "gif" }}
+                                                <span uk-icon="icon: image"></span>
+                                            {{ else if eq $ext "zip" "tar" "gz" "rar" }}
+                                                <span uk-icon="icon: file-zip"></span>
+                                            {{ else if eq $ext "txt" "md" }}
+                                                <span uk-icon="icon: file-text"></span>
+                                            {{ else if eq $ext "py" "c" "cpp" "h" "hpp" "js" "html" "css" }}
+                                                <span uk-icon="icon: code"></span>
+                                            {{ else if eq $ext "pdf" }}
+                                                <span uk-icon="icon: file-pdf"></span>
+                                            {{ else if eq $ext "doc" "docx" }}
+                                                <span uk-icon="icon: file-text"></span>
+                                            {{ else if eq $ext "xls" "xlsx" }}
+                                                <span uk-icon="icon: file-text"></span>
+                                            {{ else if eq $ext "ppt" "pptx" }}
+                                                <span uk-icon="icon: file-text"></span>
+                                            {{ else if eq $ext "exe" "bin" "elf" }}
+                                                <span uk-icon="icon: cog"></span>
+                                            {{ else }}
+                                                <span uk-icon="icon: file-text"></span>
+                                            {{ end }}
+                                        </div>
+                                        <div class="file-info">
+                                            <div class="file-name">{{ .Name }}</div>
+                                            <div class="file-ext">{{ if $ext }}{{ $ext | upper }}{{ end }}</div>
+                                        </div>
+                                        <div class="file-actions">
+                                            <a href="/writeups/{{ $.Params.filedir }}/{{ .Name }}" class="file-action" target="_blank" uk-tooltip="View file">
+                                                <span uk-icon="icon: link"></span>
+                                            </a>
+                                            <a href="/writeups/{{ $.Params.filedir }}/{{ .Name }}" class="file-action" download uk-tooltip="Download file">
+                                                <span uk-icon="icon: download"></span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </li>
+                            {{ end }}
+                        {{ end }}
+                    </ul>
+                </div>
+            </div>
+        {{ end }}
     {{ end }}
 
     <!-- Writeup Content -->
@@ -315,8 +337,17 @@ section {
 .file-wrapper {
     display: flex;
     align-items: center;
+    gap: 1rem;
     padding: 0.75rem;
-    gap: 0.75rem;
+    border: 1px solid var(--card-border);
+    border-radius: 8px;
+    background: var(--card-bg);
+    transition: all 0.2s ease;
+}
+
+.file-wrapper:hover {
+    border-color: var(--link-color);
+    background: var(--card-hover-bg);
 }
 
 .file-icon {
@@ -325,6 +356,7 @@ section {
     display: flex;
     align-items: center;
     justify-content: center;
+    color: var(--link-color);
     flex-shrink: 0;
 }
 
@@ -342,9 +374,27 @@ section {
     white-space: nowrap;
 }
 
-.file-type {
+.file-ext {
+    color: var(--text-color-muted);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+}
+
+.file-meta {
+    display: flex;
+    gap: 0.75rem;
     color: var(--text-color-muted);
     font-size: 0.85rem;
+}
+
+.file-type {
+    text-transform: uppercase;
+    font-weight: 500;
+}
+
+.file-size {
+    color: var(--text-color-muted);
+    opacity: 0.8;
 }
 
 .file-actions {
@@ -595,6 +645,85 @@ section {
 [data-theme="dark"] .file-item:hover {
     background: var(--card-hover-bg);
     border-color: var(--link-color);
+}
+
+/* Enhanced File Styles */
+.file-icon {
+    width: 2rem;
+    height: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--link-color);
+    flex-shrink: 0;
+}
+
+.file-meta {
+    display: flex;
+    gap: 0.75rem;
+    color: var(--text-color-muted);
+    font-size: 0.85rem;
+}
+
+.file-type {
+    text-transform: uppercase;
+    font-weight: 500;
+}
+
+.file-size {
+    color: var(--text-color-muted);
+    opacity: 0.8;
+}
+
+/* File Type Colors */
+.file-item[data-type="wav"] .file-icon,
+.file-item[data-type="mp3"] .file-icon,
+.file-item[data-type="ogg"] .file-icon {
+    color: var(--warning-color);
+}
+
+.file-item[data-type="png"] .file-icon,
+.file-item[data-type="jpg"] .file-icon,
+.file-item[data-type="jpeg"] .file-icon,
+.file-item[data-type="gif"] .file-icon {
+    color: var(--success-color);
+}
+
+.file-item[data-type="zip"] .file-icon,
+.file-item[data-type="tar"] .file-icon,
+.file-item[data-type="gz"] .file-icon,
+.file-item[data-type="rar"] .file-icon {
+    color: var(--danger-color);
+}
+
+.file-item[data-type="txt"] .file-icon,
+.file-item[data-type="md"] .file-icon,
+.file-item[data-type="py"] .file-icon,
+.file-item[data-type="c"] .file-icon,
+.file-item[data-type="cpp"] .file-icon,
+.file-item[data-type="h"] .file-icon,
+.file-item[data-type="hpp"] .file-icon,
+.file-item[data-type="js"] .file-icon,
+.file-item[data-type="html"] .file-icon,
+.file-item[data-type="css"] .file-icon {
+    color: var(--info-color);
+}
+
+/* Lightbox Styles */
+.uk-lightbox {
+    background: rgba(0, 0, 0, 0.9);
+}
+
+.uk-lightbox-toolbar {
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.uk-lightbox-toolbar-icon {
+    color: white;
+}
+
+.uk-lightbox-toolbar-icon:hover {
+    color: var(--link-color);
 }
 </style>
 

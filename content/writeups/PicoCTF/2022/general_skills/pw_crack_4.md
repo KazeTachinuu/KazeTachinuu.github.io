@@ -6,6 +6,7 @@ points: 100
 solves: 27962
 date: 2024-05-12T00:00:00Z
 draft: false
+filedir: picoctf/2022/general_skills/pw_crack_4
 ---
 
 # PW Crack 4
