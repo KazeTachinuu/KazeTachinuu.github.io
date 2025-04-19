@@ -1,5 +1,30 @@
 {{ define "main" }}
 
+{{ $script := .Site.Data.webpack_assets.app }}
+{{ with $script.js }}
+     <script src="{{ relURL (printf "%s%s" "dist/" .) }}"></script>
+{{ end }}
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [['$','$']],
+    displayMath: [['$$','$$']],
+    processEscapes: true,
+    processEnvironments: true
+  },
+  TeX: {
+    equationNumbers: { autoNumber: "AMS" },
+    extensions: ["AMSmath.js", "AMSsymbols.js"]
+  },
+  CommonHTML: { linebreaks: { automatic: true } },
+  "HTML-CSS": { linebreaks: { automatic: true } },
+  SVG: { linebreaks: { automatic: true } }
+});
+</script>
+
 <section>
   <div class="uk-container uk-margin-medium-top">
     <!-- Layer Navigation with Back Button -->
@@ -404,6 +429,68 @@ section {
     margin-bottom: 0.5rem;
 }
 
+/* Table Styles */
+.writeup-content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+    font-size: 1rem;
+    background: var(--card-bg);
+    border-radius: 8px;
+}
+
+.writeup-content table th,
+.writeup-content table td {
+    padding: 0.75rem 1rem;
+    text-align: left;
+    border: none;
+    line-height: 1.4;
+}
+
+.writeup-content table th {
+    font-weight: 600;
+    color: var(--heading-color);
+    background: var(--card-bg);
+}
+
+.writeup-content table td {
+    color: var(--text-color);
+    background: var(--card-bg);
+}
+
+.writeup-content table tr {
+    border-bottom: 1px solid var(--card-border);
+}
+
+.writeup-content table tr:last-child {
+    border-bottom: none;
+}
+
+.writeup-content table code {
+    background: var(--card-hover-bg);
+    padding: 0.2em 0.4em;
+    border-radius: 3px;
+    font-size: 0.9em;
+    color: var(--link-color);
+}
+
+/* Adjust table column widths */
+.writeup-content table th:first-child,
+.writeup-content table td:first-child {
+    width: 10%;
+    white-space: nowrap;
+}
+
+.writeup-content table th:nth-child(2),
+.writeup-content table td:nth-child(2) {
+    width: 30%;
+}
+
+.writeup-content table th:last-child,
+.writeup-content table td:last-child {
+    width: 60%;
+}
+
 /* Mobile Optimizations */
 @media (max-width: 640px) {
     .uk-container {
@@ -449,6 +536,15 @@ section {
         padding: 0.5rem 0.75rem;
         width: 100%;
         border-left: 4px solid var(--link-color);
+    }
+
+    .writeup-content table {
+        font-size: 0.9rem;
+    }
+    
+    .writeup-content table th,
+    .writeup-content table td {
+        padding: 0.5rem 0.75rem;
     }
 }
 

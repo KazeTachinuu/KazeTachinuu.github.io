@@ -1,6 +1,6 @@
 ---
 title: "babyfuscation"
-categories: ["FCSC 2025", "Reverse"]
+categories: "Reverse"
 cat: "chal"
 solved: true
 date: 2025-04-19T00:00:00Z
