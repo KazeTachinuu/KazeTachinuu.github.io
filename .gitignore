@@ -33,3 +33,5 @@ Thumbs.db
 # Hugo generated resources
 /resources/
 .hugo_build.lock
+
+

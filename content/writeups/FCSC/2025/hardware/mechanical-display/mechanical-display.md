@@ -1,0 +1,243 @@
+---
+title: "Mechanical Display"
+categories: Hardware
+cat: "chal"
+difficulty: "⭐⭐⭐"
+points: "250"
+solved: true
+date: 2025-04-19T00:00:00Z
+draft: false
+description: "Décodage d'un flag transmis via un servomoteur contrôlé par un signal PWM capturé dans un fichier VCD."
+filedir: FCSC/2025/hardware/mechanical-display
+---
+
+{{< section type="info" title="Description du challenge" icon="info-circle" >}}
+Le challenge consiste à décoder un flag transmis via la position d'un servomoteur, contrôlé par un signal PWM capturé dans `mechanical-display.vcd`. Une image de datasheet fournit la correspondance entre l'angle du servo et les caractères.
+
+Le mapping est linéaire :
+- 600µs PW = -90°
+- 1500µs PW = 0°
+- 2400µs PW = +90°
+
+Les 19 caractères correspondant à la plage [-90°, +90°] sont : `0123456789ABCDFS{}_`
+{{< /section >}}
+
+{{< section type="note" title="1. Analyse du signal" icon="waveform" >}}
+
+### Structure du signal
+
+Le fichier VCD contient :
+- Un signal PWM contrôlant un servomoteur
+- Échelle de temps : 10µs par tick
+- Des pulses de contrôle consécutifs
+- Des variations de position pour chaque caractère du flag
+
+### Paramètres de décodage
+
+```python
+#!/usr/bin/env python3
+import sys
+import math
+from itertools import product
+from collections import defaultdict
+
+# --- Configuration ---
+VCD_FILE = "mechanical-display.vcd"
+TS_US = 10.0  # VCD timescale: 1 tick = 10 microseconds
+PW_MIN, PW_MID, PW_MAX = 600.0, 1500.0, 2400.0 # PW (us) to Angle mapping
+ALPHABET = ["0","1","2","3","4","5","6","7","8","9","A","B","C","D","F","S","{","}","_"]
+N = len(ALPHABET)
+# Grouping threshold: Half the PW range of one character step
+DELTA_US = (PW_MAX - PW_MIN) / (2.0 * (N - 1))
+# Ambiguity threshold: How close to x.5 index boundary to consider ambiguous
+AMBIGUITY_THRESHOLD = 0.05
+
+# --- Conversion Functions ---
+def pw_to_angle(pw_us):
+    """Converts pulse width (us) to angle (degrees, -90 to +90)."""
+    clamped_pw = max(PW_MIN, min(PW_MAX, pw_us))
+    span_us = PW_MAX - PW_MID
+    if abs(span_us) < 1e-9: return 0.0
+    angle = (clamped_pw - PW_MID) * 90.0 / span_us
+    return max(-90.0, min(90.0, angle))
+
+def angle_to_index_float(angle_deg):
+    """Calculates the floating-point index [0, N-1] for the angle."""
+    clamped_angle = max(-90.0, min(90.0, angle_deg))
+    index_float = (clamped_angle + 90.0) * (N - 1) / 180.0
+    return index_float
+
+def is_ambiguous(index_float):
+    """Checks if a float index is close to a .5 boundary."""
+    distance_to_half = abs(index_float - (math.floor(index_float) + 0.5))
+    return distance_to_half < AMBIGUITY_THRESHOLD
+
+def get_possible_chars(index_float):
+    """Gets the two possible characters (floor, ceil) for an ambiguous index."""
+    idx_floor = math.floor(index_float)
+    idx_ceil = math.ceil(index_float)
+    idx_floor = max(0, min(N - 1, idx_floor))
+    idx_ceil = max(0, min(N - 1, idx_ceil))
+    # Ensure they are different if possible near integer values
+    if idx_floor == idx_ceil:
+        if idx_ceil < N - 1: idx_ceil += 1
+        elif idx_floor > 0: idx_floor -= 1
+    return ALPHABET[idx_floor], ALPHABET[idx_ceil]
+
+# --- VCD Processing ---
+def process_vcd(vcd_path):
+    """Parses VCD, groups pulses, and identifies ambiguities."""
+    runs = []
+    current_run = []
+    t, rise_time = 0, None
+
+    try:
+        with open(vcd_path, 'r') as f:
+            # Skip header
+            for line in f:
+                if line.strip().startswith("$enddefinitions"): break
+            # Process data lines
+            for line in f:
+                stripped = line.strip()
+                if not stripped: continue
+                val_change = None
+                if stripped.startswith("#"):
+                    parts = stripped[1:].split(None, 1)
+                    t = int(parts[0])
+                    if len(parts) > 1: val_change = parts[1]
+                elif stripped in ["0!", "1!"]: val_change = stripped
+
+                if val_change:
+                    if "1!" in val_change: rise_time = t
+                    elif "0!" in val_change and rise_time is not None:
+                        pw = (t - rise_time) * TS_US
+                        if pw > 0:
+                            # Group pulses based on DELTA_US threshold
+                            if not current_run or abs(pw - current_run[-1]) <= DELTA_US:
+                                current_run.append(pw)
+                            else:
+                                if current_run: runs.append(current_run)
+                                current_run = [pw]
+                        rise_time = None
+        if current_run: runs.append(current_run) # Add the last run
+    except FileNotFoundError:
+        print(f"Error: File not found '{vcd_path}'", file=sys.stderr); sys.exit(1)
+    except Exception as e:
+        print(f"Error parsing VCD: {e}", file=sys.stderr); sys.exit(1)
+
+    # Analyze runs for ambiguities
+    run_results = []
+    ambiguous_groups = defaultdict(list)
+    ambiguous_indices_map = {}
+    for i, run in enumerate(runs):
+        avg_pw = sum(run) / len(run)
+        angle = pw_to_angle(avg_pw)
+        index_float = angle_to_index_float(angle)
+        std_char_idx = max(0, min(N - 1, int(round(index_float))))
+        ambiguous = is_ambiguous(index_float)
+
+        run_results.append({
+            "run_index": i, "index_float": index_float,
+            "standard_char": ALPHABET[std_char_idx], "is_ambiguous": ambiguous
+        })
+        if ambiguous:
+            group_key = round(index_float, 2) # Group similar ambiguous points
+            ambiguous_groups[group_key].append(i)
+            ambiguous_indices_map[i] = group_key
+
+    return run_results, ambiguous_groups, ambiguous_indices_map
+
+# --- Main Execution ---
+if __name__ == "__main__":
+    run_results, ambiguous_groups, ambiguous_indices_map = process_vcd(VCD_FILE)
+
+    # Prepare decision points for ambiguous groups
+    decision_points = {}
+    unique_ambiguous_keys = sorted(ambiguous_groups.keys())
+
+    if not unique_ambiguous_keys:
+        print("No ambiguous mappings found.", file=sys.stderr)
+        final_string = "".join([r["standard_char"] for r in run_results])
+        print(final_string)
+    else:
+        print(f"Found {len(unique_ambiguous_keys)} ambiguous mapping points. Generating possibilities...", file=sys.stderr)
+        for key in unique_ambiguous_keys:
+            rep_float = run_results[ambiguous_groups[key][0]]["index_float"]
+            decision_points[key] = get_possible_chars(rep_float)
+
+        # Generate and print all combinations
+        num_decision_points = len(unique_ambiguous_keys)
+        count = 0
+        for choices in product([0, 1], repeat=num_decision_points):
+            current_flag = []
+            for i, run_info in enumerate(run_results):
+                if not run_info["is_ambiguous"]:
+                    current_flag.append(run_info["standard_char"])
+                else:
+                    key = ambiguous_indices_map[i]
+                    decision_idx = unique_ambiguous_keys.index(key)
+                    choice = choices[decision_idx]
+                    current_flag.append(decision_points[key][choice])
+
+            print("".join(current_flag))
+            count += 1
+            if count >= 256: # Limit output
+                print("... (output limited)", file=sys.stderr)
+                break
+
+```
+{{< /section >}}
+
+
+
+{{< section type="success" title="Flag" icon="flag" >}}
+En exécutant le script, nous obtenons 16 possibilités de flag.
+
+```bash
+$ python3 mechanical-display.py
+Found 4 ambiguous mapping points. Generating 16 possibilities...
+FCSC{S2C927_02600AS_902AS2_5B71D2C7}
+FCSC{S3C937_03600AS_902AS3_5B71D3C7}
+FCSC{S2C927_02600AS_903AS2_5B71D2C7}
+FCSC{S3C937_03600AS_903AS3_5B71D3C7}
+FCSC{S2C927_02600AS_902AS2_5B72D2C7}
+FCSC{S3C937_03600AS_902AS3_5B72D3C7}
+FCSC{S2C927_02600AS_903AS2_5B72D2C7}
+FCSC{S3C937_03600AS_903AS3_5B72D3C7}
+FCSC{S2C927_12601AS_912AS2_5B71D2C7}
+FCSC{S3C937_13601AS_912AS3_5B71D3C7}
+FCSC{S2C927_12601AS_913AS2_5B71D2C7}
+FCSC{S3C937_13601AS_913AS3_5B71D3C7}
+FCSC{S2C927_12601AS_912AS2_5B72D2C7}
+FCSC{S3C937_13601AS_912AS3_5B72D3C7}
+FCSC{S2C927_12601AS_913AS2_5B72D2C7}
+FCSC{S3C937_13601AS_913AS3_5B72D3C7}
+```
+
+La dernière était la bonne :
+
+{{< flag "FCSC{S3C937_13601AS_913AS3_5B72D3C7}" >}}
+{{< /section >}}
+
+{{< section type="info" title="Explications" icon="lightbulb" >}}
+1. **Analyse du signal VCD** :
+   - Extraction des largeurs de pulse (PW) à partir du fichier VCD
+   - Conversion des ticks en microsecondes (10µs par tick)
+   - Détection des fronts montants et descendants
+
+2. **Regroupement des pulses stables** :
+   - Les pulses consécutifs avec des PW similaires sont regroupés
+   - Un seuil de ±50µs est utilisé pour déterminer la stabilité
+   - Calcul de la moyenne des PW pour chaque groupe
+
+3. **Conversion angle → caractère** :
+   - Conversion des PW en angles (-90° à +90°)
+   - Calcul d'un index flottant entre 0 et 18
+   - Détection des cas ambigus (proches des frontières)
+
+4. **Résolution des ambiguïtés** :
+   - Identification des groupes de points ambigus
+   - Génération de toutes les combinaisons possibles
+   - Sélection de la chaîne correspondant au format du flag
+
+{{< /section >}} 
