@@ -8,8 +8,8 @@ draft: false
 description: "A Diophantine puzzle involving linear equations, perfect squares, and a Pell equation."
 ---
 
-{{< section type="info" title="Problem Statement" icon="info-circle" >}}
-We are given this verification script:
+{{< section type="info" title="Énoncé" icon="info-circle" >}}
+On nous donne le script de vérification suivant :
 
 ```python
 import sys
@@ -34,92 +34,180 @@ except:
     print("Nope!")
 ```
 
-In other words, find five positive integers $a,b,c,x,y$ satisfying:
+On cherche donc **cinq entiers positifs** $a, b, c, x, y$ qui vérifient :
 
-$$a = 487c$$
-$$159a = 485b$$
-$$x^2 = a + b$$
-$$y(3y-1) = 2b$$
+- $a = 487c$
+- $159a = 485b$
+- $x^2 = a + b$
+- $y(3y-1) = 2b$
 
-The flag will be `FCSC{sha256(str(a))}`.
+Le flag est `FCSC{sha256(str(a))}`.
 {{< /section >}}
 
-{{< section type="note" title="Step 1: Linear System Analysis" icon="search" >}}
-From equations (1) and (2):
+{{< section type="note" title="1. Réduction du système linéaire" icon="search" >}}
+On commence par exploiter les deux premières équations, qui sont linéaires :
 
-$$ a = 487c \quad \text{and} \quad 159a = 485b $$
+- $a = 487c$
+- $159a = 485b$
 
-Substituting the first equation into the second:
+Remplaçons $a$ dans la deuxième équation par $487c$ :
 
-$$ 159(487c) = 485b \implies b = \frac{159 \cdot 487}{485}c $$
+$$
+159a = 485b \implies 159 \times 487c = 485b
+$$
 
-Since $b$ must be an integer and $\gcd(159,485) = 1$, we need:
+On isole $b$ :
 
-$$ c = 485n, \quad n \in \mathbb{N} $$
+$$
+b = \frac{159 \times 487}{485}c
+$$
 
-This gives us:
+Pour que $b$ soit un entier, il faut que $c$ soit un multiple de $485$ (car $159$ et $485$ sont premiers entre eux). On pose donc :
 
-$$c = 485n$$
-$$a = 487 \cdot 485n$$
-$$b = 159 \cdot 487n$$
+$$
+c = 485n, \quad n \in \mathbb{N}^*
+$$
 
+On en déduit :
+
+- $c = 485n$
+- $a = 487c = 487 \times 485n$
+- $b = \frac{159 \times 487}{485} \times 485n = 159 \times 487n$
+
+**Résumé :**
+- $a = 487 \times 485n$
+- $b = 159 \times 487n$
+- $c = 485n$
+
+On a donc exprimé $a$, $b$, $c$ en fonction d'un seul paramètre $n$.
 {{< /section >}}
 
-{{< section type="note" title="Step 2: Perfect Square Analysis" icon="calculator" >}}
-Using $x^2 = a + b$:
+{{< section type="note" title="2. Condition de carré parfait" icon="calculator" >}}
+La troisième équation impose que $x^2 = a + b$ soit un carré parfait.
 
-$$x^2 = 487 \cdot 485n + 159 \cdot 487n$$
-$$x^2 = 487(485 + 159)n$$
-$$x^2 = 487 \cdot 644n$$
-$$x^2 = 313\,628n$$
+Remplaçons $a$ et $b$ par leurs expressions :
 
-Factor $313\,628 = 4 \cdot 7 \cdot 23 \cdot 487$
+$$
+x^2 = a + b = 487 \times 485n + 159 \times 487n = 487(485 + 159)n = 487 \times 644n
+$$
 
-For $x^2$ to be a perfect square, $n$ must absorb the non-square factors:
+On pose :
 
-$$ n = 7 \cdot 23 \cdot 487 \cdot w^2 = 78\,407w^2, \quad w \in \mathbb{N} $$
+$$
+S = 487 \times 644 = 313\,628
+$$
 
-Now we can derive $A_0$:
+Donc :
 
-$$a = 487 \cdot 485 \cdot (78\,407w^2) = 18\,519\,341\,365w^2$$
+$$
+x^2 = 313\,628n
+$$
 
-Therefore $A_0 = 487 \cdot 485 \cdot 78\,407 = 18\,519\,341\,365$
+Pour que $x^2$ soit un carré parfait, il faut que $n$ contienne tous les facteurs premiers de $313\,628$ qui ne sont pas au carré. Décomposons $313\,628$ :
+
+- $313\,628 = 2^2 \times 7 \times 23 \times 487$
+
+Pour que $x^2$ soit un carré, il faut que $n$ contienne au moins un facteur $7$, $23$ et $487$, et que le reste soit un carré. On pose donc :
+
+$$
+n = 7 \times 23 \times 487 \times w^2 = 78\,407w^2, \quad w \in \mathbb{N}^*
+$$
+
+Ainsi, $x^2 = 313\,628n = 313\,628 \times 78\,407w^2$ est bien un carré parfait, car tous les facteurs premiers sont au carré ou en puissance paire.
+
+On peut alors exprimer $a$ en fonction de $w$ :
+
+$$
+a = 487 \times 485 \times n = 487 \times 485 \times 78\,407w^2 = 18\,519\,341\,365w^2
+$$
+
+On note $A_0 = 18\,519\,341\,365$.
+
+**À ce stade,**
+- $a = A_0 w^2$
+- $b = 159 \times a / 485$
+- $c = a / 487$
+- $x = \sqrt{a + b}$
 {{< /section >}}
 
-{{< section type="note" title="Step 3: Pell Equation" icon="cogs" >}}
-From $y(3y-1) = 2b$:
+{{< section type="note" title="3. Passage à l'équation de Pell" icon="cogs" >}}
+La dernière équation à satisfaire est $y(3y-1) = 2b$.
 
-1. Rewrite as quadratic in $y$:
-   $$ 3y^2 - y - 2b = 0 $$
+On la réécrit comme une équation du second degré en $y$ :
 
-2. For integer solutions, discriminant must be perfect square:
-   $$ \Delta = 1 + 24b = 1 + 24 \cdot 159 \cdot 487 \cdot 78\,407 \cdot w^2 $$
+$$
+3y^2 - y - 2b = 0
+$$
 
-3. Let $D = 1 + 24 \cdot 159 \cdot 487 \cdot 78\,407 = 145\,710\,941\,544$
+Pour que $y$ soit entier, il faut que le discriminant soit un carré parfait :
 
-4. We need to solve the Pell equation:
-   $$ t^2 - Dw^2 = 1 $$
-   where $y = \frac{1 + t}{6}$ must be integer
+$$
+\Delta = (-1)^2 - 4 \times 3 \times (-2b) = 1 + 24b
+$$
+
+On remplace $b$ par son expression en fonction de $w$ :
+
+$$
+b = 159 \times 487 \times 78\,407w^2
+$$
+
+Donc :
+
+$$
+\Delta = 1 + 24b = 1 + 24 \times 159 \times 487 \times 78\,407w^2
+$$
+
+On pose :
+
+$$
+D = 1 + 24 \times 159 \times 487 \times 78\,407 = 145\,710\,941\,544
+$$
+
+On cherche donc $w$ et $t$ tels que :
+
+$$
+t^2 - D w^2 = 1
+$$
+
+C'est une **équation de Pell-Fermat** classique.
+
+Pour chaque solution $(t, w)$, on a :
+
+$$
+y = \frac{1 + t}{6}
+$$
+
+Il faut donc que $t \equiv -1 \pmod{6}$ pour que $y$ soit entier.
 {{< /section >}}
 
-{{< section type="note" title="Implementation" icon="code" >}}
+{{< section type="note" title="4. Résolution algorithmique détaillée" icon="code" >}}
+Pour résoudre l'équation de Pell $t^2 - D w^2 = 1$, on utilise la méthode des fractions continues pour trouver la solution fondamentale $(t_1, w_1)$, puis on génère les solutions suivantes par récurrence :
+
+- $(t_{k+1}, w_{k+1}) = (t_1 t_k + D w_1 w_k, t_1 w_k + w_1 t_k)$
+
+On cherche la première solution pour laquelle $(t + 1)$ est divisible par $6$.
+
+Voici le script Python complet, **commenté étape par étape** :
+
 ```python
-#!/usr/bin/env python3
 import sys
 import math
 from hashlib import sha256
 
-# allow HUGE ints → str
+# Permet de convertir d'énormes entiers en chaînes
 sys.set_int_max_str_digits(10**6)
 
 def fundamental_pell(D: int):
-    """Find minimal (t,n) > (1,0) solving t^2 - D n^2 = 1"""
+    """
+    Calcule la solution fondamentale (t, n) de t^2 - D n^2 = 1
+    en utilisant la méthode des fractions continues.
+    """
     a0 = a = math.isqrt(D)
     if a * a == D:
-        raise ValueError("D is square!")
+        raise ValueError("D est un carré parfait !")
     m, d = 0, 1
-    h1, h = 1, a    # convergents h[-2], h[-1]
-    k1, k = 0, 1    # convergents k[-2], k[-1]
+    h1, h = 1, a
+    k1, k = 0, 1
     while True:
         m = d * a - m
         d = (D - m*m) // d
@@ -132,27 +220,26 @@ def fundamental_pell(D: int):
             return h, k
 
 def main():
-    # Constants from our reduction
-    A0 = 487 * 485 * 78407        # = 18,519,341,365
-    D = 145710941544             # From discriminant equation
+    # Constantes calculées précédemment
+    A0 = 487 * 485 * 78407        # = 18_519_341_365
+    D = 145710941544
 
-    # 1) Find fundamental Pell solution
+    # 1) On trouve la solution fondamentale de l'équation de Pell
     t1, n1 = fundamental_pell(D)
 
-    # 2) Generate solutions until (t + 1) ≡ 0 (mod 6)
+    # 2) On génère les solutions suivantes jusqu'à ce que (t + 1) soit divisible par 6
     t, n = t1, n1
     while (t + 1) % 6 != 0:
-        t, n = (t*t1 + n*n1*D,    # Next t_k
-               t*n1 + n*t1)       # Next n_k
+        t, n = (t*t1 + n*n1*D, t*n1 + n*t1)
 
-    # 3) Recover variables
+    # 3) On récupère les variables du problème
     y = (1 + t) // 6
     a = A0 * n * n
     b = (159 * a) // 485
     c = a // 487
     x = math.isqrt(a + b)
 
-    # 4) Generate flag
+    # 4) On génère le flag
     flag = "FCSC{" + sha256(str(a).encode()).hexdigest() + "}"
     print(flag)
 
@@ -160,22 +247,22 @@ if __name__ == "__main__":
     main()
 ```
 
-The code:
-1. Uses continued fractions to find fundamental Pell solution
-2. Generates solutions until $y = \frac{1 + t}{6}$ is integer
-3. Recovers all variables from the solution
-4. Computes flag from $a$
+**Explications :**
+- On commence par calculer la solution fondamentale de l'équation de Pell.
+- On génère les solutions suivantes jusqu'à obtenir un $t$ tel que $(t + 1)$ soit divisible par $6$ (pour que $y$ soit entier).
+- On calcule alors $a$, $b$, $c$, $x$, $y$.
+- On calcule le flag en appliquant le hash SHA256 sur $a$.
 {{< /section >}}
 
-{{< section type="success" title="Final Flag" icon="flag" >}}
+{{< section type="success" title="Flag" icon="flag" >}}
 {{< flag "FCSC{b313c611e23a09e5479b10793705fb40a7a32dbcbd8c4bc2b1a33e42c4579cae}" >}}
 {{< /section >}}
 
-{{< section type="info" title="Summary" icon="table" >}}
-Key steps:
-1. Linear analysis → parametrize by $n$
-2. Perfect square → $n = 78\,407w^2$ and $A_0 = 487 \cdot 485 \cdot 78\,407$
-3. Pell equation → $t^2 - Dw^2 = 1$
-4. Solve via continued fractions
-5. Compute $a = A_0n^2$ for flag
-{{< /section >}} 
+{{< section type="info" title="Résumé des étapes" icon="table" >}}
+1. **Réduction linéaire** : on exprime toutes les variables en fonction d'un seul paramètre $n$.
+2. **Carré parfait** : on choisit $n$ pour que $x^2 = a + b$ soit un carré parfait, ce qui impose $n = 78\,407w^2$.
+3. **Équation de Pell** : on traduit la dernière contrainte en une équation de Pell $t^2 - D w^2 = 1$.
+4. **Résolution** : on trouve la solution fondamentale, puis on génère les suivantes jusqu'à obtenir un $y$ entier.
+5. **Calcul du flag** : on applique le script pour obtenir le flag.
+{{< /section >}}
+
