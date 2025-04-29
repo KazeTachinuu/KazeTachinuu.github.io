@@ -20,90 +20,132 @@ Avant la remise du téléphone à la douane, le propriétaire a eu le temps d'en
 
 {{< section type="note" title="1. Analyse du backup" icon="database" >}}
 
-### Exploration des fichiers du backup
+### Structure du backup iOS
 
-Le backup est fourni sous forme d'archive `backup.tar.xz`. Après décompression, nous trouvons :
+Le backup est fourni sous forme d'archive `backup.tar.xz`. Après décompression, on observe :
 - Des fichiers nommés en hexadécimal (00, 01, ..., ff)
-- Une base de données `Manifest.db` qui contient la correspondance entre les fichiers et leurs chemins originaux
+- Une base de données `Manifest.db` qui fait le lien entre ces fichiers et leurs chemins d'origine sur l'iPhone
+
+**Pourquoi cette structure ?**
+Les backups iOS ne conservent pas les noms de fichiers originaux pour chaque fichier sauvegardé. À la place, chaque fichier est stocké sous un nom de hash (fileID), et la correspondance avec le chemin d'origine est conservée dans la base `Manifest.db`. C'est donc cette base qui permet de retrouver à quoi correspond chaque fichier du backup.
+
+### Exploration de la structure du backup
+
+Pour comprendre à quoi correspondent les fichiers, on interroge la base `Manifest.db` :
 
 ```bash
-# Lister les correspondances fichier → chemin
 sqlite3 Manifest.db \
   "SELECT fileID, domain||'/'||relativePath FROM Files;" \
 | head -n 10
+```
 
-# Output:
-# 3d0d7e5fb2ce288813306e4d4636395e047a3d28|Library/SMS/sms.db
-# 1a2b3c4d5e6f7g8h9i0j1k2l3m4n5o6p7q8r9s0t|Library/Notes/NoteStore.sqlite
-# ...
+**Pourquoi cette commande ?**
+- On utilise `sqlite3` pour interroger la base SQLite `Manifest.db`.
+- On sélectionne le `fileID` (nom du fichier dans le backup) et le chemin d'origine (`domain/relativePath`).
+- Cela permet de lister les premiers fichiers et de comprendre la structure du backup, c'est-à-dire de faire le lien entre les fichiers chiffrés et leur emplacement d'origine sur l'iPhone.
+
+Exemple de sortie :
+```
+3d0d7e5fb2ce288813306e4d4636395e047a3d28|Library/SMS/sms.db
+1a2b3c4d5e6f7g8h9i0j1k2l3m4n5o6p7q8r9s0t|Library/Notes/NoteStore.sqlite
+... (autres fichiers)
 ```
 {{< /section >}}
 
-{{< section type="note" title="2. Recherche des messages" icon="message" >}}
+{{< section type="note" title="2. Recherche et analyse des messages SMS" icon="message" >}}
 
 ### Localisation de la base de données SMS
 
-Nous cherchons spécifiquement la base de données des messages SMS :
+On cherche la base de données contenant les SMS, généralement `sms.db` :
 
 ```bash
 sqlite3 Manifest.db \
-  "SELECT fileID, relativePath
-   FROM Files
-   WHERE relativePath LIKE '%SMS/sms.db%';"
+  "SELECT fileID, relativePath FROM Files WHERE relativePath LIKE '%SMS/sms.db%';"
+```
 
-# Output:
-# 3d0d7e5fb2ce288813306e4d4636395e047a3d28|Library/SMS/sms.db
+**Pourquoi cette commande ?**
+- On cherche dans la base tous les fichiers dont le chemin d'origine se termine par `SMS/sms.db`.
+- C'est la base de données standard des messages sur iOS.
+- On récupère ainsi le `fileID` qui nous permettra d'extraire le fichier réel du backup.
 
-# Extraction de la base SMS
+Sortie :
+```
+3d0d7e5fb2ce288813306e4d4636395e047a3d28|Library/SMS/sms.db
+```
+
+On extrait alors ce fichier :
+```bash
 cp 3d0d7e5fb2ce288813306e4d4636395e047a3d28 sms.db
 ```
 
-### Analyse des messages
+**Pourquoi cette commande ?**
+- On copie le fichier du backup (nommé par son hash) sous un nom plus explicite (`sms.db`) pour pouvoir l'analyser facilement avec des outils SQLite.
 
-1. **Structure de la base** :
+### Exploration de la base de données SMS
+
+On explore la structure de la base :
 ```bash
-# Vérification des tables
 sqlite3 sms.db ".tables"
-
-# Output:
-# _SqliteDatabaseProperties  message
-# attachment                message_attachment_join
-# chat                      message_processing_task
-# chat_handle_join          recoverable_message_part
-# chat_message_join         sync_deleted_attachments
-# chat_recoverable_message_join  sync_deleted_chats
-# deleted_messages          sync_deleted_messages
-# handle                    unsynced_removed_recoverable_messages
-# kvtable
 ```
 
-2. **Recherche de messages suspects** :
+**Pourquoi cette commande ?**
+- On liste toutes les tables de la base de données.
+- Cela permet de repérer où sont stockés les messages (`message`), les contacts (`handle`), et les pièces jointes (`attachment`).
+
+Sortie :
+```
+_SqliteDatabaseProperties  message
+attachment                message_attachment_join
+chat                      message_processing_task
+chat_handle_join          recoverable_message_part
+chat_message_join         sync_deleted_attachments
+chat_recoverable_message_join  sync_deleted_chats
+deleted_messages          sync_deleted_messages
+handle                    unsynced_removed_recoverable_messages
+kvtable
+```
+
+La table `message` contient les SMS, la table `handle` les contacts, et `attachment` les pièces jointes.
+
+### Extraction des messages
+
+Pour lister les messages avec leur contact et contenu :
+
 ```bash
 sqlite3 -header -column sms.db \
 "SELECT
-   datetime(m.date/1000,'unixepoch','localtime') AS date,
    h.id AS contact,
    m.text AS message
  FROM message AS m
  LEFT JOIN handle AS h
    ON h.ROWID = m.handle_id;"
-
-# Output:
-# date                     contact                    message
-# -----------------------  -------------------------  -------------------------------------
-# 2025-04-07 06:29:04     robertswigert@icloud.com  Do you want to have my precious secret ?
 ```
+
+**Pourquoi cette commande ?**
+- On sélectionne le contact (adresse ou numéro) et le texte du message.
+- On fait une jointure avec la table `handle` pour associer chaque message à son expéditeur ou destinataire.
+- Cela permet de lire tous les messages et de repérer d'éventuels indices ou messages suspects.
+
+Exemple de sortie :
+```
+contact                    message
+-------------------------  -------------------------------------
+robertswigert@icloud.com  Do you want to have my precious secret ?
+```
+
+On remarque un message suspect évoquant un "précieux secret".
 {{< /section >}}
 
 {{< section type="note" title="3. Analyse des pièces jointes" icon="file-image" >}}
 
-### Extraction des pièces jointes
+### Recherche des pièces jointes dans les messages
+
+Pour savoir si des messages contiennent des fichiers attachés :
 
 ```bash
 sqlite3 -header -column sms.db \
 "SELECT
    m.ROWID AS msg_id,
-   datetime(m.date/1000,'unixepoch') AS date,
    h.id AS contact,
    a.filename,
    a.mime_type
@@ -113,35 +155,54 @@ sqlite3 -header -column sms.db \
  LEFT JOIN handle AS h ON h.ROWID = m.handle_id
  ORDER BY m.date DESC
  LIMIT 5;"
-
-# Output:
-# msg_id  date                     contact                    filename                                                                  mime_type
-# ------  -----------------------  -------------------------  ------------------------------------------------------------------------  ----------
-# 5       2025-04-07 06:29:04     robertswigert@icloud.com  ~/Library/SMS/Attachments/9e/14/4C3DF366-1CE1-42F1-9570-C76206181041/...  image/heic
-# 6       2025-04-07 06:29:04     robertswigert@icloud.com  ~/Library/SMS/Attachments/9e/14/4C3DF366-1CE1-42F1-9570-C76206181041/...  image/heic
 ```
 
-Nous identifions deux fichiers HEIC identiques. Pour les extraire :
+**Pourquoi cette commande ?**
+- On cherche les messages qui ont des pièces jointes.
+- On récupère l'identifiant du message, le contact, le nom du fichier attaché et son type MIME.
+- Cela permet d'identifier rapidement les fichiers suspects ou intéressants (ici, des images HEIC envoyées à la même date que le message suspect).
+
+Exemple de sortie :
+```
+msg_id  contact                    filename                                                                  mime_type
+------  -------------------------  ------------------------------------------------------------------------  ----------
+5       robertswigert@icloud.com  ~/Library/SMS/Attachments/9e/14/4C3DF366-1CE1-42F1-9570-C76206181041/...  image/heic
+6       robertswigert@icloud.com  ~/Library/SMS/Attachments/9e/14/4C3DF366-1CE1-42F1-9570-C76206181041/...  image/heic
+```
+
+On identifie deux fichiers HEIC identiques.
+
+### Extraction d'une pièce jointe
+
+Pour extraire le fichier HEIC, il faut retrouver son identifiant dans `Manifest.db` :
 
 ```bash
-# Recherche du fichier dans Manifest.db
 sqlite3 Manifest.db \
   "SELECT fileID, domain||'/'||relativePath
    FROM Files
    WHERE relativePath LIKE '%Attachments/9e/14/%679329D1-12E7-45F2-A082-1E58A6CB454F.HEIC%';"
+```
 
-# Output:
-# 6f4e34098e00a80fde876c8638fb1d685be2318b|MediaDomain/Library/SMS/Attachments/9e/14/4C3DF366-1CE1-42F1-9570-C76206181041/679329D1-12E7-45F2-A082-1E58A6CB454F.HEIC
+**Pourquoi cette commande ?**
+- On recherche dans la base Manifest le fichier dont le chemin d'origine correspond exactement à la pièce jointe repérée précédemment.
+- On récupère le `fileID` pour pouvoir extraire le fichier réel du backup.
 
-# Extraction du fichier
+Sortie :
+```
+6f4e34098e00a80fde876c8638fb1d685be2318b|MediaDomain/Library/SMS/Attachments/9e/14/4C3DF366-1CE1-42F1-9570-C76206181041/679329D1-12E7-45F2-A082-1E58A6CB454F.HEIC
+```
+
+On copie alors le fichier :
+```bash
 cp 6f4e34098e00a80fde876c8638fb1d685be2318b msg_6793.heic
 ```
+
+**Pourquoi cette commande ?**
+- On extrait le fichier du backup sous un nom explicite pour pouvoir l'ouvrir avec un visualiseur d'images.
 {{< /section >}}
 
 {{< section type="success" title="Flag" icon="flag" >}}
-En ouvrant l'image HEIC, nous trouvons le flag !
-
-{{< figure src="/images/writeups/fcsc/2025/forensics/itreasure/msg_6793.jpg" alt="Flag" >}}
+En ouvrant l'image HEIC extraite (`msg_6793.heic`), on découvre le flag caché dans l'image.
 
 {{< flag "FCSC{511773550dca}" >}}
 {{< /section >}}
@@ -150,5 +211,5 @@ En ouvrant l'image HEIC, nous trouvons le flag !
 1. Analyse du backup iOS et de sa structure
 2. Extraction et analyse de la base de données SMS
 3. Identification et extraction des pièces jointes suspectes
-4. Analyse de l'image HEIC
+4. Analyse de l'image HEIC pour trouver le flag
 {{< /section >}} 
