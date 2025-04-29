@@ -73,6 +73,10 @@ MathJax.Hub.Config({
                 <span uk-icon="icon: star"></span>
                 <span>{{ .Params.points }} points</span>
             </div>
+            {{ else if .Params.difficulty }}
+            <div class="meta-item">
+                <span>Difficulty: {{ .Params.difficulty }}</span>
+            </div>
             {{ end }}
             {{ if .Params.solves }}
             <div class="meta-item">

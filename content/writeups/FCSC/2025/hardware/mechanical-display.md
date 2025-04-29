@@ -2,8 +2,7 @@
 title: "Mechanical Display"
 categories: Hardware
 cat: "chal"
-difficulty: "⭐⭐⭐"
-points: "250"
+difficulty: "⭐"
 solved: true
 date: 2025-04-19T00:00:00Z
 draft: false

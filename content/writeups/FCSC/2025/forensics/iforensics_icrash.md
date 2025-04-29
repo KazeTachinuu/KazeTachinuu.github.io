@@ -3,6 +3,7 @@ title: "iForensics - iCrash"
 categories: "Forensics"
 cat: "chal"
 solved: true
+difficulty: "⭐"
 date: 2025-04-18T00:00:00Z
 draft: false
 description: "Retrouver le SSID, le BSSID et le compte iCloud à partir d'un backup et d'un sysdiagnose iOS."

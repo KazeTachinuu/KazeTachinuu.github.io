@@ -73,6 +73,11 @@
                                     <span>{{ .Params.points }}</span>
                                     <span class="points-label">pts</span>
                                 </div>
+                                {{ else if .Params.difficulty }}
+                                <div class="points-badge">
+                                    <span>{{ .Params.difficulty }}</span>
+                                    <span class="points-label"></span>
+                                </div>
                                 {{ else if .Params.categories }}
                                 <div class="category-badge">
                                     <span>{{ .Params.categories }}</span>

@@ -3,7 +3,6 @@ title: "iForensics - iTreasure"
 categories: Forensics
 cat: "chal"
 difficulty: "⭐"
-points: "183"
 solved: true
 date: 2025-04-19T00:00:00Z
 draft: false

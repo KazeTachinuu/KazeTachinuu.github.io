@@ -3,7 +3,6 @@ title: "Analyse mémoire 2/5 - Origine de la menace"
 categories: Forensics
 cat: "chal"
 difficulty: "⭐"
-points: "100"
 solved: true
 date: 2025-04-19T00:00:00Z
 draft: false

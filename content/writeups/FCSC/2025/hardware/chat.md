@@ -2,8 +2,7 @@
 title: Signal sur chat 
 categories: Hardware
 cat: "chal"
-difficulty: "⭐⭐⭐"
-points: "250"
+difficulty: "⭐⭐"
 solved: true
 date: 2025-04-19T00:00:00Z
 draft: false
@@ -137,5 +136,5 @@ En exécutant le script, nous obtenons :
    - Un résultat positif indique un bit 0, négatif un bit 1
    - Les bits sont recombinés en octets pour former les caractères ASCII
 
-Le gain de traitement de $45.2$ dB ($10\log_{10}(32767)$) permet de retrouver le signal malgré le bruit de chat !
+Le gain de traitement de $45.2$ dB ($10\log_{10}{32767}$) permet de retrouver le signal malgré le bruit de chat !
 {{< /section >}} 

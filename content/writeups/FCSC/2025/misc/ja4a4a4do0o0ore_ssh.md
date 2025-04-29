@@ -2,10 +2,10 @@
 title: "ja4a4a4do0o0ore SSH!"
 categories: "Misc"
 cat: "chal"
-points: 469
 solved: true
 date: 2025-04-18T00:00:00Z 
 draft: false
+difficulty: "⭐"
 description: "Identifier la session SSH interactive d'un attaquant et extraire les cookies SSH d'une capture réseau."
 ---
 

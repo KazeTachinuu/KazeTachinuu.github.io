@@ -6,6 +6,7 @@ solved: true
 date: 2025-04-19T00:00:00Z
 draft: false
 description: "Reverse engineering challenge involving a binary with obfuscated function names and custom string comparison."
+difficulty: "⭐"
 ---
 
 {{< section type="info" title="Initial Recon" icon="info-circle" >}}

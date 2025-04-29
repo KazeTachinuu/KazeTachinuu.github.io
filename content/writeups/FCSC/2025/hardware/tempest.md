@@ -3,7 +3,6 @@ title: "Le calme avant la tempest"
 categories: Hardware
 cat: "chal"
 difficulty: "⭐"
-points: "250"
 solved: true
 date: 2025-04-19T00:00:00Z
 draft: false

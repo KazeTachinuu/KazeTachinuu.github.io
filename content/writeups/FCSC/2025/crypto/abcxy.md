@@ -5,6 +5,7 @@ cat: "chal"
 solved: true
 date: 2025-04-19T00:00:00Z
 draft: false
+difficulty: "⭐"
 description: "A Diophantine puzzle involving linear equations, perfect squares, and a Pell equation."
 ---
 

@@ -1,8 +1,9 @@
 ---
-title: "Alice's Music Collection (MPD)"
+title: "Voila"
 categories: "Misc"
 cat: "chal"
 solved: true
+difficulty: "⭐"
 date: 2025-04-18T00:00:00Z 
 draft: false
 description: "Identify a song using audio fingerprinting from a misconfigured MPD server."
