@@ -82,5 +82,9 @@ ctf:
       description: Top 5%
       image: https://res.cloudinary.com/dd9rwcqim/image/upload/v1684940464/SecVal_r2tbzy.jpg
       url: none
+    - title: FCSC 2025
+      description: Top 3%
+      image: /Home/ctf/fcsc-with-wings.svg
+      url: https://fichiers.fcsc.fr/dl/diplomes/d98a3338e9c7c56010e761eaa94d2049e00d625f2fcb22c3bcfb6d9047dc3eaf.pdf
 
 
