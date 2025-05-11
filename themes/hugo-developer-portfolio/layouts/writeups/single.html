@@ -25,7 +25,10 @@ MathJax.Hub.Config({
 });
 </script>
 
-<section>
+<section style="position: relative;">
+  {{ if .Draft }}
+    <span class="draft-badge">Draft</span>
+  {{ end }}
   <div class="uk-container uk-margin-medium-top">
     <!-- Layer Navigation with Back Button -->
     <div class="uk-margin-medium-bottom layer-nav">
@@ -728,6 +731,22 @@ section {
 
 .uk-lightbox-toolbar-icon:hover {
     color: var(--link-color);
+}
+
+/* Draft Badge */
+.draft-badge {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: #ff6600;
+    color: #ffffff;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    z-index: 10000;
 }
 </style>
 
