@@ -13,6 +13,17 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/KazeTachinuu/config/master
 {{< /copy_code >}}
 
 ## Configuration
+
+### Basic Config (EPITA's C Exams)
+
+{{< copy_code >}}
+{{< highlight vimrc "linenos=inline" >}}
+{{< github_raw url="https://raw.githubusercontent.com/KazeTachinuu/config/master/.basicvimrc" >}}
+{{< /highlight >}}
+{{< /copy_code >}}
+
+### Complete Config
+
 {{< copy_code >}}
 {{< highlight vimrc "linenos=inline" >}}
 {{< github_raw url="https://raw.githubusercontent.com/KazeTachinuu/config/master/.vimrc" >}}
