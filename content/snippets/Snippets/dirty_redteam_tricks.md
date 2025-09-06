@@ -3,7 +3,7 @@ title = "Attack/Defense Tricks"
 description= "Compilation of Dirty RedTeam Tricks"
 language = "cyber"
 date = 2025-09-05T11:14:36-04:00
-draft = true
+draft = false
 +++
 
 
