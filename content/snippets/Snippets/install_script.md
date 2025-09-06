@@ -1,5 +1,5 @@
 +++
-title = "Cool Install Script"
+title = "dotfiles Install Script"
 description= "Single File Install Config"
 language = "bash"
 date = 2024-06-13T17:41:36-04:00
