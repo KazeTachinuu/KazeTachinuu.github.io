@@ -4,7 +4,7 @@ description= "Compilation of Dirty RedTeam Tricks"
 language = "cyber"
 date = 2025-09-05T11:14:36-04:00
 draft = false
-categories = ["tricks", "redteam"]
+categories = ["tricks"]
 tags = ["attack", "defense", "redteam", "persistence", "priv-esc"]
 +++
 

@@ -55,12 +55,14 @@
                 <h3 class="uk-card-title">{{.Title}}</h3>
                 <span class="uk-icon" uk-icon="icon: chevron-right"></span>
               </div>
-              <p class="uk-text-small uk-text-muted post-description">{{ with .Params.Description}}{{.}}{{ else }}{{ .Summary | plainify }}{{ end }}</p>
               <div class="uk-margin-small-top uk-flex uk-flex-wrap">
-                {{ range .Params.categories }}
-                <span class="uk-label category-tag">{{ . }}</span>
+                {{ with .Params.categories }}
+                  {{ range first 1 . }}
+                    <span class="uk-label category-tag">{{ . }}</span>
+                  {{ end }}
                 {{ end }}
               </div>
+              <p class="uk-text-small uk-text-muted post-description">{{ with .Params.Description}}{{.}}{{ else }}{{ .Summary | plainify }}{{ end }}</p>
             </div>
           </div>
         </a>
