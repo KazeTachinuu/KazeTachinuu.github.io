@@ -88,4 +88,3 @@ Enable with:
 sudo netctl enable wlan0-IONIS
 sudo netctl start wlan0-IONIS
 ```
-

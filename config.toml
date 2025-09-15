@@ -24,6 +24,9 @@ theme = "hugo-developer-portfolio" # The theme, don't change this
   name = "About"
   URL = "about"
   [[menu.main]]
+  name = "Blog"
+  URL = "blog"
+  [[menu.main]]
   name = "Portfolio"
   URL = "portfolio"
   [[menu.main]]
@@ -42,6 +45,10 @@ theme = "hugo-developer-portfolio" # The theme, don't change this
     unsafe= true
 [markup.highlight]
     style = 'friendly'
+
+[taxonomies]
+  category = "categories"
+  tag = "tags"
 
 [security]
   [security.http]
