@@ -56,8 +56,8 @@
                 <span class="uk-icon" uk-icon="icon: chevron-right"></span>
               </div>
               <div class="uk-margin-small-top uk-flex uk-flex-wrap">
-                {{ with .Params.categories }}
-                  {{ range first 1 . }}
+                {{ with .Params.tags }}
+                  {{ range first 2 . }}
                     <span class="uk-label category-tag">{{ . }}</span>
                   {{ end }}
                 {{ end }}
