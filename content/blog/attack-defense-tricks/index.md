@@ -5,6 +5,7 @@ language = "cyber"
 date = 2025-09-05T11:14:36-04:00
 draft = false
 categories = ["tricks", "redteam"]
+tags = ["attack", "defense", "redteam", "persistence", "priv-esc"]
 +++
 
 ### Root Shell Tricks

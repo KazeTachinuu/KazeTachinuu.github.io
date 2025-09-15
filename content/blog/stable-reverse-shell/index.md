@@ -4,6 +4,7 @@ description= "Steps to stabilize a shell"
 language = "bash"
 date = 2025-04-08T11:14:36-04:00
 categories = ["notes", "shell", "linux"]
+tags = ["reverse", "shell", "tty", "stabilize", "linux"]
 +++
 
 ### Step one: first connection
