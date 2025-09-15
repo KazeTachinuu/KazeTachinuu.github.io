@@ -58,7 +58,7 @@
               <p class="uk-text-small uk-text-muted post-description">{{ with .Params.Description}}{{.}}{{ else }}{{ .Summary | plainify }}{{ end }}</p>
               <div class="uk-margin-small-top uk-flex uk-flex-wrap">
                 {{ range .Params.categories }}
-                <span class="uk-label category-tag">{{ . }}</span>
+                <a class="uk-label category-tag" href="{{ (print "/categories/" (urlize .) "/") | relURL }}">{{ . }}</a>
                 {{ end }}
               </div>
             </div>
