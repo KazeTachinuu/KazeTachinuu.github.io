@@ -1,0 +1,27 @@
+{{ define "main" }}
+<style>
+  .post-container { width: 90vw; max-width: 1200px; margin: 0 auto; }
+  .category-tag { font-size: 0.75rem; padding: 2px 10px; border-radius: 4px; background: var(--card-hover-bg); color: var(--text-color); border: 1px solid var(--card-border); margin: 2px 6px 2px 0; text-transform: uppercase; letter-spacing: 0.5px; display: inline-block; }
+  .meta-line { color: var(--card-text-muted); }
+</style>
+<section>
+  <div class="uk-container uk-margin-large-bottom uk-margin-medium-top post-container">
+    <h1 class="uk-text-center uk-heading-medium">{{ .Title }}</h1>
+    {{ if or .Params.categories .Params.tags }}
+    <div class="uk-flex uk-flex-center uk-flex-wrap uk-margin-small">
+      {{ with .Params.categories }}
+        {{ range . }}<span class="uk-label category-tag">{{ . }}</span>{{ end }}
+      {{ end }}
+      {{ with .Params.tags }}
+        {{ range . }}<span class="uk-label category-tag">{{ . }}</span>{{ end }}
+      {{ end }}
+    </div>
+    {{ end }}
+    <p class="uk-text-center meta-line">Published on {{ .PublishDate.Format "Jan 02, 2006" }} • {{ .ReadingTime }} min read</p>
+    <hr class="full-width">
+    <div class="content">
+      {{ .Content }}
+    </div>
+  </div>
+</section>
+{{ end }}
