@@ -40,16 +40,11 @@
     </div>
 
     <!-- Posts Grid -->
-    <div class="uk-grid uk-child-width-1-3@l uk-child-width-1-2@m uk-child-width-1-1@s" uk-grid="masonry: true">
+    <div class="uk-grid uk-child-width-1-3@l uk-child-width-1-2@m uk-child-width-1-1@s" uk-grid>
       {{ range .RegularPages.ByPublishDate.Reverse }}
       <div class="post-item" data-tags="{{ with .Params.categories }}{{ lower (delimit . " ") }}{{ end }}">
         <a href="{{.Permalink | relURL}}" class="uk-link-reset">
           <div class="uk-card uk-card-default uk-card-hover uk-border-rounded post-card">
-            {{ if .Params.image }}
-            <div class="uk-card-media-top uk-inline uk-light">
-              <img class="uk-border-rounded" src="{{.Params.Image | absURL}}" alt="{{ .Title }}" loading="lazy">
-            </div>
-            {{ end }}
             <div class="uk-card-body">
               <div class="uk-flex uk-flex-between uk-flex-middle">
                 <h3 class="uk-card-title">{{.Title}}</h3>
@@ -80,32 +75,16 @@
 
 <style>
 .uk-section-small { padding-top: 20px; }
-
-/* Filter Navigation */
-.filter-nav { gap: 8px; margin: 0; flex-wrap: wrap; justify-content: center; }
-.filter-nav li a { padding: 4px 12px; border-radius: 6px; font-size: 0.9rem; font-weight: 500; background: var(--card-hover-bg); color: var(--text-color-muted); transition: all 0.2s ease; white-space: nowrap; }
+.filter-nav { gap: 6px; justify-content: center; }
+.filter-nav li a { padding: 4px 10px; border-radius: 6px; font-size: 0.9rem; background: var(--card-hover-bg); color: var(--text-color-muted); }
 .filter-nav li.uk-active a { background: var(--link-color); color: var(--card-bg); }
-
-/* Post Cards */
-.post-card { background-color: var(--card-bg); border: 1px solid var(--card-border); transition: all 0.2s ease; height: 100%; }
-@media (hover: hover) { .post-card:hover { transform: translateY(-2px); border-color: var(--link-color); background-color: var(--card-hover-bg); } .post-card:hover .uk-icon { color: var(--link-color); transform: translateX(2px); } }
-.post-card .uk-card-media-top { position: relative; }
-.post-card .uk-card-media-top img { width: 100%; height: 200px; object-fit: cover; }
-@media (max-width: 640px) { .post-card .uk-card-media-top img { height: 180px; } .post-card .uk-card-body { padding: 1rem; } }
-.uk-card-title { color: var(--card-heading) !important; font-size: 1.1rem !important; line-height: 1.4; margin: 0; }
-.post-description { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.4; margin: 8px 0; }
-.category-tag { font-size: 0.75rem; padding: 2px 10px; border-radius: 9999px; background: var(--link-color); color: var(--card-bg); border: none; margin: 2px 6px 2px 0; text-transform: uppercase; letter-spacing: 0.5px; display: inline-block; }
-
-/* Search Input */
-.uk-input.uk-form-small { height: 38px; border-radius: 6px; background-color: var(--card-hover-bg) !important; border: 1px solid var(--card-border) !important; color: var(--text-color) !important; font-size: 0.875rem; padding-left: 32px; }
-@media (max-width: 640px) { .uk-input.uk-form-small { font-size: 16px !important; } }
-.uk-input.uk-form-small:focus { background-color: var(--card-bg) !important; border-color: var(--link-color) !important; }
+.post-card { background: var(--card-bg); border: 1px solid var(--card-border); transition: border-color .2s, transform .2s; }
+@media (hover:hover){ .post-card:hover { transform: translateY(-2px); border-color: var(--link-color);} }
+.uk-card-title { color: var(--card-heading) !important; font-size: 1.1rem !important; margin: 0; }
+.post-description { -webkit-line-clamp: 2; -webkit-box-orient: vertical; display: -webkit-box; overflow: hidden; margin: 8px 0; }
+.category-tag { font-size: 0.75rem; padding: 2px 10px; border-radius: 9999px; background: var(--link-color); color: var(--card-bg); margin: 2px 6px 2px 0; text-transform: uppercase; letter-spacing: .5px; }
+.uk-input.uk-form-small { height: 36px; border-radius: 6px; background: var(--card-hover-bg) !important; border: 1px solid var(--card-border) !important; color: var(--text-color) !important; padding-left: 32px; }
 .uk-form-icon { color: var(--text-color-muted); width: 32px; }
-
-/* Dark Mode Adjustments */
-[data-theme="dark"] .post-card { background-color: var(--card-bg); }
-[data-theme="dark"] .post-card:hover { background-color: var(--card-hover-bg); }
-[data-theme="dark"] .category-tag { background: var(--card-hover-bg); color: var(--card-text-muted); }
 </style>
 
 <script>
@@ -134,7 +113,6 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     noResults.classList.toggle('uk-hidden', visibleItems > 0);
-    if (window.UIkit) { UIkit.update(document, 'grid'); }
   }
 
   filterButtons.forEach(button => {
