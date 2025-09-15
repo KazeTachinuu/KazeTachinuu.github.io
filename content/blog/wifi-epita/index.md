@@ -3,6 +3,7 @@ title = "Wifi IONIS setup"
 description= "Connect to IONIS Wifi on Linux"
 language = "bash"
 date = 2025-09-08T11:14:36-04:00
+publishDate = 2025-09-08T11:14:36-04:00
 categories = ["notes"]
 tags = ["wifi", "epita", "enterprise-wifi", "linux", "networking"]
 +++

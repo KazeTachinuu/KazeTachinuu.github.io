@@ -3,6 +3,7 @@ title = "Stable Reverse Shell"
 description= "Steps to stabilize a shell"
 language = "bash"
 date = 2025-04-08T11:14:36-04:00
+publishDate = 2025-04-08T11:14:36-04:00
 categories = ["notes"]
 tags = ["reverse", "shell", "tty", "stabilize", "linux"]
 +++
