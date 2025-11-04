@@ -2,7 +2,7 @@
   'use strict';
 
   document.addEventListener('DOMContentLoaded', function() {
-    const searchInput = document.getElementById('searchInput');
+    const searchInput = document.getElementById('filterSearchInput');
     if (!searchInput) return;
 
     const config = {

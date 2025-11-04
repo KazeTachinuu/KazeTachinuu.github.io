@@ -1,1 +1,6 @@
-{{.Content }}
+{{ $tool := .Resources.GetMatch "tool.html" }}
+{{ if $tool }}
+  {{ $tool.Content | safeHTML }}
+{{ else }}
+  {{ .Content }}
+{{ end }}

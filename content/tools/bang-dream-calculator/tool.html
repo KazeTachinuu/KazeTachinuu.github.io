@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BanG Dream! Points Calculator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#f0f7fa',
+                            100: '#daeaf2',
+                            200: '#b9d8e6',
+                            300: '#8abfd4',
+                            400: '#54a0be',
+                            500: '#3C5B6F',
+                            600: '#2d4554',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes slideDown {
+            from { opacity: 0; max-height: 0; }
+            to { opacity: 1; max-height: 500px; }
+        }
+        .animate-fade-in { animation: fadeIn 0.4s ease-out; }
+        .animate-slide-down { animation: slideDown 0.3s ease-out; }
+        input:focus { transform: translateY(-1px); }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-slate-50 via-blue-50 to-slate-50 min-h-screen">
+    <!-- Navigation -->
+    <nav class="bg-white/80 backdrop-blur-sm border-b border-slate-200 sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-primary-500 rounded-lg flex items-center justify-center">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+                        </svg>
+                    </div>
+                    <h1 class="text-lg font-semibold text-slate-800">BanG Dream! Calculator</h1>
+                </div>
+                <a href="/" class="inline-flex items-center px-3 py-2 text-sm font-medium text-slate-700 hover:text-primary-600 hover:bg-slate-50 rounded-lg transition-colors">
+                    <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+                    </svg>
+                    Home
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Mode Selection -->
+        <div class="mb-8">
+            <div class="text-center mb-6">
+                <h2 class="text-2xl font-semibold text-slate-800">Calculation Mode</h2>
+            </div>
+            <div class="flex justify-center gap-4 flex-wrap">
+                <button onclick="setMode('max')" id="maxBtn" class="mode-card group">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-12 h-12 rounded-xl bg-primary-100 flex items-center justify-center group-hover:bg-primary-200 transition-colors">
+                            <svg class="w-6 h-6 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
+                            </svg>
+                        </div>
+                        <div class="font-semibold text-slate-800">Max Points</div>
+                    </div>
+                </button>
+                <button onclick="setMode('goal')" id="goalBtn" class="mode-card group">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-12 h-12 rounded-xl bg-primary-100 flex items-center justify-center group-hover:bg-primary-200 transition-colors">
+                            <svg class="w-6 h-6 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                        </div>
+                        <div class="font-semibold text-slate-800">Target Goal</div>
+                    </div>
+                </button>
+            </div>
+        </div>
+
+        <div class="grid lg:grid-cols-3 gap-8">
+            <!-- Input Section -->
+            <div class="lg:col-span-2 space-y-6">
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 sm:p-8">
+                    <h3 class="text-lg font-semibold text-slate-800 mb-6">Enter Your Details</h3>
+
+                    <div class="space-y-5">
+                        <!-- Mode-specific input -->
+                        <div id="maxInput" class="space-y-2">
+                            <label class="block">
+                                <span class="text-sm font-medium text-slate-700">Live Boosts Available</span>
+                                <input type="text" id="boosts" value="0"
+                                    class="mt-1.5 w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:border-primary-400 focus:ring-4 focus:ring-primary-100 transition-all outline-none text-lg font-medium"
+                                    placeholder="0">
+                            </label>
+                        </div>
+                        <div id="goalInput" class="space-y-2 hidden">
+                            <label class="block">
+                                <span class="text-sm font-medium text-slate-700">Target Score</span>
+                                <input type="text" id="goal" value="0"
+                                    class="mt-1.5 w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:border-primary-400 focus:ring-4 focus:ring-primary-100 transition-all outline-none text-lg font-medium"
+                                    placeholder="0">
+                            </label>
+                        </div>
+
+                        <div class="space-y-2">
+                            <label class="block">
+                                <span class="text-sm font-medium text-slate-700">Current Score</span>
+                                <input type="text" id="currentScore" value="0"
+                                    class="mt-1.5 w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:border-primary-400 focus:ring-4 focus:ring-primary-100 transition-all outline-none text-lg font-medium"
+                                    placeholder="0">
+                            </label>
+                        </div>
+
+                        <div class="space-y-2">
+                            <label class="block">
+                                <span class="text-sm font-medium text-slate-700">Current Challenge Points (CP)</span>
+                                <input type="text" id="currentBadges" value="0"
+                                    class="mt-1.5 w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:border-primary-400 focus:ring-4 focus:ring-primary-100 transition-all outline-none text-lg font-medium"
+                                    placeholder="0">
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Calculate CTA -->
+                    <button onclick="calculate()" class="mt-8 w-full px-6 py-4 bg-primary-500 hover:bg-primary-600 text-white font-semibold rounded-xl transition-all hover:shadow-lg hover:shadow-primary-500/25 active:scale-[0.98] flex items-center justify-center space-x-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+                        </svg>
+                        <span>Calculate Strategy</span>
+                    </button>
+                </div>
+
+                <!-- Results Section -->
+                <div id="results" class="hidden animate-fade-in">
+                    <div class="bg-gradient-to-br from-primary-500 to-primary-600 rounded-2xl shadow-lg border border-primary-600 p-6 sm:p-8 text-white mb-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-xl font-semibold">Your Strategy</h3>
+                            <svg class="w-6 h-6 text-primary-100" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                        </div>
+                        <div class="space-y-3">
+                            <div class="flex items-baseline justify-between">
+                                <span class="text-primary-100 text-sm">Final Score</span>
+                                <span class="text-3xl font-bold" id="finalScore">—</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-5">
+                            <div class="text-xs font-medium text-slate-500 uppercase tracking-wider mb-2">Multi Lives</div>
+                            <div class="text-3xl font-bold text-slate-800" id="multiLives">—</div>
+                        </div>
+                        <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-5">
+                            <div class="text-xs font-medium text-slate-500 uppercase tracking-wider mb-2">Challenge Lives</div>
+                            <div class="text-3xl font-bold text-slate-800" id="challengeLives">—</div>
+                        </div>
+                        <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-5">
+                            <div class="text-xs font-medium text-slate-500 uppercase tracking-wider mb-2">Boosts Used</div>
+                            <div class="text-3xl font-bold text-slate-800" id="boostsUsed">—</div>
+                        </div>
+                        <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-5">
+                            <div class="text-xs font-medium text-slate-500 uppercase tracking-wider mb-2">CP Remaining</div>
+                            <div class="text-3xl font-bold text-slate-800" id="remainingBadges">—</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Settings Sidebar -->
+            <div class="lg:col-span-1">
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-200 sticky top-24">
+                    <button onclick="toggleSettings()" class="w-full px-6 py-4 flex items-center justify-between hover:bg-slate-50 transition-colors rounded-t-2xl">
+                        <div class="flex items-center space-x-2">
+                            <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                            </svg>
+                            <h3 class="font-semibold text-slate-800">Advanced Settings</h3>
+                        </div>
+                        <svg id="settingsIcon" class="w-5 h-5 text-slate-400 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+
+                    <div id="settingsPanel" class="border-t border-slate-100">
+                        <div class="p-6 space-y-6">
+                            <div>
+                                <h4 class="text-xs font-semibold text-slate-700 uppercase tracking-wider mb-4">Multi Live</h4>
+                                <div class="space-y-3">
+                                    <label class="block">
+                                        <span class="text-xs text-slate-600">Event Points</span>
+                                        <input type="text" id="multiPoints" value="6 800"
+                                            class="mt-1 w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg focus:border-primary-400 focus:ring-2 focus:ring-primary-100 transition-all outline-none text-sm">
+                                    </label>
+                                    <label class="block">
+                                        <span class="text-xs text-slate-600">CP Earned</span>
+                                        <input type="text" id="multiBadges" value="330"
+                                            class="mt-1 w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg focus:border-primary-400 focus:ring-2 focus:ring-primary-100 transition-all outline-none text-sm">
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="pt-4 border-t border-slate-100">
+                                <h4 class="text-xs font-semibold text-slate-700 uppercase tracking-wider mb-4">Challenge Live</h4>
+                                <div class="space-y-3">
+                                    <label class="block">
+                                        <span class="text-xs text-slate-600">Event Points</span>
+                                        <input type="text" id="challengePoints" value="33 000"
+                                            class="mt-1 w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg focus:border-primary-400 focus:ring-2 focus:ring-primary-100 transition-all outline-none text-sm">
+                                    </label>
+                                    <label class="block">
+                                        <span class="text-xs text-slate-600">CP Cost</span>
+                                        <input type="text" id="challengeBadges" value="800"
+                                            class="mt-1 w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg focus:border-primary-400 focus:ring-2 focus:ring-primary-100 transition-all outline-none text-sm">
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        let mode = 'max';
+
+        const fmt = (n) => n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+        const parse = (s) => parseInt(s.replace(/\s/g, ''), 10) || 0;
+
+        function setMode(newMode) {
+            mode = newMode;
+            const maxBtn = document.getElementById('maxBtn');
+            const goalBtn = document.getElementById('goalBtn');
+            const maxInput = document.getElementById('maxInput');
+            const goalInput = document.getElementById('goalInput');
+
+            maxBtn.className = 'mode-card group';
+            goalBtn.className = 'mode-card group';
+
+            if (mode === 'max') {
+                maxBtn.classList.add('active');
+                maxInput.classList.remove('hidden');
+                goalInput.classList.add('hidden');
+            } else {
+                goalBtn.classList.add('active');
+                goalInput.classList.remove('hidden');
+                maxInput.classList.add('hidden');
+            }
+        }
+
+        function toggleSettings() {
+            const panel = document.getElementById('settingsPanel');
+            const icon = document.getElementById('settingsIcon');
+            panel.classList.toggle('hidden');
+            icon.classList.toggle('rotate-180');
+        }
+
+        document.querySelectorAll('input[type="text"]').forEach(input => {
+            input.addEventListener('input', (e) => {
+                const val = parse(e.target.value);
+                e.target.value = fmt(val);
+            });
+        });
+
+        function calculate() {
+            const currentScore = parse(document.getElementById('currentScore').value);
+            const currentBadges = parse(document.getElementById('currentBadges').value);
+            const multiPts = parse(document.getElementById('multiPoints').value);
+            const multiBdg = parse(document.getElementById('multiBadges').value);
+            const challengePts = parse(document.getElementById('challengePoints').value);
+            const challengeBdg = parse(document.getElementById('challengeBadges').value);
+
+            let totalPoints = currentScore;
+            let totalBadges = currentBadges;
+            let multiRuns = 0;
+            let challengeRuns = 0;
+            let boostsUsed = 0;
+
+            if (mode === 'max') {
+                const maxBoosts = parse(document.getElementById('boosts').value);
+
+                // Use all boosts optimally
+                while (boostsUsed < maxBoosts) {
+                    // If we have enough badges for challenge live, do it
+                    if (totalBadges >= challengeBdg) {
+                        totalPoints += challengePts;
+                        totalBadges -= challengeBdg;
+                        challengeRuns++;
+                    }
+                    // Otherwise do multi live (if we have boosts left)
+                    else {
+                        totalPoints += multiPts;
+                        totalBadges += multiBdg;
+                        multiRuns++;
+                        boostsUsed += 3;
+                    }
+                }
+
+                // After boosts exhausted, use remaining badges for challenge lives
+                while (totalBadges >= challengeBdg) {
+                    totalPoints += challengePts;
+                    totalBadges -= challengeBdg;
+                    challengeRuns++;
+                }
+            } else {
+                const targetScore = parse(document.getElementById('goal').value);
+                while (totalPoints < targetScore) {
+                    if (totalBadges >= challengeBdg) {
+                        totalPoints += challengePts;
+                        totalBadges -= challengeBdg;
+                        challengeRuns++;
+                    } else {
+                        totalPoints += multiPts;
+                        totalBadges += multiBdg;
+                        multiRuns++;
+                        boostsUsed += 3;
+                    }
+                }
+            }
+
+            document.getElementById('multiLives').textContent = multiRuns;
+            document.getElementById('challengeLives').textContent = challengeRuns;
+            document.getElementById('boostsUsed').textContent = boostsUsed;
+            document.getElementById('remainingBadges').textContent = fmt(totalBadges);
+            document.getElementById('finalScore').textContent = fmt(totalPoints);
+
+            const results = document.getElementById('results');
+            results.classList.remove('hidden');
+            results.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        document.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') calculate();
+        });
+
+        setMode('max');
+
+        if (window.innerWidth < 1024) {
+            document.getElementById('settingsPanel').classList.add('hidden');
+        }
+    </script>
+
+    <style>
+        .mode-card {
+            @apply bg-white border-2 border-slate-200 rounded-xl p-4 transition-all hover:border-primary-300 hover:shadow-md;
+        }
+        .mode-card.active {
+            @apply border-primary-500 bg-primary-50 shadow-md ring-2 ring-primary-100;
+        }
+    </style>
+</body>
+</html>

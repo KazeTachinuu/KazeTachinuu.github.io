@@ -257,20 +257,27 @@
 .uk-card {
   background-color: var(--card-bg);
   border: 1px solid var(--card-border);
-  transition: all 0.2s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 
   @media (hover: hover) {
     &:hover {
-      transform: translateY(-2px);
+      transform: translateY(-4px);
       border-color: var(--link-color);
       background-color: var(--card-hover-bg);
-      box-shadow: 0 2px 8px var(--card-shadow, rgba(0, 0, 0, 0.1));
+      box-shadow: 0 8px 16px var(--card-shadow, rgba(0, 0, 0, 0.12));
 
       .uk-icon {
         color: var(--link-color);
-        transform: translateX(2px);
+        transform: translateX(3px);
       }
     }
+  }
+
+  // Ensure cards maintain aspect ratio in grid
+  .uk-link-reset {
+    display: block;
+    height: 100%;
   }
 }
 
@@ -297,20 +304,52 @@
 /* Project Cards (Portfolio) */
 .project-card {
   height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 
   .uk-card-media-top {
     position: relative;
+    overflow: hidden;
+    background: var(--card-hover-bg);
+  }
 
-    img {
-      width: 100%;
-      height: 200px;
-      object-fit: cover;
+  .uk-card-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 1.25rem;
 
-      @media (max-width: 640px) {
-        height: 180px;
-      }
+    @media (max-width: 640px) {
+      padding: 1rem;
     }
   }
+}
+
+.project-image-wrapper {
+  position: relative;
+  width: 100%;
+  padding-bottom: 60%; // 5:3 aspect ratio
+  overflow: hidden;
+  background: var(--card-hover-bg);
+
+  img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+
+  @media (max-width: 640px) {
+    padding-bottom: 65%;
+  }
+}
+
+.project-card:hover .project-image-wrapper img {
+  transform: scale(1.05);
 }
 
 .project-description {
@@ -318,16 +357,22 @@
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
-  line-height: 1.4;
-  margin: 8px 0;
+  line-height: 1.5;
+  margin: 0.5rem 0;
+  flex-grow: 1;
+  min-height: 2.4em; // Reserve space for 2 lines
 }
 
 /* Snippet Cards */
 .snippet-card {
   height: 100%;
+  display: flex;
+  flex-direction: column;
 
   .uk-card-body {
-    height: 100%;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
   }
 }
 
@@ -337,16 +382,18 @@
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
-  line-height: 1.4;
+  line-height: 1.5;
+  min-height: 2.4em;
 }
 
 .snippet-language {
-  font-size: 0.8rem;
-  padding: 2px 8px;
+  font-size: 0.75rem;
+  padding: 3px 10px;
   border-radius: 4px;
-  font-weight: 500;
+  font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  white-space: nowrap;
 }
 
 /* Post Cards (Blog) */
@@ -383,15 +430,33 @@
 .tool-card {
   position: relative;
   width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+
+  .uk-card-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
 }
 
-.tool-language-label {
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 1;
-  background: var(--link-color) !important;
-  color: var(--card-bg) !important;
+.tool-language-badge {
+  font-size: 0.75rem;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.tool-description {
+  flex-grow: 1;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  line-height: 1.4;
 }
 
 /* ==========================================================================
@@ -661,5 +726,53 @@
 
   .challenge-title {
     gap: 6px;
+  }
+
+  // Reduce card padding on mobile
+  .uk-card-body {
+    padding: 1rem !important;
+  }
+
+  // Adjust card titles on mobile
+  .uk-card-title {
+    font-size: 1rem !important;
+  }
+}
+
+/* ==========================================================================
+   GRID IMPROVEMENTS
+   ========================================================================== */
+
+// Ensure consistent grid spacing
+.uk-grid-medium {
+  margin-left: -20px;
+
+  > * {
+    padding-left: 20px;
+  }
+
+  @media (max-width: 640px) {
+    margin-left: -15px;
+
+    > * {
+      padding-left: 15px;
+    }
+  }
+}
+
+// Smooth grid animations
+.uk-grid > * {
+  transition: opacity 0.2s ease;
+}
+
+// Improved no results styling
+#noResults {
+  padding: 3rem 2rem;
+  text-align: center;
+
+  .uk-text-muted {
+    color: var(--text-color-muted);
+    font-size: 1.1rem;
+    font-weight: 500;
   }
 }

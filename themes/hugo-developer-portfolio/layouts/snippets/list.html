@@ -11,27 +11,33 @@
       "extra" ".snippet-language"
     ) }}
 
-    <div class="uk-grid uk-child-width-1-3@m uk-child-width-1-2@s uk-grid-medium" uk-grid uk-height-match="target: > div > a > .snippet-card">
+    <!-- Snippets Grid -->
+    <div class="uk-grid uk-child-width-1-3@l uk-child-width-1-2@m uk-child-width-1-1@s uk-grid-medium" uk-grid uk-height-match="target: > div > a > .snippet-card">
       {{ range .Data.Pages }}
       <div class="snippet-item" data-tags="{{ lower .Params.Language }}">
         <a href="{{ .Permalink | relURL }}" class="uk-link-reset">
           <div class="uk-card uk-card-default uk-card-hover uk-border-rounded uk-box-shadow-small snippet-card">
-            <div class="uk-card-body uk-flex uk-flex-column">
-              <div class="uk-flex uk-flex-between uk-flex-middle">
+            <div class="uk-card-body">
+              <div class="uk-flex uk-flex-between uk-flex-middle uk-margin-small-bottom">
                 <span class="uk-label snippet-language">{{ .Params.Language }}</span>
                 <span class="uk-icon" uk-icon="icon: chevron-right"></span>
               </div>
-              <h3 class="uk-card-title uk-margin-small-top uk-margin-remove-bottom">{{ .Title }}</h3>
+              <h3 class="uk-card-title uk-margin-small-top uk-margin-small-bottom">{{ .Title }}</h3>
               {{ if .Description }}
-              <p class="uk-text-small uk-text-muted uk-margin-small-top uk-margin-remove-bottom snippet-description">{{ .Description }}</p>
+              <p class="uk-text-small uk-text-muted snippet-description uk-margin-remove">{{ .Description }}</p>
               {{ else }}
-              <p class="uk-text-small uk-text-muted uk-margin-small-top uk-margin-remove-bottom snippet-description">&nbsp;</p>
+              <p class="uk-text-small uk-text-muted snippet-description uk-margin-remove">&nbsp;</p>
               {{ end }}
             </div>
           </div>
         </a>
       </div>
       {{ end }}
+    </div>
+
+    <!-- No Results Message -->
+    <div id="noResults" class="uk-text-center uk-margin-large-top uk-hidden">
+      <span class="uk-text-muted">No snippets found</span>
     </div>
   </div>
 </section>

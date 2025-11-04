@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reverse Shell Generator</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.16.14/dist/css/uikit.min.css" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        #homeButtonHugo {
+            position: fixed;
+            bottom: 40px;
+            left: 40px;
+            background-color: white;
+            color: #3C5B6F;
+            border: none;
+            border-radius: 50%;
+            width: 75px;
+            height: 75px;
+            font-size: 36px;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            z-index: 10000;
+        }
+
+        #homeButtonHugo:hover {
+            background-color: lightgray;
+        }
+
+        .iframe-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        iframe.loaded ~ .loading {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <button id="homeButtonHugo" onclick="window.location.href='/'">
+        <i class="bi-house"></i>
+    </button>
+
+    <div class="iframe-container">
+        <iframe
+            src="https://www.revshells.com/"
+            title="Reverse Shell Generator"
+            allow="clipboard-write"
+            loading="eager"
+            onload="this.classList.add('loaded')">
+        </iframe>
+        <div class="uk-position-center uk-text-center loading">
+            <div uk-spinner="ratio: 2"></div>
+            <p class="uk-margin-small-top">Loading Reverse Shell Generator...</p>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/uikit@3.16.14/dist/js/uikit.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/uikit@3.16.14/dist/js/uikit-icons.min.js"></script>
+</body>
+</html>

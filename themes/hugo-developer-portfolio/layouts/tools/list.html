@@ -1,21 +1,46 @@
 {{ define "main" }}
 {{ partial "page-title.html" . }}
 
-<section class="uk-section uk-section-large">
+<section class="uk-section uk-section-small">
   <div class="uk-container">
-    <div class="uk-grid uk-child-width-1-3@m uk-child-width-1-2@s uk-grid-match" uk-grid>
+    <!-- Search Bar -->
+    {{ partial "search-filter-bar.html" (dict
+      "placeholder" "Search tools..."
+      "items" ".tool-item"
+      "title" ".uk-card-title"
+      "extra" ".tool-description"
+    ) }}
+
+    <!-- Tools Grid -->
+    <div class="uk-grid uk-child-width-1-3@l uk-child-width-1-2@m uk-child-width-1-1@s uk-grid-medium" uk-grid uk-height-match="target: > div > a > .tool-card">
       {{ range .Data.Pages }}
-      <div>
+      <div class="tool-item" data-tags="{{ lower .Params.Language }}">
         <a href="{{ .Permalink | relURL }}" class="uk-link-reset">
           <div class="uk-card uk-card-default uk-card-hover uk-border-rounded uk-box-shadow-small tool-card">
-            <span class="uk-label tool-language-label">{{ .Params.Language }}</span>
             <div class="uk-card-body">
-              <h3 class="uk-card-title">{{ (substr (path.BaseName .) 0 -1) }}</h3>
+              <!-- Tool Title -->
+              <h3 class="uk-card-title uk-margin-remove-top uk-margin-small-bottom">
+                {{ .Title | default (substr (path.BaseName .) 0 -1) }}
+              </h3>
+
+              <!-- Tool Description -->
+              {{ if .Params.Description }}
+              <p class="uk-text-small uk-text-muted tool-description uk-margin-remove">{{ .Params.Description }}</p>
+              {{ else if .Description }}
+              <p class="uk-text-small uk-text-muted tool-description uk-margin-remove">{{ .Description }}</p>
+              {{ else }}
+              <p class="uk-text-small uk-text-muted tool-description uk-margin-remove">Click to open this tool</p>
+              {{ end }}
             </div>
           </div>
         </a>
       </div>
       {{ end }}
+    </div>
+
+    <!-- No Results Message -->
+    <div id="noResults" class="uk-text-center uk-margin-large-top uk-hidden">
+      <span class="uk-text-muted">No tools found</span>
     </div>
   </div>
 </section>
