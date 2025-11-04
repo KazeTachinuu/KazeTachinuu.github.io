@@ -100,12 +100,14 @@
       const tags = (Array.isArray(item.tags) ? item.tags : []).join(' ').toLowerCase();
       const categories = (Array.isArray(item.categories) ? item.categories : []).join(' ').toLowerCase();
       const language = (item.language || '').toLowerCase();
+      const permalink = (item.permalink || '').toLowerCase();
 
       if (title === query) score += 100;
       else if (title.startsWith(query)) score += 50;
       else if (title.includes(query)) score += 30;
 
       if (description.includes(query)) score += 25;
+      if (permalink.includes(query)) score += 22;
       if (categories.includes(query)) score += 20;
       if (tags.includes(query)) score += 15;
       if (content.includes(query)) score += 10;
