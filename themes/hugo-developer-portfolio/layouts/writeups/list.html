@@ -1,52 +1,18 @@
 {{ define "main" }}
 
-<section class="uk-section uk-section-small" style="position: relative;">
+<section class="uk-section uk-section-small writeup-section">
     {{ if .Draft }}
     <span class="draft-badge">Draft</span>
     {{ end }}
     <div class="uk-container">
-        <!-- Layer Navigation with Back Button -->
-        <div class="uk-margin-medium-bottom layer-nav">
-            <div class="uk-flex uk-flex-left uk-flex-wrap breadcrumb-container">
-                {{ if .Parent }}
-                <a href="{{ .Parent.RelPermalink }}" class="back-button" uk-tooltip="Go back to {{ .Parent.Title }}">
-                    <span uk-icon="icon: chevron-left"></span>
-                </a>
-                {{ end }}
-                {{ $ancestors := slice }}
-                {{ $current := . }}
-                {{ range $i, $e := (seq 1 6) }}
-                    {{ if $current.Parent }}
-                        {{ $parent := $current.Parent }}
-                        {{ $ancestors = $ancestors | append $parent }}
-                        {{ $current = $parent }}
-                    {{ else }}
-                        {{ break }}
-                    {{ end }}
-                {{ end }}
-                {{ range after 1 (seq (len $ancestors)) }}
-                    {{ $i := sub (len $ancestors) . }}
-                    {{ with index $ancestors $i }}
-                        <a href="{{ .RelPermalink }}" class="layer-item">{{ .Title }}</a>
-                        <span class="uk-margin-small-left uk-margin-small-right layer-separator" uk-icon="icon: chevron-right"></span>
-                    {{ end }}
-                {{ end }}
-                <span class="layer-item current">{{ .Title }}</span>
-            </div>
-            <!-- Search Input -->
-            <div class="uk-width-medium@s uk-margin-small-top uk-margin-remove-top@s">
-                <div class="uk-inline uk-width-1-1">
-                    <span class="uk-form-icon" uk-icon="icon: search"></span>
-                    <input class="uk-input uk-form-small" type="text" id="searchInput" placeholder="Search..." onkeyup="filterList()">
-                </div>
-            </div>
-        </div>
+        <!-- Breadcrumb Navigation -->
+        {{ partial "breadcrumb-nav.html" (dict "Page" . "showSearch" true "searchPlaceholder" "Search...") }}
 
         <!-- Content Grid -->
         <div class="uk-grid uk-child-width-1-3@l uk-child-width-1-2@m uk-child-width-1-1@s uk-grid-medium" uk-grid>
             {{ range .Data.Pages }}
             {{ if or (eq .Params.cat "categories") (eq .Params.cat "ctf") (eq .Params.cat "year") }}
-            <div class="writeup-item" style="position: relative;">
+            <div class="writeup-item" data-tags="{{ lower .Title }}">
                 {{ if .Draft }}
                 <span class="draft-badge">Draft</span>
                 {{ end }}
@@ -63,7 +29,7 @@
                 </a>
             </div>
             {{ else if eq .Params.cat "chal" }}
-            <div class="writeup-item" style="position: relative;">
+            <div class="writeup-item" style="position: relative;" data-tags="{{ lower .Title }} {{ with .Params.categories }}{{ lower . }}{{ end }} {{ with .Params.difficulty }}{{ lower . }}{{ end }}">
                 {{ if .Draft }}
                 <span class="draft-badge">Draft</span>
                 {{ end }}
@@ -104,7 +70,7 @@
                             </div>
                             {{ else }}
                             <div class="uk-flex uk-flex-middle uk-margin-small-top challenge-meta">
-                                <span class="uk-text-meta" style="font-style: italic; color: var(--text-color-muted);">No additional information available</span>
+                                <span class="uk-text-meta no-info-message">No additional information available</span>
                             </div>
                             {{ end }}
                         </div>
@@ -120,292 +86,5 @@
         </div>
     </div>
 </section>
-
-<style>
-/* Base Styles */
-.uk-section-small {
-    padding-top: 20px;
-}
-
-/* Layer Navigation */
-.layer-nav {
-    padding: 1rem;
-    background: var(--card-bg);
-    border-radius: 12px;
-    border: 1px solid var(--card-border);
-    box-shadow: 0 1px 4px var(--card-shadow);
-}
-
-.breadcrumb-container {
-    gap: 0.5rem;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    padding-bottom: 0.5rem;
-    margin-bottom: -0.5rem;
-}
-
-.back-button {
-    color: var(--text-color-muted);
-    padding: 0.25rem;
-    border-radius: 4px;
-    transition: all 0.2s ease;
-    flex-shrink: 0;
-}
-
-.back-button:hover {
-    color: var(--link-hover-color);
-    background: var(--card-hover-bg);
-}
-
-.layer-item {
-    color: var(--text-color-muted);
-    text-decoration: none;
-    font-size: 0.95rem;
-    font-weight: 500;
-    padding: 0.25rem 0.5rem;
-    border-radius: 4px;
-    transition: all 0.2s ease;
-    white-space: nowrap;
-}
-
-.layer-item:not(.current):hover {
-    color: var(--link-hover-color);
-    background: var(--card-hover-bg);
-    text-decoration: none;
-}
-
-.layer-item.current {
-    color: var(--link-color);
-    background: var(--card-hover-bg);
-    font-weight: 600;
-}
-
-.layer-separator {
-    color: var(--text-color-muted);
-    opacity: 0.5;
-    flex-shrink: 0;
-}
-
-/* Search Input */
-.uk-input.uk-form-small {
-    height: 38px;
-    border-radius: 6px;
-    background-color: var(--card-hover-bg) !important;
-    border: 1px solid var(--card-border) !important;
-    color: var(--text-color) !important;
-    font-size: 0.875rem;
-    padding-left: 32px;
-}
-
-@media (max-width: 640px) {
-    .uk-input.uk-form-small {
-        font-size: 16px !important;
-    }
-}
-
-.uk-input.uk-form-small:focus {
-    background-color: var(--card-bg) !important;
-    border-color: var(--link-color) !important;
-}
-
-.uk-form-icon {
-    color: var(--text-color-muted);
-    width: 32px;
-}
-
-/* Card Styles */
-.writeup-item {
-    margin-bottom: 1rem;
-}
-
-.uk-card {
-    background-color: var(--card-bg);
-    border: 1px solid var(--card-border);
-    transition: all 0.2s ease;
-}
-
-@media (hover: hover) {
-    .uk-card:hover {
-        transform: translateY(-2px);
-        border-color: var(--link-color);
-        box-shadow: 0 2px 8px var(--card-shadow);
-        background-color: var(--card-hover-bg);
-    }
-}
-
-.uk-card-body {
-    padding: 1rem;
-}
-
-.uk-card-title {
-    color: var(--card-heading) !important;
-    font-size: 1.1rem !important;
-    line-height: 1.4;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.challenge-title {
-    gap: 8px;
-    flex: 1;
-    min-width: 0;
-}
-
-.challenge-title .uk-card-title {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-/* Validation Icon */
-.validation-icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    flex-shrink: 0;
-}
-
-.validation-icon.solved {
-    background: var(--syntax-string);
-    color: var(--bg-color);
-}
-
-.validation-icon.unsolved {
-    background: var(--syntax-keyword);
-    color: var(--bg-color);
-}
-
-.validation-icon .uk-icon {
-    width: 14px;
-    height: 14px;
-}
-
-/* Points Badge */
-.points-badge {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    background: var(--card-hover-bg);
-    padding: 0.25rem 0.5rem;
-    border-radius: 4px;
-    font-size: 0.9rem;
-    font-weight: 500;
-    color: var(--link-color);
-    flex-shrink: 0;
-}
-
-.points-label {
-    color: var(--text-color-muted);
-    font-size: 0.8rem;
-}
-
-/* Challenge Meta */
-.challenge-meta {
-    color: var(--text-color-muted);
-}
-
-.uk-text-meta {
-    color: var(--card-text-muted) !important;
-    font-size: 0.9rem;
-}
-
-/* Dark Mode Adjustments */
-[data-theme="dark"] .layer-nav {
-    background: var(--card-bg);
-    border-color: var(--card-border);
-}
-
-[data-theme="dark"] .layer-item {
-    color: var(--card-text-muted);
-}
-
-[data-theme="dark"] .layer-item:not(.current):hover {
-    color: var(--link-hover-color);
-    background: var(--card-hover-bg);
-}
-
-[data-theme="dark"] .layer-item.current {
-    color: var(--link-color);
-    background: var(--card-hover-bg);
-}
-
-/* Mobile Optimizations */
-@media (max-width: 640px) {
-    .layer-nav {
-        padding: 0.75rem;
-    }
-
-    .breadcrumb-container {
-        margin-bottom: 0.5rem;
-    }
-
-    .uk-card-body {
-        padding: 0.75rem;
-    }
-
-    .challenge-title {
-        gap: 6px;
-    }
-
-    .validation-icon {
-        width: 20px;
-        height: 20px;
-    }
-
-    .validation-icon .uk-icon {
-        width: 12px;
-        height: 12px;
-    }
-
-    .points-badge {
-        padding: 0.2rem 0.4rem;
-        font-size: 0.85rem;
-    }
-
-    .points-label {
-        font-size: 0.75rem;
-    }
-
-    .uk-text-meta {
-        font-size: 0.85rem;
-    }
-}
-
-/* Draft Badge */
-.draft-badge {
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
-    background: #ff6600;
-    color: #ffffff;
-    padding: 0.5rem 1rem;
-    border-radius: 4px;
-    font-size: 1rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-    z-index: 10000;
-}
-</style>
-
-<script>
-function filterList() {
-    var input, filter, items, i, txtValue;
-    input = document.getElementById('searchInput');
-    filter = input.value.toUpperCase();
-    items = document.querySelectorAll('.writeup-item');
-    for (i = 0; i < items.length; i++) {
-        txtValue = items[i].querySelector('.uk-card-title').textContent || items[i].querySelector('.uk-card-title').innerText;
-        if (txtValue.toUpperCase().indexOf(filter) > -1) {
-            items[i].style.display = "";
-        } else {
-            items[i].style.display = "none";
-        }
-    }
-}
-</script>
 
 {{ end }}

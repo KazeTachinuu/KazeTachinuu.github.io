@@ -30,35 +30,8 @@ MathJax.Hub.Config({
     <span class="draft-badge">Draft</span>
   {{ end }}
   <div class="uk-container uk-margin-medium-top">
-    <!-- Layer Navigation with Back Button -->
-    <div class="uk-margin-medium-bottom layer-nav">
-        <div class="uk-flex uk-flex-left uk-flex-wrap breadcrumb-container">
-            {{ if .Parent }}
-            <a href="{{ .Parent.RelPermalink }}" class="back-button" uk-tooltip="Go back to {{ .Parent.Title }}">
-                <span uk-icon="icon: chevron-left"></span>
-            </a>
-            {{ end }}
-            {{ $ancestors := slice }}
-            {{ $current := . }}
-            {{ range $i, $e := (seq 1 6) }}
-                {{ if $current.Parent }}
-                    {{ $parent := $current.Parent }}
-                    {{ $ancestors = $ancestors | append $parent }}
-                    {{ $current = $parent }}
-                {{ else }}
-                    {{ break }}
-                {{ end }}
-            {{ end }}
-            {{ range after 1 (seq (len $ancestors)) }}
-                {{ $i := sub (len $ancestors) . }}
-                {{ with index $ancestors $i }}
-                    <a href="{{ .RelPermalink }}" class="layer-item">{{ .Title }}</a>
-                    <span class="uk-margin-small-left uk-margin-small-right layer-separator" uk-icon="icon: chevron-right"></span>
-                {{ end }}
-            {{ end }}
-            <span class="layer-item current">{{ .Title }}</span>
-        </div>
-    </div>
+    <!-- Breadcrumb Navigation -->
+    {{ partial "breadcrumb-nav.html" (dict "Page" .) }}
 
     <!-- Challenge Header -->
     <div class="challenge-header">

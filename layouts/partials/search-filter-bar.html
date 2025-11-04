@@ -1,0 +1,48 @@
+{{/*
+  Search and Filter Bar Partial
+
+  Usage:
+    {{ partial "search-filter-bar.html" (dict
+      "placeholder" "Search..."
+      "items" ".project-item"
+      "title" ".uk-card-title"
+      "extra" ".project-description"
+      "filters" .Site.Data.portfolio.filter
+    ) }}
+*/}}
+
+{{ $placeholder := .placeholder | default "Search..." }}
+{{ $items := .items | default ".filter-item" }}
+{{ $title := .title | default ".uk-card-title" }}
+{{ $extra := .extra | default "" }}
+{{ $filters := .filters }}
+
+<div class="uk-margin-medium-bottom">
+  <div class="uk-flex uk-flex-column uk-flex-middle uk-flex-center">
+    <!-- Search Input -->
+    <div class="uk-width-1-1 uk-width-1-3@m {{ if $filters }}uk-margin-bottom{{ end }}">
+      <div class="uk-inline uk-width-1-1">
+        <span class="uk-form-icon" uk-icon="icon: search"></span>
+        <input class="uk-input uk-form-small"
+               type="text"
+               id="searchInput"
+               placeholder="{{ $placeholder }}"
+               data-items="{{ $items }}"
+               data-title="{{ $title }}"
+               {{ with $extra }}data-extra="{{ . }}"{{ end }}>
+      </div>
+    </div>
+
+    <!-- Filter Pills -->
+    {{ if $filters }}
+    <div class="uk-width-1-1 uk-flex uk-flex-center uk-flex-wrap">
+      <ul class="uk-subnav uk-subnav-pill filter-nav">
+        <li class="uk-active" data-filter="all"><a href="#">All</a></li>
+        {{ range $filters }}
+        <li data-filter="{{ .value }}"><a href="#">{{ .label }}</a></li>
+        {{ end }}
+      </ul>
+    </div>
+    {{ end }}
+  </div>
+</div>

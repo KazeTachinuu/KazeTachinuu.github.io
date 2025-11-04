@@ -1,0 +1,20 @@
+{{/* Unified GitHub content fetcher
+  Usage:
+    {{< github_content url="https://raw.githubusercontent.com/..." >}}
+    {{< github_content url="https://raw.githubusercontent.com/..." markdown="true" >}}
+
+  Parameters:
+    - url: The raw GitHub URL to fetch
+    - markdown: Optional boolean to render as markdown (default: false, uses safeHTML)
+*/}}
+{{ $url := .Get "url" }}
+{{ $markdown := .Get "markdown" | default false }}
+{{ with resources.GetRemote $url }}
+  {{ if $markdown }}
+    {{ .Content | markdownify }}
+  {{ else }}
+    {{ .Content | safeHTML }}
+  {{ end }}
+{{ else }}
+  {{ errorf "Failed to get content from %q" $url }}
+{{ end }}

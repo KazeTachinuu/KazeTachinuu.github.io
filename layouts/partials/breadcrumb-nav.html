@@ -1,0 +1,71 @@
+{{/*
+  Breadcrumb Navigation Partial
+
+  Displays a hierarchical breadcrumb navigation with back button
+
+  Usage:
+    {{ partial "breadcrumb-nav.html" (dict "Page" . "showSearch" true "searchPlaceholder" "Search...") }}
+    or
+    {{ partial "breadcrumb-nav.html" (dict "Page" .) }}
+
+  Parameters:
+    Page (required) - The current page context
+    showSearch (optional bool) - Display search input in the navigation (default: false)
+    searchPlaceholder (optional string) - Placeholder text for search input (default: "Search...")
+*/}}
+
+{{ $page := .Page }}
+{{ $showSearch := .showSearch | default false }}
+{{ $searchPlaceholder := .searchPlaceholder | default "Search..." }}
+
+<div class="uk-margin-medium-bottom layer-nav">
+  <div class="uk-flex uk-flex-left uk-flex-wrap breadcrumb-container">
+    {{/* Back Button */}}
+    {{ if $page.Parent }}
+    <a href="{{ $page.Parent.RelPermalink }}" class="back-button" uk-tooltip="Go back to {{ $page.Parent.Title }}">
+      <span uk-icon="icon: chevron-left"></span>
+    </a>
+    {{ end }}
+
+    {{/* Build ancestors array (traverse up to 6 levels) */}}
+    {{ $ancestors := slice }}
+    {{ $current := $page }}
+    {{ range $i, $e := (seq 1 6) }}
+      {{ if $current.Parent }}
+        {{ $parent := $current.Parent }}
+        {{ $ancestors = $ancestors | append $parent }}
+        {{ $current = $parent }}
+      {{ else }}
+        {{ break }}
+      {{ end }}
+    {{ end }}
+
+    {{/* Display breadcrumb trail (skip root) */}}
+    {{ range after 1 (seq (len $ancestors)) }}
+      {{ $i := sub (len $ancestors) . }}
+      {{ with index $ancestors $i }}
+        <a href="{{ .RelPermalink }}" class="layer-item">{{ .Title }}</a>
+        <span class="uk-margin-small-left uk-margin-small-right layer-separator" uk-icon="icon: chevron-right"></span>
+      {{ end }}
+    {{ end }}
+
+    {{/* Current page */}}
+    <span class="layer-item current">{{ $page.Title }}</span>
+  </div>
+
+  {{/* Optional Search Input */}}
+  {{ if $showSearch }}
+  <div class="uk-width-medium@s uk-margin-small-top uk-margin-remove-top@s">
+    <div class="uk-inline uk-width-1-1">
+      <span class="uk-form-icon" uk-icon="icon: search"></span>
+      <input class="uk-input uk-form-small"
+             type="text"
+             id="searchInput"
+             placeholder="{{ $searchPlaceholder }}"
+             data-items=".writeup-item"
+             data-title=".uk-card-title"
+             data-extra=".uk-text-meta">
+    </div>
+  </div>
+  {{ end }}
+</div>

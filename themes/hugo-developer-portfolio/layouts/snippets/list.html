@@ -3,19 +3,17 @@
 
 <section class="uk-section uk-section-small">
   <div class="uk-container">
-    <!-- Simple Search -->
-    <div class="uk-margin-medium-bottom">
-      <div class="uk-width-1-3@m uk-margin-auto">
-        <div class="uk-inline uk-width-1-1">
-          <span class="uk-form-icon" uk-icon="icon: search"></span>
-          <input class="uk-input uk-form-small" type="text" id="searchInput" placeholder="Search snippets...">
-        </div>
-      </div>
-    </div>
+    <!-- Search -->
+    {{ partial "search-filter-bar.html" (dict
+      "placeholder" "Search snippets..."
+      "items" ".snippet-item"
+      "title" ".uk-card-title"
+      "extra" ".snippet-language"
+    ) }}
 
     <div class="uk-grid uk-child-width-1-3@m uk-child-width-1-2@s uk-grid-medium" uk-grid uk-height-match="target: > div > a > .snippet-card">
       {{ range .Data.Pages }}
-      <div class="snippet-item">
+      <div class="snippet-item" data-tags="{{ lower .Params.Language }}">
         <a href="{{ .Permalink | relURL }}" class="uk-link-reset">
           <div class="uk-card uk-card-default uk-card-hover uk-border-rounded uk-box-shadow-small snippet-card">
             <div class="uk-card-body uk-flex uk-flex-column">
@@ -37,134 +35,5 @@
     </div>
   </div>
 </section>
-
-<style>
-.uk-section-small {
-  padding-top: 20px;
-}
-
-.snippet-card {
-  background-color: var(--card-bg);
-  border: 1px solid var(--card-border);
-  transition: all 0.2s ease;
-  height: 100%;
-}
-
-.snippet-card .uk-card-body {
-  padding: 1.25rem;
-  height: 100%;
-}
-
-.snippet-card:hover {
-  transform: translateY(-2px);
-  border-color: var(--link-color);
-  background-color: var(--card-hover-bg);
-}
-
-.snippet-card:hover .uk-icon {
-  color: var(--link-color);
-  transform: translateX(2px);
-}
-
-.snippet-language {
-  font-size: 0.8rem;
-  padding: 2px 8px;
-  border-radius: 4px;
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.uk-card-title {
-  color: var(--card-heading) !important;
-  font-size: 1.1rem !important;
-  line-height: 1.4;
-  flex-grow: 0;
-}
-
-.snippet-description {
-  flex-grow: 1;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  line-height: 1.4;
-}
-
-.uk-icon {
-  color: var(--text-color-muted);
-  transition: all 0.2s ease;
-}
-
-/* Search Input */
-.uk-input.uk-form-small {
-  height: 32px;
-  border-radius: 6px;
-  background-color: var(--card-hover-bg) !important;
-  border: 1px solid var(--card-border) !important;
-  color: var(--text-color) !important;
-  font-size: 0.875rem;
-  padding-left: 32px;
-}
-
-.uk-input.uk-form-small:focus {
-  background-color: var(--card-bg) !important;
-  border-color: var(--link-color) !important;
-}
-
-.uk-form-icon {
-  color: var(--text-color-muted);
-  width: 32px;
-}
-</style>
-
-<script>
-document.addEventListener("DOMContentLoaded", function() {
-  const snippetLanguages = document.querySelectorAll(".snippet-language");
-  const searchInput = document.getElementById('searchInput');
-  const snippetItems = document.querySelectorAll('.snippet-item');
-
-  const pastelColors = [
-    "#A37FAA", "#7DA9B3", "#E57373", "#D46A97", "#FF8C8C",
-    "#FFA1A1", "#FFBB9E", "#FFD878", "#7FAF9D", "#6B7BCB",
-    "#FFDAB9", "#FFA769", "#7FAF9D", "#B06969", "#8FAEC4",
-    "#DAA691", "#A6816C", "#E6E682", "#8FAEC4", "#5967A8",
-    "#FFB84D", "#7FAF9D", "#6B7BCB", "#67ACA6", "#A37FAA",
-    "#7DA9B3", "#E57373", "#D46A97", "#FF8C8C", "#FFA1A1"
-  ];
-
-  // Language color assignment
-  snippetLanguages.forEach(function(language) {
-    const languageName = language.innerText.trim().toLowerCase();
-    const colorIndex = hash(languageName) % pastelColors.length;
-    const color = pastelColors[colorIndex];
-    language.style.backgroundColor = color;
-    language.style.color = "#ffffff";
-  });
-
-  // Search functionality
-  function filterSnippets() {
-    const searchTerm = searchInput.value.toLowerCase();
-    snippetItems.forEach(item => {
-      const title = item.querySelector('.uk-card-title').textContent.toLowerCase();
-      const language = item.querySelector('.snippet-language').textContent.toLowerCase();
-      const shouldShow = searchTerm === '' || 
-                        title.includes(searchTerm) || 
-                        language.includes(searchTerm);
-      item.style.display = shouldShow ? '' : 'none';
-    });
-  }
-
-  searchInput.addEventListener('input', filterSnippets);
-
-  function hash(str) {
-    let hash = 0;
-    for (let i = 0; i < str.length; i++) {
-      hash = str.charCodeAt(i) + ((hash << 5) - hash);
-    }
-    return hash;
-  }
-});
-</script>
 
 {{ end }}

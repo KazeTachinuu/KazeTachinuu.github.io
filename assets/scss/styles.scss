@@ -1,86 +1,62 @@
-@import "bootstrap/bootstrap";
+/* ==========================================================================
+   IMAGE STYLES
+   ========================================================================== */
 
-/* Clean image styling */
 .writeup-image {
   margin: 2rem 0;
   text-align: center;
-}
 
-.writeup-image img {
-  max-width: 100%;
-  height: auto;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-/* Grid layout for images */
-.image-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;  /* Force two columns */
-  gap: 2rem;
-  margin: 2rem 0;
-  align-items: start;  /* Align items at the top */
-}
-
-/* Responsive grid */
-@media (max-width: 768px) {
-  .image-grid {
-    grid-template-columns: 1fr;  /* Stack on mobile */
+  img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   }
 }
 
-.image-grid .grid-item {
-  margin: 0;
+.image-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin: 2rem 0;
+  align-items: start;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+
+  .grid-item {
+    margin: 0;
+
+    img {
+      width: 100%;
+      height: auto;
+      object-fit: contain;
+    }
+  }
 }
 
-.image-grid .grid-item img {
-  width: 100%;
-  height: auto;
-  object-fit: contain;
-}
+/* ==========================================================================
+   SECTION BOXES (for shortcodes)
+   ========================================================================== */
 
-/* Enhanced section styling */
 .section-box {
   margin: 2rem 0;
   padding: 1.5rem;
   border-radius: 8px;
   background-color: #f8f9fa;
   border-left: 4px solid #ccc;
+
+  &.blue, &.info { border-left-color: #3498db; }
+  &.green, &.success { border-left-color: #2ecc71; }
+  &.yellow, &.warning { border-left-color: #f1c40f; }
+  &.red, &.danger { border-left-color: #e74c3c; }
+  &.mauve, &.note { border-left-color: #9b59b6; }
+  &.lavender, &.assignment { border-left-color: #8e44ad; }
+  &.teal, &.requirements { border-left-color: #1abc9c; }
+  &.peach, &.evaluation { border-left-color: #e67e22; }
 }
 
-.section-box.blue, .section-box.info {
-  border-left-color: #3498db;
-}
-
-.section-box.green, .section-box.success {
-  border-left-color: #2ecc71;
-}
-
-.section-box.yellow, .section-box.warning {
-  border-left-color: #f1c40f;
-}
-
-.section-box.red, .section-box.danger {
-  border-left-color: #e74c3c;
-}
-
-.section-box.mauve, .section-box.note {
-  border-left-color: #9b59b6;
-}
-
-.section-box.lavender, .section-box.assignment {
-  border-left-color: #8e44ad;
-}
-
-.section-box.teal, .section-box.requirements {
-  border-left-color: #1abc9c;
-}
-
-.section-box.peach, .section-box.evaluation {
-  border-left-color: #e67e22;
-}
-
-/* Document style enhances sections to look like paper */
 .document-blue, .document-green, .document-red {
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
   background-color: white;
@@ -93,41 +69,597 @@
   margin-top: 0;
   margin-bottom: 1rem;
   font-weight: 600;
-}
 
-.section-title.centered {
-  text-align: center;
+  &.centered {
+    text-align: center;
+  }
 }
 
 .section-icon {
   margin-right: 0.5rem;
 }
 
-/* Code blocks inside sections */
-.section-content pre {
-  background-color: #2d3748;
-  color: #e2e8f0;
-  padding: 1rem;
-  border-radius: 6px;
-  margin: 1rem 0;
-  overflow-x: auto;
+.section-content {
+  pre {
+    background-color: #2d3748;
+    color: #e2e8f0;
+    padding: 1rem;
+    border-radius: 6px;
+    margin: 1rem 0;
+    overflow-x: auto;
+  }
+
+  code {
+    font-family: 'Fira Code', Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+    font-size: 0.9rem;
+  }
+
+  ol {
+    padding-left: 1.25rem;
+
+    li {
+      margin-bottom: 0.75rem;
+    }
+  }
 }
 
-.section-content code {
-  font-family: 'Fira Code', Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
-  font-size: 0.9rem;
-}
-
-/* Ordered lists in sections */
-.section-content ol {
-  padding-left: 1.25rem;
-}
-
-.section-content ol li {
-  margin-bottom: 0.75rem;
-}
-
-/* Timeline-specific styles */
 .section-box.warning ol li strong {
   color: #e67e22;
+}
+
+/* ==========================================================================
+   SHORTCODE BUTTON STYLES
+   ========================================================================== */
+
+/* Return home button */
+#homeButtonHugo {
+  position: fixed;
+  bottom: 40px;
+  left: 40px;
+  background-color: white;
+  color: #3C5B6F;
+  border: none;
+  border-radius: 50%;
+  width: 75px;
+  height: 75px;
+  font-size: 36px;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  z-index: 999;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: lightgray;
+  }
+}
+
+/* Copy code button */
+.code-container {
+  position: relative;
+  margin: 1em 0;
+}
+
+.copy-btn {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  padding: 0.4rem;
+  border: none;
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 4px;
+  color: var(--text-color, #8b949e);
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(4px);
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.25);
+    color: var(--text-color, #ffffff);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+
+  svg {
+    filter: drop-shadow(0 0 0.5px rgba(0, 0, 0, 0.1));
+  }
+
+  .check-icon {
+    display: none;
+  }
+
+  &.copied {
+    background: rgba(126, 231, 135, 0.15);
+    box-shadow: 0 0 8px rgba(126, 231, 135, 0.2);
+
+    .copy-icon {
+      display: none;
+    }
+
+    .check-icon {
+      display: block;
+      color: #7ee787;
+    }
+  }
+}
+
+/* ==========================================================================
+   UNIFIED LIST PAGE STYLES
+   ========================================================================== */
+
+/* Section spacing */
+.uk-section-small {
+  padding-top: 20px;
+}
+
+/* Search Input - Unified for all list pages */
+.uk-input.uk-form-small {
+  height: 38px;
+  border-radius: 6px;
+  background-color: var(--card-hover-bg) !important;
+  border: 1px solid var(--card-border) !important;
+  color: var(--text-color) !important;
+  font-size: 0.875rem;
+  padding-left: 32px;
+
+  &:focus {
+    background-color: var(--card-bg) !important;
+    border-color: var(--link-color) !important;
+  }
+
+  @media (max-width: 640px) {
+    font-size: 16px !important; // Prevents zoom on iOS
+  }
+}
+
+.uk-form-icon {
+  color: var(--text-color-muted);
+  width: 32px;
+}
+
+/* Filter Navigation Pills - Used in portfolio and blog */
+.filter-nav {
+  gap: 8px;
+  margin: 0;
+  flex-wrap: wrap;
+  justify-content: center;
+
+  li {
+    a {
+      padding: 4px 12px;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      background: var(--card-hover-bg);
+      color: var(--text-color-muted);
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+
+    &.uk-active a {
+      background: var(--link-color);
+      color: var(--card-bg);
+    }
+  }
+}
+
+/* ==========================================================================
+   UNIFIED CARD STYLES
+   ========================================================================== */
+
+/* Base card styles - shared across all list pages */
+.uk-card {
+  background-color: var(--card-bg);
+  border: 1px solid var(--card-border);
+  transition: all 0.2s ease;
+
+  @media (hover: hover) {
+    &:hover {
+      transform: translateY(-2px);
+      border-color: var(--link-color);
+      background-color: var(--card-hover-bg);
+      box-shadow: 0 2px 8px var(--card-shadow, rgba(0, 0, 0, 0.1));
+
+      .uk-icon {
+        color: var(--link-color);
+        transform: translateX(2px);
+      }
+    }
+  }
+}
+
+.uk-card-body {
+  padding: 1.25rem;
+
+  @media (max-width: 640px) {
+    padding: 1rem;
+  }
+}
+
+.uk-card-title {
+  color: var(--card-heading) !important;
+  font-size: 1.1rem !important;
+  line-height: 1.4;
+  margin: 0;
+}
+
+.uk-icon {
+  color: var(--text-color-muted);
+  transition: all 0.2s ease;
+}
+
+/* Project Cards (Portfolio) */
+.project-card {
+  height: 100%;
+
+  .uk-card-media-top {
+    position: relative;
+
+    img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+
+      @media (max-width: 640px) {
+        height: 180px;
+      }
+    }
+  }
+}
+
+.project-description {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  line-height: 1.4;
+  margin: 8px 0;
+}
+
+/* Snippet Cards */
+.snippet-card {
+  height: 100%;
+
+  .uk-card-body {
+    height: 100%;
+  }
+}
+
+.snippet-description {
+  flex-grow: 1;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  line-height: 1.4;
+}
+
+.snippet-language {
+  font-size: 0.8rem;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Post Cards (Blog) */
+.post-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  transition: border-color 0.2s, transform 0.2s;
+}
+
+.post-description {
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  display: -webkit-box;
+  overflow: hidden;
+  margin: 8px 0;
+}
+
+/* Writeup Cards */
+.writeup-section {
+  position: relative;
+}
+
+.writeup-item {
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.no-info-message {
+  font-style: italic;
+  color: var(--text-color-muted);
+}
+
+/* Tool Cards */
+.tool-card {
+  position: relative;
+  width: 100%;
+}
+
+.tool-language-label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  background: var(--link-color) !important;
+  color: var(--card-bg) !important;
+}
+
+/* ==========================================================================
+   TAGS AND BADGES
+   ========================================================================== */
+
+/* Category tags - used across portfolio, blog */
+.category-tag {
+  font-size: 0.7rem;
+  padding: 1px 8px;
+  border-radius: 4px;
+  background: var(--card-hover-bg);
+  color: var(--text-color-muted);
+  margin: 2px 4px 2px 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: inline-block;
+}
+
+/* Draft badge */
+.draft-badge {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: #ff6600;
+  color: #ffffff;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  z-index: 10000;
+}
+
+/* ==========================================================================
+   BREADCRUMB NAVIGATION (Writeups)
+   ========================================================================== */
+
+.layer-nav {
+  padding: 1rem;
+  background: var(--card-bg);
+  border-radius: 12px;
+  border: 1px solid var(--card-border);
+  box-shadow: 0 1px 4px var(--card-shadow, rgba(0, 0, 0, 0.05));
+}
+
+.breadcrumb-container {
+  gap: 0.5rem;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 0.5rem;
+  margin-bottom: -0.5rem;
+}
+
+.back-button {
+  color: var(--text-color-muted);
+  padding: 0.25rem;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+
+  &:hover {
+    color: var(--link-hover-color);
+    background: var(--card-hover-bg);
+  }
+}
+
+.layer-item {
+  color: var(--text-color-muted);
+  text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: 500;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+
+  &:not(.current):hover {
+    color: var(--link-hover-color);
+    background: var(--card-hover-bg);
+    text-decoration: none;
+  }
+
+  &.current {
+    color: var(--link-color);
+    background: var(--card-hover-bg);
+    font-weight: 600;
+  }
+}
+
+.layer-separator {
+  color: var(--text-color-muted);
+  opacity: 0.5;
+  flex-shrink: 0;
+}
+
+/* ==========================================================================
+   WRITEUP-SPECIFIC STYLES
+   ========================================================================== */
+
+.challenge-title {
+  gap: 8px;
+  flex: 1;
+  min-width: 0;
+
+  .uk-card-title {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+.validation-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  flex-shrink: 0;
+
+  &.solved {
+    background: var(--syntax-string);
+    color: var(--bg-color);
+  }
+
+  &.unsolved {
+    background: var(--syntax-keyword);
+    color: var(--bg-color);
+  }
+
+  .uk-icon {
+    width: 14px;
+    height: 14px;
+  }
+
+  @media (max-width: 640px) {
+    width: 20px;
+    height: 20px;
+
+    .uk-icon {
+      width: 12px;
+      height: 12px;
+    }
+  }
+}
+
+.points-badge {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--card-hover-bg);
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--link-color);
+  flex-shrink: 0;
+
+  @media (max-width: 640px) {
+    padding: 0.2rem 0.4rem;
+    font-size: 0.85rem;
+  }
+}
+
+.points-label {
+  color: var(--text-color-muted);
+  font-size: 0.8rem;
+
+  @media (max-width: 640px) {
+    font-size: 0.75rem;
+  }
+}
+
+.category-badge {
+  display: flex;
+  align-items: center;
+  background: var(--card-hover-bg);
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  color: var(--text-color-muted);
+  flex-shrink: 0;
+}
+
+.challenge-meta {
+  color: var(--text-color-muted);
+}
+
+.uk-text-meta {
+  color: var(--card-text-muted) !important;
+  font-size: 0.9rem;
+
+  @media (max-width: 640px) {
+    font-size: 0.85rem;
+  }
+}
+
+/* ==========================================================================
+   NO RESULTS MESSAGE
+   ========================================================================== */
+
+#noResults {
+  padding: 3rem 2rem;
+  text-align: center;
+
+  .uk-text-muted {
+    color: var(--text-color-muted);
+    font-size: 1rem;
+  }
+}
+
+/* ==========================================================================
+   DARK MODE ADJUSTMENTS
+   ========================================================================== */
+
+[data-theme="dark"] {
+  .project-card,
+  .snippet-card,
+  .post-card,
+  .uk-card {
+    background-color: var(--card-bg);
+
+    &:hover {
+      background-color: var(--card-hover-bg);
+    }
+  }
+
+  .category-tag {
+    background: var(--card-hover-bg);
+    color: var(--card-text-muted);
+  }
+
+  .layer-nav {
+    background: var(--card-bg);
+    border-color: var(--card-border);
+  }
+
+  .layer-item {
+    color: var(--card-text-muted);
+
+    &:not(.current):hover {
+      color: var(--link-hover-color);
+      background: var(--card-hover-bg);
+    }
+
+    &.current {
+      color: var(--link-color);
+      background: var(--card-hover-bg);
+    }
+  }
+}
+
+/* ==========================================================================
+   MOBILE RESPONSIVE ADJUSTMENTS
+   ========================================================================== */
+
+@media (max-width: 640px) {
+  .layer-nav {
+    padding: 0.75rem;
+  }
+
+  .breadcrumb-container {
+    margin-bottom: 0.5rem;
+  }
+
+  .challenge-title {
+    gap: 6px;
+  }
 }
