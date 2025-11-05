@@ -1,68 +1,89 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Character Encoding & Viewport -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BanG Dream! Points Calculator</title>
+
+    <!-- Page Title & Description -->
+    <title>BanG Dream! Points Calculator - Event Strategy Planner</title>
+    <meta name="description" content="Calculate optimal strategies for BanG Dream! event grinding. Plan your multi lives and challenge lives to maximize event points.">
+    <meta name="keywords" content="BanG Dream, Bandori, Event Calculator, Points Calculator, Challenge Live, Multi Live">
+
+    <!-- Theme Color -->
+    <meta name="theme-color" content="#3C5B6F" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#2d4554" media="(prefers-color-scheme: dark)">
+
+    <!-- Tailwind CSS Framework -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
+        // Tailwind CSS Configuration
         tailwind.config = {
-            darkMode: 'class',
+            darkMode: 'class', // Enable class-based dark mode
             theme: {
                 extend: {
                     colors: {
+                        // Custom primary color palette
                         primary: {
                             50: '#f0f7fa',
                             100: '#daeaf2',
                             200: '#b9d8e6',
                             300: '#8abfd4',
                             400: '#54a0be',
-                            500: '#3C5B6F',
+                            500: '#3C5B6F', // Main brand color
                             600: '#2d4554',
+                            700: '#1f3140',
+                            800: '#152332',
+                            900: '#0c1821',
                         }
                     }
                 }
             }
         }
     </script>
-    <style>
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes slideDown {
-            from { opacity: 0; max-height: 0; }
-            to { opacity: 1; max-height: 500px; }
-        }
-        .animate-fade-in { animation: fadeIn 0.4s ease-out; }
-        .animate-slide-down { animation: slideDown 0.3s ease-out; }
-        input:focus { transform: translateY(-1px); }
-    </style>
+
+    <!-- External Dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.6.2/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.10/dayjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.10/plugin/duration.min.js"></script>
+    <script>
+        // Initialize Day.js duration plugin for countdown timers
+        dayjs.extend(window.dayjs_plugin_duration);
+    </script>
+
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="./css/styles.css">
 </head>
 <body class="bg-gradient-to-br from-slate-50 via-blue-50 to-slate-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 min-h-screen transition-colors">
-    <!-- Navigation -->
-    <nav class="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border-b border-slate-200 dark:border-slate-700 sticky top-0 z-40">
+    <!-- Navigation Bar -->
+    <nav class="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border-b border-slate-200 dark:border-slate-700 sticky top-0 z-40" role="navigation" aria-label="Main navigation">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-16">
+                <!-- Brand Logo & Title -->
                 <div class="flex items-center space-x-3">
-                    <div class="w-10 h-10 bg-primary-500 rounded-lg flex items-center justify-center">
+                    <div class="w-10 h-10 bg-primary-500 rounded-lg flex items-center justify-center" aria-hidden="true">
                         <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
                         </svg>
                     </div>
                     <h1 class="text-lg font-semibold text-slate-800 dark:text-slate-100">BanG Dream! Calculator</h1>
                 </div>
+
+                <!-- Navigation Actions -->
                 <div class="flex items-center gap-2">
-                    <button onclick="toggleTheme()" class="p-2 text-slate-700 dark:text-slate-300 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-slate-50 dark:hover:bg-slate-700 rounded-lg transition-colors">
-                        <svg id="themeIconLight" class="w-5 h-5 hidden dark:block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <!-- Theme Toggle Button -->
+                    <button id="themeToggle" class="p-2 text-slate-700 dark:text-slate-300 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-slate-50 dark:hover:bg-slate-700 rounded-lg transition-colors" aria-label="Toggle dark mode" title="Toggle theme">
+                        <svg class="w-5 h-5 hidden dark:block" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
                         </svg>
-                        <svg id="themeIconDark" class="w-5 h-5 block dark:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg class="w-5 h-5 block dark:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
                         </svg>
                     </button>
-                    <a href="/" class="inline-flex items-center px-3 py-2 text-sm font-medium text-slate-700 dark:text-slate-300 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-slate-50 dark:hover:bg-slate-700 rounded-lg transition-colors">
-                        <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+
+                    <!-- Home Link -->
+                    <a href="/" class="inline-flex items-center px-3 py-2 text-sm font-medium text-slate-700 dark:text-slate-300 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-slate-50 dark:hover:bg-slate-700 rounded-lg transition-colors" aria-label="Return to homepage">
+                        <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
                         </svg>
                         Home
@@ -73,14 +94,52 @@
     </nav>
 
     <!-- Main Content -->
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <!-- Mode Selection -->
-        <div class="mb-8">
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8" role="main">
+        <!-- Event Information Banner -->
+        <section id="eventBanner" class="mb-8 event-banner p-6 sm:p-8 hidden animate-fade-in" aria-label="Current event information">
+            <div>
+                <div class="flex items-center gap-2 mb-3">
+                    <span class="text-xs font-semibold uppercase tracking-wider opacity-75 text-white">Current Event</span>
+                </div>
+                <h2 id="eventName" class="text-2xl sm:text-3xl font-bold mb-4 text-white">Loading event data...</h2>
+
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-4">
+                    <div class="bg-white/10 rounded-lg p-3">
+                        <div class="text-xs opacity-75 mb-1 text-white">Period</div>
+                        <div id="eventDates" class="font-semibold text-sm text-white">—</div>
+                    </div>
+                    <div class="bg-white/10 rounded-lg p-3">
+                        <div class="text-xs opacity-75 mb-1 text-white">Type</div>
+                        <div id="eventType" class="font-semibold text-sm text-white">—</div>
+                    </div>
+                    <div id="eventAttribute" class="bg-white/10 rounded-lg p-3 hidden">
+                        <div class="text-xs opacity-75 mb-1 text-white">Attribute</div>
+                        <div id="attributeText" class="font-semibold text-sm text-white">—</div>
+                    </div>
+                </div>
+
+                <div id="eventCountdown" class="inline-flex items-center gap-2 text-sm font-semibold bg-white/20 rounded-lg px-4 py-2 hidden text-white">
+                    <span id="countdownText">—</span>
+                </div>
+
+                <div id="featuredCharacters" class="mt-6 hidden">
+                    <div class="text-xs font-semibold uppercase tracking-wider opacity-75 mb-3 text-white">Featured Characters</div>
+                    <div id="charactersList" class="flex flex-wrap gap-2"></div>
+                </div>
+
+                <div id="eventError" class="hidden error-message mt-4" role="alert">
+                    <div class="text-sm font-medium">Unable to load event data. Please try again later.</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Calculation Mode Selection -->
+        <section class="mb-8" aria-label="Calculation mode selection">
             <div class="text-center mb-6">
                 <h2 class="text-2xl font-semibold text-slate-800 dark:text-slate-100">Calculation Mode</h2>
             </div>
-            <div class="flex justify-center gap-4 flex-wrap">
-                <button onclick="setMode('max')" id="maxBtn" class="mode-card group">
+            <div class="flex justify-center gap-4 flex-wrap" role="group" aria-label="Mode selection buttons">
+                <button id="maxBtn" class="mode-card group" aria-pressed="false">
                     <div class="flex items-center space-x-3">
                         <div class="w-12 h-12 rounded-xl bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center group-hover:bg-primary-200 dark:group-hover:bg-primary-900/50 transition-colors">
                             <svg class="w-6 h-6 text-primary-600 dark:text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -90,9 +149,9 @@
                         <div class="font-semibold text-slate-800 dark:text-slate-100">Max Points</div>
                     </div>
                 </button>
-                <button onclick="setMode('goal')" id="goalBtn" class="mode-card group">
+                <button id="goalBtn" class="mode-card group" aria-pressed="false">
                     <div class="flex items-center space-x-3">
-                        <div class="w-12 h-12 rounded-xl bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center group-hover:bg-primary-200 dark:group-hover:bg-primary-900/50 transition-colors">
+                        <div class="w-12 h-12 rounded-xl bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center group-hover:bg-primary-200 dark:group-hover:bg-primary-900/50 transition-colors" aria-hidden="true">
                             <svg class="w-6 h-6 text-primary-600 dark:text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
                             </svg>
@@ -101,20 +160,20 @@
                     </div>
                 </button>
             </div>
-        </div>
+        </section>
 
+        <!-- Calculator Form & Results -->
         <div class="grid lg:grid-cols-3 gap-8">
-            <!-- Input Section -->
             <div class="lg:col-span-2 space-y-6">
-                <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 sm:p-8">
+                <!-- Input Form -->
+                <section class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 p-6 sm:p-8" aria-label="Calculator inputs">
                     <h3 class="text-lg font-semibold text-slate-800 dark:text-slate-100 mb-6">Enter Your Details</h3>
 
                     <div class="space-y-5">
-                        <!-- Mode-specific input -->
                         <div id="maxInput" class="space-y-2">
                             <label class="block">
                                 <span class="text-sm font-medium text-slate-700 dark:text-slate-300">Live Boosts Available</span>
-                                <input type="text" id="boosts" value="0"
+                                <input type="text" id="boosts" value="0" data-number
                                     class="mt-1.5 w-full px-4 py-3 bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-xl focus:border-primary-400 dark:focus:border-primary-500 focus:ring-4 focus:ring-primary-100 dark:focus:ring-primary-900/30 transition-all outline-none text-lg font-medium text-slate-800 dark:text-slate-100"
                                     placeholder="0">
                             </label>
@@ -122,7 +181,7 @@
                         <div id="goalInput" class="space-y-2 hidden">
                             <label class="block">
                                 <span class="text-sm font-medium text-slate-700 dark:text-slate-300">Target Score</span>
-                                <input type="text" id="goal" value="0"
+                                <input type="text" id="goal" value="0" data-number
                                     class="mt-1.5 w-full px-4 py-3 bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-xl focus:border-primary-400 dark:focus:border-primary-500 focus:ring-4 focus:ring-primary-100 dark:focus:ring-primary-900/30 transition-all outline-none text-lg font-medium text-slate-800 dark:text-slate-100"
                                     placeholder="0">
                             </label>
@@ -131,7 +190,7 @@
                         <div class="space-y-2">
                             <label class="block">
                                 <span class="text-sm font-medium text-slate-700 dark:text-slate-300">Current Score</span>
-                                <input type="text" id="currentScore" value="0"
+                                <input type="text" id="currentScore" value="0" data-number
                                     class="mt-1.5 w-full px-4 py-3 bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-xl focus:border-primary-400 dark:focus:border-primary-500 focus:ring-4 focus:ring-primary-100 dark:focus:ring-primary-900/30 transition-all outline-none text-lg font-medium text-slate-800 dark:text-slate-100"
                                     placeholder="0">
                             </label>
@@ -140,28 +199,27 @@
                         <div class="space-y-2">
                             <label class="block">
                                 <span class="text-sm font-medium text-slate-700 dark:text-slate-300">Current Challenge Points (CP)</span>
-                                <input type="text" id="currentBadges" value="0"
+                                <input type="text" id="currentBadges" value="0" data-number
                                     class="mt-1.5 w-full px-4 py-3 bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-xl focus:border-primary-400 dark:focus:border-primary-500 focus:ring-4 focus:ring-primary-100 dark:focus:ring-primary-900/30 transition-all outline-none text-lg font-medium text-slate-800 dark:text-slate-100"
                                     placeholder="0">
                             </label>
                         </div>
                     </div>
 
-                    <!-- Calculate CTA -->
-                    <button onclick="calculate()" class="mt-8 w-full px-6 py-4 bg-primary-500 hover:bg-primary-600 dark:bg-primary-600 dark:hover:bg-primary-700 text-white font-semibold rounded-xl transition-all hover:shadow-lg hover:shadow-primary-500/25 dark:hover:shadow-primary-600/25 active:scale-[0.98] flex items-center justify-center space-x-2">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <button id="calculateBtn" class="mt-8 w-full px-6 py-4 bg-primary-500 hover:bg-primary-600 dark:bg-primary-600 dark:hover:bg-primary-700 text-white font-semibold rounded-xl transition-all hover:shadow-lg hover:shadow-primary-500/25 dark:hover:shadow-primary-600/25 active:scale-[0.98] flex items-center justify-center space-x-2" aria-label="Calculate optimal strategy">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
                         </svg>
                         <span>Calculate Strategy</span>
                     </button>
-                </div>
+                </section>
 
-                <!-- Results Section -->
-                <div id="results" class="hidden animate-fade-in">
-                    <div class="bg-gradient-to-br from-primary-500 to-primary-600 dark:from-primary-600 dark:to-primary-700 rounded-2xl shadow-lg border border-primary-600 dark:border-primary-700 p-6 sm:p-8 text-white mb-6">
+                <!-- Calculation Results -->
+                <section id="results" class="hidden animate-fade-in" aria-label="Calculation results">
+                    <div class="results-panel p-6 sm:p-8 text-white mb-6">
                         <div class="flex items-center justify-between mb-4">
                             <h3 class="text-xl font-semibold">Your Strategy</h3>
-                            <svg class="w-6 h-6 text-primary-100 dark:text-primary-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg class="w-6 h-6 text-primary-100 dark:text-primary-200" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
                             </svg>
                         </div>
@@ -174,55 +232,55 @@
                     </div>
 
                     <div class="grid grid-cols-2 gap-4">
-                        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-5">
+                        <div class="stat-card">
                             <div class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">Multi Lives</div>
                             <div class="text-3xl font-bold text-slate-800 dark:text-slate-100" id="multiLives">—</div>
                         </div>
-                        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-5">
+                        <div class="stat-card">
                             <div class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">Challenge Lives</div>
                             <div class="text-3xl font-bold text-slate-800 dark:text-slate-100" id="challengeLives">—</div>
                         </div>
-                        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-5">
+                        <div class="stat-card">
                             <div class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">Boosts Used</div>
                             <div class="text-3xl font-bold text-slate-800 dark:text-slate-100" id="boostsUsed">—</div>
                         </div>
-                        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 p-5">
+                        <div class="stat-card">
                             <div class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">CP Remaining</div>
                             <div class="text-3xl font-bold text-slate-800 dark:text-slate-100" id="remainingBadges">—</div>
                         </div>
                     </div>
-                </div>
+                </section>
             </div>
 
-            <!-- Settings Sidebar -->
-            <div class="lg:col-span-1">
-                <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 sticky top-24">
-                    <button onclick="toggleSettings()" class="w-full px-6 py-4 flex items-center justify-between hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors rounded-t-2xl">
+            <!-- Advanced Settings Sidebar -->
+            <aside class="lg:col-span-1">
+                <section class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 sticky top-24" aria-label="Advanced settings">
+                    <button id="settingsToggle" class="w-full px-6 py-4 flex items-center justify-between hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors rounded-t-2xl" aria-expanded="false" aria-controls="settingsPanel" aria-label="Toggle advanced settings">
                         <div class="flex items-center space-x-2">
-                            <svg class="w-5 h-5 text-slate-400 dark:text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg class="w-5 h-5 text-slate-400 dark:text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
                             </svg>
                             <h3 class="font-semibold text-slate-800 dark:text-slate-100">Advanced Settings</h3>
                         </div>
-                        <svg id="settingsIcon" class="w-5 h-5 text-slate-400 dark:text-slate-500 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg id="settingsIcon" class="w-5 h-5 text-slate-400 dark:text-slate-500 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                         </svg>
                     </button>
 
-                    <div id="settingsPanel" class="border-t border-slate-100 dark:border-slate-700">
+                    <div id="settingsPanel" class="border-t border-slate-100 dark:border-slate-700" role="region" aria-label="Advanced settings panel">
                         <div class="p-6 space-y-6">
                             <div>
                                 <h4 class="text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-4">Multi Live</h4>
                                 <div class="space-y-3">
                                     <label class="block">
                                         <span class="text-xs text-slate-600 dark:text-slate-400">Event Points</span>
-                                        <input type="text" id="multiPoints" value="6 800"
+                                        <input type="text" id="multiPoints" value="6 800" data-number
                                             class="mt-1 w-full px-3 py-2 bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-lg focus:border-primary-400 dark:focus:border-primary-500 focus:ring-2 focus:ring-primary-100 dark:focus:ring-primary-900/30 transition-all outline-none text-sm text-slate-800 dark:text-slate-100">
                                     </label>
                                     <label class="block">
                                         <span class="text-xs text-slate-600 dark:text-slate-400">CP Earned</span>
-                                        <input type="text" id="multiBadges" value="330"
+                                        <input type="text" id="multiBadges" value="330" data-number
                                             class="mt-1 w-full px-3 py-2 bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-lg focus:border-primary-400 dark:focus:border-primary-500 focus:ring-2 focus:ring-primary-100 dark:focus:ring-primary-900/30 transition-all outline-none text-sm text-slate-800 dark:text-slate-100">
                                     </label>
                                 </div>
@@ -233,173 +291,24 @@
                                 <div class="space-y-3">
                                     <label class="block">
                                         <span class="text-xs text-slate-600 dark:text-slate-400">Event Points</span>
-                                        <input type="text" id="challengePoints" value="33 000"
+                                        <input type="text" id="challengePoints" value="33 000" data-number
                                             class="mt-1 w-full px-3 py-2 bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-lg focus:border-primary-400 dark:focus:border-primary-500 focus:ring-2 focus:ring-primary-100 dark:focus:ring-primary-900/30 transition-all outline-none text-sm text-slate-800 dark:text-slate-100">
                                     </label>
                                     <label class="block">
                                         <span class="text-xs text-slate-600 dark:text-slate-400">CP Cost</span>
-                                        <input type="text" id="challengeBadges" value="800"
+                                        <input type="text" id="challengeBadges" value="800" data-number
                                             class="mt-1 w-full px-3 py-2 bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-lg focus:border-primary-400 dark:focus:border-primary-500 focus:ring-2 focus:ring-primary-100 dark:focus:ring-primary-900/30 transition-all outline-none text-sm text-slate-800 dark:text-slate-100">
                                     </label>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
+                </section>
+            </aside>
         </div>
     </main>
 
-    <script>
-        // Dark mode functionality
-        function toggleTheme() {
-            const html = document.documentElement;
-            const isDark = html.classList.contains('dark');
-
-            if (isDark) {
-                html.classList.remove('dark');
-                localStorage.setItem('theme', 'light');
-            } else {
-                html.classList.add('dark');
-                localStorage.setItem('theme', 'dark');
-            }
-        }
-
-        // Initialize theme on page load
-        (function() {
-            const savedTheme = localStorage.getItem('theme');
-            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-
-            if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
-                document.documentElement.classList.add('dark');
-            }
-        })();
-
-        let mode = 'max';
-
-        const fmt = (n) => n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
-        const parse = (s) => parseInt(s.replace(/\s/g, ''), 10) || 0;
-
-        function setMode(newMode) {
-            mode = newMode;
-            const maxBtn = document.getElementById('maxBtn');
-            const goalBtn = document.getElementById('goalBtn');
-            const maxInput = document.getElementById('maxInput');
-            const goalInput = document.getElementById('goalInput');
-
-            maxBtn.className = 'mode-card group';
-            goalBtn.className = 'mode-card group';
-
-            if (mode === 'max') {
-                maxBtn.classList.add('active');
-                maxInput.classList.remove('hidden');
-                goalInput.classList.add('hidden');
-            } else {
-                goalBtn.classList.add('active');
-                goalInput.classList.remove('hidden');
-                maxInput.classList.add('hidden');
-            }
-        }
-
-        function toggleSettings() {
-            const panel = document.getElementById('settingsPanel');
-            const icon = document.getElementById('settingsIcon');
-            panel.classList.toggle('hidden');
-            icon.classList.toggle('rotate-180');
-        }
-
-        document.querySelectorAll('input[type="text"]').forEach(input => {
-            input.addEventListener('input', (e) => {
-                const val = parse(e.target.value);
-                e.target.value = fmt(val);
-            });
-        });
-
-        function calculate() {
-            const currentScore = parse(document.getElementById('currentScore').value);
-            const currentBadges = parse(document.getElementById('currentBadges').value);
-            const multiPts = parse(document.getElementById('multiPoints').value);
-            const multiBdg = parse(document.getElementById('multiBadges').value);
-            const challengePts = parse(document.getElementById('challengePoints').value);
-            const challengeBdg = parse(document.getElementById('challengeBadges').value);
-
-            let totalPoints = currentScore;
-            let totalBadges = currentBadges;
-            let multiRuns = 0;
-            let challengeRuns = 0;
-            let boostsUsed = 0;
-
-            if (mode === 'max') {
-                const maxBoosts = parse(document.getElementById('boosts').value);
-
-                // Use all boosts optimally
-                while (boostsUsed < maxBoosts) {
-                    // If we have enough badges for challenge live, do it
-                    if (totalBadges >= challengeBdg) {
-                        totalPoints += challengePts;
-                        totalBadges -= challengeBdg;
-                        challengeRuns++;
-                    }
-                    // Otherwise do multi live (if we have boosts left)
-                    else {
-                        totalPoints += multiPts;
-                        totalBadges += multiBdg;
-                        multiRuns++;
-                        boostsUsed += 3;
-                    }
-                }
-
-                // After boosts exhausted, use remaining badges for challenge lives
-                while (totalBadges >= challengeBdg) {
-                    totalPoints += challengePts;
-                    totalBadges -= challengeBdg;
-                    challengeRuns++;
-                }
-            } else {
-                const targetScore = parse(document.getElementById('goal').value);
-                while (totalPoints < targetScore) {
-                    if (totalBadges >= challengeBdg) {
-                        totalPoints += challengePts;
-                        totalBadges -= challengeBdg;
-                        challengeRuns++;
-                    } else {
-                        totalPoints += multiPts;
-                        totalBadges += multiBdg;
-                        multiRuns++;
-                        boostsUsed += 3;
-                    }
-                }
-            }
-
-            document.getElementById('multiLives').textContent = multiRuns;
-            document.getElementById('challengeLives').textContent = challengeRuns;
-            document.getElementById('boostsUsed').textContent = boostsUsed;
-            document.getElementById('remainingBadges').textContent = fmt(totalBadges);
-            document.getElementById('finalScore').textContent = fmt(totalPoints);
-
-            const results = document.getElementById('results');
-            results.classList.remove('hidden');
-            results.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-        }
-
-        document.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') calculate();
-        });
-
-        setMode('max');
-
-        if (window.innerWidth < 1024) {
-            document.getElementById('settingsPanel').classList.add('hidden');
-        }
-    </script>
-
-    <style>
-        .mode-card {
-            @apply bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 rounded-xl p-4 transition-all hover:border-primary-300 dark:hover:border-primary-600 hover:shadow-md;
-        }
-        .mode-card.active {
-            @apply border-primary-500 dark:border-primary-600 bg-primary-50 dark:bg-primary-900/20 shadow-md ring-2 ring-primary-100 dark:ring-primary-900/30;
-        }
-    </style>
+    <!-- Application Entry Point -->
+    <script type="module" src="./js/app.js"></script>
 </body>
 </html>
