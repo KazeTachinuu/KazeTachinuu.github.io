@@ -1,0 +1,37 @@
+---
+interface Props {
+  href: string;
+  title: string;
+  description?: string;
+  category?: string;
+  meta?: string;
+  footer?: string;
+  searchData?: string;
+  dataCat?: string;
+}
+
+const { href, title, description, category, meta, footer, searchData, dataCat } = Astro.props;
+
+function pillClass(cat: string): string {
+  const key = cat.toLowerCase().replace(/[^a-z]/g, '');
+  const known = ['crypto', 'reverse', 'forensics', 'hardware', 'misc', 'web', 'pwn', 'general'];
+  return known.includes(key) ? `wu-pill-${key}` : 'wu-pill-default';
+}
+---
+
+<a
+  href={href}
+  class="wu-card"
+  data-search={searchData}
+  data-cat={dataCat}
+>
+  {(category || meta) && (
+    <div class="wu-card-header">
+      {category && <span class={`wu-card-pill ${pillClass(category)}`}>{category}</span>}
+      {meta && <span class="wu-card-ctf">{meta}</span>}
+    </div>
+  )}
+  <div class="wu-card-title">{title}</div>
+  {description && <div class="wu-card-desc">{description}</div>}
+  {footer && <div class="wu-card-footer">{footer}</div>}
+</a>

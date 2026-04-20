@@ -1,0 +1,44 @@
+---
+import { getCollection, render } from 'astro:content';
+import type { GetStaticPaths } from 'astro';
+import Layout from '~/layouts/Layout.astro';
+import Breadcrumb from '~/components/Breadcrumb.astro';
+import ArticleHeader from '~/components/ArticleHeader.astro';
+import ArticleFooter from '~/components/ArticleFooter.astro';
+import * as MDX from '~/components/mdx';
+
+export const getStaticPaths = (async () => {
+  const projects = await getCollection('portfolio', (e) => !e.data.draft);
+  return projects.map((p) => ({ params: { slug: p.id }, props: { post: p } }));
+}) satisfies GetStaticPaths;
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+---
+
+<Layout title={post.data.title} description={post.data.description} mainClass="max-w-prose-code mx-auto px-6 py-16">
+  <Breadcrumb items={[
+    { label: 'Home', href: '/' },
+    { label: 'Portfolio', href: '/portfolio/' },
+    { label: post.data.title },
+  ]} />
+
+  <ArticleHeader
+    title={post.data.title}
+    category="Project"
+    date={post.data.date}
+    description={post.data.description}
+  >
+    {post.data.github?.[0] && (
+      <a href={post.data.github[0]} target="_blank" rel="noopener" class="inline-flex items-center gap-2 mt-3 text-sm font-medium text-accent">
+        View on GitHub →
+      </a>
+    )}
+  </ArticleHeader>
+
+  <article class="prose prose-lg dark:prose-invert max-w-none">
+    <Content components={MDX} />
+  </article>
+
+  <ArticleFooter slug={`portfolio/${post.id}`} date={post.data.date} updated={post.data.updated} />
+</Layout>

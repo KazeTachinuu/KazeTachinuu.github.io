@@ -1,0 +1,21 @@
+---
+interface Props { url: string }
+const { url } = Astro.props;
+let html = '';
+let error = '';
+try {
+  const res = await fetch(url);
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  const md = await res.text();
+  // Use Astro's built-in markdown processor
+  const { marked } = await import('marked');
+  html = marked.parse(md) as string;
+} catch (e) {
+  error = (e as Error).message;
+}
+---
+{error ? (
+  <p class="text-rose-500 text-sm">Failed to load README: {error}</p>
+) : (
+  <div class="prose dark:prose-invert max-w-none" set:html={html} />
+)}

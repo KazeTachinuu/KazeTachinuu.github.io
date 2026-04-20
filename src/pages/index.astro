@@ -1,0 +1,116 @@
+---
+import Layout from '~/layouts/Layout.astro';
+import { SITE } from '~/lib/site';
+import { getCollection } from 'astro:content';
+
+const blog = await getCollection('blog', (e) => !e.data.draft);
+const writeups = await getCollection('writeups', (e) => !e.data.draft && e.data.cat === 'chal');
+const writing = [...blog, ...writeups]
+  .sort((a, b) => +new Date(b.data.date ?? 0) - +new Date(a.data.date ?? 0));
+
+// Popular content — all writing, sorted client-side by likes
+const popular = writing.slice(0, 10);
+---
+
+<Layout title={SITE.title} mainClass="home-layout px-6 py-16">
+  {/* Hero */}
+  <div class="home-hero">
+    <h1 class="text-4xl font-medium tracking-tight mb-2 text-page">
+      {SITE.title}
+    </h1>
+    <p class="text-lg text-muted">{SITE.tagline}</p>
+  </div>
+
+  {/* Two-column */}
+  <div class="home-columns">
+    <div class="home-main">
+      <h2 class="home-section-heading">Articles and Writeups</h2>
+
+      <ul class="article-list" id="article-list">
+        {writing.map((p, i) => {
+          const isWriteup = 'cat' in p.data;
+          const href = isWriteup ? `/writeups/${p.id}/` : `/blog/${p.id}/`;
+          return (
+            <li class={i >= 6 ? 'article-list-hidden' : ''}>
+              <a href={href} class="article-preview-title">
+                {p.data.title}
+              </a>
+              {p.data.description && (
+                <p class="article-preview-desc">{p.data.description}</p>
+              )}
+              <a href={href} class="article-preview-cta">Read more →</a>
+            </li>
+          );
+        })}
+      </ul>
+      {writing.length > 6 && (
+        <button type="button" class="show-more-btn" id="show-more-btn">
+          Show more
+        </button>
+      )}
+    </div>
+
+    <aside class="home-sidebar">
+      {popular.length > 0 && (
+        <div>
+          <h2 class="home-section-heading">Popular Content</h2>
+          <ul class="popular-list" id="popular-list">
+            {popular.map((p) => {
+              const isWriteup = 'cat' in p.data;
+              const href = isWriteup ? `/writeups/${p.id}/` : `/blog/${p.id}/`;
+              const slug = isWriteup ? `writeups/${p.id}` : `blog/${p.id}`;
+              return (
+                <li data-popular-slug={slug}>
+                  <a href={href}>
+                    <span class="popular-arrow">→</span>
+                    <span>{p.data.title}</span>
+                  </a>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      )}
+    </aside>
+  </div>
+
+  <script>
+    const API_BASE = import.meta.env.PUBLIC_LIKES_API || '';
+
+    // Show more articles
+    const btn = document.getElementById('show-more-btn');
+    btn?.addEventListener('click', () => {
+      document.querySelectorAll('.article-list-hidden').forEach((el) => {
+        el.classList.remove('article-list-hidden');
+      });
+      btn.remove();
+    });
+
+    // Sort popular list by real like counts
+    async function sortPopular() {
+      const list = document.getElementById('popular-list');
+      if (!list || !API_BASE) return;
+
+      const items = Array.from(list.querySelectorAll<HTMLElement>('[data-popular-slug]'));
+      if (!items.length) return;
+
+      const counts = await Promise.all(
+        items.map(async (li) => {
+          const slug = li.dataset.popularSlug!;
+          try {
+            const res = await fetch(`${API_BASE}/likes/${encodeURIComponent(slug)}`);
+            const data = await res.json() as { count: number };
+            return { el: li, count: data.count ?? 0 };
+          } catch {
+            return { el: li, count: 0 };
+          }
+        })
+      );
+
+      counts.sort((a, b) => b.count - a.count);
+      counts.forEach(({ el }) => list.appendChild(el));
+    }
+
+    sortPopular();
+  </script>
+</Layout>

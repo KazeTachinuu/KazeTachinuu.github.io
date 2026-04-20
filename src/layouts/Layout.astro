@@ -1,0 +1,245 @@
+---
+import '~/styles/global.css';
+import 'katex/dist/katex.min.css';
+import { SITE } from '~/lib/site';
+import Header from '~/components/Header.astro';
+import Footer from '~/components/Footer.astro';
+import ThemeScript from '~/components/ThemeScript.astro';
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  mainClass?: string;
+}
+
+const { title, description = SITE.description, image, mainClass = 'max-w-3xl mx-auto px-6 py-16' } = Astro.props;
+const fullTitle = title && title !== SITE.title ? `${title} · ${SITE.title}` : SITE.title;
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const ogImage = image ? new URL(image, Astro.site).href : undefined;
+---
+
+<!doctype html>
+<html lang="en" class="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <meta name="author" content={SITE.author} />
+
+    <link rel="canonical" href={canonicalURL} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:site_name" content={SITE.title} />
+    {ogImage && <meta property="og:image" content={ogImage} />}
+    <meta name="twitter:card" content={ogImage ? 'summary_large_image' : 'summary'} />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    {ogImage && <meta name="twitter:image" content={ogImage} />}
+    <link rel="icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+
+    <ThemeScript />
+
+    {/* Wotfard from Fontshare (Josh Comeau's distinctive sans), JetBrains Mono + Newsreader from Google Fonts */}
+    <link rel="preconnect" href="https://api.fontshare.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://api.fontshare.com/v2/css?f[]=wotfard@400,500,600,700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;1,400;1,500&family=Newsreader:ital@1&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <a href="#main" class="skip-link">Skip to content</a>
+    <Header />
+    <div class="reading-progress-track" data-header-child>
+      <div class="reading-progress" aria-hidden="true"></div>
+    </div>
+    <main id="main" class={mainClass} data-pagefind-body>
+      <slot />
+    </main>
+    <Footer />
+
+    <script>
+      // Theme toggle — preserves classes on icons (uses CSS to swap moon/sun)
+      function toggleTheme() {
+        const root = document.documentElement;
+        const next = root.classList.contains('dark') ? 'light' : 'dark';
+        localStorage.setItem('theme', next);
+        root.classList.toggle('dark', next === 'dark');
+        root.classList.toggle('light', next === 'light');
+      }
+      document.querySelectorAll('[data-theme-toggle]').forEach((btn) =>
+        btn.addEventListener('click', toggleTheme),
+      );
+      document.addEventListener('keydown', (e) => {
+        const t = e.target as HTMLElement;
+        const editing = t?.tagName === 'INPUT' || t?.tagName === 'TEXTAREA' || t?.isContentEditable;
+        // ⌘K or Ctrl+K → go to search
+        if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+          e.preventDefault();
+          window.location.href = '/search/';
+          return;
+        }
+        if (editing) return;
+        if (e.metaKey || e.ctrlKey || e.altKey) return;
+        if (e.key === 't') toggleTheme();
+        // / → go to search
+        if (e.key === '/') {
+          e.preventDefault();
+          window.location.href = '/search/';
+        }
+      });
+
+      // Live time in footer
+      function updateLiveTime() {
+        const el = document.querySelector('[data-live-time]');
+        if (!el) return;
+        el.textContent = new Date().toLocaleTimeString('en-GB', {
+          hour: '2-digit',
+          minute: '2-digit',
+          timeZone: 'Europe/Paris',
+        });
+      }
+      updateLiveTime();
+      setInterval(updateLiveTime, 30000);
+    </script>
+
+    {/* Code block copy buttons — wrapped outside expressive-code's CSS scope */}
+    <script>
+      function createSvg(d: string, strokeWidth = '1.75') {
+        const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        svg.setAttribute('width', '16');
+        svg.setAttribute('height', '16');
+        svg.setAttribute('viewBox', '0 0 24 24');
+        svg.setAttribute('fill', 'none');
+        svg.setAttribute('stroke', 'currentColor');
+        svg.setAttribute('stroke-width', strokeWidth);
+        const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        path.setAttribute('d', d);
+        svg.appendChild(path);
+        return svg;
+      }
+
+      const COPY_PATH = 'M3 19a2 2 0 0 1-1-2V2a2 2 0 0 1 1-1h13a2 2 0 0 1 2 1M6 5h16v18H6z';
+      const CHECK_PATH = 'M20 6 9 17l-5-5';
+
+      function initCopyButtons() {
+        document.querySelectorAll('.expressive-code').forEach((block) => {
+          // Skip already-wrapped blocks
+          if (block.parentElement?.classList.contains('code-block-wrapper')) return;
+
+          const pre = block.querySelector('pre');
+          const code = pre?.querySelector('code');
+          if (!pre || !code) return;
+
+          const wrapper = document.createElement('div');
+          wrapper.className = 'code-block-wrapper';
+          block.parentNode?.insertBefore(wrapper, block);
+          wrapper.appendChild(block);
+
+          const btn = document.createElement('button');
+          btn.className = 'copy-btn';
+          btn.setAttribute('aria-label', 'Copy code');
+          btn.type = 'button';
+          btn.appendChild(createSvg(COPY_PATH));
+
+          btn.addEventListener('click', () => {
+            navigator.clipboard.writeText(code.textContent || '').then(() => {
+              btn.replaceChildren(createSvg(CHECK_PATH, '2'));
+              btn.style.opacity = '1';
+              btn.style.color = 'var(--accent)';
+              setTimeout(() => {
+                btn.replaceChildren(createSvg(COPY_PATH));
+                btn.style.opacity = '';
+                btn.style.color = '';
+              }, 1500);
+            });
+          });
+
+          wrapper.insertBefore(btn, block);
+        });
+      }
+
+      initCopyButtons();
+      document.addEventListener('astro:after-swap', initCopyButtons);
+    </script>
+
+    {/* Heading anchor links — inject # after h2/h3/h4 with an id */}
+    <script>
+      function initHeadingAnchors() {
+        document.querySelectorAll('article h2[id], article h3[id], article h4[id], .jh-callout-title[id]').forEach((h) => {
+          if (h.querySelector('.heading-anchor')) return;
+          const a = document.createElement('a');
+          a.href = `#${h.id}`;
+          a.className = 'heading-anchor';
+          a.setAttribute('aria-label', `Link to ${h.textContent}`);
+          a.textContent = '#';
+          h.appendChild(a);
+        });
+      }
+      initHeadingAnchors();
+      document.addEventListener('astro:after-swap', initHeadingAnchors);
+    </script>
+
+    {/* Image lightbox — medium-zoom for prose images */}
+    <script>
+      import mediumZoom from 'medium-zoom';
+
+      function initZoom() {
+        mediumZoom('.prose img', {
+          margin: 32,
+          background: getComputedStyle(document.documentElement).getPropertyValue('--zoom-overlay').trim(),
+          scrollOffset: 0,
+        });
+      }
+
+      initZoom();
+      document.addEventListener('astro:after-swap', initZoom);
+    </script>
+
+    {/* Reading progress bar — only on article pages */}
+    <script>
+      let progressCleanup: (() => void) | null = null;
+
+      function initProgress() {
+        progressCleanup?.();
+
+        const bar = document.querySelector<HTMLElement>('.reading-progress');
+        const article = document.querySelector('.article-main');
+        if (!bar) return;
+
+        if (!article) {
+          bar.style.width = '0%';
+          return;
+        }
+
+        function onScroll() {
+          const total = article!.scrollHeight - window.innerHeight;
+          if (total <= 0) { bar!.style.width = '100%'; return; }
+          const scrolled = window.scrollY;
+          const pct = Math.max(0, Math.min(100, (scrolled / total) * 100));
+          bar!.style.width = `${pct}%`;
+        }
+
+        window.addEventListener('scroll', onScroll, { passive: true });
+        onScroll();
+
+        progressCleanup = () => window.removeEventListener('scroll', onScroll);
+      }
+
+      initProgress();
+      document.addEventListener('astro:after-swap', initProgress);
+    </script>
+  </body>
+</html>

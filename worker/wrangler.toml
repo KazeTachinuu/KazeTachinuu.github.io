@@ -1,0 +1,7 @@
+name = "hugosibony-api"
+main = "index.ts"
+compatibility_date = "2024-01-01"
+
+[[kv_namespaces]]
+binding = "COUNTS"
+id = "235e4c3ba85b415995e8477d7909172a"

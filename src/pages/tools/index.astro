@@ -1,0 +1,28 @@
+---
+import Layout from '~/layouts/Layout.astro';
+import PageHeader from '~/components/PageHeader.astro';
+import { getCollection } from 'astro:content';
+
+const tools = await getCollection('tools', (e) => !e.data.draft);
+---
+
+<Layout title="Tools" mainClass="max-w-3xl mx-auto px-6 py-16">
+  <PageHeader title="Tools" section="tools" description={`${tools.length} tools and utilities`} />
+
+  <ul class="row-list">
+    {tools.map((t) => {
+      const href = t.data.external_link ?? `/tools/${t.id}/`;
+      const external = !!t.data.external_link;
+      return (
+        <li>
+          <a href={href} target={external ? '_blank' : undefined} rel={external ? 'noopener' : undefined}>
+            <span class="row-year">{external ? 'ext' : 'tool'}</span>
+            <span class="row-title">{t.data.title}</span>
+            <span class="row-meta">{t.data.description}</span>
+            <span class="row-arrow">{external ? '↗' : '→'}</span>
+          </a>
+        </li>
+      );
+    })}
+  </ul>
+</Layout>

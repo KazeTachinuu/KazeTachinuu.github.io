@@ -1,0 +1,47 @@
+---
+import Layout from '~/layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+
+const recent = (await getCollection('blog', (e) => !e.data.draft))
+  .sort((a, b) => +new Date(b.data.date) - +new Date(a.data.date))
+  .slice(0, 3);
+---
+
+<Layout title="404" mainClass="max-w-3xl mx-auto px-6 py-32 text-center">
+  <p class="font-mono text-sm text-muted">
+    <span class="text-muted">~/hugo $</span> open <span class="text-rose-500">/missing</span>
+  </p>
+  <p class="font-mono text-sm text-rose-500 mt-1">error: page not found</p>
+
+  <h1 class="mt-12 text-7xl sm:text-8xl tracking-tight font-medium">404</h1>
+  <p class="mt-4 text-muted">
+    This page doesn't exist or has been moved.
+  </p>
+
+  <div class="flex items-center justify-center gap-4 mt-10">
+    <a href="/" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium hover:opacity-90 transition-opacity bg-inverted text-inverted">
+      ← Go home
+    </a>
+    <a href="/search/" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium border border-theme text-muted hover:text-page transition-colors">
+      Search ⌘K
+    </a>
+  </div>
+
+  {recent.length > 0 && (
+    <div class="mt-20 text-left">
+      <h2 class="label mb-4">Recent posts</h2>
+      <ul class="row-list">
+        {recent.map((p) => (
+          <li>
+            <a href={`/blog/${p.id}/`}>
+              <span class="row-year">{new Date(p.data.date).getFullYear()}</span>
+              <span class="row-title">{p.data.title}</span>
+              <span class="row-meta">{p.data.description}</span>
+              <span class="row-arrow">→</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  )}
+</Layout>

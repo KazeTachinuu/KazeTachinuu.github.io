@@ -1,0 +1,14 @@
+---
+interface Props {
+  src: string;
+  alt?: string;
+  caption?: string;
+}
+let { src, alt = '', caption } = Astro.props;
+// Resolve relative paths under /images/
+if (!src.startsWith('http') && !src.startsWith('/')) src = `/images/${src}`;
+---
+<figure class="my-6">
+  <img src={src} alt={alt} loading="lazy" />
+  {caption && <figcaption class="text-center text-sm mt-2 text-muted">{caption}</figcaption>}
+</figure>

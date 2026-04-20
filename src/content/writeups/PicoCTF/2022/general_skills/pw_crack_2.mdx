@@ -1,0 +1,97 @@
+---
+title: "PW Crack 2"
+cat: "chal"
+ctf: "PicoCTF"
+solved: true
+categories: "General"
+difficulty: "⭐"
+description: "Password check bypass — extracting a hashed comparison value from Python."
+date: 2024-05-12T00:00:00Z
+draft: false
+files:
+  - { name: "level2.py", path: "/writeups/picoctf/2022/general_skills/pw_crack_2/level2.py" }
+  - { name: "level2.flag.txt.enc", path: "/writeups/picoctf/2022/general_skills/pw_crack_2/level2.flag.txt.enc" }
+---
+
+# PW Crack 2
+
+<Callout type="info" title="Challenge Information" icon="circle-info">
+
+**Category:** General Skills  
+**Points:** 100  
+**Solves:** 38685
+
+**Description:**   
+Can you crack the password to get the flag? Download the password checker here and you'll need the encrypted flag in the same directory too.
+
+</Callout>
+
+This is basically the same challenge as the last one, except that the password is not immediately evident as it is written in a hex format.
+
+<Callout type="blue" title="Code Analysis" icon="code">
+
+```python
+def level_2_pw_check():
+    user_pw = input("Please enter correct password for flag: ")
+    if( user_pw == chr(0x33) + chr(0x39) + chr(0x63) + chr(0x65) ):
+        print("Welcome back... your flag, user:")
+        decryption = str_xor(flag_enc.decode(), user_pw)
+        print(decryption)
+        return
+    print("That password is incorrect")
+```
+
+Looking at this code, we need to figure out what `chr(0x33) + chr(0x39) + chr(0x63) + chr(0x65)` translates to in ASCII.
+
+</Callout>
+
+<Callout type="requirements" title="Solution Approach" icon="lightbulb">
+
+The solution is straightforward:
+1. Convert each hex value to its ASCII character using Python's `chr()` function
+2. Concatenate them to get the password
+3. Use this password to decrypt the flag
+
+</Callout>
+
+Let's implement our solution:
+
+<Callout type="document-green" title="Step 1: Convert Hex to ASCII" icon="terminal">
+
+First, let's determine what the password is by converting the hex values to ASCII:
+
+```sh
+>>> python3 -c "print(chr(0x33) + chr(0x39) + chr(0x63) + chr(0x65))"
+39ce
+```
+
+The password is `39ce`.
+
+</Callout>
+
+<Callout type="document-blue" title="Step 2: Use the Password" icon="key">
+
+Now we can use this password to get the flag:
+
+```sh
+>>> python3 level2.py
+Please enter correct password for flag: 39ce
+Welcome back... your flag, user:
+picoCTF{tr45h_51ng1ng_502ec42e}
+```
+
+Alternatively, we could pipe the password directly to the script:
+
+```sh
+>>> python3 -c "print(chr(0x33) + chr(0x39) + chr(0x63) + chr(0x65))" | python3 level2.py
+Please enter correct password for flag: Welcome back... your flag, user:
+picoCTF{tr45h_51ng1ng_502ec42e}
+```
+
+</Callout>
+
+<Callout type="success" title="Flag" icon="flag">
+
+`picoCTF{tr45h_51ng1ng_502ec42e}`
+
+</Callout>

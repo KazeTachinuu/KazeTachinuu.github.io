@@ -1,0 +1,31 @@
+---
+import Layout from '~/layouts/Layout.astro';
+import PageHeader from '~/components/PageHeader.astro';
+import { getCollection } from 'astro:content';
+
+const snippets = (await getCollection('snippets', (e) => !e.data.draft)).sort(
+  (a, b) => +new Date(b.data.date) - +new Date(a.data.date),
+);
+---
+
+<Layout title="Snippets" mainClass="max-w-3xl mx-auto px-6 py-16">
+  <PageHeader
+    title="Snippets"
+    section="snippets"
+    description="Short solutions to discrete problems."
+    centered
+  />
+
+  <ul class="row-list">
+    {snippets.map((s) => (
+      <li>
+        <a href={`/snippets/${s.id}/`}>
+          <span class="row-year">{s.data.language?.toLowerCase() ?? '—'}</span>
+          <span class="row-title">{s.data.title}</span>
+          <span class="row-meta">{s.data.description}</span>
+          <span class="row-arrow">→</span>
+        </a>
+      </li>
+    ))}
+  </ul>
+</Layout>

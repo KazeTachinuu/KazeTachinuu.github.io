@@ -1,0 +1,22 @@
+---
+import Layout from '~/layouts/Layout.astro';
+import PageHeader from '~/components/PageHeader.astro';
+import WriteupTree from '~/components/WriteupTree.astro';
+import { getCollection } from 'astro:content';
+
+const all = await getCollection('writeups', (e) => !e.data.draft);
+const challenges = all.filter((w) => w.data.cat === 'chal');
+const solved = challenges.filter((w) => w.data.solved).length;
+const ctfs = new Set(challenges.map((w) => w.id.split('/')[0])).size;
+const total = challenges.length;
+---
+
+<Layout title="Writeups" mainClass="max-w-5xl mx-auto px-6 py-16">
+  <PageHeader
+    title="Writeups"
+    section="writeups"
+    description={`${total} challenges solved across ${ctfs} CTFs`}
+  />
+
+  <WriteupTree entries={all} />
+</Layout>

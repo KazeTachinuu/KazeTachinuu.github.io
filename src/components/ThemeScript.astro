@@ -1,0 +1,18 @@
+---
+// Inline script — runs before paint to prevent flash of wrong theme.
+---
+<script is:inline>
+  (function () {
+    try {
+      var t = localStorage.getItem("theme");
+      if (!t) t = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+      if (t === "dark") {
+        document.documentElement.classList.add("dark");
+        document.documentElement.classList.remove("light");
+      } else {
+        document.documentElement.classList.add("light");
+        document.documentElement.classList.remove("dark");
+      }
+    } catch (e) {}
+  })();
+</script>

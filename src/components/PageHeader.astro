@@ -1,0 +1,23 @@
+---
+// Section header for index/listing pages (e.g. blog, snippets, tools)
+interface Props {
+  title: string;
+  section?: string;
+  description?: string;
+  centered?: boolean;
+}
+
+const { title, section, description, centered = false } = Astro.props;
+---
+
+<header class:list={['mb-12', centered && 'text-center']}>
+  {section && <p class="label mb-3">{section}</p>}
+  <h1 class="text-4xl font-medium tracking-tight text-page">
+    {title}
+  </h1>
+  {description && (
+    <p class:list={['mt-3 text-lg text-muted', centered && 'mx-auto max-w-xl']}>
+      {description}
+    </p>
+  )}
+</header>

@@ -1,0 +1,107 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import ContentCard from './ContentCard.astro';
+import { fmtDateShort } from '~/lib/fmt';
+
+interface Props {
+  entries: CollectionEntry<'writeups'>[];
+}
+const { entries } = Astro.props;
+
+type Challenge = CollectionEntry<'writeups'>;
+
+const challenges = entries.filter((e) => e.data.cat === 'chal');
+
+const sorted = challenges.sort((a, b) => {
+  const da = a.data.date ? new Date(a.data.date).getTime() : 0;
+  const db = b.data.date ? new Date(b.data.date).getTime() : 0;
+  return db - da;
+});
+
+const categories = [...new Set(sorted.map((c) => c.data.categories ?? '').filter(Boolean))].sort();
+
+function ctfName(entry: Challenge): string {
+  return entry.data.ctf ?? entry.id.split('/')[0];
+}
+
+function footer(ch: Challenge): string {
+  const parts: string[] = [];
+  if (ch.data.difficulty) parts.push(ch.data.difficulty);
+  if (ch.data.date) parts.push(fmtDateShort(ch.data.date));
+  return parts.join(' · ');
+}
+---
+
+<div class="wu-toolbar">
+  <div class="wu-search">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-muted"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+    <input id="wu-filter" type="search" placeholder="Search writeups..." autocomplete="off" spellcheck="false" />
+    <kbd class="wu-kbd">/</kbd>
+  </div>
+</div>
+
+<div class="wu-chips" id="wu-chips">
+  <button class="wu-chip" data-active data-cat="all">All</button>
+  {categories.map((cat) => (
+    <button class="wu-chip" data-cat={cat.toLowerCase()}>{cat}</button>
+  ))}
+</div>
+
+<div class="wu-grid" id="wu-grid">
+  {sorted.map((ch) => {
+    const cat = ch.data.categories ?? '';
+    const ctf = ctfName(ch);
+    return (
+      <ContentCard
+        href={`/writeups/${ch.id}/`}
+        title={ch.data.title}
+        description={ch.data.description}
+        category={cat || 'Writeup'}
+        meta={ctf}
+        footer={footer(ch)}
+        searchData={`${ch.data.title} ${cat} ${ctf} ${ch.data.description ?? ''}`.toLowerCase()}
+        dataCat={cat.toLowerCase()}
+      />
+    );
+  })}
+</div>
+
+<script>
+  const grid = document.getElementById('wu-grid');
+  const input = document.getElementById('wu-filter') as HTMLInputElement | null;
+  const chipsEl = document.getElementById('wu-chips');
+  if (!grid || !input || !chipsEl) throw new Error('Missing writeup elements');
+
+  let activeCategory = 'all';
+
+  function applyFilters() {
+    const query = input!.value.trim().toLowerCase();
+    const cards = grid!.querySelectorAll<HTMLAnchorElement>('.wu-card');
+
+    cards.forEach((card) => {
+      const blob = card.dataset.search || '';
+      const cat = card.dataset.cat || '';
+      const matchesSearch = !query || blob.includes(query);
+      const matchesCat = activeCategory === 'all' || cat === activeCategory;
+      card.classList.toggle('wu-hidden', !matchesSearch || !matchesCat);
+    });
+  }
+
+  input.addEventListener('input', applyFilters);
+
+  chipsEl.addEventListener('click', (e) => {
+    const chip = (e.target as HTMLElement).closest('.wu-chip') as HTMLElement | null;
+    if (!chip) return;
+    activeCategory = chip.dataset.cat || 'all';
+    chipsEl!.querySelectorAll('.wu-chip').forEach((c) => c.removeAttribute('data-active'));
+    chip.setAttribute('data-active', '');
+    applyFilters();
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === '/' && document.activeElement !== input) {
+      e.preventDefault();
+      input!.focus();
+    }
+  }, { capture: true });
+</script>

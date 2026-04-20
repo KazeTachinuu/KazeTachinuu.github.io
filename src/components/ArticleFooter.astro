@@ -1,0 +1,26 @@
+---
+import { fmtDate } from '~/lib/fmt';
+import ViewCount from './ViewCount.astro';
+
+interface Props {
+  slug: string;
+  date?: Date | string;
+  updated?: Date | string;
+}
+
+const { slug, date, updated } = Astro.props;
+
+const published = date ? fmtDate(date) : null;
+const lastUpdated = updated ? fmtDate(updated) : null;
+const showUpdated = lastUpdated && published && lastUpdated !== published;
+---
+
+<footer class="article-footer">
+  <div class="article-footer-meta">
+    {showUpdated
+      ? <p>Last updated on {lastUpdated}</p>
+      : published && <p>Published {published}</p>
+    }
+    <ViewCount slug={slug} />
+  </div>
+</footer>

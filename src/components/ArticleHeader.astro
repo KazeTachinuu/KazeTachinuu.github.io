@@ -1,0 +1,41 @@
+---
+import { fmtDate } from '~/lib/fmt';
+
+interface Props {
+  title: string;
+  category?: string;
+  date?: Date | string;
+  description?: string;
+  centered?: boolean;
+}
+
+const { title, category, date, description, centered = false } = Astro.props;
+const published = date ? fmtDate(date) : null;
+---
+
+<header class:list={['article-header', centered && 'text-center']}>
+  <h1 class="article-title">{title}</h1>
+
+  {(category || published || description) && (
+    <div class="article-meta">
+      {(category || published) && (
+        <p class="article-filed">
+          {category && (
+            <>Filed under <span class="article-filed-value">{category}</span></>
+          )}
+          {category && published && ' on '}
+          {published && <span class="article-filed-value">{published}</span>}
+        </p>
+      )}
+      {description && (
+        <p class:list={['article-desc', centered && 'mx-auto max-w-xl']}>
+          {description}
+        </p>
+      )}
+    </div>
+  )}
+
+  <slot />
+
+  <div class="article-divider"></div>
+</header>

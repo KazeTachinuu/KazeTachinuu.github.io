@@ -1,0 +1,31 @@
+---
+interface Props { flag?: string }
+const { flag } = Astro.props;
+const id = `flag-${Math.random().toString(36).slice(2, 9)}`;
+---
+<div class="flag-box not-prose">
+  <div class="flag-box-icon">⚑</div>
+  <div class="flag-box-content">
+    <div class="flag-box-label">Flag</div>
+    <div class="flag-box-value" id={id}>{flag ?? <slot />}</div>
+  </div>
+  <button type="button" class="flag-box-copy" data-copy-target={id}>
+    <span data-label>Copy</span>
+  </button>
+</div>
+
+<script>
+  document.querySelectorAll('[data-copy-target]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const targetId = btn.getAttribute('data-copy-target');
+      const target = targetId ? document.getElementById(targetId) : null;
+      const label = btn.querySelector('[data-label]');
+      if (!target || !label) return;
+      navigator.clipboard.writeText(target.textContent?.trim() ?? '').then(() => {
+        const original = label.textContent;
+        label.textContent = 'Copied';
+        setTimeout(() => (label.textContent = original), 1500);
+      });
+    });
+  });
+</script>

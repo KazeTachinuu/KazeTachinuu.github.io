@@ -1,0 +1,63 @@
+---
+import Layout from '~/layouts/Layout.astro';
+import PageHeader from '~/components/PageHeader.astro';
+import { getCollection } from 'astro:content';
+
+const projects = (await getCollection('portfolio', (e) => !e.data.draft)).sort(
+  (a, b) => +new Date(b.data.date) - +new Date(a.data.date),
+);
+
+function ghPin(p: typeof projects[number]) {
+  if (!p.data.githubCard || !p.data.github?.length) return null;
+  const url = p.data.github[0];
+  const parts = url.replace(/https?:\/\/github\.com\//, '').split('/');
+  if (parts.length < 2) return null;
+  const base = `https://github-readme-stats.vercel.app/api/pin/?username=${parts[0]}&repo=${parts[1]}&hide_border=true&bg_color=00000000`;
+  return {
+    light: `${base}&title_color=171717&text_color=525252&icon_color=171717`,
+    dark: `${base}&title_color=fafafa&text_color=a3a3a3&icon_color=fafafa`,
+  };
+}
+---
+
+<Layout title="Portfolio" mainClass="max-w-5xl mx-auto px-6 py-16">
+  <PageHeader title="Portfolio" section="portfolio" />
+
+  <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+    {projects.map((p) => {
+      const pin = ghPin(p);
+      return (
+        <a href={`/portfolio/${p.id}/`} class="project-card">
+          <div class="project-img">
+            {pin ? (
+              <>
+                <img src={pin.light} alt="GitHub repo card" loading="lazy" class="!object-contain p-4 dark:hidden" />
+                <img src={pin.dark}  alt="GitHub repo card" loading="lazy" class="!object-contain p-4 hidden dark:block" />
+              </>
+            ) : p.data.image ? (
+              <img src={p.data.image} alt="" loading="lazy" />
+            ) : (
+              <div class="project-img-empty">⌘</div>
+            )}
+          </div>
+          <div class="project-meta">
+            <div class="flex items-baseline justify-between gap-3">
+              <h2 class="project-title">{p.data.title}</h2>
+              <span class="project-date">{new Date(p.data.date).getFullYear()}</span>
+            </div>
+            {p.data.description && <p class="project-desc">{p.data.description}</p>}
+            {p.data.tech.length > 0 && (
+              <div class="project-tech">
+                {p.data.tech.map((t) => (
+                  <span class="project-tech-item">
+                    {t.logo && <img src={t.logo} alt="" />}{t.name.toLowerCase()}
+                  </span>
+                ))}
+              </div>
+            )}
+          </div>
+        </a>
+      );
+    })}
+  </div>
+</Layout>

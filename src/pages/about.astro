@@ -1,0 +1,45 @@
+---
+import Layout from '~/layouts/Layout.astro';
+import Breadcrumb from '~/components/Breadcrumb.astro';
+import { SITE } from '~/lib/site';
+---
+
+<Layout title="whoami" mainClass="max-w-5xl mx-auto px-6 py-16">
+  <Breadcrumb items={[
+    { label: 'Home', href: '/' },
+    { label: 'whoami' },
+  ]} />
+
+  <div class="about-layout">
+    <aside class="about-sidebar">
+      <div class="about-photo">
+        <img src="/images/avatar.jpg" alt="Hugo Sibony" />
+      </div>
+      <h1 class="about-name">{SITE.author}</h1>
+      <p class="about-role">{SITE.description}</p>
+      <p class="about-location">{SITE.location}</p>
+
+      <div class="about-links">
+        <a href={`https://github.com/${SITE.github}`} target="_blank" rel="noopener">GitHub</a>
+        <a href={`https://linkedin.com/in/${SITE.linkedin}`} target="_blank" rel="noopener">LinkedIn</a>
+        <a href={`mailto:${SITE.email}`}>Email</a>
+        <a href="/rss.xml">RSS</a>
+      </div>
+    </aside>
+
+    <div class="about-content">
+      <article class="prose prose-lg dark:prose-invert max-w-none">
+        <p>Cybersecurity engineering student at <a href="https://www.epita.fr/">EPITA</a> in Paris, part-time ethical hacker at <a href="https://welan.fr">WELAN</a> doing cyber threat intelligence and penetration testing.</p>
+        <p>President & CTO at <a href="https://codetruefalse.github.io/">TrueFalse</a>, where we build security tools.</p>
+
+        <h2>Background</h2>
+        <p>Worked at the <strong>CEA</strong> on TOR-like anonymization protocols — building VIPN (Virtual Invisible Private Network) and trying to break TLS 1.3.</p>
+        <p>Summer 2022 at <strong>UC Berkeley</strong> — <a href="https://classes.berkeley.edu/content/2023-summer-compsci-61a-001-lec-001">CS 61A</a> and MATH N1A. <a href="/docs/berkeley.pdf">Trip report</a>.</p>
+        <p>Semester exchange at <strong>James Cook University Singapore</strong> — ethical hacking, network security, data mining. <a href="/docs/jcu.pdf">Trip report</a>.</p>
+
+        <h2>CTFs</h2>
+        <p>Writeups from FCSC, 404CTF, PicoCTF, RootMe on the <a href="/writeups/">writeups page</a>.</p>
+      </article>
+    </div>
+  </div>
+</Layout>

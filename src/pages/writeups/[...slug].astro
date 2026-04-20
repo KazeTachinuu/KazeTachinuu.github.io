@@ -1,0 +1,85 @@
+---
+import { getCollection, render } from 'astro:content';
+import type { GetStaticPaths } from 'astro';
+import Layout from '~/layouts/Layout.astro';
+import Breadcrumb from '~/components/Breadcrumb.astro';
+import ArticleHeader from '~/components/ArticleHeader.astro';
+import ArticleFooter from '~/components/ArticleFooter.astro';
+import TableOfContents from '~/components/TableOfContents.astro';
+import ArticleLikes from '~/components/ArticleLikes.astro';
+import * as MDX from '~/components/mdx';
+
+export const getStaticPaths = (async () => {
+  const writeups = await getCollection('writeups', (e) => !e.data.draft && e.data.cat === 'chal');
+  return writeups.map((w) => ({ params: { slug: w.id }, props: { post: w } }));
+}) satisfies GetStaticPaths;
+
+const { post } = Astro.props;
+const { Content, headings } = await render(post);
+
+const ctf = post.data.ctf ?? post.id.split('/')[0];
+const cat = post.data.categories ?? 'Writeup';
+
+function pillClass(c: string): string {
+  const key = c.toLowerCase().replace(/[^a-z]/g, '');
+  const known = ['crypto', 'reverse', 'forensics', 'hardware', 'misc', 'web', 'pwn'];
+  return known.includes(key) ? `wu-pill-${key}` : 'wu-pill-default';
+}
+---
+
+<Layout title={post.data.title} description={post.data.description} mainClass="article-layout px-6 py-16">
+  <div class="article-main">
+    <Breadcrumb items={[
+      { label: 'Home', href: '/' },
+      { label: 'Writeups', href: '/writeups/' },
+      { label: ctf },
+      { label: post.data.title },
+    ]} />
+
+    <ArticleHeader
+      title={post.data.title}
+      category={cat}
+      date={post.data.date}
+      description={post.data.description}
+    >
+      <div class="flex items-center gap-2 mt-3 flex-wrap">
+        <span class={`wu-card-pill ${pillClass(cat)}`}>{cat}</span>
+        <span class="text-[10px] font-mono text-muted opacity-60">{ctf}</span>
+        {post.data.difficulty && (
+          <span class="text-[10px] font-mono text-muted opacity-60">· {post.data.difficulty}</span>
+        )}
+        {post.data.solved && (
+          <span class="text-[10px] font-medium px-2 py-0.5 rounded-full text-emerald-600 dark:text-emerald-400 bg-emerald-500/10">solved</span>
+        )}
+      </div>
+    </ArticleHeader>
+
+    {post.data.files && post.data.files.length > 0 && (
+      <div class="given-files">
+        <p class="given-files-label">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a1 1 0 0 0 1 1h4"/></svg>
+          Given files
+        </p>
+        <div class="given-files-list">
+          {post.data.files.map((f: { name: string; path: string }) => (
+            <a href={f.path} download class="given-file">
+              <span class="given-file-name">{f.name}</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            </a>
+          ))}
+        </div>
+      </div>
+    )}
+
+    <article class="prose prose-lg dark:prose-invert max-w-none">
+      <Content components={MDX} />
+    </article>
+
+    <ArticleFooter slug={`writeups/${post.id}`} date={post.data.date} updated={post.data.updated} />
+  </div>
+
+  <aside class="article-sidebar">
+    <TableOfContents headings={headings} />
+    <ArticleLikes slug={`writeups/${post.id}`} />
+  </aside>
+</Layout>

@@ -1,0 +1,128 @@
+---
+interface Heading {
+  depth: number;
+  slug: string;
+  text: string;
+}
+
+interface Props {
+  headings: Heading[];
+}
+
+const { headings } = Astro.props;
+
+// Include h2 and h3; normalize depth so the shallowest level is always "top-level"
+const filtered = headings.filter((h) => h.depth >= 2 && h.depth <= 3);
+const minDepth = Math.min(...filtered.map((h) => h.depth));
+const toc = filtered.map((h) => ({ ...h, isNested: h.depth > minDepth }));
+const hasStaticToc = toc.length > 0;
+---
+
+<nav class="toc" aria-label="Table of contents" data-toc-nav={hasStaticToc ? undefined : 'dynamic'}>
+  <p class="toc-title">Table of Contents</p>
+  <ul class="toc-list">
+    {toc.map((h) => (
+      <li class={h.isNested ? 'toc-h3' : ''}>
+        <a href={`#${h.slug}`} data-toc-link={h.slug}>{h.text}</a>
+      </li>
+    ))}
+  </ul>
+</nav>
+
+<script>
+  let cleanup: (() => void) | null = null;
+
+  function buildDynamicToc() {
+    const nav = document.querySelector<HTMLElement>('[data-toc-nav="dynamic"]');
+    if (!nav) return;
+
+    const article = document.querySelector('.article-main');
+    if (!article) return;
+
+    const headings = article.querySelectorAll<HTMLElement>('h2[id], h3[id], h4[id]');
+    if (!headings.length) {
+      nav.style.display = 'none';
+      return;
+    }
+
+    const items = Array.from(headings);
+    const depths = items.map((h) => parseInt(h.tagName[1]));
+    const minDepth = Math.min(...depths);
+
+    const list = nav.querySelector('.toc-list')!;
+    list.replaceChildren();
+
+    items.forEach((h, i) => {
+      const li = document.createElement('li');
+      if (depths[i] > minDepth) li.className = 'toc-h3';
+      const a = document.createElement('a');
+      a.href = `#${h.id}`;
+      a.dataset.tocLink = h.id;
+      a.textContent = h.textContent?.replace(/#$/, '').trim() || '';
+      li.appendChild(a);
+      list.appendChild(li);
+    });
+  }
+
+  function initScrollSpy() {
+    // Clean up previous observer + listener
+    cleanup?.();
+
+    const links = document.querySelectorAll<HTMLAnchorElement>('[data-toc-link]');
+    if (!links.length) return;
+
+    const slugs = Array.from(links).map((l) => l.dataset.tocLink!);
+    const headings = slugs
+      .map((s) => document.getElementById(s))
+      .filter((el): el is HTMLElement => el !== null);
+
+    if (!headings.length) return;
+
+    let activeSlug = '';
+
+    function setActive(slug: string) {
+      if (slug === activeSlug) return;
+      activeSlug = slug;
+      links.forEach((l) => {
+        l.classList.toggle('toc-active', l.dataset.tocLink === slug);
+      });
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((e) => e.isIntersecting)
+          .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+
+        if (visible.length > 0) {
+          setActive(visible[0].target.id);
+        }
+      },
+      { rootMargin: '-80px 0px -70% 0px' },
+    );
+
+    headings.forEach((h) => observer.observe(h));
+
+    function onScroll() {
+      if (window.scrollY < 200 && slugs.length > 0) {
+        setActive(slugs[0]);
+      }
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+
+    cleanup = () => {
+      observer.disconnect();
+      window.removeEventListener('scroll', onScroll);
+    };
+  }
+
+  function init() {
+    buildDynamicToc();
+    initScrollSpy();
+  }
+
+  init();
+  document.addEventListener('astro:after-swap', init);
+</script>

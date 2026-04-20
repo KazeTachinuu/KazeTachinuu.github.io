@@ -1,0 +1,68 @@
+---
+import { SITE, NAV } from '~/lib/site';
+const year = new Date().getFullYear();
+---
+
+<footer class="mt-32 border-t border-theme">
+  <div class="max-w-5xl mx-auto px-6 py-12">
+    <div class="grid grid-cols-2 sm:grid-cols-3 gap-8 mb-10">
+      <div>
+        <p class="label mb-3">Sections</p>
+        <ul class="space-y-2 text-sm">
+          {NAV.map(({ name, href }) => (
+            <li>
+              <a href={href} class="footer-link">
+                {name}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div>
+        <p class="label mb-3">Elsewhere</p>
+        <ul class="space-y-2 text-sm">
+          <li>
+            <a href={`https://github.com/${SITE.github}`} target="_blank" rel="noopener" class="footer-link">github</a>
+          </li>
+          <li>
+            <a href={`https://linkedin.com/in/${SITE.linkedin}`} target="_blank" rel="noopener" class="footer-link">linkedin</a>
+          </li>
+          <li>
+            <a href={`mailto:${SITE.email}`} class="footer-link">email</a>
+          </li>
+          <li>
+            <a href="/rss.xml" class="footer-link">rss</a>
+          </li>
+        </ul>
+      </div>
+
+      <div>
+        <p class="label mb-3">Site</p>
+        <ul class="space-y-2 text-sm">
+          <li>
+            <a href="/search/" class="footer-link">search ⌘K</a>
+          </li>
+          <li>
+            <button type="button" data-theme-toggle class="footer-link">toggle theme</button>
+          </li>
+          <li>
+            <a href="/sitemap-index.xml" class="footer-link">sitemap</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="flex flex-col sm:flex-row items-center justify-between gap-3 pt-6 border-t border-theme text-xs text-muted">
+      <div class="font-mono flex items-center gap-3">
+        <span>© {year} {SITE.author}</span>
+        <span class="opacity-40">·</span>
+        <span>paris</span>
+        <span data-live-time class="tabular-nums opacity-70">--:--</span>
+      </div>
+      <div class="font-mono">
+        <a href={`https://github.com/${SITE.github}/KazeTachinuu.github.io`} target="_blank" rel="noopener" class="footer-link">view source</a>
+      </div>
+    </div>
+  </div>
+</footer>

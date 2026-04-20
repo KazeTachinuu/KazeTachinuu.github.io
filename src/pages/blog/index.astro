@@ -1,0 +1,31 @@
+---
+import Layout from '~/layouts/Layout.astro';
+import PageHeader from '~/components/PageHeader.astro';
+import ContentCard from '~/components/ContentCard.astro';
+import { getCollection } from 'astro:content';
+import { fmtDateShort } from '~/lib/fmt';
+
+const posts = (await getCollection('blog', (e) => !e.data.draft)).sort(
+  (a, b) => +new Date(b.data.date) - +new Date(a.data.date),
+);
+---
+
+<Layout title="Blog" mainClass="max-w-5xl mx-auto px-6 py-16">
+  <PageHeader
+    title="Blog"
+    section="blog"
+    description={`${posts.length} articles`}
+  />
+
+  <div class="wu-grid">
+    {posts.map((p) => (
+      <ContentCard
+        href={`/blog/${p.id}/`}
+        title={p.data.title}
+        description={p.data.description}
+        category={p.data.categories[0] ?? 'blog'}
+        footer={fmtDateShort(p.data.date)}
+      />
+    ))}
+  </div>
+</Layout>

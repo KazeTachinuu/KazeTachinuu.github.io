@@ -1,0 +1,36 @@
+---
+interface Props {
+  type?: 'info' | 'note' | 'warn' | 'success' | 'tip' | 'error' | 'danger';
+  title?: string;
+}
+const { type = 'note', title } = Astro.props;
+
+const iconChar: Record<string, string> = {
+  info: 'i',
+  note: '?',
+  warn: '!',
+  success: '✓',
+  tip: '★',
+  error: '!',
+  danger: '!',
+};
+
+// Generate a slug from title for anchor links
+function slugify(text: string): string {
+  return text
+    .toLowerCase()
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/(^-|-$)/g, '');
+}
+
+const slug = title ? slugify(title) : undefined;
+---
+
+<aside class={`jh-callout jh-callout-${type}`}>
+  <div class="jh-callout-icon" aria-hidden="true">{iconChar[type] ?? 'i'}</div>
+  <div class="jh-callout-body">
+    {title && <h3 class="jh-callout-title" id={slug}>{title}</h3>}
+    <slot />
+  </div>
+</aside>

@@ -1,0 +1,21 @@
+---
+import { Code } from 'astro-expressive-code/components';
+
+interface Props { url: string; lang?: string }
+const { url, lang = 'bash' } = Astro.props;
+
+let content = '';
+let error = '';
+try {
+  const res = await fetch(url);
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  content = await res.text();
+} catch (e) {
+  error = (e as Error).message;
+}
+---
+{error ? (
+  <p class="text-rose-500 text-sm">Failed to fetch: {error}</p>
+) : (
+  <Code code={content} lang={lang} />
+)}

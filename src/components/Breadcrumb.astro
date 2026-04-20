@@ -1,0 +1,25 @@
+---
+interface Crumb {
+  label: string;
+  href?: string;
+}
+
+interface Props {
+  items: Crumb[];
+  centered?: boolean;
+}
+
+const { items, centered = false } = Astro.props;
+---
+
+<nav class:list={['breadcrumb mb-8', centered && 'justify-center']} aria-label="Breadcrumb">
+  {items.map((item, i) => (
+    <>
+      {i > 0 && <span class="breadcrumb-sep">›</span>}
+      {item.href
+        ? <a href={item.href}>{item.label}</a>
+        : <span class={i === items.length - 1 ? 'breadcrumb-current' : ''}>{item.label}</span>
+      }
+    </>
+  ))}
+</nav>

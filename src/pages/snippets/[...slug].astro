@@ -1,0 +1,39 @@
+---
+import { getCollection, render } from 'astro:content';
+import type { GetStaticPaths } from 'astro';
+import Layout from '~/layouts/Layout.astro';
+import Breadcrumb from '~/components/Breadcrumb.astro';
+import ArticleHeader from '~/components/ArticleHeader.astro';
+import ArticleFooter from '~/components/ArticleFooter.astro';
+import * as MDX from '~/components/mdx';
+
+export const getStaticPaths = (async () => {
+  const snippets = await getCollection('snippets', (e) => !e.data.draft);
+  return snippets.map((s) => ({ params: { slug: s.id }, props: { post: s } }));
+}) satisfies GetStaticPaths;
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+---
+
+<Layout title={post.data.title} description={post.data.description} mainClass="max-w-prose-code mx-auto px-6 py-16">
+  <Breadcrumb centered items={[
+    { label: 'Home', href: '/' },
+    { label: 'Snippets', href: '/snippets/' },
+    { label: post.data.title },
+  ]} />
+
+  <ArticleHeader
+    title={post.data.title}
+    category="Snippets"
+    date={post.data.date}
+    description={post.data.description}
+    centered
+  />
+
+  <article class="prose prose-lg dark:prose-invert max-w-none">
+    <Content components={MDX} />
+  </article>
+
+  <ArticleFooter slug={`snippets/${post.id}`} date={post.data.date} updated={post.data.updated} />
+</Layout>

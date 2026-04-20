@@ -1,0 +1,35 @@
+---
+interface Props {
+  slug: string;
+}
+
+const { slug } = Astro.props;
+---
+
+<span class="view-count" data-views={slug}>
+  <span data-views-count>--</span> views
+</span>
+
+<script>
+  const API_BASE = import.meta.env.PUBLIC_LIKES_API || '';
+
+  function initViews() {
+    document.querySelectorAll<HTMLElement>('[data-views]').forEach((el) => {
+      const slug = el.dataset.views!;
+      const countEl = el.querySelector<HTMLElement>('[data-views-count]')!;
+      if (!API_BASE) { countEl.textContent = '0'; return; }
+
+      const key = `viewed:${slug}`;
+      const method = sessionStorage.getItem(key) ? 'GET' : 'POST';
+      if (method === 'POST') sessionStorage.setItem(key, '1');
+
+      fetch(`${API_BASE}/hits/${encodeURIComponent(slug)}`, { method })
+        .then((r) => r.json())
+        .then((data) => { countEl.textContent = String(data.count ?? 0); })
+        .catch(() => { countEl.textContent = '0'; });
+    });
+  }
+
+  initViews();
+  document.addEventListener('astro:after-swap', initViews);
+</script>

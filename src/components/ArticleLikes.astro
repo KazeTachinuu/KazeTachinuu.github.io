@@ -1,0 +1,135 @@
+---
+interface Props {
+  slug: string;
+}
+
+const { slug } = Astro.props;
+const clipId = `heart-fill-${slug.replace(/\//g, '-')}`;
+---
+
+<div class="article-likes" data-likes={slug}>
+  <button class="likes-btn" data-likes-btn aria-label="Like this article" type="button">
+    <svg width="28" height="28" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+      <defs>
+        <clipPath id={clipId}>
+          <rect data-fill-rect x="0" y="24" width="24" height="24" />
+        </clipPath>
+      </defs>
+      <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3.332.88-4.5 2.23A6.08 6.08 0 0 0 7.5 3 5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"
+        fill="none" stroke="currentColor" stroke-width="2" />
+      <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3.332.88-4.5 2.23A6.08 6.08 0 0 0 7.5 3 5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"
+        fill="var(--accent)" stroke="var(--accent)" stroke-width="2"
+        clip-path={`url(#${clipId})`} />
+    </svg>
+    <span class="likes-float" data-likes-float></span>
+  </button>
+  <span class="likes-count" data-likes-count>--</span>
+</div>
+
+<script>
+  const API_BASE = import.meta.env.PUBLIC_LIKES_API || '';
+
+  // Reuse a single AudioContext
+  let audioCtx: AudioContext | null = null;
+
+  function playPop(pitch = 1) {
+    try {
+      if (!audioCtx) audioCtx = new AudioContext();
+      const ctx = audioCtx;
+      const t = ctx.currentTime;
+
+      // Main tone — bright ping
+      const osc1 = ctx.createOscillator();
+      const g1 = ctx.createGain();
+      osc1.type = 'sine';
+      osc1.frequency.setValueAtTime(880 * pitch, t);
+      osc1.frequency.exponentialRampToValueAtTime(440 * pitch, t + 0.1);
+      g1.gain.setValueAtTime(0.12, t);
+      g1.gain.exponentialRampToValueAtTime(0.001, t + 0.12);
+      osc1.connect(g1).connect(ctx.destination);
+      osc1.start(t);
+      osc1.stop(t + 0.12);
+
+      // Harmonic — warmth
+      const osc2 = ctx.createOscillator();
+      const g2 = ctx.createGain();
+      osc2.type = 'triangle';
+      osc2.frequency.value = 1320 * pitch;
+      g2.gain.setValueAtTime(0.04, t);
+      g2.gain.exponentialRampToValueAtTime(0.001, t + 0.08);
+      osc2.connect(g2).connect(ctx.destination);
+      osc2.start(t);
+      osc2.stop(t + 0.08);
+    } catch {}
+  }
+
+  function initLikes() {
+    document.querySelectorAll<HTMLElement>('[data-likes]').forEach((el) => {
+      const slug = el.dataset.likes!;
+      const btn = el.querySelector<HTMLButtonElement>('[data-likes-btn]')!;
+      const countEl = el.querySelector<HTMLElement>('[data-likes-count]')!;
+      const fillRect = el.querySelector<SVGRectElement>('[data-fill-rect]')!;
+      const floatEl = el.querySelector<HTMLElement>('[data-likes-float]')!;
+
+      const storageKey = `likes:${slug}`;
+      let userLikes = parseInt(localStorage.getItem(storageKey) || '0', 10);
+      const maxLikes = 16;
+
+      function updateFill() {
+        const pct = Math.min(userLikes / maxLikes, 1);
+        fillRect.setAttribute('y', String(24 - pct * 24));
+      }
+
+      updateFill();
+
+      if (API_BASE) {
+        fetch(`${API_BASE}/likes/${encodeURIComponent(slug)}`)
+          .then((r) => r.json())
+          .then((data) => { countEl.textContent = String(data.count ?? 0); })
+          .catch(() => { countEl.textContent = '0'; });
+      } else {
+        countEl.textContent = '0';
+      }
+
+      btn.addEventListener('click', () => {
+        if (userLikes >= maxLikes) {
+          // Show "Max!" float
+          floatEl.textContent = 'Max!';
+          floatEl.classList.remove('likes-float-up');
+          void floatEl.offsetWidth;
+          floatEl.classList.add('likes-float-up');
+          return;
+        }
+
+        userLikes++;
+        localStorage.setItem(storageKey, String(userLikes));
+        updateFill();
+
+        const current = parseInt(countEl.textContent || '0', 10);
+        countEl.textContent = String(current + 1);
+
+        // Float +1
+        floatEl.textContent = '+1';
+        floatEl.classList.remove('likes-float-up');
+        void floatEl.offsetWidth;
+        floatEl.classList.add('likes-float-up');
+
+        // Pop animation
+        btn.classList.remove('likes-pop');
+        void btn.offsetWidth;
+        btn.classList.add('likes-pop');
+
+        // Sound — pitch increases with fill level
+        const pitch = 1 + (userLikes / maxLikes) * 0.5;
+        playPop(pitch);
+
+        if (API_BASE) {
+          fetch(`${API_BASE}/likes/${encodeURIComponent(slug)}`, { method: 'POST' }).catch(() => {});
+        }
+      });
+    });
+  }
+
+  initLikes();
+  document.addEventListener('astro:after-swap', initLikes);
+</script>

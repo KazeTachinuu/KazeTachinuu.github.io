@@ -1,0 +1,36 @@
+---
+import { getCollection, render } from 'astro:content';
+import type { GetStaticPaths } from 'astro';
+import Layout from '~/layouts/Layout.astro';
+import Breadcrumb from '~/components/Breadcrumb.astro';
+import ArticleHeader from '~/components/ArticleHeader.astro';
+import ArticleFooter from '~/components/ArticleFooter.astro';
+import * as MDX from '~/components/mdx';
+
+export const getStaticPaths = (async () => {
+  const tools = await getCollection('tools', (e) => !e.data.draft && !e.data.external_link);
+  return tools.map((t) => ({ params: { slug: t.id }, props: { post: t } }));
+}) satisfies GetStaticPaths;
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+---
+
+<Layout title={post.data.title} description={post.data.description} mainClass="max-w-prose-code mx-auto px-6 py-16">
+  <Breadcrumb items={[
+    { label: 'Home', href: '/' },
+    { label: 'Tools', href: '/tools/' },
+    { label: post.data.title },
+  ]} />
+
+  <ArticleHeader
+    title={post.data.title}
+    description={post.data.description}
+  />
+
+  <article class="prose prose-lg dark:prose-invert max-w-none">
+    <Content components={MDX} />
+  </article>
+
+  <ArticleFooter slug={`tools/${post.id}`} date={post.data.date} updated={post.data.updated} />
+</Layout>
