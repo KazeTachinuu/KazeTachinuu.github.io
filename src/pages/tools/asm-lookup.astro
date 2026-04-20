@@ -1,0 +1,12 @@
+---
+import Layout from '~/layouts/Layout.astro';
+import AsmLookup from '~/components/AsmLookup';
+---
+
+<Layout
+  title="Assembly Lookup"
+  description="Search an x86-64 instruction (AT&T syntax) to learn what it does, with examples."
+  mainClass="asm-page"
+>
+  <AsmLookup client:load />
+</Layout>
