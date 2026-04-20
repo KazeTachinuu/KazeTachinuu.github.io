@@ -385,6 +385,7 @@ sarq  $1, %rax           # rax = -4   (−8 / 2)`,
       'Despite the name, `lea` never touches memory — it computes the address the operand *would* resolve to and writes it to a register.',
       'Programmers abuse it for fast arithmetic. The memory form `offset(base, index, scale)` evaluates to `base + index*scale + offset` in a single instruction — and without touching flags.',
       '`leaq (%rdi, %rdi, 4), %rax` gives `rax = rdi * 5`.',
+      'P.S. Also happens to be the name of my favourite person. ♡',
     ],
     syntax: ['leaq offset(base, index, scale), %dst'],
     example: `leaq  (%rdi, %rdi, 2), %rax   # rax = rdi * 3
