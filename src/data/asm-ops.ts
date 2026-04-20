@@ -97,8 +97,9 @@ nop                      # harmless filler`,
     ],
     syntax: ['addq $imm, %dst', 'addq %src, %dst'],
     example: `movq  $10, %rax
-addq  $5, %rax           # rax = 15
-addq  %rbx, %rax         # rax = rax + rbx`,
+movq  $2, %rbx
+addq  $5, %rax           # rax = 15   (register += immediate)
+addq  %rbx, %rax         # rax = 17   (register += register)`,
     moreHref: cloutier('add'),
   },
   {
@@ -133,8 +134,8 @@ subq  $32, %rsp          # allocate 32 bytes on the stack`,
       'imulq $imm, %src, %dst',
     ],
     example: `movq  $6, %rax
-imulq $7, %rax           # rax = 42
-imulq $3, %rdi, %rsi     # rsi = rdi * 3  (result in a different register)`,
+imulq $7, %rax           # rax = 42   (two-operand: dst *= src)
+imulq $3, %rax, %rsi     # rsi = 126  (three-operand: rax*3 → rsi, rax untouched)`,
     moreHref: cloutier('imul'),
   },
   {
@@ -482,13 +483,14 @@ jz    null_case          # taken when rdi == 0`,
       'Indirect `jmp *%rax` is how jump tables and computed gotos are implemented.',
     ],
     syntax: ['jmp label', 'jmp *%reg', 'jmp *(%addr)'],
-    example: `# a simple do { ... } while (--n) loop
+    example: `# while (rax < 10) rax++;
+    xorq  %rax, %rax
 loop:
-    # ... loop body ...
-    decq  %rcx
-    jnz   loop               # conditional back-edge
-    jmp   done               # break out unconditionally
-done:`,
+    cmpq  $10, %rax
+    jge   done               # exit the loop when rax >= 10
+    incq  %rax
+    jmp   loop               # unconditional back-edge to the top
+done:                        # rax = 10 here`,
     moreHref: cloutier('jmp'),
   },
   {
@@ -655,7 +657,7 @@ popq  %rbx               # rbx = (old) rax`,
       'Every `call` must be balanced by exactly one `ret` on every path — otherwise a later `ret` pops the wrong address and the program jumps into the weeds.',
     ],
     syntax: ['ret'],
-    example: `# int square(int x) { return x * x; }
+    example: `# long square(long x) { return x * x; }
 square:
     imulq %rdi, %rdi
     movq  %rdi, %rax         # return value in rax
