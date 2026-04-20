@@ -299,11 +299,16 @@ orq   $0x40, %rax        # rax = 0x41  (turn on bit 6)`,
     body: [
       'Sets bits that differ between the two operands.',
       'The idiomatic way to zero a register is `xorq %rax, %rax` — shorter and faster than `movq $0, %rax`, and the CPU recognises it as a dependency-breaker.',
+      'Classic trick: swap two registers with three XORs, no temporary — `a^=b; b^=a; a^=b`.',
     ],
     syntax: ['xorq $imm, %dst', 'xorq %src, %dst'],
-    example: `xorq  %rax, %rax         # rax = 0  (zero-idiom)
-movq  $0b1100, %rbx
-xorq  $0b1010, %rbx      # rbx = 0b0110`,
+    example: `# swap rax and rbx without a temporary (XOR swap)
+movq  $3, %rax           # rax = 3
+movq  $7, %rbx           # rbx = 7
+xorq  %rbx, %rax         # rax = 3 ^ 7 = 4
+xorq  %rax, %rbx         # rbx = 7 ^ 4 = 3  (old rax)
+xorq  %rbx, %rax         # rax = 4 ^ 3 = 7  (old rbx)
+                         # rax and rbx are now swapped`,
     moreHref: cloutier('xor'),
   },
   {
