@@ -2,8 +2,8 @@ import { useState, useEffect } from 'preact/hooks';
 import type { JSX } from 'preact';
 import { createHighlighterCore } from 'shiki/core';
 import { createJavaScriptRegexEngine } from 'shiki/engine/javascript';
-import darkTheme from '../../themes/josh-dark.json';
-import lightTheme from '../../themes/josh-light.json';
+import darkTheme from '../../themes/josh-dark.js';
+import lightTheme from '../../themes/josh-light.js';
 
 /* ────────────────────────────────────────────────────
    Shell definitions

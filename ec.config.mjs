@@ -1,10 +1,13 @@
 import { defineEcConfig } from 'astro-expressive-code';
-import codeDark from './themes/josh-dark.json' with { type: 'json' };
-import codeLight from './themes/josh-light.json' with { type: 'json' };
+import codeDark from './themes/josh-dark.js';
+import codeLight from './themes/josh-light.js';
 
 export default defineEcConfig({
   themes: [codeLight, codeDark],
   themeCssSelector: (theme) => `.${theme.type}`,
+  shiki: {
+    langAlias: { mpd: 'plaintext' },
+  },
   defaultProps: {
     wrap: true,
     preserveIndent: true,
