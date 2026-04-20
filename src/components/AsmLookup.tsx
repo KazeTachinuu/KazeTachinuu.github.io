@@ -117,23 +117,33 @@ export default function AsmLookup() {
   const filtered = useMemo(() => OPS.filter((o) => opMatches(o, query)), [query]);
 
   function pick(slug: string) {
+    const op = OPS.find((o) => o.slug === slug);
+    if (op) setQuery(op.mnemonic);
     setSelectedSlug(slug);
-    setQuery('');
+    searchRef.current?.focus();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   function clear() {
     setSelectedSlug(null);
     setQuery('');
-    setTimeout(() => searchRef.current?.focus(), 0);
+    searchRef.current?.focus();
   }
 
-  /* Auto-pick when the query exactly matches a mnemonic or slug. */
+  /* Keep the selection in sync with what's typed:
+     - exact match for a different op → switch to it
+     - empty query → clear the selection and show the grid */
   useEffect(() => {
-    if (selectedSlug) return;
-    const exact = exactMatchFor(query);
-    if (exact) pick(exact.slug);
-  }, [query, selectedSlug]);
+    const q = query.trim();
+    if (!q) {
+      if (selectedSlug) setSelectedSlug(null);
+      return;
+    }
+    const exact = exactMatchFor(q);
+    if (exact && exact.slug !== selectedSlug) {
+      setSelectedSlug(exact.slug);
+    }
+  }, [query]);
 
   function onSubmit(e: Event) {
     e.preventDefault();
@@ -172,25 +182,19 @@ export default function AsmLookup() {
           <circle cx="11" cy="11" r="7" />
           <path d="m20 20-3.5-3.5" />
         </svg>
-        {active ? (
-          <span class="asm-search-chip" aria-label={`Selected: ${selected!.mnemonic}`}>
-            {selected!.mnemonic}
-          </span>
-        ) : (
-          <input
-            ref={searchRef}
-            type="text"
-            value={query}
-            placeholder="mov, lea, syscall…"
-            aria-label="Search for an instruction"
-            spellcheck={false}
-            autocomplete="off"
-            autoFocus
-            onInput={(e: any) => setQuery(e.target.value)}
-          />
-        )}
-        {active && (
-          <button type="button" class="asm-search-x" onClick={clear} aria-label="Clear selection">
+        <input
+          ref={searchRef}
+          type="text"
+          value={query}
+          placeholder="mov, lea, syscall…"
+          aria-label="Search for an instruction"
+          spellcheck={false}
+          autocomplete="off"
+          autoFocus
+          onInput={(e: any) => setQuery(e.target.value)}
+        />
+        {(query || active) && (
+          <button type="button" class="asm-search-x" onClick={clear} aria-label="Clear">
             &times;
           </button>
         )}
