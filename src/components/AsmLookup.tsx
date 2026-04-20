@@ -3,7 +3,7 @@ import { createHighlighterCore } from 'shiki/core';
 import { createJavaScriptRegexEngine } from 'shiki/engine/javascript';
 import darkTheme from '../../themes/josh-dark.js';
 import lightTheme from '../../themes/josh-light.js';
-import { KINDS, OPS, type Op } from '../data/asm-ops';
+import { OPS, type Op } from '../data/asm-ops';
 
 /* Inline markdown helper: `code` spans only. */
 function renderInline(text: string) {
@@ -22,6 +22,19 @@ function opMatches(op: Op, q: string) {
     op.name.toLowerCase().includes(needle) ||
     op.summary.toLowerCase().includes(needle)
   );
+}
+
+/* Tokens the user might type to pick this entry exactly —
+   its slug plus each mnemonic segment (e.g. "je / jz" → ["je", "jz"]). */
+function exactTokens(op: Op): string[] {
+  const parts = op.mnemonic.toLowerCase().split(/[\s/]+/).filter(Boolean);
+  return [op.slug, ...parts];
+}
+
+function exactMatchFor(query: string): Op | null {
+  const q = query.trim().toLowerCase();
+  if (!q) return null;
+  return OPS.find((op) => exactTokens(op).includes(q)) ?? null;
 }
 
 function slugFromUrl(): string | null {
@@ -102,14 +115,6 @@ export default function AsmLookup() {
   );
 
   const filtered = useMemo(() => OPS.filter((o) => opMatches(o, query)), [query]);
-  const grouped = useMemo(() => {
-    const map = new Map<string, Op[]>();
-    for (const op of filtered) {
-      if (!map.has(op.kind)) map.set(op.kind, []);
-      map.get(op.kind)!.push(op);
-    }
-    return map;
-  }, [filtered]);
 
   function pick(slug: string) {
     setSelectedSlug(slug);
@@ -123,13 +128,18 @@ export default function AsmLookup() {
     setTimeout(() => searchRef.current?.focus(), 0);
   }
 
+  /* Auto-pick when the query exactly matches a mnemonic or slug. */
+  useEffect(() => {
+    if (selectedSlug) return;
+    const exact = exactMatchFor(query);
+    if (exact) pick(exact.slug);
+  }, [query, selectedSlug]);
+
   function onSubmit(e: Event) {
     e.preventDefault();
-    if (filtered.length === 1) pick(filtered[0].slug);
-    else {
-      const exact = OPS.find((o) => o.slug === query.toLowerCase());
-      if (exact) pick(exact.slug);
-    }
+    const exact = exactMatchFor(query);
+    if (exact) pick(exact.slug);
+    else if (filtered.length === 1) pick(filtered[0].slug);
   }
 
   function tokenize(code: string): Token[][] | null {
@@ -189,26 +199,25 @@ export default function AsmLookup() {
       {!active && (
         <section class="asm-grid-wrap">
           <p class="asm-grid-label">Or, pick one:</p>
-          {KINDS.map(({ key, label }) => {
-            const ops = grouped.get(key);
-            if (!ops || ops.length === 0) return null;
-            return (
-              <div class="asm-group" key={key}>
-                <h2 class="asm-group-title">{label}</h2>
-                <ul class="asm-chips">
-                  {ops.map((op) => (
-                    <li key={op.slug}>
-                      <button type="button" class="asm-chip" onClick={() => pick(op.slug)}>
-                        <span class="asm-chip-m">{op.mnemonic}</span>
-                        <span class="asm-chip-n">{op.name}</span>
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            );
-          })}
-          {filtered.length === 0 && <p class="asm-empty">No instruction matches "{query}".</p>}
+          {filtered.length > 0 ? (
+            <ul class="asm-chips">
+              {filtered.map((op) => (
+                <li key={op.slug}>
+                  <button
+                    type="button"
+                    class="asm-chip"
+                    onClick={() => pick(op.slug)}
+                    title={op.name}
+                    aria-label={`${op.mnemonic} — ${op.name}`}
+                  >
+                    {op.mnemonic}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p class="asm-empty">No instruction matches "{query}".</p>
+          )}
         </section>
       )}
 
@@ -223,17 +232,6 @@ export default function AsmLookup() {
               {renderInline(para)}
             </p>
           ))}
-
-          <div class="asm-syntax">
-            <span class="asm-label">Syntax</span>
-            <ul>
-              {selected.syntax.map((s, i) => (
-                <li key={i}>
-                  <code>{s}</code>
-                </li>
-              ))}
-            </ul>
-          </div>
 
           <div class="asm-code">
             <CodeBlock tokens={exampleTokens} fallback={selected.example} />
