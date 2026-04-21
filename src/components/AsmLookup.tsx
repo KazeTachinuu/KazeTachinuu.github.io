@@ -1,16 +1,62 @@
 import { useEffect, useMemo, useRef, useState } from 'preact/hooks';
+import type { VNode } from 'preact';
 import { createHighlighterCore } from 'shiki/core';
 import { createJavaScriptRegexEngine } from 'shiki/engine/javascript';
 import darkTheme from '../../themes/josh-dark.js';
 import lightTheme from '../../themes/josh-light.js';
 import { OPS, type Op } from '../data/asm-ops';
 
-/* Inline markdown helper: `code` spans only. */
-function renderInline(text: string) {
-  const parts = text.split(/(`[^`]+`)/g);
-  return parts.map((p, i) =>
-    p.startsWith('`') && p.endsWith('`') ? <code key={i}>{p.slice(1, -1)}</code> : <span key={i}>{p}</span>
-  );
+/* Inline markdown: `code`, **bold**, *italic*.
+   Token scanner so bold/italic can wrap code (or each other) correctly —
+   `**...`code`...**` now parses as a single bold span that happens to
+   contain a code child. Code spans themselves are terminal (their inner
+   text is literal — backticks don't nest further). */
+let _k = 0;
+function renderInline(text: string): (VNode | string)[] {
+  const nodes: (VNode | string)[] = [];
+  let i = 0;
+  let plainStart = 0;
+  const flush = () => {
+    if (plainStart < i) nodes.push(text.slice(plainStart, i));
+  };
+  while (i < text.length) {
+    // Bold: **...**  (non-greedy, must find closing pair)
+    if (text[i] === '*' && text[i + 1] === '*') {
+      const end = text.indexOf('**', i + 2);
+      if (end > i + 2) {
+        flush();
+        nodes.push(<strong key={_k++}>{renderInline(text.slice(i + 2, end))}</strong>);
+        i = end + 2;
+        plainStart = i;
+        continue;
+      }
+    }
+    // Italic: *...*  (single star, not a bold marker)
+    else if (text[i] === '*') {
+      const end = text.indexOf('*', i + 1);
+      if (end > i + 1 && text[end + 1] !== '*') {
+        flush();
+        nodes.push(<em key={_k++}>{renderInline(text.slice(i + 1, end))}</em>);
+        i = end + 1;
+        plainStart = i;
+        continue;
+      }
+    }
+    // Code: `...`  (terminal — inner text is literal)
+    else if (text[i] === '`') {
+      const end = text.indexOf('`', i + 1);
+      if (end > i) {
+        flush();
+        nodes.push(<code key={_k++}>{text.slice(i + 1, end)}</code>);
+        i = end + 1;
+        plainStart = i;
+        continue;
+      }
+    }
+    i++;
+  }
+  flush();
+  return nodes;
 }
 
 function opMatches(op: Op, q: string) {

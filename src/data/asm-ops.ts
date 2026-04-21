@@ -74,13 +74,16 @@ movq  %rcx, 8(%rdi)      # *(rdi+8) = rcx`,
     mnemonic: 'nop',
     name: 'No operation',
     kind: 'basics',
-    summary: 'Do nothing — just advance %rip.',
+    summary: 'Do nothing — just advance %rip by one byte (0x90).',
     body: [
-      'Assembles to a single byte (`0x90`). Used for alignment padding, disabling a branch during debugging, or reserving a slot for live-patching.',
+      'Three everyday uses: **alignment padding** (`.p2align` emits them for you), **branch disarming** during debugging (overwrite a `jz` with `nop nop` to kill it without shifting the rest of the code), and **hot-patch slots** (reserve a few bytes the linker or a runtime can later rewrite into a real instruction).',
     ],
     syntax: ['nop'],
-    example: `nop
-nop                      # harmless filler`,
+    example: `# disable a branch in place while debugging — no code shift
+    cmpq  $0, %rdi
+    nop                  # was 'jz   handler'  (2 bytes → 90 90)
+    nop
+    # ... execution now always falls through ...`,
     moreHref: cloutier('nop'),
   },
 
@@ -134,8 +137,8 @@ subq  $32, %rsp          # allocate 32 bytes on the stack`,
       'imulq $imm, %src, %dst',
     ],
     example: `movq  $6, %rax
-imulq $7, %rax           # rax = 42   (two-operand: dst *= src)
-imulq $3, %rax, %rsi     # rsi = 126  (three-operand: rax*3 → rsi, rax untouched)`,
+imulq $7, %rax           # rax = 42    (2-op: dst *= src)
+imulq $3, %rax, %rsi     # rsi = 126   (3-op: rax*3 → rsi)`,
     moreHref: cloutier('imul'),
   },
   {
@@ -167,9 +170,9 @@ mulq  %rbx               # rdx:rax = 0x3_00000000
     ],
     syntax: ['idivq %src'],
     example: `movq  $-17, %rax
-cqto                     # sign-extend rax → rdx:rax  (rdx now all-1s)
+cqto                     # sign-extend rax → rdx:rax
 movq  $5, %rcx
-idivq %rcx               # rax = -3 (quotient), rdx = -2 (remainder)`,
+idivq %rcx               # rax = -3 (quot), rdx = -2 (rem)`,
     moreHref: cloutier('idiv'),
   },
   {
@@ -204,7 +207,7 @@ divq  %rcx               # rax = 14 (100 / 7)
     ],
     syntax: ['cqto', 'cdq', 'cdqe'],
     example: `movq  $-42, %rax
-cqto                     # rax is negative  →  rdx = 0xFFFFFFFFFFFFFFFF
+cqto                     # rax negative → rdx = all 1s
 movq  $5, %rcx
 idivq %rcx               # rax = -8, rdx = -2`,
     moreHref: cloutier('cwd:cdq:cqo'),
@@ -284,11 +287,14 @@ andq  $0xff, %rax        # rax = 0x34  (keep low byte)`,
     kind: 'logic',
     summary: 'Bitwise OR of source and destination.',
     body: [
-      'Sets bits in `dst` that are one in `src`. Common for setting flags: `orq $0x40, %rax` turns on bit 6.',
+      'Sets bits in `dst` that are one in `src`. The classic use: combining flag bitmasks — each flag is a power of two, `or` merges them into one value.',
     ],
     syntax: ['orq $imm, %dst', 'orq %src, %dst'],
-    example: `movq  $0x01, %rax
-orq   $0x40, %rax        # rax = 0x41  (turn on bit 6)`,
+    example: `# build the flags for open("w"): O_WRONLY | O_CREAT | O_TRUNC
+movq  $0x001, %rsi       # O_WRONLY  (1)
+orq   $0x040, %rsi       # | O_CREAT (0x40)
+orq   $0x200, %rsi       # | O_TRUNC (0x200)
+                         # rsi = 0x241`,
     moreHref: cloutier('or'),
   },
   {
@@ -340,8 +346,9 @@ andq  %rbx, %rax         # rax now has bit 4 cleared`,
       '`sal` is the arithmetic alias; for left shifts they behave identically.',
     ],
     syntax: ['shlq $imm, %dst', 'shlq %cl, %dst'],
-    example: `movq  $1, %rax
-shlq  $3, %rax           # rax = 8   (1 << 3)`,
+    example: `# fast multiply by 8 — one cycle, no imul
+movq  $7, %rax
+shlq  $3, %rax           # rax = 7 << 3 = 56   (7 * 8)`,
     moreHref: cloutier('sal:sar:shl:shr'),
   },
   {
@@ -355,8 +362,9 @@ shlq  $3, %rax           # rax = 8   (1 << 3)`,
       'For signed values, use `sar` — it preserves the sign bit.',
     ],
     syntax: ['shrq $imm, %dst', 'shrq %cl, %dst'],
-    example: `movq  $32, %rax
-shrq  $2, %rax           # rax = 8   (32 >> 2)`,
+    example: `# fast unsigned divide by 4
+movq  $100, %rax
+shrq  $2, %rax           # rax = 100 >> 2 = 25   (100 / 4)`,
     moreHref: cloutier('sal:sar:shl:shr'),
   },
   {
@@ -369,8 +377,9 @@ shrq  $2, %rax           # rax = 8   (32 >> 2)`,
       'Like `shr`, but the vacated high bits are filled with the original sign bit. Equivalent to integer division by 2ⁿ for signed values.',
     ],
     syntax: ['sarq $imm, %dst', 'sarq %cl, %dst'],
-    example: `movq  $-8, %rax
-sarq  $1, %rax           # rax = -4   (−8 / 2)`,
+    example: `# signed divide by 2 — sign bit preserved
+movq  $-8, %rax
+sarq  $1, %rax           # rax = -4   (shr would lose sign)`,
     moreHref: cloutier('sal:sar:shl:shr'),
   },
 
@@ -429,9 +438,9 @@ done:                        # rax = strlen(s)`,
       'Intel calls it `movsx` / `movsxd`. Don\'t confuse it with the string-move `movsb` / `movsw` / `movsq` (no operands), which are different instructions that copy from `%rsi` to `%rdi`.',
     ],
     syntax: ['movsbq src, %dst', 'movswq src, %dst', 'movslq src, %dst'],
-    example: `# read an int32_t from memory into a signed 64-bit register
-movslq (%rdi), %rax       # rax = *(int32_t *)rdi, sign-extended
-                          # so e.g. -1 stays -1, not 0x00000000FFFFFFFF`,
+    example: `# read a signed int32 field into a 64-bit register
+movslq (%rdi), %rax      # rax = *(int32_t*)rdi, sign-ext
+                         # so -1 stays -1, not 0xFFFFFFFF`,
     moreHref: cloutier('movsx:movsxd'),
   },
 
@@ -488,10 +497,10 @@ jz    null_case          # taken when rdi == 0`,
     xorq  %rax, %rax
 loop:
     cmpq  $10, %rax
-    jge   done               # exit the loop when rax >= 10
+    jge   done               # exit when rax >= 10
     incq  %rax
-    jmp   loop               # unconditional back-edge to the top
-done:                        # rax = 10 here`,
+    jmp   loop               # unconditional back-edge
+done:                        # rax = 10`,
     moreHref: cloutier('jmp'),
   },
   {
@@ -564,7 +573,7 @@ zero:
     ],
     syntax: ['ja label', 'jb label', 'jae label', 'jbe label'],
     example: `# bounds check: if (idx >= len) fault;
-    cmpq  %rsi, %rdi         # flags := rdi - rsi  (both unsigned)
+    cmpq  %rsi, %rdi         # rdi - rsi  (unsigned)
     jae   out_of_bounds      # rdi >= rsi → fault
     # ... safe to index here ...`,
     moreHref: cloutier('jcc'),
@@ -581,7 +590,7 @@ zero:
     ],
     syntax: ['js label', 'jns label'],
     example: `# syscall error check
-    syscall                  # result in rax; negative = error
+    syscall                  # rax < 0 on error
     testq %rax, %rax
     js    syscall_failed
     # ... success path ...
@@ -602,9 +611,9 @@ syscall_failed:
       'Two everyday uses: saving a callee-saved register at the top of a function, and realigning `%rsp` to 16 bytes before a `call` (an odd number of pushes does both).',
     ],
     syntax: ['pushq %src', 'pushq $imm'],
-    example: `# function prologue: save rbx and align the stack for a call
+    example: `# prologue: save rbx + align rsp for the upcoming call
 my_fn:
-    pushq %rbx               # rsp -= 8; *rsp = rbx  (also aligns rsp to 16)
+    pushq %rbx               # save rbx, realigns rsp to 16
     # ... body that may clobber rbx ...
     call  other_fn
     popq  %rbx
@@ -637,12 +646,12 @@ popq  %rbx               # rbx = (old) rax`,
     summary: 'Push return address, then jump to the target.',
     body: [
       '`call func` pushes the address of the next instruction onto the stack, then jumps to `func`. The callee later returns via `ret`, which pops that address back into `%rip`.',
-      'The System V ABI requires `%rsp` to be **16-byte-aligned *before*** the `call`. On entry to the callee, `%rsp % 16 == 8` — the return address took up one slot. Your prologue (a single `pushq %rbx`, or `subq $8, %rsp`) restores alignment before any further calls.',
+      'The System V ABI requires `%rsp` to be 16-byte-aligned **before** the `call`. On entry to the callee, `%rsp % 16 == 8` — the return address took up one slot. Your prologue (a single `pushq %rbx`, or `subq $8, %rsp`) restores alignment before any further calls.',
       'For libc or other external functions, use `call func@PLT`.',
     ],
     syntax: ['call label', 'call func@PLT', 'call *%reg'],
     example: `# call factorial(5) and stash the result
-    movq  $5, %rdi           # arg 1 (System V ABI: rdi, rsi, rdx, rcx, r8, r9)
+    movq  $5, %rdi           # arg 1  (per System V ABI)
     call  factorial          # rax = 120
     movq  %rax, %rbx         # keep it around`,
     moreHref: cloutier('call'),
@@ -680,7 +689,7 @@ square:
 my_fn:
     pushq %rbp
     movq  %rsp, %rbp
-    subq  $16, %rsp          # 16 bytes of locals (keeps rsp 16-aligned)
+    subq  $16, %rsp          # 16 bytes of locals
     # ... body ...
     leave                    # rsp := rbp; pop rbp
     ret`,

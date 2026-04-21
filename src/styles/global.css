@@ -869,7 +869,7 @@ a { color: inherit; text-decoration: none; }
 
   .asm-page { max-width: 48rem; margin-inline: auto; padding: 0 1.5rem 6rem; }
 
-  .asm { display: flex; flex-direction: column; width: 100%; }
+  .asm { width: 100%; }
 
   .asm-hero {
     text-align: center;
@@ -988,46 +988,66 @@ a { color: inherit; text-decoration: none; }
     margin: 3rem 0;
   }
 
-  /* Detail view — bounces in just after the chip pops. */
+  /* Detail view — bounces in just after the chip pops.
+     Container has no hardcoded width: prose children constrain themselves
+     to a reading column (ch units, sans-serif context); the code block
+     constrains itself to 80 mono chars (ch units, mono context). */
   .asm-detail {
     animation: asm-bounce 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both;
     animation-delay: 0.08s;
-    max-width: 36rem; margin: 0 auto;
+    margin: 0 auto;
     transform-origin: top center;
+  }
+
+  .asm-lede,
+  .asm-para,
+  .asm-more {
+    max-width: 66ch;           /* prose reading column, sans-serif ch */
+    margin-left: auto;
+    margin-right: auto;
   }
 
   .asm-lede {
     text-align: center;
     font-size: 1.125rem;
     color: var(--text-secondary);
-    margin: 2rem 0 2.25rem;
+    margin-top: 2rem;
+    margin-bottom: 2.25rem;
   }
   .asm-accent { color: var(--accent); font-weight: 600; }
 
   .asm-para {
     color: var(--text-secondary);
     font-size: 0.9375rem; line-height: 1.75;
-    margin: 0 0 1.125rem;
+    margin-top: 0;
+    margin-bottom: 1.125rem;
   }
   .asm-para code {
     font-family: var(--font-mono); font-size: 0.875em;
     color: var(--accent);
   }
 
+  /* Width-budgeting trick: setting font-family+size on the frame makes
+     `1ch` here resolve to the mono-glyph width, so 80ch is *exactly*
+     80 characters of code — regardless of what font is chosen later. */
   .asm-code {
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    /* 80 mono chars of content + 1.5rem padding on each side */
+    max-width: calc(80ch + 3rem);
+    width: 100%;
+    margin: 2rem auto;
     border-width: 1px; border-style: solid; border-color: var(--code-border);
     background: var(--code-bg);
     border-radius: 0.75rem;
     overflow: hidden;
-    margin: 2rem 0;
   }
   .asm-code pre {
     margin: 0;
     padding: 1.25rem 1.5rem;
-    font-family: var(--font-mono);
-    font-size: 0.875rem; line-height: 1.75;
+    font-family: inherit; font-size: inherit; line-height: 1.75;
     color: var(--page-text);
-    overflow-x: auto;
+    overflow-x: auto;      /* graceful degrade if a line still overruns */
   }
   .asm-code pre code { font-family: inherit; font-size: inherit; }
   .asm-code pre .line { display: inline; }
