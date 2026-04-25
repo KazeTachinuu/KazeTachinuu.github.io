@@ -47,3 +47,6 @@ Thumbs.db
 *.png
 !public/**/*.png
 !src/**/*.png
+
+# XZ backdoor analysis artifacts (CVE-2024-3094 — inert on macOS, but keep out of git)
+xz-artifacts/
