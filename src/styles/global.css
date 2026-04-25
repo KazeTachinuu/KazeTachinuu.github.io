@@ -42,7 +42,7 @@
 @utility bg-subtle { background-color: var(--subtle-bg); }
 @utility border-theme { border-color: var(--border); }
 @utility bg-inverted { background-color: var(--page-text); }
-@utility text-inverted { color: var(--subtle-bg); }
+@utility text-inverted { color: var(--subtle-bg) !important; }
 @utility max-w-prose-code { max-width: 56rem; }
 
 /* ═══════════════════════════════════════════════
