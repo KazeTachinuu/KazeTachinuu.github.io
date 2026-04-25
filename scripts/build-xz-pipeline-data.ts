@@ -88,13 +88,18 @@ stages.push({
   id: 's1-input',
   label: 'The "corrupted" test fixture',
   description:
-    'A 512-byte file in the test corpus, disguised as a malformed LZMA test case. ' +
-    'Notice it does NOT start with the xz magic 0xFD 0x37 0x7A 0x58 0x5A 0x00 — by design.',
+    'A 512-byte file in the test corpus. It IS a valid xz container — magic FD377A585A00 — but ' +
+    'a 3-stream xz: stream 1 emits "####Hello####", stream 2 is intentionally malformed (xz -d ' +
+    'on it stops with "Compressed data is corrupt"), stream 3 was meant to emit "####World####". ' +
+    'Looks like a corner-case test for the decoder. It is, in fact, a payload carrier.',
   command: '# raw bytes from tests/files/bad-3-corrupt_lzma2.xz',
   kind: 'binary',
   outputSize: stage1.length,
   outputHex: hexPreview(stage1),
-  notable: [{ offset: 0, bytes: stage1.subarray(0, 6).toString('hex'), meaning: 'first 6 bytes — note: NOT the xz magic FD377A585A00' }],
+  notable: [
+    { offset: 0,  bytes: stage1.subarray(0, 6).toString('hex'),  meaning: 'xz magic FD 37 7A 58 5A 00 — header is valid' },
+    { offset: 24, bytes: stage1.subarray(24, 32).toString('hex'), meaning: 'start of the cover marker "####Hello####"' },
+  ],
 });
 
 // ── Stage 2: tr substitution ───────────────────────────────────
@@ -105,15 +110,16 @@ const trCmd = `tr "\\t \\-_" " \\t_\\-"`;
 const stage2 = shell(`LC_ALL=C ${trCmd} < ${BAD}`);
 stages.push({
   id: 's2-tr',
-  label: 'Substitute four bytes',
+  label: 'Uncorrupt stream 2',
   description:
-    'Swap tab↔space and dash↔underscore. Just four byte-value pairs, but it ' +
-    'transforms the "corrupted" fixture into a valid xz stream — note the new first 6 bytes.',
+    'Two pairs of byte values get swapped: tab↔space (0x09↔0x20) and dash↔underscore ' +
+    '(0x2D↔0x5F). The xz header is unchanged. What changes are bytes inside the ' +
+    'corrupted middle stream — the substitution turns its garbled lzma2 payload into a ' +
+    'decodable one. The file was always valid xz; now it also has a working stream 2.',
   command: trCmd,
   kind: 'binary',
   outputSize: stage2.length,
   outputHex: hexPreview(stage2),
-  notable: [{ offset: 0, bytes: stage2.subarray(0, 6).toString('hex'), meaning: 'first 6 bytes — now matches xz magic FD377A585A00' }],
 });
 
 // ── Stage 3: xz -d → Stage-1 shell ─────────────────────────────
@@ -122,10 +128,12 @@ mkdirSync('xz-artifacts/stages', { recursive: true });
 writeFileSync('xz-artifacts/stages/01-stage1.sh', stage3);
 stages.push({
   id: 's3-xz',
-  label: 'Decompress → Stage-1 shell script',
+  label: 'Decompress all 3 streams → Stage-1 shell script',
   description:
-    'Now that it\'s a valid xz stream, xz -d expands it. The output is a 1.3 KB ' +
-    'shell script — the Stage-1 dropper. It will trigger Phase 2 against a different test file.',
+    'xz -d now succeeds on every stream. Output is the concatenation: cover marker ' +
+    '"####Hello####", then the 1.3 KB Stage-1 shell script (the dropper) hidden in stream 2, ' +
+    'then a closing "####World####" marker. The cover markers exist solely to make any ' +
+    'half-curious reviewer think they are looking at hello-world test output.',
   command: 'xz -d',
   kind: 'shell',
   outputSize: stage3.length,

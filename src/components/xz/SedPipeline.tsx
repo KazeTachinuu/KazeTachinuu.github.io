@@ -1,4 +1,8 @@
-import { useState } from 'preact/hooks';
+import { useEffect, useState, useMemo } from 'preact/hooks';
+import { createHighlighterCore, type HighlighterCore } from 'shiki/core';
+import { createJavaScriptRegexEngine } from 'shiki/engine/javascript';
+import joshDark from '../../../themes/josh-dark.js';
+import joshLight from '../../../themes/josh-light.js';
 import data from '../../data/xz-pipeline.json';
 
 interface ElfHeader {
@@ -28,52 +32,137 @@ interface Stage {
 
 const STAGES: Stage[] = data.stages as Stage[];
 
-/* Phase boundaries — stages 1-3 are Phase 1, 4-8 are Phase 2, 9 is the Result. */
-const PHASES = [
-  { idx: 0, title: 'Phase 1', subtitle: 'starting from bad-3-corrupt_lzma2.xz', range: [0, 3] as [number, number] },
-  { idx: 1, title: 'Phase 2', subtitle: 'triggered by Stage-1; operates on good-large_compressed.lzma', range: [3, 8] as [number, number] },
-  { idx: 2, title: 'Result',  subtitle: 'the malicious object that gets linked into liblzma.so.5', range: [8, 9] as [number, number] },
+/* The narrative beats. Three reveals, period.
+   The pipeline string for each is the verbatim chain of commands the dropper runs. */
+const PANELS = [
+  {
+    id: 'p1',
+    title: 'Phase 1 — Stage-1 dropper',
+    inputFile: 'tests/files/bad-3-corrupt_lzma2.xz',
+    inputSize: STAGES[0].outputSize,
+    pipeline: 'tr "\\t \\-_" " \\t_\\-" | xz -d',
+    revealStageId: 's3-xz',
+  },
+  {
+    id: 'p2',
+    title: 'Phase 2 — Stage-2 dropper',
+    inputFile: 'tests/files/good-large_compressed.lzma',
+    inputSize: STAGES[3].outputSize,
+    pipeline: 'xz -dc | (head -c +1024 >/dev/null && head -c +2048) ×16 && head -c +939 | tail -c +31233 | tr "\\114-\\321..." "\\0-\\377" | xz -F raw --lzma1 -dc',
+    revealStageId: 's8-final-shell',
+  },
+  {
+    id: 'p3',
+    title: 'Result — the backdoor',
+    inputFile: null,
+    inputSize: null,
+    pipeline: null,
+    revealStageId: 's9-elf',
+  },
 ];
 
 const fmt = (n: number) => n.toLocaleString();
+const fmtKb = (n: number) => n < 1024 ? `${n} B` : `${(n / 1024).toFixed(1)} KB`;
 
-/* Render hex as offset-prefixed rows of 16 bytes each, with optional
-   highlighting for "notable" byte ranges that the data file flags. */
-function HexView({ hex, notable, maxRows = 8 }: { hex: string; notable?: Notable[]; maxRows?: number }) {
+/* ────────────────────────────────────────────────────────────
+   Theme-aware Shiki highlighter (mirrors src/components/AsmLookup.tsx)
+   ──────────────────────────────────────────────────────────── */
+function useHighlighter() {
+  const [hl, setHl] = useState<HighlighterCore | null>(null);
+  const [dark, setDark] = useState(
+    typeof document !== 'undefined' && document.documentElement.classList.contains('dark')
+  );
+
+  useEffect(() => {
+    createHighlighterCore({
+      themes: [joshDark as any, joshLight as any],
+      langs: [import('shiki/langs/bash.mjs')],
+      engine: createJavaScriptRegexEngine(),
+    }).then(setHl);
+
+    const obs = new MutationObserver(() =>
+      setDark(document.documentElement.classList.contains('dark'))
+    );
+    obs.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+    return () => obs.disconnect();
+  }, []);
+
+  return { hl, dark };
+}
+
+interface Token { content: string; color?: string }
+
+function HighlightedShell({ text, hl, dark }: { text: string; hl: HighlighterCore | null; dark: boolean }) {
+  const tokens = useMemo<Token[][] | null>(() => {
+    if (!hl) return null;
+    try {
+      const r = hl.codeToTokens(text, { lang: 'bash', theme: dark ? 'josh-dark' : 'josh-light' });
+      return r.tokens as Token[][];
+    } catch {
+      return null;
+    }
+  }, [hl, dark, text]);
+
+  if (!tokens) {
+    return <pre class="xz-code"><code>{text}</code></pre>;
+  }
+  return (
+    <pre class="xz-code">
+      <code>
+        {tokens.map((line, i) => (
+          <span class="line" key={i}>
+            {line.map((t, j) => (
+              <span key={j} style={t.color ? { color: t.color } : undefined}>{t.content}</span>
+            ))}
+            {'\n'}
+          </span>
+        ))}
+      </code>
+    </pre>
+  );
+}
+
+function ShellPanel({ stage, hl, dark }: { stage: Stage; hl: HighlighterCore | null; dark: boolean }) {
+  return <HighlightedShell text={stage.outputText ?? ''} hl={hl} dark={dark} />;
+}
+
+function ElfPanel({ stage }: { stage: Stage }) {
+  if (!stage.elfHeader || !stage.outputHex) return null;
+  const h = stage.elfHeader;
   const bytes: string[] = [];
-  for (let i = 0; i < hex.length; i += 2) bytes.push(hex.slice(i, i + 2));
+  for (let i = 0; i < stage.outputHex.length; i += 2) bytes.push(stage.outputHex.slice(i, i + 2));
+  const rows: { offset: number; cells: string[] }[] = [];
+  for (let i = 0; i < bytes.length; i += 16) rows.push({ offset: i, cells: bytes.slice(i, i + 16) });
 
-  function isNotable(byteIdx: number): Notable | null {
-    if (!notable) return null;
-    for (const n of notable) {
+  function notableAt(idx: number): Notable | null {
+    if (!stage.notable) return null;
+    for (const n of stage.notable) {
       const len = n.bytes.length / 2;
-      if (byteIdx >= n.offset && byteIdx < n.offset + len) return n;
+      if (idx >= n.offset && idx < n.offset + len) return n;
     }
     return null;
   }
 
-  const rows: { offset: number; cells: string[] }[] = [];
-  for (let i = 0; i < bytes.length; i += 16) {
-    rows.push({ offset: i, cells: bytes.slice(i, i + 16) });
-  }
-  const visible = rows.slice(0, maxRows);
-  const hidden = rows.length - visible.length;
-
   return (
-    <div class="xz-hex-wrap">
+    <div class="xz-elf">
+      <dl class="xz-elf-meta">
+        <div><dt>Magic</dt><dd><code>{h.magic}</code></dd></div>
+        <div><dt>Class</dt><dd>{h.class}</dd></div>
+        <div><dt>Type</dt><dd>{h.type}</dd></div>
+        <div><dt>Machine</dt><dd>{h.machine}</dd></div>
+        <div><dt>Sections</dt><dd>{h.sectionCount}</dd></div>
+        <div><dt>Size</dt><dd>{fmt(h.totalBytes)} bytes</dd></div>
+      </dl>
+      <p class="xz-elf-caption">First {Math.min(256, stage.outputHex.length / 2)} bytes — the ELF header, then start of the section table:</p>
       <pre class="xz-hex">
-        {visible.map((row) => (
+        {rows.slice(0, 8).map((row) => (
           <div class="xz-hex-row" key={row.offset}>
             <span class="xz-hex-offset">{row.offset.toString(16).padStart(4, '0')}</span>
             <span class="xz-hex-bytes">
               {row.cells.map((b, i) => {
-                const n = isNotable(row.offset + i);
+                const n = notableAt(row.offset + i);
                 return (
-                  <span
-                    class={n ? 'xz-hex-byte xz-hex-notable' : 'xz-hex-byte'}
-                    title={n?.meaning}
-                    key={i}
-                  >{b}</span>
+                  <span class={n ? 'xz-hex-byte xz-hex-notable' : 'xz-hex-byte'} title={n?.meaning} key={i}>{b}</span>
                 );
               })}
             </span>
@@ -86,181 +175,61 @@ function HexView({ hex, notable, maxRows = 8 }: { hex: string; notable?: Notable
           </div>
         ))}
       </pre>
-      {hidden > 0 && (
-        <p class="xz-hex-more">… {hidden} more rows hidden ({fmt(hidden * 16)} bytes)</p>
-      )}
     </div>
   );
 }
 
-/* Side-by-side first-16-byte comparison: shows what `tr` actually changes.
-   Bytes that differ between previous and current are highlighted. */
-function ByteDiff({ prevHex, currHex }: { prevHex: string; currHex: string }) {
-  const N = 32; // 16 bytes = 32 hex chars
-  const prev: string[] = [];
-  const curr: string[] = [];
-  for (let i = 0; i < N; i += 2) {
-    prev.push(prevHex.slice(i, i + 2));
-    curr.push(currHex.slice(i, i + 2));
-  }
-  const changed = prev.map((p, i) => p !== curr[i]);
-  return (
-    <div class="xz-bytediff">
-      <div class="xz-bytediff-row">
-        <span class="xz-bytediff-label">before</span>
-        <span class="xz-bytediff-bytes">
-          {prev.map((b, i) => (
-            <span class={changed[i] ? 'xz-byte changed-from' : 'xz-byte'} key={i}>{b}</span>
-          ))}
-        </span>
-      </div>
-      <div class="xz-bytediff-row">
-        <span class="xz-bytediff-label">after</span>
-        <span class="xz-bytediff-bytes">
-          {curr.map((b, i) => (
-            <span class={changed[i] ? 'xz-byte changed-to' : 'xz-byte'} key={i}>{b}</span>
-          ))}
-        </span>
-      </div>
-      <p class="xz-bytediff-caption">
-        {changed.filter(Boolean).length} of the first 16 bytes changed.
-      </p>
-    </div>
-  );
-}
-
-function ShellView({ text, defaultLines = 14 }: { text: string; defaultLines?: number }) {
-  const [expanded, setExpanded] = useState(false);
-  const lines = text.split('\n');
-  const truncated = lines.length > defaultLines;
-  const shown = expanded || !truncated ? text : lines.slice(0, defaultLines).join('\n');
-  return (
-    <div class="xz-shell-wrap">
-      <pre class="xz-shell"><code>{shown}</code></pre>
-      {truncated && (
-        <button
-          type="button"
-          class="xz-shell-toggle"
-          onClick={() => setExpanded((v) => !v)}
-        >
-          {expanded ? `Collapse — show first ${defaultLines} lines` : `Show full — ${lines.length - defaultLines} more lines`}
-        </button>
-      )}
-    </div>
-  );
-}
-
-function ElfView({ header, hex, notable }: { header: ElfHeader; hex: string; notable?: Notable[] }) {
-  return (
-    <div class="xz-elf">
-      <table class="xz-elf-table">
-        <tbody>
-          <tr><th>Magic</th><td><code>{header.magic}</code></td></tr>
-          <tr><th>Class</th><td>{header.class}</td></tr>
-          <tr><th>Endian</th><td>{header.endian}</td></tr>
-          <tr><th>Type</th><td>{header.type}</td></tr>
-          <tr><th>Machine</th><td>{header.machine}</td></tr>
-          <tr><th>Sections</th><td>{header.sectionCount}</td></tr>
-          <tr><th>Total size</th><td>{fmt(header.totalBytes)} bytes</td></tr>
-        </tbody>
-      </table>
-      <p class="xz-elf-caption">First {Math.min(256, hex.length / 2)} bytes of the file (the ELF header + start of section table):</p>
-      <HexView hex={hex} notable={notable} maxRows={8} />
-    </div>
-  );
-}
-
-function StageCard({ stage, prev, isResult }: { stage: Stage; prev: Stage | null; isResult: boolean }) {
-  const truncated =
-    (stage.kind === 'binary' || stage.kind === 'elf')
-    && (stage.outputHex?.length ?? 0) / 2 < stage.outputSize;
-  const showDiff = stage.kind === 'binary' && prev?.outputHex && stage.outputHex && stage.id !== 's1-input';
+function Panel({
+  panel, stage, hl, dark,
+}: {
+  panel: typeof PANELS[number];
+  stage: Stage;
+  hl: HighlighterCore | null;
+  dark: boolean;
+}) {
+  const isResult = panel.id === 'p3';
+  const lines = stage.outputText?.split('\n').length ?? 0;
 
   return (
-    <article class={`xz-stage xz-stage-${stage.kind}${isResult ? ' xz-stage-result' : ''}`}>
-      <header class="xz-stage-head">
-        <div class="xz-stage-title-row">
-          <span class="xz-stage-kind" data-kind={stage.kind}>
-            {stage.kind === 'shell' ? 'shell script' : stage.kind === 'elf' ? 'ELF object' : 'binary'}
-          </span>
-          <h4 class="xz-stage-title">{stage.label}</h4>
-        </div>
-        <span class="xz-stage-size">
-          {fmt(stage.outputSize)} bytes
-          {truncated && <em> · first {fmt((stage.outputHex!.length / 2))} shown</em>}
-        </span>
+    <article class={`xz-panel${isResult ? ' xz-panel-result' : ''}`}>
+      <header class="xz-panel-head">
+        <h3 class="xz-panel-title">{panel.title}</h3>
+        {!isResult && (
+          <p class="xz-panel-source">
+            from <code>{panel.inputFile}</code> ({fmtKb(panel.inputSize!)}) — produces {fmtKb(stage.outputSize)} of {stage.kind === 'shell' ? 'shell script' : 'binary'} {stage.kind === 'shell' ? `(${lines} lines)` : ''}
+          </p>
+        )}
+        {isResult && (
+          <p class="xz-panel-source">
+            extracted by the Stage-2 dropper, then linked into <code>liblzma.so.5</code> at build time
+          </p>
+        )}
       </header>
 
-      <p class="xz-stage-desc">{stage.description}</p>
-
-      {stage.command && stage.id !== 's1-input' && stage.kind !== 'elf' && (
-        <div class="xz-stage-cmd">
-          <span class="xz-stage-cmd-prompt">$</span>
-          <code>{stage.command}</code>
+      {panel.pipeline && (
+        <div class="xz-panel-pipe">
+          <span class="xz-panel-pipe-label">decoded by</span>
+          <code class="xz-panel-pipe-cmd">{panel.pipeline}</code>
         </div>
       )}
 
-      {showDiff && (
-        <ByteDiff prevHex={prev!.outputHex!} currHex={stage.outputHex!} />
-      )}
-
-      {stage.kind === 'shell' && stage.outputText && <ShellView text={stage.outputText} />}
-      {stage.kind === 'binary' && stage.outputHex && !showDiff && <HexView hex={stage.outputHex} notable={stage.notable} maxRows={6} />}
-      {stage.kind === 'binary' && showDiff && <HexView hex={stage.outputHex!} notable={stage.notable} maxRows={4} />}
-      {stage.kind === 'elf' && stage.elfHeader && stage.outputHex && (
-        <ElfView header={stage.elfHeader} hex={stage.outputHex} notable={stage.notable} />
-      )}
-
-      {stage.notable && stage.kind !== 'elf' && (
-        <ul class="xz-stage-notes">
-          {stage.notable.map((n, i) => (
-            <li key={i}>
-              <code>0x{n.offset.toString(16).padStart(4, '0')}</code> · <strong>{n.bytes}</strong> — {n.meaning}
-            </li>
-          ))}
-        </ul>
-      )}
+      <div class="xz-panel-body">
+        {stage.kind === 'shell' && <ShellPanel stage={stage} hl={hl} dark={dark} />}
+        {stage.kind === 'elf' && <ElfPanel stage={stage} />}
+      </div>
     </article>
   );
 }
 
-function PhaseDivider({ title, subtitle }: { title: string; subtitle: string }) {
-  return (
-    <div class="xz-phase">
-      <div class="xz-phase-rule" aria-hidden="true"></div>
-      <div class="xz-phase-text">
-        <h3 class="xz-phase-title">{title}</h3>
-        <p class="xz-phase-sub">{subtitle}</p>
-      </div>
-      <div class="xz-phase-rule" aria-hidden="true"></div>
-    </div>
-  );
-}
-
 export default function SedPipeline() {
+  const { hl, dark } = useHighlighter();
+
   return (
     <section class="xz-widget xz-sedpipe" aria-label="The XZ build-time payload pipeline">
-      {PHASES.map((phase) => {
-        const phaseStages = STAGES.slice(phase.range[0], phase.range[1]);
-        return (
-          <div class="xz-phase-block" key={phase.idx}>
-            <PhaseDivider title={phase.title} subtitle={phase.subtitle} />
-            <div class="xz-stage-stack">
-              {phaseStages.map((stage, i) => {
-                const globalIdx = phase.range[0] + i;
-                const prev = globalIdx > 0 ? STAGES[globalIdx - 1] : null;
-                return (
-                  <StageCard
-                    key={stage.id}
-                    stage={stage}
-                    prev={prev}
-                    isResult={phase.idx === 2}
-                  />
-                );
-              })}
-            </div>
-          </div>
-        );
+      {PANELS.map((panel) => {
+        const stage = STAGES.find((s) => s.id === panel.revealStageId);
+        if (!stage) return null;
+        return <Panel key={panel.id} panel={panel} stage={stage} hl={hl} dark={dark} />;
       })}
     </section>
   );
