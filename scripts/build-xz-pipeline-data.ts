@@ -2,43 +2,54 @@
  * Pre-compute the sed-pipeline stage data for src/components/xz/SedPipeline.tsx.
  *
  * Runs the *actual* shell transforms against xz-artifacts/extracted/xz-5.6.1/tests/files/.
- * Emits src/data/xz-pipeline.json — an ordered list of stages with inputs,
- * outputs, byte-range provenance, and the script tokens that produced each.
+ * Emits src/data/xz-pipeline.json — an ordered list of stages, each with a
+ * human-readable description, the verbatim shell command, and a content-aware
+ * preview of the output (printable shell script for text stages, annotated hex
+ * for binary stages, ELF header parse for the final object).
  *
- * Determinism: re-runnable; output is checked into git via the data/ collection.
+ * Determinism: re-runnable; output is checked in.
  *
  * macOS note: the original backdoor uses a `head -c` chunker that only works
- * with GNU `head` (which reads byte-by-byte from pipes). BSD `head` on macOS
- * over-reads from pipes, so we substitute a byte-precise `dd`-based chunker
- * for the *display* of the head-chunker stage. The bytes produced are
- * identical to the GNU shell pipeline output.
+ * with GNU `head` (BSD `head` over-reads from pipes). We substitute a byte-precise
+ * `dd` chunker for execution; the produced bytes are byte-identical to the
+ * canonical Linux pipeline (verified against Russ Cox xz-script).
  */
 import { spawnSync } from 'node:child_process';
-import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdirSync, statSync } from 'node:fs';
 import { dirname } from 'node:path';
-import { tmpdir } from 'node:os';
-import { join } from 'node:path';
 
 interface Stage {
   id: string;
   label: string;
-  command: string;            // the actual shell command (display)
-  scriptTokens: string[];     // tokens to highlight on hover
-  inputBytes: string;         // hex-encoded, max 4096 bytes shown
-  outputBytes: string;        // hex-encoded, max 4096 bytes
-  truncated: { input: boolean; output: boolean };
+  description: string;        // 1–3 sentences, plain English: what + why
+  command: string;            // verbatim shell command (display)
+  kind: 'binary' | 'shell' | 'elf';
+  outputSize: number;         // total bytes
+  outputText?: string;        // present when kind=shell — the actual text
+  outputHex?: string;         // present when kind=binary — first 256 bytes hex (annotated by widget)
+  elfHeader?: ElfHeader;      // present when kind=elf
+  notable?: { offset: number; bytes: string; meaning: string }[]; // hex annotations
+}
+
+interface ElfHeader {
+  magic: string;        // "7F 45 4C 46"
+  class: string;        // "ELF64"
+  endian: string;       // "little"
+  type: string;         // "REL (relocatable)"
+  machine: string;      // "x86-64"
+  sectionCount: number;
+  totalBytes: number;
 }
 
 const ART = 'xz-artifacts/extracted/xz-5.6.1/tests/files';
 const BAD = `${ART}/bad-3-corrupt_lzma2.xz`;
 const GOOD = `${ART}/good-large_compressed.lzma`;
+const FINAL_O = 'xz-artifacts/analysis/xzre/liblzma_la-crc64-fast.o';
 
-const MAX_BYTES = 4096;
+const HEX_PREVIEW = 256;     // bytes of hex to show for binary stages
 
-function hex(buf: Buffer): { hex: string; truncated: boolean } {
-  const truncated = buf.length > MAX_BYTES;
-  const slice = truncated ? buf.subarray(0, MAX_BYTES) : buf;
-  return { hex: slice.toString('hex'), truncated };
+function hexPreview(buf: Buffer): string {
+  return buf.subarray(0, HEX_PREVIEW).toString('hex');
 }
 
 function shell(cmd: string, input?: Buffer): Buffer {
@@ -49,176 +60,214 @@ function shell(cmd: string, input?: Buffer): Buffer {
   return r.stdout;
 }
 
+/* Render a buffer as printable text where possible. Non-printable bytes
+   become a U+FFFD-style placeholder so the structure of the script is
+   visible without garbling the rendering. We replace null bytes (which the
+   stage-1 script sprinkles between sections) with a clear marker so the
+   reader can SEE them rather than have them silently disappear. */
+function asPrintable(buf: Buffer): string {
+  const out: string[] = [];
+  for (let i = 0; i < buf.length; i++) {
+    const b = buf[i];
+    if (b === 0x09 || b === 0x0a || b === 0x0d || (b >= 0x20 && b <= 0x7e)) {
+      out.push(String.fromCharCode(b));
+    } else if (b === 0x00) {
+      out.push('␀');
+    } else {
+      out.push('·'); // non-printable
+    }
+  }
+  return out.join('');
+}
+
 const stages: Stage[] = [];
 
 // ── Stage 1: raw input ─────────────────────────────────────────
-const stage1Input = readFileSync(BAD);
-const s1in = hex(stage1Input);
+const stage1 = readFileSync(BAD);
 stages.push({
   id: 's1-input',
-  label: 'tests/files/bad-3-corrupt_lzma2.xz',
-  command: '# raw bytes — looks like a corrupted xz test fixture',
-  scriptTokens: [],
-  inputBytes: s1in.hex,
-  outputBytes: s1in.hex,
-  truncated: { input: s1in.truncated, output: s1in.truncated },
+  label: 'The "corrupted" test fixture',
+  description:
+    'A 512-byte file in the test corpus, disguised as a malformed LZMA test case. ' +
+    'Notice it does NOT start with the xz magic 0xFD 0x37 0x7A 0x58 0x5A 0x00 — by design.',
+  command: '# raw bytes from tests/files/bad-3-corrupt_lzma2.xz',
+  kind: 'binary',
+  outputSize: stage1.length,
+  outputHex: hexPreview(stage1),
+  notable: [{ offset: 0, bytes: stage1.subarray(0, 6).toString('hex'), meaning: 'first 6 bytes — note: NOT the xz magic FD377A585A00' }],
 });
 
 // ── Stage 2: tr substitution ───────────────────────────────────
-// LC_ALL=C is required for BSD tr (macOS) to handle arbitrary bytes;
-// GNU tr in the original build environment behaves the same way.
-const trCmd = `LC_ALL=C tr "\\t \\-_" " \\t_\\-"`;
-const stage2Output = shell(`${trCmd} < ${BAD}`);
-const s2out = hex(stage2Output);
+// Note: LC_ALL=C is needed on macOS BSD tr to operate in byte mode (otherwise
+// "Illegal byte sequence" on non-UTF-8 input). The displayed `command` field
+// omits LC_ALL=C to match the canonical command from the actual decoded script.
+const trCmd = `tr "\\t \\-_" " \\t_\\-"`;
+const stage2 = shell(`LC_ALL=C ${trCmd} < ${BAD}`);
 stages.push({
   id: 's2-tr',
-  label: 'tr "\\t \\-_" " \\t_\\-"',
+  label: 'Substitute four bytes',
+  description:
+    'Swap tab↔space and dash↔underscore. Just four byte-value pairs, but it ' +
+    'transforms the "corrupted" fixture into a valid xz stream — note the new first 6 bytes.',
   command: trCmd,
-  scriptTokens: ['tr', '\\t', '\\-_', '\\t_\\-'],
-  inputBytes: s1in.hex,
-  outputBytes: s2out.hex,
-  truncated: { input: s1in.truncated, output: s2out.truncated },
+  kind: 'binary',
+  outputSize: stage2.length,
+  outputHex: hexPreview(stage2),
+  notable: [{ offset: 0, bytes: stage2.subarray(0, 6).toString('hex'), meaning: 'first 6 bytes — now matches xz magic FD377A585A00' }],
 });
 
-// ── Stage 3: xz -d (now-valid xz stream → shell script) ────────
-const stage3Output = shell(`${trCmd} < ${BAD} | xz -d 2>/dev/null`);
-const s3out = hex(stage3Output);
+// ── Stage 3: xz -d → Stage-1 shell ─────────────────────────────
+const stage3 = shell(`LC_ALL=C ${trCmd} < ${BAD} | xz -d 2>/dev/null`);
+mkdirSync('xz-artifacts/stages', { recursive: true });
+writeFileSync('xz-artifacts/stages/01-stage1.sh', stage3);
 stages.push({
   id: 's3-xz',
-  label: 'xz -d',
+  label: 'Decompress → Stage-1 shell script',
+  description:
+    'Now that it\'s a valid xz stream, xz -d expands it. The output is a 1.3 KB ' +
+    'shell script — the Stage-1 dropper. It will trigger Phase 2 against a different test file.',
   command: 'xz -d',
-  scriptTokens: ['xz', '-d'],
-  inputBytes: s2out.hex,
-  outputBytes: s3out.hex,
-  truncated: { input: s2out.truncated, output: s3out.truncated },
+  kind: 'shell',
+  outputSize: stage3.length,
+  outputText: asPrintable(stage3),
 });
 
-// ── Persist Stage-1 result for reuse ───────────────────────────
-mkdirSync('xz-artifacts/stages', { recursive: true });
-writeFileSync('xz-artifacts/stages/01-stage1.sh', stage3Output);
-
-// ── Stage 4-8: the second pipeline against good-large_compressed.lzma ──
-//
-// Per the actual decoded stage-1 script (xz-artifacts/stages/01-stage1.sh):
-//   xz -dc good-large_compressed.lzma | <head-chunker> | tail -c +31233 |
-//     tr "\114-\321\322-\377\35-\47\14-\34\0-\13\50-\113" "\0-\377" |
-//     xz -F raw --lzma1 -dc
-//
-// The head-chunker is 16 cycles of `(head -c +1024 >/dev/null) && head -c +2048`
-// followed by a final `(head -c +1024 >/dev/null) && head -c +939`.
-// Total: 17 skips × 1024 + 16 keeps × 2048 + 1 keep × 939 = 51,115 bytes consumed,
-// 33,707 bytes output.
-//
-// On GNU systems `head -c` reads bytes one-at-a-time from pipes so the chained
-// invocations work. macOS BSD `head -c` over-reads, breaking the pipe. We
-// substitute a byte-precise `dd`-based chunker that produces identical bytes.
-
-// Display label preserves the original head-based form (what the backdoor uses).
-const HEAD_CHUNKER_LABEL =
-  '((head -c +1024 >/dev/null) && head -c +2048) × 16 && ' +
-  '(head -c +1024 >/dev/null) && head -c +939';
-
-// Byte-precise dd-based chunker. Operates on a temp file holding xz -dc output.
-// Each "cycle" of the original head chunker = skip 1024 then keep 2048 = 3KiB
-// 1024-byte blocks. After 16 cycles we have consumed 48 blocks; the final
-// piece skips 1 more block (block 49) then keeps 939 bytes from block 50.
-function ddChunkerCmd(inputFile: string): string {
-  const parts: string[] = [];
-  for (let i = 0; i < 16; i++) {
-    const skipBlocks = i * 3 + 1; // 1, 4, 7, ... — block index where this cycle's keep starts
-    parts.push(`dd if=${inputFile} bs=1024 skip=${skipBlocks} count=2 2>/dev/null`);
-  }
-  // Final keep: skip block 49, take 939 bytes from block 49+0 onward.
-  // After 16 cycles (each 3 blocks), we've consumed 48 blocks; final skip = block 48+1 = 49.
-  parts.push(`dd if=${inputFile} bs=1 skip=${49 * 1024} count=939 2>/dev/null`);
-  return `{ ${parts.join('; ')}; }`;
-}
-
-const tr2Cmd = `LC_ALL=C tr "\\114-\\321\\322-\\377\\35-\\47\\14-\\34\\0-\\13\\50-\\113" "\\0-\\377"`;
-
-// Run xz -dc once and stash the bytes in a temp file so dd can seek.
-const tmp = join(tmpdir(), `xz-pipeline-${process.pid}.bin`);
-const stage4Out = shell(`xz -dc ${GOOD}`);
-writeFileSync(tmp, stage4Out);
-const s4 = hex(stage4Out);
+// ── Stage 4: xz -dc good-large_compressed.lzma ─────────────────
+const stage4 = shell(`xz -dc ${GOOD}`);
 stages.push({
   id: 's4-xz-dc',
-  label: 'xz -dc good-large_compressed.lzma',
+  label: 'Decompress the second fixture',
+  description:
+    `Phase 2 begins. The 35 KB fixture good-large_compressed.lzma decompresses ` +
+    `into ${stage4.length.toLocaleString()} bytes — a long header of padding wrapped around the encrypted payload.`,
   command: 'xz -dc good-large_compressed.lzma',
-  scriptTokens: ['xz', '-dc'],
-  inputBytes: hex(readFileSync(GOOD)).hex,
-  outputBytes: s4.hex,
-  truncated: { input: false, output: s4.truncated },
+  kind: 'binary',
+  outputSize: stage4.length,
+  outputHex: hexPreview(stage4),
 });
 
-const chunkerCmd = ddChunkerCmd(tmp);
-const stage5Out = shell(chunkerCmd);
-const s5 = hex(stage5Out);
+// ── Stage 5: head chunker ──────────────────────────────────────
+// dd-substituted version (byte-identical to GNU `head -c` chained on Linux)
+const ddChunker = (() => {
+  const parts: string[] = [];
+  for (let i = 0; i < 16; i++) {
+    parts.push(`dd bs=1024 count=1 of=/dev/null 2>/dev/null && dd bs=1024 count=2 2>/dev/null`);
+  }
+  parts.push(`dd bs=1024 count=1 of=/dev/null 2>/dev/null && dd bs=1 count=939 2>/dev/null`);
+  return `(${parts.join(' && ')})`;
+})();
+const stage5 = shell(`xz -dc ${GOOD} | ${ddChunker}`);
 stages.push({
   id: 's5-head-chunks',
-  label: HEAD_CHUNKER_LABEL,
-  command: HEAD_CHUNKER_LABEL,
-  scriptTokens: ['head', '-c', '1024', '2048', '939'],
-  inputBytes: s4.hex,
-  outputBytes: s5.hex,
-  truncated: { input: s4.truncated, output: s5.truncated },
+  label: 'Strip header padding',
+  description:
+    'Skip 1024 bytes / keep 2048 bytes, repeated 16 times, then keep a final 939 bytes — ' +
+    `extracts ${stage5.length.toLocaleString()} bytes from the middle, discarding the cover-padding.`,
+  command:
+    '((head -c +1024 >/dev/null) && head -c +2048) ×16 && (head -c +1024 >/dev/null) && head -c +939',
+  kind: 'binary',
+  outputSize: stage5.length,
+  outputHex: hexPreview(stage5),
 });
 
-const stage6Out = shell(`${chunkerCmd} | tail -c +31233`);
-const s6 = hex(stage6Out);
+// ── Stage 6: tail -c +31233 ────────────────────────────────────
+const stage6 = shell(`xz -dc ${GOOD} | ${ddChunker} | tail -c +31233`);
 stages.push({
   id: 's6-tail',
-  label: 'tail -c +31233',
+  label: 'Keep only the last 475 bytes',
+  description:
+    `tail -c +31233 keeps the bytes starting at offset 31,233. Of the ${stage5.length.toLocaleString()}-byte chunker output, ` +
+    `only ${stage6.length} bytes survive — the LZMA-raw-encoded dropper, still byte-substituted.`,
   command: 'tail -c +31233',
-  scriptTokens: ['tail', '-c', '31233'],
-  inputBytes: s5.hex,
-  outputBytes: s6.hex,
-  truncated: { input: s5.truncated, output: s6.truncated },
+  kind: 'binary',
+  outputSize: stage6.length,
+  outputHex: hexPreview(stage6),
 });
 
-const stage7Out = shell(`${chunkerCmd} | tail -c +31233 | ${tr2Cmd}`);
-const s7 = hex(stage7Out);
+// ── Stage 7: tr substitution cipher ────────────────────────────
+const tr2Cmd = `LC_ALL=C tr "\\114-\\321\\322-\\377\\35-\\47\\14-\\34\\0-\\13\\50-\\113" "\\0-\\377"`;
+const stage7 = shell(`xz -dc ${GOOD} | ${ddChunker} | tail -c +31233 | ${tr2Cmd}`);
 stages.push({
   id: 's7-tr-substitution',
-  label: 'tr "\\114-\\321\\322-\\377\\35-\\47\\14-\\34\\0-\\13\\50-\\113" "\\0-\\377"',
-  command: tr2Cmd,
-  scriptTokens: ['tr', '\\114-\\321\\322-\\377\\35-\\47\\14-\\34\\0-\\13\\50-\\113', '\\0-\\377'],
-  inputBytes: s6.hex,
-  outputBytes: s7.hex,
-  truncated: { input: s6.truncated, output: s7.truncated },
+  label: 'Reverse the byte cipher',
+  description:
+    'A hand-rolled substitution cipher — maps the byte alphabet so that what was scrambled ' +
+    'is now a valid LZMA1 raw stream. Same trick as Stage 2, larger table.',
+  command: 'tr "\\114-\\321\\322-\\377\\35-\\47\\14-\\34\\0-\\13\\50-\\113" "\\0-\\377"',
+  kind: 'binary',
+  outputSize: stage7.length,
+  outputHex: hexPreview(stage7),
 });
 
-const stage8Out = shell(
-  `${chunkerCmd} | tail -c +31233 | ${tr2Cmd} | xz -F raw --lzma1 -dc`
+// ── Stage 8: xz -F raw --lzma1 -dc → Stage-2 shell ─────────────
+const stage8 = shell(
+  `xz -dc ${GOOD} | ${ddChunker} | tail -c +31233 | ${tr2Cmd} | xz -F raw --lzma1 -dc`
 );
-const s8 = hex(stage8Out);
+writeFileSync('xz-artifacts/stages/02-stage2.sh', stage8);
 stages.push({
-  id: 's8-final',
-  label: 'xz -F raw --lzma1 -dc → Stage-2 shell script',
+  id: 's8-final-shell',
+  label: 'Decompress → Stage-2 dropper',
+  description:
+    `Decompressing the LZMA1 raw stream produces a ${stage8.length.toLocaleString()}-byte shell script — the ` +
+    'Stage-2 dropper. This script rewrites libtool config to inject a malicious .o into the build of liblzma.so.5.',
   command: 'xz -F raw --lzma1 -dc',
-  scriptTokens: ['xz', '-F', 'raw', '--lzma1', '-dc'],
-  inputBytes: s7.hex,
-  outputBytes: s8.hex,
-  truncated: { input: s7.truncated, output: s8.truncated },
+  kind: 'shell',
+  outputSize: stage8.length,
+  outputText: asPrintable(stage8),
 });
-writeFileSync('xz-artifacts/stages/02-stage2.sh', stage8Out);
+
+// ── Stage 9: the final .o ──────────────────────────────────────
+// The Stage-2 script extracts and decrypts an additional payload (RC4-like
+// in awk against good-large_compressed.lzma) to produce liblzma_la-crc64-fast.o.
+// We don't re-run that here; we point at the artifact shipped by smx-smx/xzre,
+// which has the same structure, and parse its ELF header.
+const elfBuf = readFileSync(FINAL_O);
+const magic = elfBuf.subarray(0, 4).toString('hex').toUpperCase().match(/.{2}/g)!.join(' ');
+const elfClass = elfBuf[4] === 2 ? 'ELF64' : 'ELF32';
+const elfEndian = elfBuf[5] === 1 ? 'little' : 'big';
+const elfType = elfBuf.readUInt16LE(16);
+const elfMachine = elfBuf.readUInt16LE(18);
+const elfShnum = elfBuf.readUInt16LE(60); // e_shnum at offset 0x3c for ELF64
+const typeName = ({ 1: 'REL (relocatable)', 2: 'EXEC', 3: 'DYN (shared object)' } as Record<number, string>)[elfType] ?? `unknown (${elfType})`;
+const machineName = ({ 0x3e: 'x86-64', 0x28: 'ARM', 0xb7: 'AArch64' } as Record<number, string>)[elfMachine] ?? `unknown (0x${elfMachine.toString(16)})`;
+
+stages.push({
+  id: 's9-elf',
+  label: 'liblzma_la-crc64-fast.o (the backdoor)',
+  description:
+    'The Stage-2 script extracts and RC4-decrypts a third payload (also from good-large_compressed.lzma), ' +
+    `producing this ${elfBuf.length.toLocaleString()}-byte x86-64 ELF object. ` +
+    'It then patches the libtool configuration so that liblzma.so.5 links against it. The hex below is the actual file — readable as machine code, not source.',
+  command: '# extracted by Stage-2 → injected into liblzma.so.5 link',
+  kind: 'elf',
+  outputSize: elfBuf.length,
+  outputHex: hexPreview(elfBuf),
+  elfHeader: {
+    magic,
+    class: elfClass,
+    endian: elfEndian,
+    type: typeName,
+    machine: machineName,
+    sectionCount: elfShnum,
+    totalBytes: elfBuf.length,
+  },
+  notable: [
+    { offset: 0, bytes: elfBuf.subarray(0, 4).toString('hex'), meaning: 'ELF magic — confirms this is now an executable binary, not a script' },
+    { offset: 4, bytes: elfBuf.subarray(4, 5).toString('hex'), meaning: '0x02 = ELF64' },
+    { offset: 5, bytes: elfBuf.subarray(5, 6).toString('hex'), meaning: '0x01 = little-endian' },
+    { offset: 18, bytes: elfBuf.subarray(18, 20).toString('hex'), meaning: '0x3E 0x00 = x86-64 (EM_X86_64)' },
+  ],
+});
 
 // ── Invariants ─────────────────────────────────────────────────
-// Stage-1 output must contain the eval/srcdir markers
-const s3str = stage3Output.toString('utf8', 0, 500);
-if (!s3str.includes('eval') && !s3str.includes('srcdir')) {
-  throw new Error(`Stage-3 output doesn't look like the stage-1 shell script:\n${s3str}`);
-}
-// Stage-8 output must be a shell script (Stage 2)
-const s8str = stage8Out.toString('utf8', 0, 500);
-if (!s8str.includes('AWK') && !s8str.includes('eval') && !s8str.includes('srcdir')) {
-  console.warn(`Stage-8 output (first 500 bytes utf8): ${s8str}`);
-  // Don't throw — RC4-decoded shell can have non-utf8 prefix; just warn.
-}
-if (stages.length !== 8) throw new Error(`Expected 8 stages, got ${stages.length}`);
+if (stages.length !== 9) throw new Error(`Expected 9 stages, got ${stages.length}`);
+if (!stages[2].outputText?.includes('Hello')) throw new Error('Stage-3 shell script missing the ####Hello#### marker');
+if (!stages[7].outputText?.includes('pic_flag')) throw new Error('Stage-8 shell script missing the pic_flag marker');
+if (stages[8].elfHeader?.magic !== '7F 45 4C 46') throw new Error('Stage-9 ELF magic mismatch');
 
 // ── Emit ───────────────────────────────────────────────────────
 const out = 'src/data/xz-pipeline.json';
 mkdirSync(dirname(out), { recursive: true });
 writeFileSync(out, JSON.stringify({ stages, generatedAt: new Date().toISOString() }, null, 2));
-console.log(`wrote ${out} — ${stages.length} stages, ${Buffer.byteLength(JSON.stringify(stages))} bytes`);
+const sizeOut = statSync(out).size;
+console.log(`wrote ${out} — ${stages.length} stages, ${sizeOut.toLocaleString()} bytes (${(sizeOut / 1024).toFixed(1)} KB)`);
