@@ -88,10 +88,9 @@ package.json                                   # T1 — add deps: scrollama, mot
 ```bash
 cd /Users/hugo/dev/Github/KazeTachinuu.github.io
 bun add scrollama motion
-bun add -d @types/scrollama
 ```
 
-Expected: `package.json` updated; `bun.lock` updated. Versions at install time should be `scrollama@^3` and `motion@^11+`. If versions differ wildly, investigate before proceeding.
+Expected: `package.json` updated; `bun.lock` updated. Versions at install time should be `scrollama@^3` and `motion@^11+`. If versions differ wildly, investigate before proceeding. (Note: `scrollama` v3+ ships its own TypeScript types — no separate `@types/scrollama` package is needed or available on npm.)
 
 - [ ] **Step 2: Create directory scaffolding**
 
