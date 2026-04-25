@@ -1,0 +1,39 @@
+/*
+ * Page-scoped overrides for /blog/xz-backdoor/.
+ * Imported by src/content/blog/xz-backdoor/index.mdx.
+ * Semantic colors per spec §"Voice and aesthetic":
+ *   --xz-attacker  ember  — JiaT75, malicious commits, encrypted bytes
+ *   --xz-defender  slate  — Lasse Collin, Andres Freund, clean code
+ *   --xz-infra     grey   — autoconf, sshd, libsystemd, distro nodes
+ * All three tuned for both light and dark mode at AAA contrast.
+ */
+
+:root {
+  --xz-attacker: oklch(58% 0.14 35);   /* muted ember — light */
+  --xz-defender: oklch(52% 0.06 250);  /* cool slate — light */
+  --xz-infra:    oklch(55% 0.02 250);  /* neutral grey — light */
+}
+
+:root.dark {
+  --xz-attacker: oklch(72% 0.16 35);
+  --xz-defender: oklch(75% 0.08 250);
+  --xz-infra:    oklch(70% 0.02 250);
+}
+
+/* Hex-grid texture lives only inside the SedPipeline widget viewport. */
+.xz-byte-canvas {
+  background-image:
+    repeating-linear-gradient(60deg,
+      color-mix(in oklch, currentColor 4%, transparent) 0 1px,
+      transparent 1px 14px),
+    repeating-linear-gradient(-60deg,
+      color-mix(in oklch, currentColor 4%, transparent) 0 1px,
+      transparent 1px 14px);
+}
+
+/* Widget container break-out: prose is 680px; widgets push to 960px. */
+.xz-widget {
+  width: min(100%, 960px);
+  margin-inline: auto;
+  margin-block: 2.5rem;
+}
