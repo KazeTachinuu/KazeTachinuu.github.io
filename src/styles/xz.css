@@ -37,3 +37,103 @@
   margin-inline: auto;
   margin-block: 2.5rem;
 }
+
+/* SedPipeline (③) */
+.xz-sedpipe {
+  border: 1px solid color-mix(in oklch, currentColor 12%, transparent);
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  font-family: var(--font-mono, ui-monospace, monospace);
+}
+.xz-sedpipe-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 1rem;
+}
+.xz-sedpipe-counter {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--xz-infra);
+}
+.xz-sedpipe-title {
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: 0.9rem;
+  margin: 0;
+  color: var(--xz-attacker);
+}
+.xz-sedpipe-cmd {
+  background: color-mix(in oklch, currentColor 4%, transparent);
+  border-radius: 0.25rem;
+  padding: 0.5rem 0.75rem;
+  margin-bottom: 1rem;
+  overflow-x: auto;
+  white-space: pre;
+}
+.xz-sedpipe-grids {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+@media (max-width: 720px) {
+  .xz-sedpipe-grids { grid-template-columns: 1fr; }
+}
+.xz-sedpipe-grid-label {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--xz-infra);
+  margin-bottom: 0.25rem;
+}
+.xz-sedpipe-grid-label em {
+  text-transform: none;
+  letter-spacing: 0;
+  font-style: italic;
+}
+.xz-byte-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.15rem;
+  font-size: 0.65rem;
+  line-height: 1.2;
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+  max-height: 18rem;
+  overflow-y: auto;
+}
+.xz-byte {
+  padding: 0.05rem 0.15rem;
+  color: color-mix(in oklch, currentColor 65%, transparent);
+}
+.xz-byte-hl {
+  color: var(--xz-attacker);
+  background: color-mix(in oklch, var(--xz-attacker) 10%, transparent);
+  border-radius: 2px;
+}
+.xz-sedpipe-nav {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  margin-top: 1rem;
+}
+.xz-sedpipe-nav button {
+  padding: 0.25rem 0.75rem;
+  border: 1px solid color-mix(in oklch, currentColor 20%, transparent);
+  border-radius: 0.25rem;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  font-size: 1rem;
+}
+.xz-sedpipe-nav button:hover:not(:disabled) {
+  border-color: var(--xz-attacker);
+  color: var(--xz-attacker);
+}
+.xz-sedpipe-nav button:disabled { opacity: 0.4; cursor: not-allowed; }
+.xz-sedpipe-hint {
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--xz-infra);
+  margin-top: 0.75rem;
+}
