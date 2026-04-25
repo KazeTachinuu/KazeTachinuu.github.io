@@ -1,0 +1,32 @@
+---
+/**
+ * Inline-link an x86-64 mnemonic to its AsmLookup entry.
+ * Usage in MDX:  <Mnemonic op="cmovne">cmovne</Mnemonic>
+ *
+ * The op prop is the AsmLookup slug (lowercased mnemonic). The link opens
+ * in a new tab so the reader doesn't lose their place in the article.
+ */
+interface Props {
+  op: string;
+}
+const { op } = Astro.props;
+---
+<a
+  class="xz-mnemonic"
+  href={`/tools/asm-lookup/?op=${op}`}
+  target="_blank"
+  rel="noopener"
+  title={`Look up ${op} in AsmLookup`}
+><slot /></a>
+
+<style>
+.xz-mnemonic {
+  text-decoration: underline dotted;
+  text-underline-offset: 0.18em;
+  color: inherit;
+}
+.xz-mnemonic:hover {
+  color: var(--accent, currentColor);
+  text-decoration-style: solid;
+}
+</style>
