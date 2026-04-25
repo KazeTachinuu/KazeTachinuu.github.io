@@ -1,206 +1,28 @@
 /*
  * Page-scoped overrides for /blog/xz-backdoor/.
- * Only invent tokens for true semantic distinctions; reuse global tokens for everything else.
+ * Imported by src/content/blog/xz-backdoor/index.mdx.
+ * Semantic colors per spec §"Voice and aesthetic":
+ *   --xz-attacker  ember  — JiaT75, malicious commits, encrypted bytes
+ *   --xz-defender  slate  — Lasse Collin, Andres Freund, clean code
+ *   --xz-infra     grey   — autoconf, sshd, libsystemd, distro nodes
+ * All three tuned for both light and dark mode at AAA contrast.
  */
 
 :root {
-  --xz-attacker: oklch(58% 0.16 30);
-  --xz-defender: oklch(50% 0.10 240);
-}
-:root.dark {
-  --xz-attacker: oklch(74% 0.16 30);
-  --xz-defender: oklch(76% 0.10 240);
+  --xz-attacker: oklch(58% 0.14 35);   /* muted ember — light */
+  --xz-defender: oklch(52% 0.06 250);  /* cool slate — light */
+  --xz-infra:    oklch(55% 0.02 250);  /* neutral grey — light */
 }
 
+:root.dark {
+  --xz-attacker: oklch(72% 0.16 35);
+  --xz-defender: oklch(75% 0.08 250);
+  --xz-infra:    oklch(70% 0.02 250);
+}
+
+/* Widget container break-out: prose is 680px; widgets push to 960px. */
 .xz-widget {
   width: min(100%, 960px);
   margin-inline: auto;
-  margin-block: 3rem;
-}
-
-/* ═══════════════════════════════════════════════════════════════════
-   SedPipeline (③) — three-panel reveal
-   ═══════════════════════════════════════════════════════════════════ */
-
-.xz-sedpipe {
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-}
-
-.xz-panel {
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 1.5rem;
-}
-.xz-panel-result {
-  border-color: color-mix(in oklch, var(--xz-attacker) 30%, var(--border));
-  background: color-mix(in oklch, var(--xz-attacker) 4%, transparent);
-}
-
-.xz-panel-head { margin-bottom: 1rem; }
-.xz-panel-title {
-  font-family: var(--font-serif);
-  font-style: italic;
-  font-size: 1.4rem;
-  font-weight: 500;
-  margin: 0 0 0.35rem;
-  color: var(--page-text);
-  letter-spacing: -0.005em;
-}
-.xz-panel-result .xz-panel-title { color: var(--xz-attacker); }
-.xz-panel-source {
-  font-family: var(--font-sans);
-  font-size: 0.85rem;
-  color: var(--muted);
-  margin: 0;
-}
-.xz-panel-source code {
-  font-family: var(--font-mono);
-  font-size: 0.78rem;
-  color: var(--text-secondary);
-  background: color-mix(in oklch, currentColor 6%, transparent);
-  padding: 0.05rem 0.35rem;
-  border-radius: 3px;
-}
-
-/* "decoded by" pipeline caption */
-.xz-panel-pipe {
-  margin: 0 0 1rem;
-  padding: 0.6rem 0.85rem;
-  background: var(--code-bg);
-  border: 1px solid var(--code-border);
-  border-radius: 6px;
-  display: flex;
-  gap: 0.7rem;
-  align-items: baseline;
-  flex-wrap: wrap;
-}
-.xz-panel-pipe-label {
-  font-family: var(--font-sans);
-  font-size: 0.7rem;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--muted);
-  white-space: nowrap;
-}
-.xz-panel-pipe-cmd {
-  font-family: var(--font-mono);
-  font-size: 0.78rem;
-  color: var(--page-text);
-  word-break: break-all;
-  white-space: normal;
-  line-height: 1.6;
-}
-
-/* Shell view — Shiki output */
-.xz-code {
-  font-family: var(--font-mono);
-  font-size: 0.85rem;
-  line-height: 1.6;
-  padding: 1rem 1.15rem;
-  margin: 0;
-  background: var(--code-bg);
-  border: 1px solid var(--code-border);
-  border-radius: 8px;
-  overflow-x: auto;
-  max-height: 32rem;
-  overflow-y: auto;
-}
-.xz-code code {
-  font-family: inherit;
-  background: none;
-  color: inherit;
-  padding: 0;
-}
-.xz-code .line { display: inline; }
-
-/* ELF view */
-.xz-elf {
-  /* sits inside the result panel; no extra background needed */
-}
-.xz-elf-meta {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
-  gap: 0.5rem 1.25rem;
-  margin: 0 0 1rem;
-  padding: 0.85rem 1rem;
-  background: var(--code-bg);
-  border: 1px solid var(--code-border);
-  border-radius: 6px;
-}
-.xz-elf-meta > div {
-  display: flex;
-  flex-direction: column;
-  gap: 0.1rem;
-}
-.xz-elf-meta dt {
-  font-family: var(--font-sans);
-  font-size: 0.65rem;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--muted);
-}
-.xz-elf-meta dd {
-  margin: 0;
-  font-family: var(--font-mono);
-  font-size: 0.85rem;
-  color: var(--page-text);
-}
-.xz-elf-meta dd code {
-  font-family: inherit;
-  color: var(--xz-attacker);
-  font-weight: 700;
-  background: none;
-  padding: 0;
-}
-.xz-elf-caption {
-  font-family: var(--font-sans);
-  font-size: 0.78rem;
-  color: var(--muted);
-  margin: 0 0 0.5rem;
-  font-style: italic;
-}
-
-/* Hex viewer (used inside ELF panel) */
-.xz-hex {
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  line-height: 1.55;
-  padding: 0.85rem 1rem;
-  margin: 0;
-  background: var(--code-bg);
-  border: 1px solid var(--code-border);
-  border-radius: 6px;
-  overflow-x: auto;
-  white-space: pre;
-}
-.xz-hex-row {
-  display: grid;
-  grid-template-columns: 3.5em 1fr 9.5em;
-  gap: 1.25rem;
-  align-items: baseline;
-}
-.xz-hex-offset { color: var(--muted); user-select: none; }
-.xz-hex-bytes { display: inline-flex; flex-wrap: wrap; gap: 0.18rem 0.5rem; }
-.xz-hex-byte { color: var(--text-secondary); }
-.xz-hex-notable {
-  color: var(--xz-attacker);
-  font-weight: 700;
-  background: color-mix(in oklch, var(--xz-attacker) 14%, transparent);
-  border-radius: 2px;
-  padding: 0 2px;
-}
-.xz-hex-ascii {
-  color: var(--muted);
-  letter-spacing: 0.04em;
-}
-
-/* Mobile */
-@media (max-width: 640px) {
-  .xz-panel { padding: 1.1rem; }
-  .xz-panel-title { font-size: 1.2rem; }
-  .xz-code { font-size: 0.78rem; padding: 0.8rem; }
-  .xz-hex { font-size: 0.7rem; }
-  .xz-hex-row { grid-template-columns: 3em 1fr 7.5em; gap: 0.6rem; }
+  margin-block: 2.5rem;
 }

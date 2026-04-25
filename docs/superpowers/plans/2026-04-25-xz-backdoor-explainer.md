@@ -730,7 +730,17 @@ git commit -m "xz: <Mnemonic> shortcode — links AT&T mnemonics to AsmLookup"
 
 ---
 
-## Task 8: SedPipeline widget (CHECKPOINT — review with Hugo before continuing)
+## Task 8: SedPipeline widget (REVERTED 2026-04-25 — needs redesign)
+
+**Status:** all T8 implementation reverted on 2026-04-25 after multiple iterations failed Hugo's visual review. The infrastructure (data extraction, Shiki integration, ELF parsing) was sound; the *content design* was not. Specifically, hex-grid views of binary data were illegible, vertical stacks were too long, and hand-written interpretive prose ("defense in depth", "decoy continued", etc.) was hallucinated rather than sourced.
+
+**Before re-attempting T8:** read the memory entries `feedback_xz_widget_design_lessons.md` (what failed) and `project_xz_payload_facts.md` (verified-correct values to use directly). Brainstorm the design with Hugo *before* coding — the simplest answer (three Expressive Code blocks + Hugo's prose, no widget at all) is on the table.
+
+**Files to (re)create when T8 is redesigned:** `src/components/xz/SedPipeline.tsx` (or replacement), possibly `src/components/xz/shared/motion.ts`, possibly `src/data/xz-pipeline.json` + `scripts/build-xz-pipeline-data.ts` (the data-extraction logic itself was verified-correct against Russ Cox xz-script — preserved in the git history at commit `a3c06cf` if useful).
+
+— Original task description below for reference —
+
+
 
 **Files:**
 - Create: `src/components/xz/SedPipeline.tsx`
