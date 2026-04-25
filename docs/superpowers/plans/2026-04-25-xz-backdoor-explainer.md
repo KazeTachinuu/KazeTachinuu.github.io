@@ -511,24 +511,26 @@ writeFileSync('xz-artifacts/stages/01-stage1.sh', stage3Output);
 // stopping before /bin/sh.
 //
 // The pipeline (per Russ Cox / Sam James):
-//   xz -dc good-large_compressed.lzma | <head-chunker> | tail -c +31265 |
-//     tr "\\5-\\$\\0-\\7" "\\$\\0-\\5\\6-\\7" | xz -F raw --lzma1 -dc
+//   xz -dc good-large_compressed.lzma | <head-chunker> | tail -c +31233 |
+//     tr "\\114-\\321\\322-\\377\\35-\\47\\14-\\34\\0-\\13\\50-\\113" "\\0-\\377" | xz -F raw --lzma1 -dc
 //
 // We codify it explicitly, then verify the final magic bytes are an ELF header.
 
+// Per Russ Cox xz-script (https://research.swtch.com/xz-script):
+//   xz-5.6.1 uses 16 cycles + final head -c +939, then tail -c +31233,
+//          then tr "\114-\321\322-\377\35-\47\14-\34\0-\13\50-\113" "\0-\377"
+//   xz-5.6.0 uses different values (head -c +724, tail -c +31233, different tr table).
+// The values below are for 5.6.1 only — verified against the actual decoded
+// stage-1 script in xz-artifacts/stages/01-stage1.sh.
+//
+// PORTABILITY: chained `head -c` in subshells has different pipe-buffering
+// semantics on BSD vs GNU. Use `dd` substitution if running on macOS — see
+// the implementer's adaptation in scripts/build-xz-pipeline-data.ts. The
+// resulting bytes are byte-identical to the canonical Linux pipeline (hash
+// 654c673c…10bbf6a1 for the final stage-2.sh).
 const HEAD_CHUNKER =
-  // Repeats: skip 1024 + keep 2048, ending with keep 939. Per Russ Cox xz-script.
-  '((head -c +1024 >/dev/null) && head -c +2048 && ' +
-  '(head -c +1024 >/dev/null) && head -c +2048 && ' +
-  '(head -c +1024 >/dev/null) && head -c +2048 && ' +
-  '(head -c +1024 >/dev/null) && head -c +2048 && ' +
-  '(head -c +1024 >/dev/null) && head -c +2048 && ' +
-  '(head -c +1024 >/dev/null) && head -c +2048 && ' +
-  '(head -c +1024 >/dev/null) && head -c +2048 && ' +
-  '(head -c +1024 >/dev/null) && head -c +2048 && ' +
-  '(head -c +1024 >/dev/null) && head -c +2048 && ' +
-  '(head -c +1024 >/dev/null) && head -c +2048 && ' +
-  '(head -c +1024 >/dev/null) && head -c +939)';
+  '(' + Array(16).fill('(head -c +1024 >/dev/null) && head -c +2048').join(' && ') +
+  ' && (head -c +1024 >/dev/null) && head -c +939)';
 
 const stage4Out = shell(`xz -dc ${GOOD}`);
 const s4 = hex(stage4Out);
@@ -554,24 +556,24 @@ stages.push({
   truncated: { input: s4.truncated, output: s5.truncated },
 });
 
-const stage6Out = shell(`xz -dc ${GOOD} | ${HEAD_CHUNKER} | tail -c +31265`);
+const stage6Out = shell(`xz -dc ${GOOD} | ${HEAD_CHUNKER} | tail -c +31233`);
 const s6 = hex(stage6Out);
 stages.push({
   id: 's6-tail',
-  label: 'tail -c +31265',
-  command: 'tail -c +31265',
+  label: 'tail -c +31233',
+  command: 'tail -c +31233',
   scriptTokens: ['tail', '-c', '31265'],
   inputBytes: s5.hex,
   outputBytes: s6.hex,
   truncated: { input: s5.truncated, output: s6.truncated },
 });
 
-const tr2Cmd = `LC_ALL=C tr "\\5-\\$\\0-\\7" "\\$\\0-\\5\\6-\\7"`;
-const stage7Out = shell(`xz -dc ${GOOD} | ${HEAD_CHUNKER} | tail -c +31265 | ${tr2Cmd}`);
+const tr2Cmd = `LC_ALL=C tr "\\114-\\321\\322-\\377\\35-\\47\\14-\\34\\0-\\13\\50-\\113" "\\0-\\377"`;
+const stage7Out = shell(`xz -dc ${GOOD} | ${HEAD_CHUNKER} | tail -c +31233 | ${tr2Cmd}`);
 const s7 = hex(stage7Out);
 stages.push({
   id: 's7-tr-substitution',
-  label: 'tr "\\5-\\$\\0-\\7" "\\$\\0-\\5\\6-\\7"',
+  label: 'tr "\\114-\\321\\322-\\377\\35-\\47\\14-\\34\\0-\\13\\50-\\113" "\\0-\\377"',
   command: tr2Cmd,
   scriptTokens: ['tr', '\\5-\\$\\0-\\7', '\\$\\0-\\5\\6-\\7'],
   inputBytes: s6.hex,
@@ -580,7 +582,7 @@ stages.push({
 });
 
 const stage8Out = shell(
-  `xz -dc ${GOOD} | ${HEAD_CHUNKER} | tail -c +31265 | ${tr2Cmd} | xz -F raw --lzma1 -dc`
+  `xz -dc ${GOOD} | ${HEAD_CHUNKER} | tail -c +31233 | ${tr2Cmd} | xz -F raw --lzma1 -dc`
 );
 const s8 = hex(stage8Out);
 stages.push({
