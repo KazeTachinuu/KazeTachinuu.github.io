@@ -10,7 +10,7 @@ import ArticleLikes from '~/components/ArticleLikes.astro';
 import * as MDX from '~/components/mdx';
 
 export const getStaticPaths = (async () => {
-  const posts = await getCollection('blog', (e) => !e.data.draft);
+  const posts = await getCollection('blog', (e) => import.meta.env.DEV || !e.data.draft);
   return posts.map((p) => ({ params: { slug: p.id }, props: { post: p } }));
 }) satisfies GetStaticPaths;
 
