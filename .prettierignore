@@ -1,0 +1,10 @@
+# Prettier mangles MDX comments — converts {/* */} to {/_ _/} because it
+# sees the asterisks as italic markers. Skip MDX entirely; format manually.
+*.mdx
+*.md
+
+# Build/lock files don't need formatting.
+dist/
+node_modules/
+bun.lock
+package-lock.json

@@ -805,11 +805,16 @@
   padding: 1.25rem 0 1.25rem 1.25rem;
   border-left: 2px solid var(--border);
   margin-bottom: 1.5rem;
-  min-height: 50vh;
   opacity: 0.55;
   transition:
     opacity 0.3s ease,
     border-color 0.3s ease;
+}
+/* All steps but the last get scroll distance so scrollama can fire
+   each trigger separately. The last step is the terminal state — no
+   dead air below. */
+.xz-dg-step:not(:last-child) {
+  min-height: 50vh;
 }
 .xz-dg-step[data-active="true"] {
   opacity: 1;
@@ -851,4 +856,66 @@
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
   }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   "Try it yourself" callout — RE-course aside.
+   Marked .not-prose so Tailwind Typography doesn't auto-quote it.
+───────────────────────────────────────────────────────────────────────── */
+
+.xz-tryit {
+  margin: 2rem auto;
+  max-width: min(100%, 720px);
+  padding: 1.25rem 1.5rem;
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--xz-defender);
+  border-radius: 0 8px 8px 0;
+  background: var(--subtle-bg);
+  color: var(--text-secondary);
+  font-family: var(--font-sans);
+  font-size: 0.9375rem;
+  line-height: 1.6;
+}
+.xz-tryit-title {
+  margin: 0 0 0.75rem;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--xz-defender);
+}
+.xz-tryit p {
+  margin: 0 0 0.75rem;
+}
+.xz-tryit p:last-child {
+  margin-bottom: 0;
+}
+.xz-tryit ul {
+  list-style: disc;
+  margin: 0;
+  padding-left: 1.25rem;
+}
+.xz-tryit li {
+  margin-bottom: 0.5rem;
+  overflow-wrap: anywhere;
+}
+.xz-tryit li:last-child {
+  margin-bottom: 0;
+}
+.xz-tryit code {
+  font-family: var(--font-mono);
+  font-size: 0.875em;
+  padding: 0.1em 0.35em;
+  background: color-mix(in srgb, var(--page-text) 6%, transparent);
+  border-radius: 3px;
+  color: var(--page-text);
+}
+.xz-tryit a {
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px dotted color-mix(in srgb, var(--accent) 50%, transparent);
+}
+.xz-tryit a:hover {
+  border-bottom-style: solid;
 }
