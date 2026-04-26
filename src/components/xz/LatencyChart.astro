@@ -1,0 +1,125 @@
+---
+/**
+ * Tiny inline SVG bar chart: sshd connection latency before vs after the
+ * malicious liblzma was loaded. Numbers from Andres Freund's oss-security
+ * post — ~0.3s baseline → ~0.8s with the backdoor active.
+ *   https://www.openwall.com/lists/oss-security/2024/03/29/4
+ */
+const bars = [
+  { label: "5.4.6 (clean)", ms: 300, kind: "defender" },
+  { label: "5.6.0 (backdoor)", ms: 800, kind: "attacker" },
+  { label: "5.6.1 (backdoor)", ms: 800, kind: "attacker" },
+];
+const W = 480;
+const H = 200;
+const PAD = { l: 110, r: 28, t: 16, b: 36 };
+const innerW = W - PAD.l - PAD.r;
+const innerH = H - PAD.t - PAD.b;
+const maxMs = 1000;
+const rowH = innerH / bars.length;
+const barH = rowH * 0.55;
+const ticks = [0, 250, 500, 750, 1000];
+---
+
+<figure
+  class="xz-widget xz-latency"
+  aria-label="sshd connection latency, clean versus backdoored"
+>
+  <svg
+    viewBox={`0 0 ${W} ${H}`}
+    role="img"
+    aria-label="sshd latency comparison"
+    class="xz-latency-svg"
+  >
+    {
+      ticks.map((t) => (
+        <g>
+          <line
+            x1={PAD.l + (t / maxMs) * innerW}
+            x2={PAD.l + (t / maxMs) * innerW}
+            y1={PAD.t}
+            y2={PAD.t + innerH}
+            stroke="currentColor"
+            stroke-opacity="0.08"
+          />
+          <text
+            x={PAD.l + (t / maxMs) * innerW}
+            y={H - 12}
+            text-anchor="middle"
+            font-size="10"
+            fill="var(--muted)"
+            class="xz-latency-tick"
+          >
+            {t}ms
+          </text>
+        </g>
+      ))
+    }
+    {
+      bars.map((b, i) => (
+        <g>
+          <text
+            x={PAD.l - 10}
+            y={PAD.t + i * rowH + rowH / 2 + 4}
+            text-anchor="end"
+            font-size="11"
+            fill="var(--page-text)"
+            class="xz-latency-label"
+          >
+            {b.label}
+          </text>
+          <rect
+            x={PAD.l}
+            y={PAD.t + i * rowH + (rowH - barH) / 2}
+            width={(b.ms / maxMs) * innerW}
+            height={barH}
+            fill={`var(--xz-${b.kind})`}
+            rx="2"
+          />
+          <text
+            x={PAD.l + (b.ms / maxMs) * innerW + 6}
+            y={PAD.t + i * rowH + rowH / 2 + 4}
+            font-size="11"
+            fill="var(--muted)"
+            class="xz-latency-value"
+          >
+            {b.ms}ms
+          </text>
+        </g>
+      ))
+    }
+  </svg>
+  <figcaption>
+    Approximate sshd connection time, clean vs backdoored — the 500 ms anomaly
+    that tipped Andres Freund off.
+  </figcaption>
+</figure>
+
+<style>
+  .xz-latency {
+    margin: 1.75rem auto 2.5rem;
+    max-width: 560px;
+    text-align: center;
+  }
+  .xz-latency-svg {
+    width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+    color: var(--page-text);
+  }
+  .xz-latency-svg text {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+  }
+  .xz-latency-label {
+    font-weight: 500;
+  }
+  .xz-latency figcaption {
+    font-size: 0.8125rem;
+    color: var(--muted);
+    font-style: italic;
+    margin-top: 0.75rem;
+    line-height: 1.5;
+  }
+</style>
