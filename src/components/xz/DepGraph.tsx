@@ -4,49 +4,69 @@ import scrollama from "scrollama";
 type Stage = "legitimate" | "ifunc" | "attack";
 
 interface Node {
+  /** rect center, in viewBox units */
   x: number;
   y: number;
   label: string;
   sub?: string;
 }
+
+const NODE_W = 168;
+const NODE_H = 44;
+
+/* Layout: top row is the legitimate dep chain (sshd → libsystemd → liblzma).
+   Bottom row hosts the two malicious targets, each placed directly under
+   the node it pairs with so edges run along the rectangle perimeter and
+   never cross another node. */
 const NODES: Record<string, Node> = {
-  sshd: { x: 90, y: 60, label: "sshd" },
+  sshd: { x: 110, y: 60, label: "sshd" },
   libsystemd: {
-    x: 300,
+    x: 360,
     y: 60,
     label: "libsystemd.so.0",
     sub: "sd_notify (distro patch)",
   },
-  liblzma: { x: 510, y: 60, label: "liblzma.so.5" },
-  rsa: { x: 300, y: 220, label: "RSA_public_decrypt", sub: "libcrypto" },
-  ifunc: { x: 510, y: 220, label: "IFUNC resolver", sub: "_get_cpuid" },
+  liblzma: { x: 610, y: 60, label: "liblzma.so.5" },
+  rsa: { x: 110, y: 280, label: "RSA_public_decrypt", sub: "libcrypto" },
+  ifunc: { x: 610, y: 280, label: "IFUNC resolver", sub: "_get_cpuid" },
 };
 
 interface Edge {
   from: keyof typeof NODES;
   to: keyof typeof NODES;
   label: string;
+  /** "h" = horizontal, "v" = vertical — used to choose endpoint trim. */
+  axis: "h" | "v";
+  /** Where to place the label relative to the edge midpoint. */
+  labelSide: "above" | "below" | "left" | "right";
   stages: Stage[];
   malicious?: boolean;
   dashed?: boolean;
 }
+
 const EDGES: Edge[] = [
   {
     from: "sshd",
     to: "libsystemd",
     label: "sd_notify",
+    axis: "h",
+    labelSide: "above",
     stages: ["legitimate", "ifunc", "attack"],
   },
   {
     from: "libsystemd",
     to: "liblzma",
     label: "journal compress",
+    axis: "h",
+    labelSide: "above",
     stages: ["legitimate", "ifunc", "attack"],
   },
   {
     from: "liblzma",
     to: "ifunc",
     label: "IFUNC @ CRC64",
+    axis: "v",
+    labelSide: "right",
     stages: ["ifunc", "attack"],
     malicious: true,
   },
@@ -54,6 +74,8 @@ const EDGES: Edge[] = [
     from: "ifunc",
     to: "rsa",
     label: "patches GOT",
+    axis: "h",
+    labelSide: "below",
     stages: ["ifunc", "attack"],
     malicious: true,
     dashed: true,
@@ -62,6 +84,8 @@ const EDGES: Edge[] = [
     from: "sshd",
     to: "rsa",
     label: "cert verify",
+    axis: "v",
+    labelSide: "left",
     stages: ["attack"],
     malicious: true,
   },
@@ -85,8 +109,43 @@ const STEPS: { stage: Stage; title: string; body: string }[] = [
   },
 ];
 
-const NODE_W = 180;
-const NODE_H = 44;
+/* Compute the segment endpoints trimmed to the rect edges, plus a label
+   anchor offset perpendicular to the edge. Pure geometry, no rendering. */
+function edgeGeom(e: Edge) {
+  const a = NODES[e.from];
+  const b = NODES[e.to];
+  const halfW = NODE_W / 2;
+  const halfH = NODE_H / 2;
+  const labelGap = 14;
+
+  let x1 = a.x;
+  let y1 = a.y;
+  let x2 = b.x;
+  let y2 = b.y;
+  let lx = (a.x + b.x) / 2;
+  let ly = (a.y + b.y) / 2;
+
+  if (e.axis === "h") {
+    if (b.x > a.x) {
+      x1 = a.x + halfW;
+      x2 = b.x - halfW;
+    } else {
+      x1 = a.x - halfW;
+      x2 = b.x + halfW;
+    }
+    ly += e.labelSide === "above" ? -labelGap : labelGap;
+  } else {
+    if (b.y > a.y) {
+      y1 = a.y + halfH;
+      y2 = b.y - halfH;
+    } else {
+      y1 = a.y - halfH;
+      y2 = b.y + halfH;
+    }
+    lx += e.labelSide === "right" ? labelGap : -labelGap;
+  }
+  return { x1, y1, x2, y2, lx, ly };
+}
 
 export default function DepGraph() {
   const [stage, setStage] = useState<Stage>("legitimate");
@@ -109,7 +168,7 @@ export default function DepGraph() {
     };
   }, []);
 
-  function isHookedNode(id: string): boolean {
+  function isHooked(id: string): boolean {
     if (stage === "legitimate") return false;
     return id === "ifunc" || id === "rsa";
   }
@@ -120,7 +179,7 @@ export default function DepGraph() {
       aria-label="Dependency hijack chain across three stages"
     >
       <div class="xz-dg-sticky" data-stage={stage}>
-        <svg viewBox="0 0 600 280" class="xz-dg-svg" aria-hidden>
+        <svg viewBox="0 0 720 360" class="xz-dg-svg" aria-hidden>
           <defs>
             <marker
               id="xz-dg-arrow"
@@ -147,15 +206,18 @@ export default function DepGraph() {
           </defs>
 
           {EDGES.map((e) => {
-            const a = NODES[e.from];
-            const b = NODES[e.to];
+            const { x1, y1, x2, y2, lx, ly } = edgeGeom(e);
             const active = e.stages.includes(stage);
             const stroke = e.malicious ? "var(--xz-attacker)" : "currentColor";
             const marker = e.malicious
               ? "url(#xz-dg-arrow-attacker)"
               : "url(#xz-dg-arrow)";
-            const midX = (a.x + b.x) / 2;
-            const midY = (a.y + b.y) / 2;
+            const labelAnchor =
+              e.labelSide === "left"
+                ? "end"
+                : e.labelSide === "right"
+                  ? "start"
+                  : "middle";
             return (
               <g
                 key={`${e.from}-${e.to}`}
@@ -165,23 +227,24 @@ export default function DepGraph() {
                 }}
               >
                 <line
-                  x1={a.x}
-                  y1={a.y}
-                  x2={b.x}
-                  y2={b.y}
+                  x1={x1}
+                  y1={y1}
+                  x2={x2}
+                  y2={y2}
                   stroke={stroke}
-                  stroke-opacity={e.malicious ? 0.85 : 0.35}
+                  stroke-opacity={e.malicious ? 0.9 : 0.4}
                   stroke-width="1.5"
                   stroke-dasharray={e.dashed ? "5 4" : undefined}
                   marker-end={marker}
                 />
                 <text
-                  x={midX}
-                  y={midY - 8}
-                  text-anchor="middle"
-                  font-size="10"
+                  x={lx}
+                  y={ly}
+                  text-anchor={labelAnchor}
+                  font-size="11"
                   fill="var(--muted)"
                   class="xz-dg-edge-label"
+                  dominant-baseline="middle"
                 >
                   {e.label}
                 </text>
@@ -190,7 +253,8 @@ export default function DepGraph() {
           })}
 
           {Object.entries(NODES).map(([id, n]) => {
-            const hooked = isHookedNode(id);
+            const hooked = isHooked(id);
+            const subY = n.sub ? n.y - 4 : n.y + 4;
             return (
               <g key={id}>
                 <rect
@@ -201,7 +265,7 @@ export default function DepGraph() {
                   rx="6"
                   fill="var(--page-bg)"
                   stroke={hooked ? "var(--xz-attacker)" : "currentColor"}
-                  stroke-opacity={hooked ? 1 : 0.3}
+                  stroke-opacity={hooked ? 1 : 0.35}
                   stroke-width="1.5"
                   style={{
                     transition: "stroke 0.35s ease, stroke-opacity 0.35s ease",
@@ -209,7 +273,7 @@ export default function DepGraph() {
                 />
                 <text
                   x={n.x}
-                  y={n.y - 4}
+                  y={subY}
                   text-anchor="middle"
                   font-size="12"
                   font-weight="600"
@@ -221,7 +285,7 @@ export default function DepGraph() {
                 {n.sub && (
                   <text
                     x={n.x}
-                    y={n.y + 12}
+                    y={n.y + 11}
                     text-anchor="middle"
                     font-size="10"
                     fill="var(--muted)"
