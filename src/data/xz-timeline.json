@@ -1,0 +1,130 @@
+{
+  "events": [
+    {
+      "date": "2021-10-29",
+      "actor": "JiaT75",
+      "kind": "preparatory",
+      "title": "First public commit by Jia Tan",
+      "summary": "PR to libarchive that subtly weakens input sanitization (replaces safe_fprintf with fprintf). Merged.",
+      "quote": null,
+      "source": "https://research.swtch.com/xz-timeline"
+    },
+    {
+      "date": "2022-04-22",
+      "actor": "Jigar Kumar",
+      "kind": "pressure",
+      "title": "First pressure email to xz-devel",
+      "summary": "Sock-puppet email complaining that Jia Tan's patch isn't being merged.",
+      "quote": "Patches spend years on this mailing list. There is no reason to think anything is coming soon.",
+      "source": "https://www.mail-archive.com/xz-devel@tukaani.org/msg00566.html"
+    },
+    {
+      "date": "2022-05-19",
+      "actor": "Lasse Collin",
+      "kind": "context",
+      "title": "Lasse mentions Jia Tan as future co-maintainer",
+      "summary": "Reply on xz-devel: 'Jia Tan has helped me off-list with XZ Utils and he might have a bigger role in the future…'",
+      "quote": "Jia Tan has helped me off-list with XZ Utils and he might have a bigger role in the future at least with XZ Utils.",
+      "source": "https://research.swtch.com/xz-timeline"
+    },
+    {
+      "date": "2022-06-08",
+      "actor": "Lasse Collin",
+      "kind": "context",
+      "title": "Lasse pushes back on the pressure",
+      "summary": "Discloses ongoing burnout and longterm mental-health struggles, hinting Jia Tan will likely take a bigger role.",
+      "quote": "I haven't lost interest but my ability to care has been fairly limited mostly due to longterm mental health issues but also due to some other things.",
+      "source": "https://research.swtch.com/xz-timeline"
+    },
+    {
+      "date": "2022-06-14",
+      "actor": "Jigar Kumar",
+      "kind": "pressure",
+      "title": "Second pressure email",
+      "summary": "Demands new maintainer; suggests delays are unacceptable.",
+      "quote": "With your current rate, I very doubt to see 5.4.0 release this year. The only progress since april has been small changes to test code.",
+      "source": "https://research.swtch.com/xz-timeline"
+    },
+    {
+      "date": "2022-11-30",
+      "actor": "Lasse Collin",
+      "kind": "preparatory",
+      "title": "Jia Tan listed as co-maintainer",
+      "summary": "README.md updated to list both Lasse and Jia Tan as project maintainers.",
+      "quote": null,
+      "source": "https://research.swtch.com/xz-timeline"
+    },
+    {
+      "date": "2023-01-11",
+      "actor": "Jia Tan",
+      "kind": "preparatory",
+      "title": "Jia Tan takes over releases",
+      "summary": "Lasse releases v5.4.1 — the final release Lasse signs. Subsequent releases are signed by Jia Tan.",
+      "quote": null,
+      "source": "https://research.swtch.com/xz-timeline"
+    },
+    {
+      "date": "2023-07-08",
+      "actor": "Jia Tan",
+      "kind": "preparatory",
+      "title": "PR to disable IFUNC fuzzing in oss-fuzz",
+      "summary": "Jia Tan asks Google's oss-fuzz to disable IFUNC checks, allegedly to mask later malicious changes.",
+      "quote": null,
+      "source": "https://research.swtch.com/xz-timeline"
+    },
+    {
+      "date": "2024-01-19",
+      "actor": "Jia Tan",
+      "kind": "preparatory",
+      "title": "Removes Landlock sandbox feature-test from CMakeLists",
+      "summary": "Small but later-noted hostile preparation; reduces sandboxing on the build.",
+      "quote": null,
+      "source": "https://research.swtch.com/xz-timeline"
+    },
+    {
+      "date": "2024-02-23",
+      "actor": "Jia Tan",
+      "kind": "malicious",
+      "title": "Malicious test files committed",
+      "summary": "Adds tests/files/bad-3-corrupt_lzma2.xz and good-large_compressed.lzma — disguised as test corpus, actually contain the obfuscated payload.",
+      "quote": null,
+      "source": "https://gist.github.com/thesamesam/223949d5a074ebc3dce9ee78baad9e27"
+    },
+    {
+      "date": "2024-02-24",
+      "actor": "Jia Tan",
+      "kind": "malicious",
+      "title": "xz-utils 5.6.0 released",
+      "summary": "Tarball ships with a modified m4/build-to-host.m4 that triggers the payload during ./configure. The modification exists only in the tarball, not in git.",
+      "quote": null,
+      "source": "https://www.openwall.com/lists/oss-security/2024/03/29/4"
+    },
+    {
+      "date": "2024-03-09",
+      "actor": "Jia Tan",
+      "kind": "malicious",
+      "title": "xz-utils 5.6.1 released",
+      "summary": "Updated payload — fixes Valgrind errors that were tipping off Debian's autopkgtest. The hurried fix is itself a tell.",
+      "quote": null,
+      "source": "https://www.openwall.com/lists/oss-security/2024/03/29/4"
+    },
+    {
+      "date": "2024-03-29",
+      "actor": "Andres Freund",
+      "kind": "discovery",
+      "title": "Public disclosure on oss-security",
+      "summary": "Andres Freund posts to oss-security@lists.openwall.com at 08:51 UTC -0700. Subject: 'backdoor in upstream xz/liblzma leading to ssh server compromise'. He found it while micro-benchmarking PostgreSQL on Debian sid — sshd connections were taking 500 ms of extra CPU and producing Valgrind errors.",
+      "quote": "I observed sshd processes were using a surprising amount of CPU, despite immediately failing because of wrong usernames etc.",
+      "source": "https://www.openwall.com/lists/oss-security/2024/03/29/4"
+    },
+    {
+      "date": "2024-03-29",
+      "actor": "GitHub",
+      "kind": "discovery",
+      "title": "tukaani-project/xz disabled by GitHub",
+      "summary": "GitHub disables the tukaani-project organization within hours. Distros (Debian, Fedora, Arch, openSUSE, Kali) ship rollbacks the same day.",
+      "quote": null,
+      "source": "https://gist.github.com/thesamesam/223949d5a074ebc3dce9ee78baad9e27"
+    }
+  ]
+}
