@@ -575,7 +575,9 @@
 
 .xz-tl-sticky {
   position: sticky;
-  top: 4.5rem;
+  /* Sit just below the site header — track --header-h so a header-height
+     change in global.css doesn't desync this widget. */
+  top: calc(var(--header-h, 4.5rem) + 0.5rem);
   background: color-mix(in srgb, var(--page-bg) 92%, transparent);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
@@ -747,7 +749,7 @@
 
 .xz-dg-sticky {
   position: sticky;
-  top: 4.5rem;
+  top: calc(var(--header-h, 4.5rem) + 0.5rem);
   background: color-mix(in srgb, var(--page-bg) 92%, transparent);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
