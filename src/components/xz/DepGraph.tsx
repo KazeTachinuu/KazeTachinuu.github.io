@@ -10,31 +10,16 @@ interface Node {
   sub?: string;
 }
 const NODES: Record<string, Node> = {
-  sshd: { x: 90, y: 60, label: "sshd", sub: "OpenSSH server" },
+  sshd: { x: 90, y: 60, label: "sshd" },
   libsystemd: {
     x: 300,
     y: 60,
     label: "libsystemd.so.0",
     sub: "sd_notify (distro patch)",
   },
-  liblzma: {
-    x: 510,
-    y: 60,
-    label: "liblzma.so.5",
-    sub: "compression — and the implant",
-  },
-  rsa: {
-    x: 300,
-    y: 220,
-    label: "RSA_public_decrypt",
-    sub: "libcrypto / OpenSSL",
-  },
-  ifunc: {
-    x: 510,
-    y: 220,
-    label: "IFUNC resolver",
-    sub: "_get_cpuid (malicious)",
-  },
+  liblzma: { x: 510, y: 60, label: "liblzma.so.5" },
+  rsa: { x: 300, y: 220, label: "RSA_public_decrypt", sub: "libcrypto" },
+  ifunc: { x: 510, y: 220, label: "IFUNC resolver", sub: "_get_cpuid" },
 };
 
 interface Edge {
@@ -85,18 +70,18 @@ const EDGES: Edge[] = [
 const STEPS: { stage: Stage; title: string; body: string }[] = [
   {
     stage: "legitimate",
-    title: "1. The legitimate path",
-    body: "OpenSSH upstream does not link libsystemd. Most distros patch sshd to call sd_notify() for socket activation — and libsystemd in turn links liblzma for journal compression. That's how a compression library ends up loaded into the SSH daemon.",
+    title: "1. Legitimate path",
+    body: "OpenSSH upstream does not link libsystemd. Most distros patch sshd to call sd_notify() for socket activation; libsystemd in turn links liblzma for journal compression.",
   },
   {
     stage: "ifunc",
-    title: "2. The IFUNC resolver fires",
-    body: "Glibc calls IFUNC resolvers exactly once per process, very early — before RELRO marks the GOT read-only. The malicious _get_cpuid resolver walks the dynamic linker's link map, finds sshd's GOT entry for RSA_public_decrypt, and overwrites it with a pointer to the attacker's stub.",
+    title: "2. IFUNC resolver fires",
+    body: "Glibc calls IFUNC resolvers once per process, before RELRO marks the GOT read-only. The malicious _get_cpuid resolver walks the linker's link map, finds sshd's GOT entry for RSA_public_decrypt, and overwrites it with a pointer to the attacker's stub.",
   },
   {
     stage: "attack",
-    title: "3. An attack key arrives",
-    body: "A remote SSH client connects with a crafted RSA key. The hooked RSA_public_decrypt parses the modulus as [tag][ed448_sig][cmd], verifies the signature against the embedded Ed448 public key, and on success calls system(cmd) as root, pre-auth, with no logs.",
+    title: "3. Attack key arrives",
+    body: "A remote SSH client connects with a crafted RSA key. The hooked RSA_public_decrypt parses the modulus as [tag][ed448_sig][cmd], verifies the signature against the embedded Ed448 public key, and on success calls system(cmd) as root, pre-auth.",
   },
 ];
 

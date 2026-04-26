@@ -320,16 +320,6 @@ function DetailPanel({
           )}
         </div>
       </div>
-
-      {art.id === "elf" && (
-        <div class="xz-chain-takeaway">
-          <span class="xz-chain-takeaway-k">takeaway</span>
-          <span class="xz-chain-takeaway-v">
-            This <code>.o</code> is what §4 disassembles. The IFUNC resolver,
-            the GOT-patch, and the Ed448 RCE gate all live inside it.
-          </span>
-        </div>
-      )}
     </div>
   );
 }

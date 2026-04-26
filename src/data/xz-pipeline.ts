@@ -232,7 +232,7 @@ export const ARTIFACTS: Artifact[] = [
     sha: VERSIONS["5.6.1"].fixtureSha,
     shaFull: VERSIONS["5.6.1"].fixtureShaFull,
     blurb:
-      'A test fixture committed to the xz-5.6.1 tarball labelled "corrupt input." Carries the obfuscated Stage-1 shell script as its second xz stream — the tr swap in build-to-host.m4 un-corrupts it.',
+      "Test fixture in tests/files/. Three xz streams; the second one is the obfuscated Stage-1 shell script. The tr swap in build-to-host.m4 reverses the obfuscation.",
     code: DROPPER_ONELINER,
     lang: "shellscript",
     capLeft: 'tr "\\t \\-_" " \\t_\\-" < bad-3-corrupt_lzma2.xz | xz -d',
@@ -274,7 +274,7 @@ export const ARTIFACTS: Artifact[] = [
     sha: "b418bfd3…4963",
     shaFull: "b418bfd34aa246b2e7b5cb5d263a640e5d080810f767370c4d2c24662a274963",
     blurb:
-      "The artifact the dropper produces. ELF64 relocatable, e_type = ET_REL, e_shnum = 242. This is what gets linked into liblzma.so.5.6.1. §4 disassembles it.",
+      "ELF64 relocatable (e_type = ET_REL), 242 sections. Linked into liblzma.so.5.6.1 in place of the upstream crc64-fast.o.",
     code: ELF_HEX,
     lang: "plaintext",
     capLeft: "liblzma_la-crc64-fast.o — first 256 bytes",

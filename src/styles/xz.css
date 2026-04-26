@@ -24,25 +24,13 @@
   --xz-defender-bg: color-mix(in oklch, var(--xz-defender) 14%, transparent);
 }
 
-/* Widget container break-out: prose is 680px; widgets push to 960px. */
+/* Widget container — prose is 680px, widgets break out to 960px.
+   Shared typography lives here so each widget below can stay focused on
+   its own structure. */
 .xz-widget {
   width: min(100%, 960px);
   margin-inline: auto;
   margin-block: 2.5rem;
-}
-
-/* ─────────────────────────────────────────────────────────────────────────
-   PayloadChain (§3) — ported from Claude Design payload-widget.html (V2+).
-   Uses existing site tokens (--code-bg, --border, --muted, etc.) plus the
-   page-local --xz-attacker / --xz-defender accents above.
-───────────────────────────────────────────────────────────────────────── */
-
-.xz-payload-chain {
-  margin: 1.75rem auto 2.5rem;
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  background: var(--page-bg);
-  overflow: hidden;
   font-family: var(--font-sans);
   color: var(--page-text);
   text-rendering: optimizeLegibility;
@@ -50,15 +38,26 @@
   -moz-osx-font-smoothing: grayscale;
   font-feature-settings: "kern", "ss01";
 }
-.xz-payload-chain * {
+.xz-widget *,
+.xz-widget *::before,
+.xz-widget *::after {
   box-sizing: border-box;
 }
-.xz-payload-chain code,
-.xz-payload-chain pre,
-.xz-payload-chain .xz-chain-step-hash,
-.xz-payload-chain .xz-chain-detail-meta-v,
-.xz-payload-chain .xz-hash-chip {
+.xz-widget code,
+.xz-widget pre,
+.xz-widget [data-numeric] {
   font-variant-numeric: tabular-nums;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   PayloadChain (§3) — 4-card artifact chain with detail panel
+───────────────────────────────────────────────────────────────────────── */
+
+.xz-payload-chain {
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--page-bg);
+  overflow: hidden;
 }
 
 /* Rail (the 4 artifact cards) */
@@ -465,41 +464,6 @@
   }
 }
 
-/* Takeaway block (ELF only) */
-.xz-chain-takeaway {
-  margin-top: 1.25rem;
-  padding: 0.875rem 1rem;
-  border-left: 3px solid var(--xz-defender);
-  background: var(--xz-defender-bg);
-  border-radius: 0 6px 6px 0;
-  display: flex;
-  gap: 0.875rem;
-  align-items: flex-start;
-}
-.xz-chain-takeaway-k {
-  font-family: var(--font-mono);
-  font-size: 0.5625rem;
-  font-weight: 700;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: var(--xz-defender);
-  padding-top: 0.2rem;
-  flex-shrink: 0;
-}
-.xz-chain-takeaway-v {
-  font-size: 0.875rem;
-  line-height: 1.6;
-  color: var(--text-secondary);
-}
-.xz-chain-takeaway-v code {
-  font-family: var(--font-mono);
-  font-size: 0.875em;
-  padding: 0.1em 0.35em;
-  background: color-mix(in srgb, var(--xz-defender) 12%, transparent);
-  border-radius: 3px;
-  color: var(--page-text);
-}
-
 /* Hash chip */
 .xz-hash-chip {
   display: inline-flex;
@@ -605,13 +569,8 @@
 
 .xz-tl {
   position: relative;
+  /* Scrollytelling needs more breathing room than inline widgets. */
   margin-block: 4rem;
-  font-family: var(--font-sans);
-  color: var(--page-text);
-  text-rendering: optimizeLegibility;
-}
-.xz-tl * {
-  box-sizing: border-box;
 }
 
 .xz-tl-sticky {
@@ -784,12 +743,6 @@
 .xz-dg {
   position: relative;
   margin-block: 4rem;
-  font-family: var(--font-sans);
-  color: var(--page-text);
-  text-rendering: optimizeLegibility;
-}
-.xz-dg * {
-  box-sizing: border-box;
 }
 
 .xz-dg-sticky {

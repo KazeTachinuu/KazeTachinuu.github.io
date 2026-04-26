@@ -58,17 +58,11 @@ const tarballTree = [
     </div>
   </div>
   <figcaption>
-    The injector lives only in the released tarball. Anyone auditing the git
-    tree never saw it.
+    <code>m4/build-to-host.m4</code> ships only in the tarball, not in the git tree.
   </figcaption>
 </figure>
 
 <style>
-  .xz-tarball {
-    margin: 1.75rem auto 2.5rem;
-    font-family: var(--font-sans);
-    color: var(--page-text);
-  }
   .xz-tarball-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -135,5 +129,11 @@ const tarballTree = [
     font-style: italic;
     margin-top: 0.875rem;
     line-height: 1.5;
+  }
+  .xz-tarball figcaption code {
+    font-family: var(--font-mono);
+    font-style: normal;
+    font-size: 0.875em;
+    color: var(--text-secondary);
   }
 </style>
