@@ -122,6 +122,7 @@ export default function Timeline() {
             class={`xz-tl-step xz-tl-${e.kind}`}
             data-idx={i}
             data-active={i === active}
+            aria-current={i === active ? "step" : undefined}
           >
             <header class="xz-tl-step-head">
               <time class="xz-tl-step-date">{e.date}</time>

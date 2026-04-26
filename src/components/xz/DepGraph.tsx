@@ -266,6 +266,7 @@ export default function DepGraph() {
             class={`xz-dg-step xz-dg-step-${s.stage}`}
             data-stage={s.stage}
             data-active={stage === s.stage}
+            aria-current={stage === s.stage ? "step" : undefined}
           >
             <h4 class="xz-dg-title">{s.title}</h4>
             <p class="xz-dg-body">{s.body}</p>
