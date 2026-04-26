@@ -1,0 +1,139 @@
+---
+/**
+ * Static side-by-side of git tree vs release tarball, highlighting
+ * m4/build-to-host.m4 — present in the tarball, absent in git. That
+ * asymmetry is what hid the injector from anyone reading git history.
+ */
+const gitTree = [
+  { path: "m4/", kind: "dir" },
+  { path: "m4/.gitignore", kind: "file" },
+  { path: "m4/getopt.m4", kind: "file" },
+  { path: "m4/posix-shell.m4", kind: "file" },
+  { path: "m4/tuklib_*.m4", kind: "file", label: "tuklib_*.m4 (×7)" },
+];
+
+const tarballTree = [
+  { path: "m4/", kind: "dir" },
+  { path: "m4/build-to-host.m4", kind: "file", flag: "malicious" },
+  { path: "m4/getopt.m4", kind: "file" },
+  { path: "m4/gettext.m4", kind: "file" },
+  { path: "m4/host-cpu-c-abi.m4", kind: "file" },
+  { path: "m4/posix-shell.m4", kind: "file" },
+  { path: "m4/tuklib_*.m4", kind: "file", label: "tuklib_*.m4 (×7)" },
+  { path: "m4/intl*.m4", kind: "file", label: "intl*.m4 (×8)" },
+];
+---
+
+<figure
+  class="xz-widget xz-tarball"
+  aria-label="Git tree versus release tarball comparison"
+>
+  <div class="xz-tarball-grid">
+    <div class="xz-tarball-col">
+      <h4 class="xz-tarball-head">git tree (5.6.1 tag)</h4>
+      <ul class="xz-tarball-tree">
+        {
+          gitTree.map((n) => (
+            <li class={`xz-tarball-${n.kind}`}>{n.label ?? n.path}</li>
+          ))
+        }
+      </ul>
+    </div>
+    <div class="xz-tarball-col">
+      <h4 class="xz-tarball-head">released tarball (xz-5.6.1.tar.gz)</h4>
+      <ul class="xz-tarball-tree">
+        {
+          tarballTree.map((n) => (
+            <li
+              class={`xz-tarball-${n.kind} ${n.flag ? `xz-tarball-${n.flag}` : ""}`}
+            >
+              {n.label ?? n.path}
+              {n.flag === "malicious" && (
+                <span class="xz-tarball-badge">← injector</span>
+              )}
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+  <figcaption>
+    The injector lives only in the released tarball. Anyone auditing the git
+    tree never saw it.
+  </figcaption>
+</figure>
+
+<style>
+  .xz-tarball {
+    margin: 1.75rem auto 2.5rem;
+    font-family: var(--font-sans);
+    color: var(--page-text);
+  }
+  .xz-tarball-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--page-bg);
+    padding: 1.25rem;
+    overflow: hidden;
+  }
+  @media (max-width: 720px) {
+    .xz-tarball-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  .xz-tarball-col {
+    min-width: 0;
+  }
+  .xz-tarball-head {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 0 0 0.625rem;
+  }
+  .xz-tarball-tree {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    line-height: 1.7;
+    color: var(--text-secondary);
+  }
+  .xz-tarball-tree li {
+    padding: 0.05rem 0;
+    overflow-wrap: anywhere;
+  }
+  .xz-tarball-dir {
+    color: var(--muted);
+    font-weight: 500;
+  }
+  .xz-tarball-malicious {
+    color: var(--xz-attacker);
+    font-weight: 600;
+    background: var(--xz-attacker-bg);
+    margin: 0.15rem -0.4rem;
+    padding: 0.05rem 0.4rem;
+    border-radius: 4px;
+  }
+  .xz-tarball-badge {
+    font-size: 0.6875rem;
+    font-style: italic;
+    color: var(--xz-attacker);
+    margin-left: 0.5rem;
+    opacity: 0.85;
+  }
+  .xz-tarball figcaption {
+    text-align: center;
+    font-size: 0.8125rem;
+    color: var(--muted);
+    font-style: italic;
+    margin-top: 0.875rem;
+    line-height: 1.5;
+  }
+</style>
