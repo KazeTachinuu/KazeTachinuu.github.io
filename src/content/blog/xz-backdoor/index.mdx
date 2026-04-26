@@ -16,58 +16,58 @@ import DepGraph from '~/components/xz/DepGraph';
 import LatencyChart from '~/components/xz/LatencyChart.astro';
 import DistroGrid from '~/components/xz/DistroGrid.astro';
 
-{/* §0 — Prelude (~150 words) */}
-
-> _PROSE STUB §0:_ open with the surprising premise — a compression library backdoored sshd. Frame the question the rest of the post answers. ~150 words.
-
-{/* §1 — Act I: Arrival (~600 words) */}
+{/* §0 — Prelude (~150 words). Open with the surprising premise — a
+    compression library backdoored sshd. Frame the question the rest of
+    the post answers. */}
 
 ## Act I — Arrival
 
-> _PROSE STUB §1:_ narrate the social-engineering arc. Cite Russ Cox xz-timeline. Quote the Jigar Kumar emails verbatim. End with Jia Tan signing 5.4.1 in Jan 2023. ~600 words.
+{/* ~600 words. Narrate the social-engineering arc. Cite Russ Cox
+    xz-timeline. Quote the Jigar Kumar emails verbatim. End with Jia Tan
+    signing 5.4.1 in Jan 2023. */}
 
 <Timeline client:visible />
 
-{/* §2 — Act II: The Trigger (~500 words) */}
-
 ## Act II — The Trigger
 
-> _PROSE STUB §2:_ explain autoconf for non-RE readers; introduce the tarball-vs-git distinction; flag the test-file trick. Cite Russ Cox xz-script. ~500 words.
+{/* ~500 words. Explain autoconf for non-RE readers; introduce the
+    tarball-vs-git distinction; flag the test-file trick. Cite Russ Cox
+    xz-script. */}
 
 <TarballDiff />
 
-{/* §3 — Act III: The Payload (~700 words) — centerpiece */}
-
 ## Act III — The Payload
 
-> _PROSE STUB §3:_ walk the reader through the chain. Use the widget as the spine — for each card, one or two sentences in prose explaining what's about to happen, then let the widget show the bytes. End at the ELF magic moment. ~700 words.
+{/* ~700 words. Walk the reader through the chain. Use the widget as
+    the spine — for each card, one or two sentences in prose explaining
+    what's about to happen, then let the widget show the bytes. End at
+    the ELF magic moment. */}
 
 <PayloadChain client:load />
 
-{/* §4 — Act IV: The Hijack (~800 words, RE-course weighted) */}
-
 ## Act IV — The Hijack
 
-> _PROSE STUB §4:_ this is the longest, most technical section. Three subsections:
->
-> 1. **The path** — explain the surprising sshd → libsystemd → liblzma chain (the `sd_notify` distro patch). Use the dep-graph below.
-> 2. **The resolver** — IFUNC mechanics. Why running before RELRO matters. Walk three textual disassembly snippets (extracted by `scripts/extract-disasm.sh` into `xz-artifacts/analysis/disasm/`):
->    - `_get_cpuid` — the IFUNC entry that pretends to return CPU info
->    - The GOT walker — finds sshd's entry for `RSA_public_decrypt`
->    - The hooked `RSA_public_decrypt` — parses `[tag][ed448_sig][cmd]` from the malicious RSA `N` field
->
->    Use `<Mnemonic op="…">…</Mnemonic>` around any AT&T mnemonic that benefits from a click-through to AsmLookup.
-> 3. **The gate** — Ed448 signature verification keeps everyone but the attacker locked out. Reference [amlweems/xzbot](https://github.com/amlweems/xzbot) for the working PoC.
->
-> ~800 words. Cite [smx-smx/xzre](https://github.com/smx-smx/xzre) for function naming. Link the local artifact path in the "Try it yourself" box below.
+{/* ~800 words, RE-course weighted. Three subsections:
+    1. The path — sshd → libsystemd → liblzma (sd_notify distro patch).
+       Use the dep-graph below.
+    2. The resolver — IFUNC mechanics. Why running before RELRO matters.
+       Walk three textual disassembly snippets (extracted by
+       scripts/extract-disasm.sh into xz-artifacts/analysis/disasm/):
+         - _get_cpuid — IFUNC entry that pretends to return CPU info
+         - The GOT walker — finds sshd's entry for RSA_public_decrypt
+         - The hooked RSA_public_decrypt — parses [tag][ed448_sig][cmd]
+       Use <Mnemonic op="…">…</Mnemonic> around AT&T mnemonics worth a
+       click-through to AsmLookup.
+    3. The gate — Ed448 signature verification. Reference amlweems/xzbot
+       for the working PoC.
+    Cite smx-smx/xzre for function naming. */}
 
 <DepGraph client:visible />
 
-{/* Disassembly snippets — STUB. The .s files live at xz-artifacts/analysis/disasm/.
-    Decision pending: paste contents directly (one Expressive Code block each) or
-    build a tiny <DisasmBlock src="get_cpuid.s"/> that imports them at build time. */}
-
-> _PROSE STUB §4 disasm:_ three Expressive Code blocks, one per snippet, each preceded by a one-sentence prose pointer.
+{/* Disassembly snippets — the .s files live at
+    xz-artifacts/analysis/disasm/. Decision pending: paste contents
+    directly (one Expressive Code block each) or build a tiny
+    <DisasmBlock src="get_cpuid.s"/> that imports them at build time. */}
 
 > **Try it yourself**
 >
@@ -77,24 +77,23 @@ import DistroGrid from '~/components/xz/DistroGrid.astro';
 > - In `gdb`, set a breakpoint on `RSA_public_decrypt` and inspect the stack when an SSH client connects with a custom certificate.
 > - [amlweems/xzbot](https://github.com/amlweems/xzbot) has a working honeypot patch for OpenSSH and the attacker's Ed448 public key extracted.
 
-{/* §5 — Act V: The Discovery (~400 words) */}
-
 ## Act V — The Discovery
 
-> _PROSE STUB §5:_ narrate the discovery — Andres Freund's accidental find while micro-benchmarking PostgreSQL. Quote his oss-security email opener verbatim. ~400 words.
+{/* ~400 words. Narrate the discovery — Andres Freund's accidental find
+    while micro-benchmarking PostgreSQL. Quote his oss-security email
+    opener verbatim. */}
 
 <LatencyChart />
 
-{/* §6 — Coda (~250 words) */}
-
 ## Coda
 
-> _PROSE STUB §6:_ what shipped where, what was spared, what changed in the open-source ecosystem afterward. ~250 words.
+{/* ~250 words. What shipped where, what was spared, what changed in
+    the open-source ecosystem afterward. */}
 
 <DistroGrid />
 
-{/* §7 — Notes & sources */}
-
 ## Notes & sources
 
-> _PROSE STUB §7:_ Russ Cox–style citation list. Every claim above gets a primary-source link. Use the spec's reference set as the starting point.
+{/* ~150 words. Russ Cox–style citation list. Every claim above gets a
+    primary-source link. Use the spec's reference set as the starting
+    point. */}
