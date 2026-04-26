@@ -601,7 +601,10 @@
   margin-block: 4rem;
 }
 
-.xz-tl-sticky {
+/* Shared sticky-panel chrome used by Timeline + DepGraph. Per-widget
+   selectors below override only the inside padding. */
+.xz-tl-sticky,
+.xz-dg-sticky {
   position: sticky;
   top: calc(var(--header-h, 4.5rem) + 0.5rem);
   background: color-mix(in srgb, var(--page-bg) 92%, transparent);
@@ -609,9 +612,11 @@
   -webkit-backdrop-filter: blur(10px);
   border: 1px solid var(--border);
   border-radius: var(--xz-radius-2xl);
-  padding: 0.875rem 1.25rem 1rem;
   z-index: 5;
   margin-bottom: 1.5rem;
+}
+.xz-tl-sticky {
+  padding: 0.875rem 1.25rem 1rem;
 }
 .xz-tl-svg {
   width: 100%;
@@ -789,16 +794,7 @@
 }
 
 .xz-dg-sticky {
-  position: sticky;
-  top: calc(var(--header-h, 4.5rem) + 0.5rem);
-  background: color-mix(in srgb, var(--page-bg) 92%, transparent);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid var(--border);
-  border-radius: var(--xz-radius-2xl);
   padding: 1rem 1.25rem;
-  z-index: 5;
-  margin-bottom: 1.5rem;
   color: var(--text-secondary);
 }
 .xz-dg-svg {

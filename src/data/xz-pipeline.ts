@@ -228,7 +228,7 @@ export const ARTIFACTS: Artifact[] = [
     name: "bad-3-corrupt_lzma2.xz",
     role: "attacker",
     roleLabel: "fixture",
-    size: "36 KiB",
+    size: "512 B",
     sha: VERSIONS["5.6.1"].fixtureSha,
     shaFull: VERSIONS["5.6.1"].fixtureShaFull,
     blurb:
@@ -270,7 +270,7 @@ export const ARTIFACTS: Artifact[] = [
     name: "liblzma_la-crc64-fast.o",
     role: "defender",
     roleLabel: "verified",
-    size: "88.7 KiB",
+    size: "86.6 KiB",
     sha: "b418bfd3…4963",
     shaFull: "b418bfd34aa246b2e7b5cb5d263a640e5d080810f767370c4d2c24662a274963",
     blurb:
