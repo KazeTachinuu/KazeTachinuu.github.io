@@ -105,110 +105,59 @@ export default function Timeline() {
       aria-label="Timeline of the XZ backdoor attack"
     >
       <div class="xz-tl-sticky">
-        <svg
-          viewBox="0 0 100 56"
-          class="xz-tl-svg"
-          preserveAspectRatio="none"
-          aria-hidden
-        >
-          {/* Phase bands */}
-          {PHASES.map((p) => {
-            const x1 = Math.max(0, xPercent(p.from));
-            const x2 = Math.min(100, xPercent(p.to));
-            return (
-              <rect
-                key={p.label}
-                x={x1}
-                y="14"
-                width={x2 - x1}
-                height="14"
-                fill={KIND_COLOR[p.kind]}
-                opacity="0.08"
-                rx="0.5"
-              />
-            );
-          })}
+        <div class="xz-tl-arc" aria-hidden>
+          {/* Phase bands — colored regions behind the rail. */}
+          <div class="xz-tl-bands">
+            {PHASES.map((p) => {
+              const x1 = Math.max(0, xPercent(p.from));
+              const x2 = Math.min(100, xPercent(p.to));
+              return (
+                <span
+                  key={p.label}
+                  class={`xz-tl-band is-${p.kind}`}
+                  style={{ left: `${x1}%`, width: `${x2 - x1}%` }}
+                />
+              );
+            })}
+          </div>
 
-          {/* Year tick marks + labels */}
-          {YEAR_TICKS.map(({ year, x }) => (
-            <g key={year}>
-              <line
-                x1={x}
-                x2={x}
-                y1="14"
-                y2="28"
-                stroke="currentColor"
-                stroke-opacity="0.18"
-                stroke-width="0.25"
-              />
-              <text
-                x={x}
-                y="40"
-                text-anchor="middle"
-                font-size="4"
-                font-family="var(--font-mono)"
-                fill="var(--muted)"
+          {/* The rail itself — a horizontal line + dots positioned along it. */}
+          <div class="xz-tl-rail">
+            {EVENTS.map((e, i) => {
+              const isActive = i === active;
+              return (
+                <span
+                  key={`${e.date}-${i}`}
+                  class={`xz-tl-dot is-${e.kind}${isActive ? " is-active" : ""}`}
+                  style={{ left: `${xPercent(e.date)}%` }}
+                  title={`${e.date} · ${e.title}`}
+                />
+              );
+            })}
+
+            {/* Playhead */}
+            <span
+              class={`xz-tl-playhead is-${currentEvent.kind}`}
+              style={{ left: `${playX}%` }}
+            >
+              <span class="xz-tl-playhead-tip" />
+              <span class="xz-tl-playhead-line" />
+            </span>
+          </div>
+
+          {/* Year labels */}
+          <div class="xz-tl-years">
+            {YEAR_TICKS.map(({ year, x }) => (
+              <span
+                key={year}
+                class="xz-tl-year"
+                style={{ left: `${x}%` }}
               >
                 {year}
-              </text>
-            </g>
-          ))}
-
-          {/* Baseline */}
-          <line
-            x1="0"
-            y1="21"
-            x2="100"
-            y2="21"
-            stroke="currentColor"
-            stroke-opacity="0.22"
-            stroke-width="0.4"
-          />
-
-          {/* Event ticks */}
-          {EVENTS.map((e, i) => {
-            const x = xPercent(e.date);
-            const isActive = i === active;
-            return (
-              <g key={`${e.date}-${i}`} class="xz-tl-tick">
-                {isActive && (
-                  <circle
-                    cx={x}
-                    cy="21"
-                    r="3.4"
-                    fill="none"
-                    stroke={KIND_COLOR[e.kind]}
-                    stroke-width="0.6"
-                    opacity="0.4"
-                  />
-                )}
-                <circle
-                  class={isActive ? "is-active" : undefined}
-                  cx={x}
-                  cy="21"
-                  r={isActive ? 1.8 : 1.2}
-                  fill={KIND_COLOR[e.kind]}
-                />
-              </g>
-            );
-          })}
-
-          {/* Playhead */}
-          <g class="xz-tl-playhead">
-            <line
-              x1={`${playX}%`}
-              y1="6"
-              x2={`${playX}%`}
-              y2="34"
-              stroke={KIND_COLOR[currentEvent.kind]}
-              stroke-width="0.7"
-            />
-            <path
-              d={`M ${playX} 4 l -1 -2 l 2 0 z`}
-              fill={KIND_COLOR[currentEvent.kind]}
-            />
-          </g>
-        </svg>
+              </span>
+            ))}
+          </div>
+        </div>
 
         <div class="xz-tl-current">
           <time class="xz-tl-date" data-numeric>

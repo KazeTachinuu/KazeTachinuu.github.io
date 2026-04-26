@@ -616,31 +616,144 @@
   margin-bottom: 1.5rem;
 }
 .xz-tl-sticky {
-  padding: 1rem 1.25rem 1.125rem;
+  padding: 1rem 1.25rem 1rem;
 }
-.xz-tl-svg {
-  width: 100%;
-  height: 3.25rem;
-  display: block;
-  overflow: visible;
+
+/* ── Arc — pure HTML+CSS, no SVG aspect-ratio fight.
+   Three layers stacked at fixed offsets:
+     0–24px  phase bands (faint colored regions)
+     baseline at ~28px  rail (border-top) with dots positioned absolutely
+     bottom  year labels
+   Playhead is a vertical line spanning all three layers. */
+
+.xz-tl-arc {
+  position: relative;
+  height: 4rem;
+}
+.xz-tl-bands {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0.25rem;
+  height: 1.5rem;
+  pointer-events: none;
+}
+.xz-tl-band {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  border-radius: var(--xz-radius-sm);
+}
+.xz-tl-band.is-preparatory,
+.xz-tl-band.is-context {
+  background: color-mix(in srgb, var(--xz-infra) 14%, transparent);
+}
+.xz-tl-band.is-malicious,
+.xz-tl-band.is-pressure {
+  background: var(--xz-attacker-bg);
+}
+.xz-tl-band.is-discovery {
+  background: var(--xz-defender-bg);
+}
+
+.xz-tl-rail {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 1.6875rem;
+  height: 0;
+  border-top: 1px solid var(--border);
+}
+.xz-tl-dot {
+  position: absolute;
+  top: -4px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  transform: translateX(-50%);
+  background: var(--xz-dot-color, var(--muted));
+  transition:
+    width 0.2s ease,
+    height 0.2s ease,
+    box-shadow 0.2s ease;
+}
+.xz-tl-dot.is-context,
+.xz-tl-dot.is-preparatory {
+  --xz-dot-color: var(--xz-infra);
+}
+.xz-tl-dot.is-pressure,
+.xz-tl-dot.is-malicious {
+  --xz-dot-color: var(--xz-attacker);
+}
+.xz-tl-dot.is-discovery {
+  --xz-dot-color: var(--xz-defender);
+}
+.xz-tl-dot.is-active {
+  width: 12px;
+  height: 12px;
+  top: -6px;
+  box-shadow: 0 0 0 4px
+    color-mix(in srgb, var(--xz-dot-color) 25%, transparent);
+}
+
+/* Playhead — thin vertical line spanning the arc, animated via left%. */
+.xz-tl-playhead {
+  position: absolute;
+  top: -1.25rem;
+  bottom: -0.5rem;
+  width: 0;
+  transform: translateX(-50%);
+  pointer-events: none;
   color: var(--muted);
+  transition: left 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 }
-.xz-tl-svg .xz-tl-tick circle {
-  transition:
-    r 0.2s ease,
-    opacity 0.2s ease;
+.xz-tl-playhead.is-pressure,
+.xz-tl-playhead.is-malicious {
+  color: var(--xz-attacker);
 }
-.xz-tl-svg .xz-tl-playhead {
-  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+.xz-tl-playhead.is-discovery {
+  color: var(--xz-defender);
 }
-.xz-tl-svg .xz-tl-playhead line,
-.xz-tl-svg .xz-tl-playhead path {
-  transition:
-    x1 0.35s cubic-bezier(0.4, 0, 0.2, 1),
-    x2 0.35s cubic-bezier(0.4, 0, 0.2, 1),
-    d 0.35s cubic-bezier(0.4, 0, 0.2, 1),
-    stroke 0.25s ease,
-    fill 0.25s ease;
+.xz-tl-playhead.is-context,
+.xz-tl-playhead.is-preparatory {
+  color: var(--xz-infra);
+}
+.xz-tl-playhead-line {
+  position: absolute;
+  left: -1px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: currentColor;
+  opacity: 0.8;
+}
+.xz-tl-playhead-tip {
+  position: absolute;
+  top: -2px;
+  left: -4px;
+  width: 0;
+  height: 0;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 5px solid currentColor;
+}
+
+.xz-tl-years {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1rem;
+  pointer-events: none;
+}
+.xz-tl-year {
+  position: absolute;
+  transform: translateX(-50%);
+  font-family: var(--font-mono);
+  font-size: var(--xz-fs-2xs);
+  font-weight: 600;
+  letter-spacing: var(--xz-tracking-caps);
+  color: var(--muted);
 }
 
 .xz-tl-current {
@@ -701,6 +814,8 @@
   padding: 0;
   margin: 0;
 }
+/* Steps stay fully readable always — the active state is signalled by
+   the card background + spine color, never by fading the body text. */
 .xz-tl-step {
   position: relative;
   padding: 1.125rem 1.25rem 1.125rem 1.5rem;
@@ -709,14 +824,11 @@
   border-radius: 0 var(--xz-radius-lg) var(--xz-radius-lg) 0;
   margin-bottom: 0.875rem;
   background: transparent;
-  opacity: var(--xz-fade-quiet);
   transition:
-    opacity 0.3s ease,
     border-color 0.3s ease,
     background 0.3s ease;
 }
 .xz-tl-step[data-active="true"] {
-  opacity: 1;
   background: var(--subtle-bg);
 }
 .xz-tl-step.xz-tl-malicious[data-active="true"],
