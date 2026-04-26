@@ -776,3 +776,126 @@
     font-size: 0.75rem;
   }
 }
+
+/* ─────────────────────────────────────────────────────────────────────────
+   DepGraph (④) — sticky 5-node SVG, three scrolly stages
+───────────────────────────────────────────────────────────────────────── */
+
+.xz-dg {
+  position: relative;
+  margin-block: 4rem;
+  font-family: var(--font-sans);
+  color: var(--page-text);
+  text-rendering: optimizeLegibility;
+}
+.xz-dg * {
+  box-sizing: border-box;
+}
+
+.xz-dg-sticky {
+  position: sticky;
+  top: 4.5rem;
+  background: color-mix(in srgb, var(--page-bg) 92%, transparent);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1rem 1.25rem 1rem;
+  z-index: 5;
+  margin-bottom: 1.5rem;
+  color: var(--text-secondary);
+}
+.xz-dg-svg {
+  width: 100%;
+  height: auto;
+  max-height: 320px;
+  display: block;
+}
+.xz-dg-svg .xz-dg-edge-label,
+.xz-dg-svg .xz-dg-node-label,
+.xz-dg-svg .xz-dg-node-sub {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+.xz-dg-current {
+  display: flex;
+  justify-content: center;
+  margin-top: 0.625rem;
+}
+.xz-dg-stage-pill {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0.3em 0.75em;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--muted) 12%, transparent);
+  color: var(--muted);
+  transition:
+    background 0.3s ease,
+    color 0.3s ease;
+}
+.xz-dg-stage-pill[data-stage="ifunc"],
+.xz-dg-stage-pill[data-stage="attack"] {
+  background: var(--xz-attacker-bg);
+  color: var(--xz-attacker);
+}
+
+.xz-dg-steps {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.xz-dg-step {
+  padding: 1.25rem 0 1.25rem 1.25rem;
+  border-left: 2px solid var(--border);
+  margin-bottom: 1.5rem;
+  min-height: 50vh;
+  opacity: 0.55;
+  transition:
+    opacity 0.3s ease,
+    border-color 0.3s ease;
+}
+.xz-dg-step[data-active="true"] {
+  opacity: 1;
+}
+.xz-dg-step-legitimate[data-active="true"] {
+  border-left-color: var(--xz-infra);
+}
+.xz-dg-step-ifunc[data-active="true"],
+.xz-dg-step-attack[data-active="true"] {
+  border-left-color: var(--xz-attacker);
+}
+.xz-dg-title {
+  margin: 0 0 0.5rem;
+  font-size: 1.0625rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--page-text);
+}
+.xz-dg-body {
+  margin: 0;
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  max-width: 60ch;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .xz-dg-svg * {
+    transition: none !important;
+  }
+  .xz-dg-step,
+  .xz-dg-stage-pill {
+    transition: none !important;
+  }
+}
+@media (max-width: 720px) {
+  .xz-dg-sticky {
+    position: static;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+}
