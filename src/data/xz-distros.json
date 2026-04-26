@@ -1,0 +1,106 @@
+{
+  "distros": [
+    {
+      "id": "debian-sid",
+      "name": "Debian sid",
+      "icon": "debian.svg",
+      "status": "exploitable",
+      "shipped": "5.6.0 / 5.6.1",
+      "note": "Rolled back to 5.4.5-0.2 on 2024-03-29."
+    },
+    {
+      "id": "fedora-40",
+      "name": "Fedora 40 Beta",
+      "icon": "fedora.svg",
+      "status": "exploitable",
+      "shipped": "5.6.0 / 5.6.1",
+      "note": "Red Hat issued urgent advisory."
+    },
+    {
+      "id": "fedora-rawhide",
+      "name": "Fedora Rawhide",
+      "icon": "fedora.svg",
+      "status": "exploitable",
+      "shipped": "5.6.x",
+      "note": null
+    },
+    {
+      "id": "opensuse-tw",
+      "name": "openSUSE Tumbleweed",
+      "icon": "opensuse.svg",
+      "status": "exploitable",
+      "shipped": "5.6.1",
+      "note": null
+    },
+    {
+      "id": "kali",
+      "name": "Kali rolling",
+      "icon": "kali.svg",
+      "status": "exploitable",
+      "shipped": "5.6.0 (briefly)",
+      "note": "Pulled within hours."
+    },
+    {
+      "id": "arch",
+      "name": "Arch Linux",
+      "icon": "arch.svg",
+      "status": "shipped-inert",
+      "shipped": "5.6.0 / 5.6.1",
+      "note": "Arch's openssh does not link libsystemd by default — backdoor present but path to sshd missing."
+    },
+    {
+      "id": "alpine-edge",
+      "name": "Alpine edge",
+      "icon": "alpine.svg",
+      "status": "shipped-inert",
+      "shipped": "5.6.x",
+      "note": "musl, not glibc — wrong ABI for the IFUNC trick."
+    },
+    {
+      "id": "debian-stable",
+      "name": "Debian stable",
+      "icon": "debian.svg",
+      "status": "spared",
+      "shipped": "5.4.x only",
+      "note": "Stable never received the malicious release."
+    },
+    {
+      "id": "ubuntu-lts",
+      "name": "Ubuntu LTS",
+      "icon": "ubuntu.svg",
+      "status": "spared",
+      "shipped": "5.4.x only",
+      "note": "All LTS lines safe."
+    },
+    {
+      "id": "rhel",
+      "name": "RHEL",
+      "icon": "redhat.svg",
+      "status": "spared",
+      "shipped": "≤5.2.4",
+      "note": "Stable Red Hat never shipped 5.6."
+    },
+    {
+      "id": "amazon-linux",
+      "name": "Amazon Linux",
+      "icon": "aws.svg",
+      "status": "spared",
+      "shipped": "≤5.2.5",
+      "note": null
+    }
+  ],
+  "statuses": {
+    "exploitable": {
+      "label": "Shipped & exploitable",
+      "color": "var(--xz-attacker)"
+    },
+    "shipped-inert": {
+      "label": "Shipped but inert",
+      "color": "var(--xz-infra)"
+    },
+    "spared": {
+      "label": "Never shipped",
+      "color": "var(--xz-defender)"
+    }
+  }
+}
