@@ -1,0 +1,164 @@
+---
+import distrosData from "../../data/xz-distros.json";
+
+interface Distro {
+  id: string;
+  name: string;
+  icon: string;
+  status: string;
+  shipped: string;
+  note: string | null;
+}
+interface StatusMeta {
+  label: string;
+  color: string;
+}
+
+const distros: Distro[] = distrosData.distros;
+const statuses: Record<string, StatusMeta> = distrosData.statuses;
+
+/* Inline SVGs at build time. Vite's ?raw query gives the file contents
+   as a string — no runtime fetch, no extra HTTP. */
+const icons = import.meta.glob("../../data/xz-icons/*.svg", {
+  query: "?raw",
+  import: "default",
+  eager: true,
+}) as Record<string, string>;
+
+function iconFor(name: string): string {
+  const k = Object.keys(icons).find((p) => p.endsWith(`/${name}`));
+  return k ? icons[k] : '<svg viewBox="0 0 24 24"></svg>';
+}
+---
+
+<figure class="xz-widget xz-distros" aria-label="Distros affected by CVE-2024-3094">
+  <div class="xz-distros-legend" role="list">
+    {
+      Object.entries(statuses).map(([key, meta]) => (
+        <span class="xz-distros-chip" role="listitem" data-status={key}>
+          <span class="xz-distros-dot" style={`background:${meta.color}`} />
+          {meta.label}
+        </span>
+      ))
+    }
+  </div>
+  <ul class="xz-distros-list" role="list">
+    {
+      distros.map((d) => (
+        <li
+          class={`xz-distros-row xz-distros-${d.status}`}
+          data-status={d.status}
+        >
+          <span class="xz-distros-icon" set:html={iconFor(d.icon)} aria-hidden="true" />
+          <span class="xz-distros-body">
+            <span class="xz-distros-name">{d.name}</span>
+            <span class="xz-distros-shipped">{d.shipped}</span>
+            {d.note && <span class="xz-distros-note">{d.note}</span>}
+          </span>
+        </li>
+      ))
+    }
+  </ul>
+</figure>
+
+<style>
+  .xz-distros {
+    margin: 1.75rem auto 2.5rem;
+    font-family: var(--font-sans);
+    color: var(--page-text);
+  }
+  .xz-distros-legend {
+    display: flex;
+    gap: 1.25rem;
+    justify-content: center;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .xz-distros-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+  }
+  .xz-distros-dot {
+    display: inline-block;
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 999px;
+  }
+
+  .xz-distros-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 0.5rem;
+  }
+  .xz-distros-row {
+    display: grid;
+    grid-template-columns: 1.75rem 1fr;
+    align-items: start;
+    gap: 0.75rem;
+    padding: 0.75rem 0.875rem;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--page-bg);
+    transition: border-color 0.15s ease;
+  }
+  .xz-distros-row:hover {
+    border-color: color-mix(in srgb, var(--accent) 50%, var(--border));
+  }
+  .xz-distros-exploitable {
+    border-left: 3px solid var(--xz-attacker);
+  }
+  .xz-distros-shipped-inert {
+    border-left: 3px solid var(--xz-infra);
+  }
+  .xz-distros-spared {
+    border-left: 3px solid var(--xz-defender);
+  }
+  .xz-distros-icon {
+    width: 1.75rem;
+    height: 1.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--page-text);
+    margin-top: 0.05rem;
+  }
+  .xz-distros-icon :global(svg) {
+    width: 100%;
+    height: 100%;
+    fill: currentColor;
+  }
+  .xz-distros-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    min-width: 0;
+  }
+  .xz-distros-name {
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--page-text);
+    line-height: 1.3;
+  }
+  .xz-distros-shipped {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--muted);
+    line-height: 1.3;
+  }
+  .xz-distros-note {
+    font-size: 0.8125rem;
+    color: var(--text-secondary);
+    line-height: 1.45;
+    margin-top: 0.25rem;
+  }
+</style>
