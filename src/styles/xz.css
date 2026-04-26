@@ -1,21 +1,23 @@
 /*
  * Page-scoped overrides for /blog/xz-backdoor/.
  * Imported by src/content/blog/xz-backdoor/index.mdx.
- * Semantic colors per spec §"Voice and aesthetic":
+ *
+ * Semantic colors (per spec §"Voice and aesthetic"):
  *   --xz-attacker  ember  — JiaT75, malicious commits, encrypted bytes
  *   --xz-defender  slate  — Lasse Collin, Andres Freund, clean code
  *   --xz-infra     grey   — autoconf, sshd, libsystemd, distro nodes
- * All three tuned for both light and dark mode at AAA contrast.
+ *
+ * Every widget below pulls its sizes / radii / fade levels from the
+ * token block on .xz-widget. No raw rem/px values for repeating roles.
  */
 
 :root {
-  --xz-attacker: oklch(58% 0.14 35); /* muted ember — light */
-  --xz-defender: oklch(52% 0.06 250); /* cool slate — light */
-  --xz-infra: oklch(55% 0.02 250); /* neutral grey — light */
+  --xz-attacker: oklch(58% 0.14 35);
+  --xz-defender: oklch(52% 0.06 250);
+  --xz-infra: oklch(55% 0.02 250);
   --xz-attacker-bg: color-mix(in oklch, var(--xz-attacker) 12%, transparent);
   --xz-defender-bg: color-mix(in oklch, var(--xz-defender) 12%, transparent);
 }
-
 :root.dark {
   --xz-attacker: oklch(72% 0.16 35);
   --xz-defender: oklch(75% 0.08 250);
@@ -24,20 +26,50 @@
   --xz-defender-bg: color-mix(in oklch, var(--xz-defender) 14%, transparent);
 }
 
-/* Widget container — prose is 680px, widgets break out to 960px.
-   Shared typography lives here so each widget below can stay focused on
-   its own structure. */
+/* ─────────────────────────────────────────────────────────────────────────
+   .xz-widget — every widget on this page extends from this rule.
+   Owns shared typography + the token scale below.
+───────────────────────────────────────────────────────────────────────── */
+
 .xz-widget {
+  /* Layout */
   width: min(100%, 960px);
   margin-inline: auto;
   margin-block: 2.5rem;
+
+  /* Typography baseline */
   font-family: var(--font-sans);
   color: var(--page-text);
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-feature-settings: "kern", "ss01";
+
+  /* Type scale — every font-size below references one of these. */
+  --xz-fs-3xs: 0.5625rem; /* tiny uppercase keys (size / sha-256 / e_shnum) */
+  --xz-fs-2xs: 0.625rem; /* role pills, step numbers */
+  --xz-fs-xs: 0.6875rem; /* code caps, version btn, mono micro */
+  --xz-fs-sm: 0.75rem; /* mono small body, axis ticks */
+  --xz-fs-md: 0.8125rem; /* mono code body, hash chip, foot */
+  --xz-fs-lg: 0.9375rem; /* prose body, step body, blurb */
+  --xz-fs-xl: 1.0625rem; /* step title, detail name */
+
+  /* Radius scale */
+  --xz-radius-sm: 4px;
+  --xz-radius-md: 6px;
+  --xz-radius-lg: 8px;
+  --xz-radius-xl: 10px;
+  --xz-radius-2xl: 12px;
+
+  /* Fade levels for scrolly inactive states.
+     Boosted from prior values (0.12 / 0.55) for AA-readability. */
+  --xz-fade-ghost: 0.32; /* edges/labels in not-yet-active stages */
+  --xz-fade-quiet: 0.7; /* step blocks not currently focused */
+
+  /* Common letter-spacing for caps */
+  --xz-tracking-caps: 0.12em;
 }
+
 .xz-widget *,
 .xz-widget *::before,
 .xz-widget *::after {
@@ -55,12 +87,12 @@
 
 .xz-payload-chain {
   border: 1px solid var(--border);
-  border-radius: 14px;
+  border-radius: var(--xz-radius-2xl);
   background: var(--page-bg);
   overflow: hidden;
 }
 
-/* Rail (the 4 artifact cards) */
+/* Rail */
 .xz-chain-rail-wrap {
   position: relative;
   padding: 1.25rem 1.25rem 1rem;
@@ -88,7 +120,7 @@
   padding: 1rem 1rem 0.875rem;
   background: var(--page-bg);
   border: 1px solid var(--border);
-  border-radius: 10px;
+  border-radius: var(--xz-radius-xl);
   font: inherit;
   color: inherit;
   text-align: left;
@@ -112,12 +144,12 @@
 .xz-chain-step-pill {
   align-self: flex-start;
   font-family: var(--font-mono);
-  font-size: 0.625rem;
+  font-size: var(--xz-fs-2xs);
   font-weight: 700;
-  letter-spacing: 0.1em;
+  letter-spacing: var(--xz-tracking-caps);
   text-transform: uppercase;
   padding: 0.22em 0.55em;
-  border-radius: 4px;
+  border-radius: var(--xz-radius-sm);
   white-space: nowrap;
 }
 .xz-chain-step-pill.is-attacker {
@@ -130,7 +162,7 @@
 }
 .xz-chain-step-name {
   font-family: var(--font-mono);
-  font-size: 0.875rem;
+  font-size: var(--xz-fs-md);
   font-weight: 600;
   color: var(--page-text);
   overflow-wrap: anywhere;
@@ -142,7 +174,7 @@
   gap: 0.2rem;
   margin-top: auto;
   font-family: var(--font-mono);
-  font-size: 0.75rem;
+  font-size: var(--xz-fs-sm);
   line-height: 1.3;
   color: var(--muted);
 }
@@ -151,11 +183,11 @@
 }
 .xz-chain-step-hash {
   color: var(--muted);
-  font-size: 0.6875rem;
+  font-size: var(--xz-fs-xs);
   letter-spacing: -0.01em;
 }
 
-/* Connector arrows between cards */
+/* Connector arrows */
 .xz-chain-arrow {
   position: relative;
   width: 1.25rem;
@@ -191,8 +223,7 @@
   color: var(--accent);
 }
 
-/* Version selector — sits inside rail-wrap, right of the cards on wide
-   screens, below them on narrow ones. */
+/* Version selector */
 .xz-chain-version {
   display: flex;
   align-items: center;
@@ -202,15 +233,15 @@
 }
 .xz-chain-version-k {
   font-family: var(--font-mono);
-  font-size: 0.625rem;
-  letter-spacing: 0.12em;
+  font-size: var(--xz-fs-2xs);
+  letter-spacing: var(--xz-tracking-caps);
   text-transform: uppercase;
   color: var(--muted);
   margin-right: 0.25rem;
 }
 .xz-chain-version-btn {
   font-family: var(--font-mono);
-  font-size: 0.6875rem;
+  font-size: var(--xz-fs-xs);
   font-weight: 600;
   padding: 0.2rem 0.6rem;
   border: 1px solid var(--border);
@@ -264,13 +295,13 @@
 }
 .xz-chain-detail-name {
   font-family: var(--font-mono);
-  font-size: 1.0625rem;
+  font-size: var(--xz-fs-xl);
   font-weight: 600;
   color: var(--page-text);
   overflow-wrap: anywhere;
 }
 .xz-chain-blurb {
-  font-size: 0.9375rem;
+  font-size: var(--xz-fs-lg);
   line-height: 1.6;
   color: var(--text-secondary);
   margin: 0 0 1rem;
@@ -283,7 +314,7 @@
   padding: 0.625rem 0.875rem;
   margin: 0 0 1rem;
   border: 1px solid var(--border);
-  border-radius: 6px;
+  border-radius: var(--xz-radius-md);
   background: var(--subtle-bg);
 }
 .xz-chain-detail-meta-cell {
@@ -294,15 +325,15 @@
 }
 .xz-chain-detail-meta-k {
   font-family: var(--font-mono);
-  font-size: 0.5625rem;
+  font-size: var(--xz-fs-3xs);
   font-weight: 700;
-  letter-spacing: 0.12em;
+  letter-spacing: var(--xz-tracking-caps);
   text-transform: uppercase;
   color: var(--muted);
 }
 .xz-chain-detail-meta-v {
   font-family: var(--font-mono);
-  font-size: 0.8125rem;
+  font-size: var(--xz-fs-md);
   color: var(--page-text);
 }
 .xz-defender-strong {
@@ -318,7 +349,7 @@
 }
 .xz-chain-tab {
   font-family: var(--font-sans);
-  font-size: 0.8125rem;
+  font-size: var(--xz-fs-md);
   font-weight: 500;
   padding: 0.5rem 0.875rem;
   border: none;
@@ -341,10 +372,10 @@
 .xz-chain-tab:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
-  border-radius: 3px;
+  border-radius: var(--xz-radius-xs, 3px);
 }
 
-/* Code block — matches Expressive Code's chrome */
+/* Code block */
 .xz-chain-code-wrap {
   position: relative;
   margin-top: 0.875rem;
@@ -352,7 +383,7 @@
 .xz-code-block {
   position: relative;
   margin: 0;
-  border-radius: 8px;
+  border-radius: var(--xz-radius-lg);
   border: 1px solid var(--code-border);
   background: var(--code-bg);
   overflow: hidden;
@@ -366,8 +397,7 @@
   background: color-mix(in srgb, var(--page-text) 4%, transparent);
   border-bottom: 1px solid color-mix(in srgb, var(--border) 60%, transparent);
   font-family: var(--font-mono);
-  font-size: 0.75rem;
-  letter-spacing: 0;
+  font-size: var(--xz-fs-sm);
   color: var(--muted);
 }
 .xz-code-block-cap-l {
@@ -400,12 +430,11 @@
 .xz-code-block-dot.is-defender {
   background: var(--xz-defender);
 }
-
 .xz-code-block pre {
   margin: 0;
   padding: 1.25rem 1.25rem 1.375rem;
   font-family: var(--font-mono);
-  font-size: 0.8125rem;
+  font-size: var(--xz-fs-md);
   line-height: 1.7;
   overflow-x: auto;
   white-space: pre;
@@ -433,7 +462,7 @@
   gap: 1rem;
   pointer-events: none;
   background: var(--code-bg);
-  border-radius: 8px;
+  border-radius: var(--xz-radius-lg);
   z-index: 2;
   font-family: var(--font-mono);
   font-size: 1.5rem;
@@ -470,11 +499,11 @@
   align-items: center;
   gap: 0.4rem;
   font-family: var(--font-mono);
-  font-size: 0.8125rem;
+  font-size: var(--xz-fs-md);
   padding: 0.15rem 0.45rem;
   border: 1px solid transparent;
   background: color-mix(in srgb, var(--muted) 8%, transparent);
-  border-radius: 4px;
+  border-radius: var(--xz-radius-sm);
   color: var(--page-text);
   cursor: pointer;
   transition:
@@ -513,7 +542,7 @@
 .xz-chain-foot {
   padding: 1rem 1.5rem 1.25rem;
   border-top: 1px solid var(--border);
-  font-size: 0.8125rem;
+  font-size: var(--xz-fs-md);
   line-height: 1.65;
   color: var(--muted);
 }
@@ -522,7 +551,7 @@
   font-size: 0.875em;
   padding: 0.1em 0.35em;
   background: color-mix(in srgb, var(--muted) 14%, transparent);
-  border-radius: 3px;
+  border-radius: var(--xz-radius-xs, 3px);
   color: var(--page-text);
 }
 .xz-chain-foot a {
@@ -533,7 +562,7 @@
   text-decoration: underline;
 }
 
-/* Mobile (< 720px) — rail stacks vertically, arrows rotate down */
+/* Mobile */
 @media (max-width: 720px) {
   .xz-chain-rail {
     grid-template-columns: 1fr;
@@ -569,20 +598,17 @@
 
 .xz-tl {
   position: relative;
-  /* Scrollytelling needs more breathing room than inline widgets. */
   margin-block: 4rem;
 }
 
 .xz-tl-sticky {
   position: sticky;
-  /* Sit just below the site header — track --header-h so a header-height
-     change in global.css doesn't desync this widget. */
   top: calc(var(--header-h, 4.5rem) + 0.5rem);
   background: color-mix(in srgb, var(--page-bg) 92%, transparent);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border: 1px solid var(--border);
-  border-radius: 12px;
+  border-radius: var(--xz-radius-2xl);
   padding: 0.875rem 1.25rem 1rem;
   z-index: 5;
   margin-bottom: 1.5rem;
@@ -594,6 +620,21 @@
   overflow: visible;
   color: var(--muted);
 }
+.xz-tl-svg circle {
+  opacity: 0.6;
+  transition:
+    r 0.2s ease,
+    opacity 0.2s ease;
+}
+.xz-tl-svg circle.is-active {
+  opacity: 1;
+}
+.xz-tl-svg .xz-tl-playhead {
+  transition:
+    x1 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+    x2 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+    stroke 0.2s ease;
+}
 .xz-tl-current {
   display: flex;
   justify-content: space-between;
@@ -601,7 +642,7 @@
   gap: 0.875rem;
   margin-top: 0.625rem;
   font-family: var(--font-mono);
-  font-size: 0.8125rem;
+  font-size: var(--xz-fs-md);
   font-variant-numeric: tabular-nums;
   flex-wrap: wrap;
 }
@@ -610,12 +651,12 @@
   font-weight: 600;
 }
 .xz-tl-kind {
-  font-size: 0.625rem;
+  font-size: var(--xz-fs-2xs);
   font-weight: 700;
-  letter-spacing: 0.12em;
+  letter-spacing: var(--xz-tracking-caps);
   text-transform: uppercase;
   padding: 0.18em 0.55em;
-  border-radius: 4px;
+  border-radius: var(--xz-radius-sm);
   background: color-mix(in srgb, var(--muted) 12%, transparent);
   color: var(--muted);
 }
@@ -643,7 +684,7 @@
   padding: 1rem 0 1rem 1.25rem;
   border-left: 2px solid var(--border);
   margin-bottom: 1.5rem;
-  opacity: 0.55;
+  opacity: var(--xz-fade-quiet);
   transition:
     opacity 0.3s ease,
     border-color 0.3s ease;
@@ -668,7 +709,7 @@
   gap: 0.625rem;
   align-items: baseline;
   font-family: var(--font-mono);
-  font-size: 0.6875rem;
+  font-size: var(--xz-fs-xs);
   color: var(--muted);
   margin-bottom: 0.375rem;
 }
@@ -684,14 +725,14 @@
 
 .xz-tl-title {
   margin: 0 0 0.4rem;
-  font-size: 1.0625rem;
+  font-size: var(--xz-fs-xl);
   font-weight: 600;
   letter-spacing: -0.01em;
   color: var(--page-text);
 }
 .xz-tl-summary {
   margin: 0 0 0.6rem;
-  font-size: 0.9375rem;
+  font-size: var(--xz-fs-lg);
   line-height: 1.6;
   color: var(--text-secondary);
   max-width: 60ch;
@@ -699,7 +740,7 @@
 .xz-tl-quote {
   font-family: var(--font-serif, Newsreader, Georgia, serif);
   font-style: italic;
-  font-size: 0.9375rem;
+  font-size: var(--xz-fs-lg);
   line-height: 1.6;
   border-left: 2px solid color-mix(in srgb, var(--accent) 50%, transparent);
   padding-left: 0.875rem;
@@ -709,7 +750,7 @@
 }
 .xz-tl-source {
   font-family: var(--font-mono);
-  font-size: 0.75rem;
+  font-size: var(--xz-fs-sm);
   color: var(--muted);
   text-decoration: none;
   border-bottom: 1px dotted color-mix(in srgb, var(--muted) 60%, transparent);
@@ -734,7 +775,7 @@
   }
   .xz-tl-current {
     gap: 0.625rem;
-    font-size: 0.75rem;
+    font-size: var(--xz-fs-sm);
   }
 }
 
@@ -754,8 +795,8 @@
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 1rem 1.25rem 1rem;
+  border-radius: var(--xz-radius-2xl);
+  padding: 1rem 1.25rem;
   z-index: 5;
   margin-bottom: 1.5rem;
   color: var(--text-secondary);
@@ -773,6 +814,27 @@
   font-variant-numeric: tabular-nums;
 }
 
+/* Edge / node visibility — opacity and stroke handled by CSS classes
+   so the JSX never hardcodes fade values. */
+.xz-dg-edge {
+  opacity: var(--xz-fade-ghost);
+  transition: opacity 0.35s ease;
+}
+.xz-dg-edge.is-active {
+  opacity: 1;
+}
+.xz-dg-node {
+  stroke: currentColor;
+  stroke-opacity: 0.55;
+  transition:
+    stroke 0.35s ease,
+    stroke-opacity 0.35s ease;
+}
+.xz-dg-node.is-hooked {
+  stroke: var(--xz-attacker);
+  stroke-opacity: 1;
+}
+
 .xz-dg-current {
   display: flex;
   justify-content: center;
@@ -780,9 +842,9 @@
 }
 .xz-dg-stage-pill {
   font-family: var(--font-mono);
-  font-size: 0.6875rem;
+  font-size: var(--xz-fs-xs);
   font-weight: 700;
-  letter-spacing: 0.12em;
+  letter-spacing: var(--xz-tracking-caps);
   text-transform: uppercase;
   padding: 0.3em 0.75em;
   border-radius: 999px;
@@ -807,19 +869,18 @@
   padding: 1.25rem 0 1.25rem 1.25rem;
   border-left: 2px solid var(--border);
   margin-bottom: 1.5rem;
-  opacity: 0.55;
+  opacity: var(--xz-fade-quiet);
   transition:
     opacity 0.3s ease,
     border-color 0.3s ease;
 }
-/* All steps but the last get scroll distance so scrollama can fire
-   each trigger separately. The last step is the terminal state — no
-   dead air below. */
-.xz-dg-step:not(:last-child) {
-  min-height: 50vh;
-}
 .xz-dg-step[data-active="true"] {
   opacity: 1;
+}
+/* Scroll distance between steps for scrollama; last step gets none
+   so the section doesn't end with empty space. */
+.xz-dg-step:not(:last-child) {
+  min-height: 32vh;
 }
 .xz-dg-step-legitimate[data-active="true"] {
   border-left-color: var(--xz-infra);
@@ -830,23 +891,22 @@
 }
 .xz-dg-title {
   margin: 0 0 0.5rem;
-  font-size: 1.0625rem;
+  font-size: var(--xz-fs-xl);
   font-weight: 600;
   letter-spacing: -0.01em;
   color: var(--page-text);
 }
 .xz-dg-body {
   margin: 0;
-  font-size: 0.9375rem;
+  font-size: var(--xz-fs-lg);
   line-height: 1.6;
   color: var(--text-secondary);
   max-width: 60ch;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .xz-dg-svg * {
-    transition: none !important;
-  }
+  .xz-dg-svg *,
+  .xz-dg-edge,
   .xz-dg-step,
   .xz-dg-stage-pill {
     transition: none !important;
@@ -871,17 +931,17 @@
   padding: 1.25rem 1.5rem;
   border: 1px solid var(--border);
   border-left: 3px solid var(--xz-defender);
-  border-radius: 0 8px 8px 0;
+  border-radius: 0 var(--xz-radius-lg) var(--xz-radius-lg) 0;
   background: var(--subtle-bg);
   color: var(--text-secondary);
   font-family: var(--font-sans);
-  font-size: 0.9375rem;
+  font-size: var(--xz-fs-lg);
   line-height: 1.6;
 }
 .xz-tryit-title {
   margin: 0 0 0.75rem;
   font-family: var(--font-mono);
-  font-size: 0.6875rem;
+  font-size: var(--xz-fs-xs);
   font-weight: 700;
   letter-spacing: 0.15em;
   text-transform: uppercase;
@@ -910,7 +970,7 @@
   font-size: 0.875em;
   padding: 0.1em 0.35em;
   background: color-mix(in srgb, var(--page-text) 6%, transparent);
-  border-radius: 3px;
+  border-radius: var(--xz-radius-xs, 3px);
   color: var(--page-text);
 }
 .xz-tryit a {

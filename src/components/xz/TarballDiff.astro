@@ -68,7 +68,7 @@ const tarballTree = [
     grid-template-columns: 1fr 1fr;
     gap: 1rem;
     border: 1px solid var(--border);
-    border-radius: 12px;
+    border-radius: var(--xz-radius-2xl);
     background: var(--page-bg);
     padding: 1.25rem;
     overflow: hidden;
@@ -83,9 +83,9 @@ const tarballTree = [
   }
   .xz-tarball-head {
     font-family: var(--font-mono);
-    font-size: 0.6875rem;
+    font-size: var(--xz-fs-xs);
     font-weight: 600;
-    letter-spacing: 0.12em;
+    letter-spacing: var(--xz-tracking-caps);
     text-transform: uppercase;
     color: var(--muted);
     margin: 0 0 0.625rem;
@@ -95,7 +95,7 @@ const tarballTree = [
     padding: 0;
     margin: 0;
     font-family: var(--font-mono);
-    font-size: 0.8125rem;
+    font-size: var(--xz-fs-md);
     line-height: 1.7;
     color: var(--text-secondary);
   }
@@ -113,10 +113,10 @@ const tarballTree = [
     background: var(--xz-attacker-bg);
     margin: 0.15rem -0.4rem;
     padding: 0.05rem 0.4rem;
-    border-radius: 4px;
+    border-radius: var(--xz-radius-sm);
   }
   .xz-tarball-badge {
-    font-size: 0.6875rem;
+    font-size: var(--xz-fs-xs);
     font-style: italic;
     color: var(--xz-attacker);
     margin-left: 0.5rem;
@@ -124,7 +124,7 @@ const tarballTree = [
   }
   .xz-tarball figcaption {
     text-align: center;
-    font-size: 0.8125rem;
+    font-size: var(--xz-fs-md);
     color: var(--muted);
     font-style: italic;
     margin-top: 0.875rem;

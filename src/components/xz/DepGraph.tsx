@@ -221,10 +221,7 @@ export default function DepGraph() {
             return (
               <g
                 key={`${e.from}-${e.to}`}
-                style={{
-                  opacity: active ? 1 : 0.12,
-                  transition: "opacity 0.35s ease",
-                }}
+                class={`xz-dg-edge${active ? " is-active" : ""}`}
               >
                 <line
                   x1={x1}
@@ -232,7 +229,6 @@ export default function DepGraph() {
                   x2={x2}
                   y2={y2}
                   stroke={stroke}
-                  stroke-opacity={e.malicious ? 0.9 : 0.4}
                   stroke-width="1.5"
                   stroke-dasharray={e.dashed ? "5 4" : undefined}
                   marker-end={marker}
@@ -258,18 +254,14 @@ export default function DepGraph() {
             return (
               <g key={id}>
                 <rect
+                  class={`xz-dg-node${hooked ? " is-hooked" : ""}`}
                   x={n.x - NODE_W / 2}
                   y={n.y - NODE_H / 2}
                   width={NODE_W}
                   height={NODE_H}
                   rx="6"
                   fill="var(--page-bg)"
-                  stroke={hooked ? "var(--xz-attacker)" : "currentColor"}
-                  stroke-opacity={hooked ? 1 : 0.35}
                   stroke-width="1.5"
-                  style={{
-                    transition: "stroke 0.35s ease, stroke-opacity 0.35s ease",
-                  }}
                 />
                 <text
                   x={n.x}

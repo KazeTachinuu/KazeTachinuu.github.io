@@ -3,6 +3,10 @@
 *.mdx
 *.md
 
+# Astro single-file components need prettier-plugin-astro (not installed).
+# Without the plugin, prettier errors out instead of skipping silently.
+*.astro
+
 # Build/lock files don't need formatting.
 dist/
 node_modules/

@@ -84,12 +84,11 @@ export default function Timeline() {
             return (
               <circle
                 key={`${e.date}-${i}`}
+                class={isActive ? "is-active" : undefined}
                 cx={x}
                 cy="15"
                 r={isActive ? 1.6 : 0.95}
                 fill={KIND_COLOR[e.kind]}
-                opacity={isActive ? 1 : 0.6}
-                style={{ transition: "r 0.2s ease, opacity 0.2s ease" }}
               />
             );
           })}
@@ -101,10 +100,6 @@ export default function Timeline() {
             y2="27"
             stroke={KIND_COLOR[EVENTS[active].kind]}
             stroke-width="0.5"
-            style={{
-              transition:
-                "x1 0.35s cubic-bezier(0.4,0,0.2,1), x2 0.35s cubic-bezier(0.4,0,0.2,1), stroke 0.2s ease",
-            }}
           />
         </svg>
         <div class="xz-tl-current">
