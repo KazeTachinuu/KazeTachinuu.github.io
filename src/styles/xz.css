@@ -86,18 +86,21 @@
 ───────────────────────────────────────────────────────────────────────── */
 
 .xz-payload-chain {
-  border: 1px solid var(--border);
-  border-radius: var(--xz-radius-2xl);
-  background: var(--page-bg);
-  overflow: hidden;
+  /* No widget chrome — reads as part of the article. */
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  overflow: visible;
+  margin-block: 2rem 3rem;
 }
 
-/* Rail */
+/* Rail — top section with the 4 artifact cards. */
 .xz-chain-rail-wrap {
   position: relative;
-  padding: 1.25rem 1.25rem 1rem;
-  background: var(--subtle-bg);
-  border-bottom: 1px solid var(--border);
+  padding: 0 0 1.5rem;
+  background: transparent;
+  border-bottom: 1px solid var(--page-text);
+  margin-bottom: 2rem;
 }
 .xz-chain-rail {
   display: grid;
@@ -274,7 +277,7 @@
 
 /* Detail panel */
 .xz-chain-detail {
-  padding: 1.5rem;
+  padding: 0;
   animation: xz-chain-fade 0.22s cubic-bezier(0.4, 0, 0.2, 1);
 }
 @keyframes xz-chain-fade {
@@ -311,11 +314,13 @@
   display: flex;
   gap: 1.5rem;
   flex-wrap: wrap;
-  padding: 0.625rem 0.875rem;
+  padding: 0.5rem 0;
   margin: 0 0 1rem;
-  border: 1px solid var(--border);
-  border-radius: var(--xz-radius-md);
-  background: var(--subtle-bg);
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  border-top: 1px solid var(--page-text);
+  border-bottom: 1px solid var(--page-text);
 }
 .xz-chain-detail-meta-cell {
   display: flex;
@@ -540,11 +545,12 @@
 
 /* Footer caption */
 .xz-chain-foot {
-  padding: 1rem 1.5rem 1.25rem;
-  border-top: 1px solid var(--border);
-  font-size: var(--xz-fs-md);
+  padding: 1rem 0 0;
+  border-top: 1px solid var(--page-text);
+  margin-top: 1.5rem;
+  font-size: 13px;
   line-height: 1.65;
-  color: var(--muted);
+  color: var(--page-text);
 }
 .xz-chain-foot code {
   font-family: var(--font-mono);
@@ -593,338 +599,378 @@
 }
 
 /* ─────────────────────────────────────────────────────────────────────────
-   Timeline (①) — sticky scrollytelling
+   Timeline (①) — Aceternity-style sticky-phase + scroll-beam pattern.
+   Two-column desktop: sticky phase title on left, events on right.
+   A vertical line on the far left has an animated gradient fill that
+   tracks scroll progress through the section.
+   No italic display titles. Bold sans-serif throughout.
 ───────────────────────────────────────────────────────────────────────── */
 
 .xz-tl {
+  width: 100%;
+  max-width: none;
+  margin-inline: 0;
+  margin-block: 2.5rem 4rem;
   position: relative;
-  margin-block: 4rem;
 }
 
-/* Shared sticky-panel chrome used by Timeline + DepGraph. Per-widget
-   selectors below override only the inside padding. */
-.xz-tl-sticky,
-.xz-dg-sticky {
-  position: sticky;
-  top: calc(var(--header-h, 4.5rem) + 0.5rem);
-  background: color-mix(in srgb, var(--page-bg) 92%, transparent);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid var(--border);
-  border-radius: var(--xz-radius-2xl);
-  z-index: 5;
-  margin-bottom: 1.5rem;
-}
-.xz-tl-sticky {
-  padding: 1rem 1.25rem 1rem;
-}
-
-/* ── Arc — pure HTML+CSS, no SVG aspect-ratio fight.
-   Three layers stacked at fixed offsets:
-     0–24px  phase bands (faint colored regions)
-     baseline at ~28px  rail (border-top) with dots positioned absolutely
-     bottom  year labels
-   Playhead is a vertical line spanning all three layers. */
-
-.xz-tl-arc {
+.xz-tl-inner {
   position: relative;
-  height: 4rem;
-}
-.xz-tl-bands {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0.25rem;
-  height: 1.5rem;
-  pointer-events: none;
-}
-.xz-tl-band {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  border-radius: var(--xz-radius-sm);
-}
-.xz-tl-band.is-preparatory,
-.xz-tl-band.is-context {
-  background: color-mix(in srgb, var(--xz-infra) 14%, transparent);
-}
-.xz-tl-band.is-malicious,
-.xz-tl-band.is-pressure {
-  background: var(--xz-attacker-bg);
-}
-.xz-tl-band.is-discovery {
-  background: var(--xz-defender-bg);
+  padding-block: 1rem 2rem;
 }
 
-.xz-tl-rail {
+/* Vertical beam — full-height background line + animated fill on top.
+   Anchored to the left edge of the inner container. */
+.xz-tl-beam {
   position: absolute;
-  left: 0;
-  right: 0;
-  top: 1.6875rem;
-  height: 0;
-  border-top: 1px solid var(--border);
-}
-.xz-tl-dot {
-  position: absolute;
-  top: -4px;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  transform: translateX(-50%);
-  background: var(--xz-dot-color, var(--muted));
-  transition:
-    width 0.2s ease,
-    height 0.2s ease,
-    box-shadow 0.2s ease;
-}
-.xz-tl-dot.is-context,
-.xz-tl-dot.is-preparatory {
-  --xz-dot-color: var(--xz-infra);
-}
-.xz-tl-dot.is-pressure,
-.xz-tl-dot.is-malicious {
-  --xz-dot-color: var(--xz-attacker);
-}
-.xz-tl-dot.is-discovery {
-  --xz-dot-color: var(--xz-defender);
-}
-.xz-tl-dot.is-active {
-  width: 12px;
-  height: 12px;
-  top: -6px;
-  box-shadow: 0 0 0 4px
-    color-mix(in srgb, var(--xz-dot-color) 25%, transparent);
-}
-
-/* Playhead — thin vertical line spanning the arc, animated via left%. */
-.xz-tl-playhead {
-  position: absolute;
-  top: -1.25rem;
-  bottom: -0.5rem;
-  width: 0;
-  transform: translateX(-50%);
-  pointer-events: none;
-  color: var(--muted);
-  transition: left 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-}
-.xz-tl-playhead.is-pressure,
-.xz-tl-playhead.is-malicious {
-  color: var(--xz-attacker);
-}
-.xz-tl-playhead.is-discovery {
-  color: var(--xz-defender);
-}
-.xz-tl-playhead.is-context,
-.xz-tl-playhead.is-preparatory {
-  color: var(--xz-infra);
-}
-.xz-tl-playhead-line {
-  position: absolute;
-  left: -1px;
+  left: 1.25rem;
   top: 0;
   bottom: 0;
   width: 2px;
-  background: currentColor;
-  opacity: 0.8;
-}
-.xz-tl-playhead-tip {
-  position: absolute;
-  top: -2px;
-  left: -4px;
-  width: 0;
-  height: 0;
-  border-left: 4px solid transparent;
-  border-right: 4px solid transparent;
-  border-top: 5px solid currentColor;
-}
-
-.xz-tl-years {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 1rem;
+  background: var(--border);
+  /* Soft mask so beam fades at the top and bottom. */
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    black 8%,
+    black 92%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    black 8%,
+    black 92%,
+    transparent 100%
+  );
   pointer-events: none;
 }
-.xz-tl-year {
+.xz-tl-beam-fill {
   position: absolute;
-  transform: translateX(-50%);
-  font-family: var(--font-mono);
-  font-size: var(--xz-fs-2xs);
-  font-weight: 600;
-  letter-spacing: var(--xz-tracking-caps);
-  color: var(--muted);
+  inset-inline: 0;
+  top: 0;
+  width: 2px;
+  background: linear-gradient(
+    to top,
+    var(--xz-defender) 0%,
+    var(--xz-attacker) 35%,
+    var(--xz-attacker) 70%,
+    transparent 100%
+  );
+  transition: height 0.06s linear;
 }
 
-.xz-tl-current {
+/* ─── Phase row: sticky title on left, events on right ──────────────── */
+.xz-tl-row {
+  display: grid;
+  grid-template-columns: minmax(220px, 280px) 1fr;
+  gap: 3rem;
+  padding-block: 1rem 4rem;
+  align-items: start;
+}
+.xz-tl-row:last-child { padding-bottom: 1rem; }
+
+/* Sticky phase column */
+.xz-tl-phase {
+  position: sticky;
+  top: calc(var(--header-h, 4.5rem) + 2rem);
   display: flex;
-  align-items: baseline;
-  gap: 0.625rem 0.875rem;
-  margin-top: 0.875rem;
-  font-family: var(--font-mono);
-  font-size: var(--xz-fs-md);
-  font-variant-numeric: tabular-nums;
-  flex-wrap: wrap;
-}
-.xz-tl-date {
-  color: var(--page-text);
-  font-weight: 600;
-}
-.xz-tl-actor {
-  color: var(--text-secondary);
-  font-style: italic;
-}
-.xz-tl-progress {
-  margin-left: auto;
-  font-size: var(--xz-fs-xs);
-  color: var(--muted);
+  align-items: flex-start;
+  gap: 1rem;
+  padding-left: 2.75rem;
+  /* Self-align so it does not stretch across the row's full height. */
+  align-self: start;
 }
 
-/* Kind pill — shared shape used in the sticky header AND in each step
-   card so the reader sees the same vocabulary in both places. */
-.xz-tl-kind,
-.xz-tl-step-kind {
+/* Phase marker — solid filled circle on the beam line at row top. */
+.xz-tl-phase-marker {
+  position: absolute;
+  left: 0.5rem;
+  top: 0.25rem;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  background: var(--page-bg);
+  border: 2px solid var(--page-text);
+  display: grid;
+  place-items: center;
+  z-index: 1;
+}
+.xz-tl-phase-marker-dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: var(--page-text);
+}
+.xz-tl-row.is-release .xz-tl-phase-marker {
+  border-color: var(--xz-attacker);
+}
+.xz-tl-row.is-release .xz-tl-phase-marker-dot {
+  background: var(--xz-attacker);
+}
+.xz-tl-row.is-discovery .xz-tl-phase-marker {
+  border-color: var(--xz-defender);
+}
+.xz-tl-row.is-discovery .xz-tl-phase-marker-dot {
+  background: var(--xz-defender);
+}
+
+.xz-tl-phase-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+.xz-tl-phase-num {
   font-family: var(--font-mono);
-  font-size: var(--xz-fs-2xs);
+  font-size: 11px;
   font-weight: 700;
-  letter-spacing: var(--xz-tracking-caps);
+  letter-spacing: 0.22em;
   text-transform: uppercase;
-  padding: 0.18em 0.55em;
-  border-radius: var(--xz-radius-sm);
-  background: color-mix(in srgb, var(--muted) 12%, transparent);
-  color: var(--muted);
-  white-space: nowrap;
+  color: var(--page-text);
+  opacity: 0.55;
 }
-.xz-tl-kind[data-kind="malicious"],
-.xz-tl-kind[data-kind="pressure"],
-.xz-tl-step-kind[data-kind="malicious"],
-.xz-tl-step-kind[data-kind="pressure"] {
-  background: var(--xz-attacker-bg);
-  color: var(--xz-attacker);
-}
-.xz-tl-kind[data-kind="discovery"],
-.xz-tl-step-kind[data-kind="discovery"] {
-  background: var(--xz-defender-bg);
-  color: var(--xz-defender);
-}
+.xz-tl-row.is-release .xz-tl-phase-num { color: var(--xz-attacker); opacity: 1; }
+.xz-tl-row.is-discovery .xz-tl-phase-num { color: var(--xz-defender); opacity: 1; }
 
-/* Steps — proper cards with active-state lift, not just an opacity flip. */
-.xz-tl-steps {
-  list-style: none;
-  padding: 0;
+.xz-tl-phase-name {
   margin: 0;
-}
-/* Steps stay fully readable always — the active state is signalled by
-   the card background + spine color, never by fading the body text. */
-.xz-tl-step {
-  position: relative;
-  padding: 1.125rem 1.25rem 1.125rem 1.5rem;
-  border: 1px solid transparent;
-  border-left: 3px solid var(--border);
-  border-radius: 0 var(--xz-radius-lg) var(--xz-radius-lg) 0;
-  margin-bottom: 0.875rem;
-  background: transparent;
-  transition:
-    border-color 0.3s ease,
-    background 0.3s ease;
-}
-.xz-tl-step[data-active="true"] {
-  background: var(--subtle-bg);
-}
-.xz-tl-step.xz-tl-malicious[data-active="true"],
-.xz-tl-step.xz-tl-pressure[data-active="true"] {
-  border-left-color: var(--xz-attacker);
-}
-.xz-tl-step.xz-tl-discovery[data-active="true"] {
-  border-left-color: var(--xz-defender);
-}
-.xz-tl-step.xz-tl-context[data-active="true"],
-.xz-tl-step.xz-tl-preparatory[data-active="true"] {
-  border-left-color: var(--xz-infra);
-}
-
-.xz-tl-step-head {
-  display: flex;
-  gap: 0.5rem 0.75rem;
-  align-items: baseline;
-  font-family: var(--font-mono);
-  font-size: var(--xz-fs-xs);
-  color: var(--muted);
-  margin-bottom: 0.5rem;
-  flex-wrap: wrap;
-}
-.xz-tl-step-date {
-  font-variant-numeric: tabular-nums;
-  font-weight: 600;
-  color: var(--text-secondary);
-}
-.xz-tl-step-actor {
-  color: var(--muted);
-  font-style: italic;
-}
-
-.xz-tl-title {
-  margin: 0 0 0.4rem;
-  font-size: var(--xz-fs-xl);
-  font-weight: 600;
-  letter-spacing: -0.01em;
+  font-family: var(--font-sans);
+  font-size: clamp(1.875rem, 1.5rem + 1.5vw, 2.75rem);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.025em;
   color: var(--page-text);
 }
-.xz-tl-summary {
-  margin: 0 0 0.6rem;
-  font-size: var(--xz-fs-lg);
-  line-height: 1.6;
-  color: var(--text-secondary);
+.xz-tl-row.is-release .xz-tl-phase-name { color: var(--xz-attacker); }
+.xz-tl-row.is-discovery .xz-tl-phase-name { color: var(--xz-defender); }
+
+.xz-tl-phase-range {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--page-text);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
+  margin-top: 0.5rem;
+}
+
+/* ─── Events column ─────────────────────────────────────────────────── */
+.xz-tl-events {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+  min-width: 0;
+}
+.xz-tl-event {
+  position: relative;
+}
+
+.xz-tl-event-meta {
+  display: flex;
+  align-items: baseline;
+  gap: 0.875rem;
+  margin-bottom: 0.625rem;
+  flex-wrap: wrap;
+}
+.xz-tl-event-date {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--page-text);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
+}
+.xz-tl-event-actor {
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: 14px;
+  color: var(--page-text);
+}
+.xz-tl-event-kind {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--page-text);
+  opacity: 0.55;
+}
+.xz-tl-event-kind.is-att { color: var(--xz-attacker); opacity: 1; }
+.xz-tl-event-kind.is-def { color: var(--xz-defender); opacity: 1; }
+
+.xz-tl-event-title {
+  margin: 0 0 0.75rem;
+  font-family: var(--font-sans);
+  font-size: 1.375rem;
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.015em;
+  color: var(--page-text);
+  max-width: 36ch;
+}
+
+.xz-tl-event-summary {
+  margin: 0 0 0.875rem;
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  color: var(--page-text);
   max-width: 60ch;
 }
-.xz-tl-quote {
+
+/* Verbatim quote — pulled-quote treatment. Big hanging opening mark in
+   the accent color does the visual work; italic Newsreader body at full
+   ink. Generous top margin so the glyph doesn't crash into the summary
+   above. No closing glyph (the inset alone signals end-of-quote). */
+.xz-tl-event-quote {
+  position: relative;
+  margin: 2.25rem 0 1.5rem;
+  padding: 0.5rem 0 0.5rem 2.5rem;
+  border-left: none;
   font-family: var(--font-serif, Newsreader, Georgia, serif);
   font-style: italic;
-  font-size: var(--xz-fs-lg);
-  line-height: 1.6;
-  border-left: 2px solid color-mix(in srgb, var(--accent) 50%, transparent);
-  padding-left: 0.875rem;
-  margin: 0.5rem 0;
-  color: var(--text-secondary);
-  max-width: 60ch;
+  font-weight: 400;
+  font-size: 1.3125rem;
+  line-height: 1.5;
+  letter-spacing: -0.003em;
+  color: var(--page-text);
+  max-width: 52ch;
 }
-.xz-tl-source {
+.xz-tl-event-quote::before {
+  content: "\201C"; /* left double quotation mark, U+201C */
+  position: absolute;
+  left: -0.1rem;
+  top: 0.35em;
+  font-family: var(--font-serif, Newsreader, Georgia, serif);
+  font-style: italic;
+  font-weight: 500;
+  font-size: 3em;
+  line-height: 0.85;
+  color: var(--page-text);
+  pointer-events: none;
+  user-select: none;
+}
+.xz-tl-event-quote.is-att::before { color: var(--xz-attacker); }
+.xz-tl-event-quote.is-def::before { color: var(--xz-defender); }
+
+/* Mini-terminal */
+.xz-tl-event-trace {
+  margin: 1rem 0;
+  background: var(--code-bg);
+  border: 1px solid var(--page-text);
+  padding: 0.875rem 1.125rem;
   font-family: var(--font-mono);
-  font-size: var(--xz-fs-sm);
-  color: var(--muted);
-  text-decoration: none;
-  border-bottom: 1px dotted color-mix(in srgb, var(--muted) 60%, transparent);
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--page-text);
+  max-width: 60ch;
+  overflow-x: auto;
 }
-.xz-tl-source:hover {
-  color: var(--accent);
-  border-bottom-color: var(--accent);
+.xz-tl-trace-line { display: block; }
+.xz-tl-trace-prompt {
+  color: var(--xz-defender);
+  user-select: none;
+  margin-right: 0.5rem;
+  font-weight: 700;
+}
+.xz-tl-trace-cmd {
+  color: var(--page-text);
+  font-weight: 600;
+}
+.xz-tl-trace-out {
+  display: block;
+  color: var(--page-text);
+}
+.xz-tl-trace-cmt {
+  display: block;
+  color: var(--page-text);
+  font-style: italic;
+  margin-top: 0.375rem;
+  opacity: 0.75;
+}
+
+/* Email block — distinctive flourish for the disclosure event. */
+.xz-tl-email {
+  margin: 1rem 0;
+  border: 2px solid var(--xz-defender);
+  background: var(--page-bg);
+  font-family: var(--font-mono);
+  max-width: 62ch;
+}
+.xz-tl-email-headers {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.375rem 1rem;
+  padding: 1rem 1.25rem;
+  border-bottom: 2px solid var(--xz-defender);
+  font-size: 12.5px;
+  line-height: 1.5;
+  background: color-mix(in srgb, var(--xz-defender) 8%, var(--page-bg));
+}
+.xz-tl-email-h-key {
+  font-weight: 700;
+  color: var(--xz-defender);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 10.5px;
+  padding-top: 2px;
+}
+.xz-tl-email-h-val {
+  color: var(--page-text);
+  word-break: break-word;
+}
+.xz-tl-email-body {
+  padding: 1.25rem 1.25rem 1.5rem;
+  font-family: var(--font-serif, Newsreader, Georgia, serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: 1.125rem;
+  line-height: 1.6;
+  color: var(--page-text);
+  white-space: pre-wrap;
+}
+
+.xz-tl-event-source {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  margin-top: 0.625rem;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--page-text);
+  text-decoration: none;
+  border-bottom: 1px solid var(--page-text);
+  letter-spacing: 0.02em;
+  padding-bottom: 1px;
+}
+.xz-tl-event-source:hover {
+  color: var(--xz-attacker);
+  border-bottom-color: var(--xz-attacker);
+}
+.xz-tl-event-source-arrow {
+  font-family: var(--font-sans);
+  font-size: 12px;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .xz-tl-step,
-  .xz-tl-svg circle,
-  .xz-tl-svg .xz-tl-playhead,
-  .xz-tl-svg .xz-tl-playhead line,
-  .xz-tl-svg .xz-tl-playhead path {
-    transition: none !important;
-  }
+  .xz-tl-beam-fill { transition: none !important; }
 }
-@media (max-width: 720px) {
-  .xz-tl-sticky {
-    position: static;
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
+
+@media (max-width: 768px) {
+  .xz-tl-row {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    padding-block: 1.5rem 3rem;
   }
-  .xz-tl-current {
-    gap: 0.5rem 0.625rem;
-    font-size: var(--xz-fs-sm);
+  .xz-tl-phase {
+    position: relative;
+    top: auto;
+    padding-left: 2.75rem;
   }
-  .xz-tl-progress {
-    margin-left: 0;
-  }
-  .xz-tl-step {
-    padding: 1rem 1rem 1rem 1.25rem;
-  }
+  .xz-tl-phase-name { font-size: 1.875rem; }
+  .xz-tl-events { padding-left: 2.75rem; }
+  .xz-tl-beam { left: 1rem; }
+  .xz-tl-phase-marker { left: 0.25rem; }
 }
 
 /* ─────────────────────────────────────────────────────────────────────────
@@ -933,17 +979,26 @@
 
 .xz-dg {
   position: relative;
-  margin-block: 4rem;
+  margin-block: 3rem;
 }
 
 .xz-dg-sticky {
-  padding: 1rem 1.25rem;
-  color: var(--text-secondary);
+  position: sticky;
+  top: calc(var(--header-h, 4.5rem) + 1rem);
+  background: var(--page-bg);
+  border: none;
+  border-bottom: 1px solid var(--page-text);
+  border-radius: 0;
+  z-index: 5;
+  margin-bottom: 2rem;
+  padding: 0.5rem 0 1rem;
+  color: var(--page-text);
 }
 .xz-dg-svg {
   width: 100%;
   height: auto;
-  max-height: 380px;
+  /* Tight max-height so the diagram doesn't dominate the viewport. */
+  max-height: 240px;
   display: block;
 }
 .xz-dg-svg .xz-dg-edge-label,
@@ -953,26 +1008,16 @@
   font-variant-numeric: tabular-nums;
 }
 
-/* Edge / node visibility — opacity and stroke handled by CSS classes
-   so the JSX never hardcodes fade values. */
-.xz-dg-edge {
-  opacity: var(--xz-fade-ghost);
-  transition: opacity 0.35s ease;
-}
-.xz-dg-edge.is-active {
-  opacity: 1;
-}
+/* Edges fade to ~25% opacity when inactive, jump to full when their
+   stage fires. Inactive edges still readable, not invisible. */
+.xz-dg-edge { opacity: 0.3; transition: opacity 0.3s ease; }
+.xz-dg-edge.is-active { opacity: 1; }
 .xz-dg-node {
-  stroke: currentColor;
-  stroke-opacity: 0.55;
-  transition:
-    stroke 0.35s ease,
-    stroke-opacity 0.35s ease;
-}
-.xz-dg-node.is-hooked {
-  stroke: var(--xz-attacker);
+  stroke: var(--page-text);
   stroke-opacity: 1;
+  transition: stroke 0.3s ease;
 }
+.xz-dg-node.is-hooked { stroke: var(--xz-attacker); }
 
 .xz-dg-current {
   display: flex;
@@ -981,21 +1026,19 @@
 }
 .xz-dg-stage-pill {
   font-family: var(--font-mono);
-  font-size: var(--xz-fs-xs);
+  font-size: 11px;
   font-weight: 700;
-  letter-spacing: var(--xz-tracking-caps);
+  letter-spacing: 0.18em;
   text-transform: uppercase;
-  padding: 0.3em 0.75em;
-  border-radius: 999px;
-  background: color-mix(in srgb, var(--muted) 12%, transparent);
-  color: var(--muted);
-  transition:
-    background 0.3s ease,
-    color 0.3s ease;
+  padding: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--page-text);
+  transition: color 0.3s ease;
 }
 .xz-dg-stage-pill[data-stage="ifunc"],
 .xz-dg-stage-pill[data-stage="attack"] {
-  background: var(--xz-attacker-bg);
+  background: transparent;
   color: var(--xz-attacker);
 }
 
@@ -1005,13 +1048,11 @@
   margin: 0;
 }
 .xz-dg-step {
-  padding: 1.25rem 0 1.25rem 1.25rem;
-  border-left: 2px solid var(--border);
+  padding: 1.25rem 0 1.25rem 1.5rem;
+  border-left: 2px solid var(--page-text);
   margin-bottom: 1.5rem;
-  opacity: var(--xz-fade-quiet);
-  transition:
-    opacity 0.3s ease,
-    border-color 0.3s ease;
+  opacity: 1;
+  transition: border-color 0.3s ease;
 }
 .xz-dg-step[data-active="true"] {
   opacity: 1;

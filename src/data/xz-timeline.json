@@ -23,7 +23,7 @@
       "actor": "Lasse Collin",
       "kind": "context",
       "title": "Lasse mentions Jia Tan as future co-maintainer",
-      "summary": "Reply on xz-devel: 'Jia Tan has helped me off-list with XZ Utils and he might have a bigger role in the future…'",
+      "summary": "Reply on xz-devel hinting Jia Tan might have a bigger role in the future.",
       "quote": "Jia Tan has helped me off-list with XZ Utils and he might have a bigger role in the future at least with XZ Utils.",
       "source": "https://research.swtch.com/xz-timeline"
     },
@@ -59,7 +59,7 @@
       "actor": "Jia Tan",
       "kind": "preparatory",
       "title": "Jia Tan takes over releases",
-      "summary": "Lasse releases v5.4.1 — the final release Lasse signs. Subsequent releases are signed by Jia Tan.",
+      "summary": "v5.4.1 ships — the final release Lasse signs. Subsequent releases are signed by Jia Tan.",
       "quote": null,
       "source": "https://research.swtch.com/xz-timeline"
     },
@@ -68,7 +68,7 @@
       "actor": "Jia Tan",
       "kind": "preparatory",
       "title": "PR to disable IFUNC fuzzing in oss-fuzz",
-      "summary": "Jia Tan asks Google's oss-fuzz to disable IFUNC checks, allegedly to mask later malicious changes.",
+      "summary": "Jia Tan asks Google's oss-fuzz to disable IFUNC checks — a detail that only reads as suspicious in retrospect.",
       "quote": null,
       "source": "https://research.swtch.com/xz-timeline"
     },
@@ -109,22 +109,49 @@
       "source": "https://www.openwall.com/lists/oss-security/2024/03/29/4"
     },
     {
-      "date": "2024-03-29",
+      "date": "2024-03-25",
       "actor": "Andres Freund",
       "kind": "discovery",
-      "title": "Public disclosure on oss-security",
-      "summary": "Andres Freund posts to oss-security@lists.openwall.com at 08:51 UTC -0700. Subject: 'backdoor in upstream xz/liblzma leading to ssh server compromise'. He found it while micro-benchmarking PostgreSQL on Debian sid — sshd connections were taking 500 ms of extra CPU and producing Valgrind errors.",
-      "quote": "I observed sshd processes were using a surprising amount of CPU, despite immediately failing because of wrong usernames etc.",
+      "subkind": "anomaly",
+      "title": "An anomaly during PostgreSQL benchmarking",
+      "summary": "While micro-benchmarking PostgreSQL on Debian sid, Andres Freund notices that ssh logins to his test box are taking ~500 ms longer than they should. He files it under \"weird\" and keeps benchmarking.",
+      "quote": null,
+      "source": "https://www.openwall.com/lists/oss-security/2024/03/29/4"
+    },
+    {
+      "date": "2024-03-28",
+      "actor": "Andres Freund",
+      "kind": "discovery",
+      "subkind": "trace",
+      "title": "Valgrind trace points at liblzma",
+      "summary": "He runs valgrind on sshd, sees uninitialized-memory errors firing inside liblzma's CRC64 path. That is the wrong dependency — sshd doesn't link liblzma. The Debian sd_notify patch is the bridge that brings it in.",
+      "quote": null,
+      "trace": {
+        "cmd": "ldd $(which sshd) | grep lzma",
+        "out": "    liblzma.so.5 => /lib/x86_64-linux-gnu/liblzma.so.5",
+        "comment": "sshd → libsystemd → liblzma · the Debian sd_notify patch is the bridge"
+      },
       "source": "https://www.openwall.com/lists/oss-security/2024/03/29/4"
     },
     {
       "date": "2024-03-29",
-      "actor": "GitHub",
+      "actor": "Andres Freund",
       "kind": "discovery",
-      "title": "tukaani-project/xz disabled by GitHub",
-      "summary": "GitHub disables the tukaani-project organization within hours. Distros (Debian, Fedora, Arch, openSUSE, Kali) ship rollbacks the same day.",
+      "subkind": "disclosure",
+      "title": "Public disclosure on oss-security",
+      "summary": "He posts to oss-security at 08:51 UTC. Subject: \"backdoor in upstream xz/liblzma leading to ssh server compromise.\"",
+      "quote": "After observing a few odd symptoms around liblzma (part of the xz package) on Debian sid installations over the last weeks (logins with ssh taking a lot of CPU, valgrind errors) I figured out the answer: The upstream xz repository and the xz tarballs have been backdoored.",
+      "source": "https://www.openwall.com/lists/oss-security/2024/03/29/4"
+    },
+    {
+      "date": "2024-03-29",
+      "actor": "Distros · GitHub",
+      "kind": "discovery",
+      "subkind": "response",
+      "title": "Distros roll back, GitHub disables the org",
+      "summary": "Within hours: Debian rolls sid back to 5.4.5-0.2; Red Hat issues an urgent advisory pulling Fedora 40 Beta and Rawhide; Homebrew downgrades xz on macOS. GitHub disables the tukaani-project organization. CVE-2024-3094 is assigned the same day, scored 10.0.",
       "quote": null,
-      "source": "https://gist.github.com/thesamesam/223949d5a074ebc3dce9ee78baad9e27"
+      "source": "https://nvd.nist.gov/vuln/detail/CVE-2024-3094"
     }
   ]
 }

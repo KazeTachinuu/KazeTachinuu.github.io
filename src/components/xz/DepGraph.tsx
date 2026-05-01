@@ -175,7 +175,7 @@ export default function DepGraph() {
 
   return (
     <section
-      class="xz-widget xz-dg"
+      class="xz-widget xz-dg not-prose"
       aria-label="Dependency hijack chain across three stages"
     >
       <div class="xz-dg-sticky" data-stage={stage}>

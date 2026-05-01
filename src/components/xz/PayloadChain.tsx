@@ -374,7 +374,7 @@ export default function PayloadChain() {
 
   return (
     <figure
-      class="xz-widget xz-payload-chain"
+      class="xz-widget xz-payload-chain not-prose"
       ref={rootRef}
       aria-label="XZ-5.6.1 payload artifact chain"
     >
