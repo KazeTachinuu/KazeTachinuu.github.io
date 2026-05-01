@@ -81,522 +81,6 @@
   font-variant-numeric: tabular-nums;
 }
 
-/* ─────────────────────────────────────────────────────────────────────────
-   PayloadChain (§3) — 4-card artifact chain with detail panel
-───────────────────────────────────────────────────────────────────────── */
-
-.xz-payload-chain {
-  /* No widget chrome — reads as part of the article. */
-  border: none;
-  border-radius: 0;
-  background: transparent;
-  overflow: visible;
-  margin-block: 2rem 3rem;
-}
-
-/* Rail — top section with the 4 artifact cards. */
-.xz-chain-rail-wrap {
-  position: relative;
-  padding: 0 0 1.5rem;
-  background: transparent;
-  border-bottom: 1px solid var(--page-text);
-  margin-bottom: 2rem;
-}
-.xz-chain-rail {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  align-items: stretch;
-  gap: 0;
-}
-.xz-chain-step {
-  position: relative;
-  display: flex;
-  align-items: stretch;
-}
-.xz-chain-step-btn {
-  flex: 1;
-  min-width: 0;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: 0.55rem;
-  padding: 1rem 1rem 0.875rem;
-  background: var(--page-bg);
-  border: 1px solid var(--border);
-  border-radius: var(--xz-radius-xl);
-  font: inherit;
-  color: inherit;
-  text-align: left;
-  cursor: pointer;
-  transition:
-    border-color 0.15s ease,
-    box-shadow 0.2s ease;
-}
-.xz-chain-step-btn:hover {
-  border-color: color-mix(in srgb, var(--accent) 60%, var(--border));
-}
-.xz-chain-step-btn:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
-}
-.xz-chain-step.is-active .xz-chain-step-btn {
-  border-color: var(--accent);
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 16%, transparent);
-}
-
-.xz-chain-step-pill {
-  align-self: flex-start;
-  font-family: var(--font-mono);
-  font-size: var(--xz-fs-2xs);
-  font-weight: 700;
-  letter-spacing: var(--xz-tracking-caps);
-  text-transform: uppercase;
-  padding: 0.22em 0.55em;
-  border-radius: var(--xz-radius-sm);
-  white-space: nowrap;
-}
-.xz-chain-step-pill.is-attacker {
-  color: var(--xz-attacker);
-  background: var(--xz-attacker-bg);
-}
-.xz-chain-step-pill.is-defender {
-  color: var(--xz-defender);
-  background: var(--xz-defender-bg);
-}
-.xz-chain-step-name {
-  font-family: var(--font-mono);
-  font-size: var(--xz-fs-md);
-  font-weight: 600;
-  color: var(--page-text);
-  overflow-wrap: anywhere;
-  line-height: 1.3;
-}
-.xz-chain-step-meta {
-  display: flex;
-  flex-direction: column;
-  gap: 0.2rem;
-  margin-top: auto;
-  font-family: var(--font-mono);
-  font-size: var(--xz-fs-sm);
-  line-height: 1.3;
-  color: var(--muted);
-}
-.xz-chain-step-size {
-  color: var(--text-secondary);
-}
-.xz-chain-step-hash {
-  color: var(--muted);
-  font-size: var(--xz-fs-xs);
-  letter-spacing: -0.01em;
-}
-
-/* Connector arrows */
-.xz-chain-arrow {
-  position: relative;
-  width: 1.25rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-.xz-chain-arrow-line {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 50%;
-  height: 1px;
-  background: var(--border);
-  transform: translateY(-50%);
-}
-.xz-chain-arrow-tip {
-  position: relative;
-  z-index: 1;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--muted);
-  background: var(--subtle-bg);
-  padding: 0 0.2rem;
-  transition: color 0.15s ease;
-}
-.xz-chain-arrow.is-active .xz-chain-arrow-line {
-  background: var(--accent);
-}
-.xz-chain-arrow.is-active .xz-chain-arrow-tip {
-  color: var(--accent);
-}
-
-/* Version selector */
-.xz-chain-version {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-  margin-top: 0.875rem;
-  flex-wrap: wrap;
-}
-.xz-chain-version-k {
-  font-family: var(--font-mono);
-  font-size: var(--xz-fs-2xs);
-  letter-spacing: var(--xz-tracking-caps);
-  text-transform: uppercase;
-  color: var(--muted);
-  margin-right: 0.25rem;
-}
-.xz-chain-version-btn {
-  font-family: var(--font-mono);
-  font-size: var(--xz-fs-xs);
-  font-weight: 600;
-  padding: 0.2rem 0.6rem;
-  border: 1px solid var(--border);
-  background: var(--page-bg);
-  border-radius: 999px;
-  color: var(--text-secondary);
-  cursor: pointer;
-  transition:
-    border-color 0.15s ease,
-    color 0.15s ease,
-    background 0.15s ease;
-}
-.xz-chain-version-btn:hover:not(:disabled) {
-  border-color: var(--accent);
-  color: var(--page-text);
-}
-.xz-chain-version-btn.is-on {
-  background: var(--accent);
-  color: var(--page-bg);
-  border-color: var(--accent);
-}
-.xz-chain-version-btn:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
-}
-.xz-chain-version-btn:disabled {
-  opacity: 0.45;
-  cursor: not-allowed;
-}
-
-/* Detail panel */
-.xz-chain-detail {
-  padding: 0;
-  animation: xz-chain-fade 0.22s cubic-bezier(0.4, 0, 0.2, 1);
-}
-@keyframes xz-chain-fade {
-  from {
-    opacity: 0;
-    transform: translateY(4px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-.xz-chain-detail-headline {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  margin-bottom: 0.5rem;
-}
-.xz-chain-detail-name {
-  font-family: var(--font-mono);
-  font-size: var(--xz-fs-xl);
-  font-weight: 600;
-  color: var(--page-text);
-  overflow-wrap: anywhere;
-}
-.xz-chain-blurb {
-  font-size: var(--xz-fs-lg);
-  line-height: 1.6;
-  color: var(--text-secondary);
-  margin: 0 0 1rem;
-  max-width: 60ch;
-}
-.xz-chain-detail-meta {
-  display: flex;
-  gap: 1.5rem;
-  flex-wrap: wrap;
-  padding: 0.5rem 0;
-  margin: 0 0 1rem;
-  border: none;
-  border-radius: 0;
-  background: transparent;
-  border-top: 1px solid var(--page-text);
-  border-bottom: 1px solid var(--page-text);
-}
-.xz-chain-detail-meta-cell {
-  display: flex;
-  align-items: baseline;
-  gap: 0.45rem;
-  min-width: 0;
-}
-.xz-chain-detail-meta-k {
-  font-family: var(--font-mono);
-  font-size: var(--xz-fs-3xs);
-  font-weight: 700;
-  letter-spacing: var(--xz-tracking-caps);
-  text-transform: uppercase;
-  color: var(--muted);
-}
-.xz-chain-detail-meta-v {
-  font-family: var(--font-mono);
-  font-size: var(--xz-fs-md);
-  color: var(--page-text);
-}
-.xz-defender-strong {
-  color: var(--xz-defender);
-  font-weight: 600;
-}
-
-.xz-chain-tabs {
-  display: flex;
-  gap: 0;
-  border-bottom: 1px solid var(--border);
-  margin-bottom: 0;
-}
-.xz-chain-tab {
-  font-family: var(--font-sans);
-  font-size: var(--xz-fs-md);
-  font-weight: 500;
-  padding: 0.5rem 0.875rem;
-  border: none;
-  background: none;
-  color: var(--muted);
-  cursor: pointer;
-  border-bottom: 2px solid transparent;
-  margin-bottom: -1px;
-  transition:
-    color 0.15s ease,
-    border-color 0.15s ease;
-}
-.xz-chain-tab:hover {
-  color: var(--page-text);
-}
-.xz-chain-tab.is-on {
-  color: var(--page-text);
-  border-bottom-color: var(--accent);
-}
-.xz-chain-tab:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
-  border-radius: var(--xz-radius-xs, 3px);
-}
-
-/* Code block */
-.xz-chain-code-wrap {
-  position: relative;
-  margin-top: 0.875rem;
-}
-.xz-code-block {
-  position: relative;
-  margin: 0;
-  border-radius: var(--xz-radius-lg);
-  border: 1px solid var(--code-border);
-  background: var(--code-bg);
-  overflow: hidden;
-}
-.xz-code-block-cap {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  padding: 0.625rem 1rem;
-  background: color-mix(in srgb, var(--page-text) 4%, transparent);
-  border-bottom: 1px solid color-mix(in srgb, var(--border) 60%, transparent);
-  font-family: var(--font-mono);
-  font-size: var(--xz-fs-sm);
-  color: var(--muted);
-}
-.xz-code-block-cap-l {
-  display: flex;
-  align-items: center;
-  gap: 0.625rem;
-  min-width: 0;
-}
-.xz-code-block-cap-file {
-  color: var(--page-text);
-  font-weight: 500;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.xz-code-block-cap-r {
-  color: var(--muted);
-  flex-shrink: 0;
-}
-.xz-code-block-dot {
-  display: inline-block;
-  width: 6px;
-  height: 6px;
-  border-radius: 999px;
-  flex-shrink: 0;
-}
-.xz-code-block-dot.is-attacker {
-  background: var(--xz-attacker);
-}
-.xz-code-block-dot.is-defender {
-  background: var(--xz-defender);
-}
-.xz-code-block pre {
-  margin: 0;
-  padding: 1.25rem 1.25rem 1.375rem;
-  font-family: var(--font-mono);
-  font-size: var(--xz-fs-md);
-  line-height: 1.7;
-  overflow-x: auto;
-  white-space: pre;
-  color: var(--page-text);
-  background: transparent;
-  tab-size: 2;
-}
-.xz-code-block pre code {
-  font-family: inherit;
-  font-size: inherit;
-  background: transparent;
-  padding: 0;
-}
-.xz-code-block .line {
-  display: inline;
-}
-
-/* ELF reveal — the one moment of motion */
-.xz-chain-elf-overlay {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 1rem;
-  pointer-events: none;
-  background: var(--code-bg);
-  border-radius: var(--xz-radius-lg);
-  z-index: 2;
-  font-family: var(--font-mono);
-  font-size: 1.5rem;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  opacity: 1;
-  transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-}
-.xz-chain-code-wrap.is-elf.is-revealed .xz-chain-elf-overlay {
-  opacity: 0;
-}
-.xz-chain-elf-bytes {
-  font-variant-numeric: tabular-nums;
-}
-.xz-chain-elf-byte {
-  color: var(--xz-attacker);
-}
-.xz-chain-elf-arrow {
-  color: var(--muted);
-  font-size: 1.25rem;
-}
-.xz-chain-elf-glyph {
-  color: var(--xz-defender);
-}
-@media (prefers-reduced-motion: reduce) {
-  .xz-chain-elf-overlay {
-    display: none;
-  }
-}
-
-/* Hash chip */
-.xz-hash-chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  font-family: var(--font-mono);
-  font-size: var(--xz-fs-md);
-  padding: 0.15rem 0.45rem;
-  border: 1px solid transparent;
-  background: color-mix(in srgb, var(--muted) 8%, transparent);
-  border-radius: var(--xz-radius-sm);
-  color: var(--page-text);
-  cursor: pointer;
-  transition:
-    color 0.15s ease,
-    border-color 0.15s ease,
-    background 0.15s ease;
-}
-.xz-hash-chip:hover {
-  color: var(--accent);
-  border-color: color-mix(in srgb, var(--accent) 40%, transparent);
-  background: color-mix(in srgb, var(--accent) 8%, transparent);
-}
-.xz-hash-chip:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
-}
-.xz-hash-chip.is-copied {
-  color: var(--xz-defender);
-  border-color: color-mix(in srgb, var(--xz-defender) 50%, transparent);
-  background: var(--xz-defender-bg);
-}
-.xz-hash-chip-icon {
-  display: inline-flex;
-  align-items: center;
-  color: var(--muted);
-  transition: color 0.15s ease;
-}
-.xz-hash-chip:hover .xz-hash-chip-icon {
-  color: var(--accent);
-}
-.xz-hash-chip.is-copied .xz-hash-chip-icon {
-  color: var(--xz-defender);
-}
-
-/* Footer caption */
-.xz-chain-foot {
-  padding: 1rem 0 0;
-  border-top: 1px solid var(--page-text);
-  margin-top: 1.5rem;
-  font-size: 13px;
-  line-height: 1.65;
-  color: var(--page-text);
-}
-.xz-chain-foot code {
-  font-family: var(--font-mono);
-  font-size: 0.875em;
-  padding: 0.1em 0.35em;
-  background: color-mix(in srgb, var(--muted) 14%, transparent);
-  border-radius: var(--xz-radius-xs, 3px);
-  color: var(--page-text);
-}
-.xz-chain-foot a {
-  color: var(--accent);
-  text-decoration: none;
-}
-.xz-chain-foot a:hover {
-  text-decoration: underline;
-}
-
-/* Mobile */
-@media (max-width: 720px) {
-  .xz-chain-rail {
-    grid-template-columns: 1fr;
-    gap: 0.5rem;
-  }
-  .xz-chain-step {
-    flex-direction: column;
-  }
-  .xz-chain-arrow {
-    width: 100%;
-    height: 1rem;
-    transform: rotate(90deg);
-    margin: -0.15rem 0;
-  }
-  .xz-chain-detail-meta {
-    gap: 0.75rem 1rem;
-    padding: 0.625rem 0.75rem;
-  }
-  .xz-chain-detail {
-    padding: 1.25rem 1rem;
-  }
-  .xz-chain-rail-wrap {
-    padding: 1rem 1rem 0.875rem;
-  }
-  .xz-chain-foot {
-    padding: 0.875rem 1rem;
-  }
-}
 
 /* ─────────────────────────────────────────────────────────────────────────
    Timeline (①) — Aceternity-style sticky-phase + scroll-beam pattern.
@@ -973,132 +457,6 @@
   .xz-tl-phase-marker { left: 0.25rem; }
 }
 
-/* ─────────────────────────────────────────────────────────────────────────
-   DepGraph (④) — sticky 5-node SVG, three scrolly stages
-───────────────────────────────────────────────────────────────────────── */
-
-.xz-dg {
-  position: relative;
-  margin-block: 3rem;
-}
-
-.xz-dg-sticky {
-  position: sticky;
-  top: calc(var(--header-h, 4.5rem) + 1rem);
-  background: var(--page-bg);
-  border: none;
-  border-bottom: 1px solid var(--page-text);
-  border-radius: 0;
-  z-index: 5;
-  margin-bottom: 2rem;
-  padding: 0.5rem 0 1rem;
-  color: var(--page-text);
-}
-.xz-dg-svg {
-  width: 100%;
-  height: auto;
-  /* Tight max-height so the diagram doesn't dominate the viewport. */
-  max-height: 240px;
-  display: block;
-}
-.xz-dg-svg .xz-dg-edge-label,
-.xz-dg-svg .xz-dg-node-label,
-.xz-dg-svg .xz-dg-node-sub {
-  font-family: var(--font-mono);
-  font-variant-numeric: tabular-nums;
-}
-
-/* Edges fade to ~25% opacity when inactive, jump to full when their
-   stage fires. Inactive edges still readable, not invisible. */
-.xz-dg-edge { opacity: 0.3; transition: opacity 0.3s ease; }
-.xz-dg-edge.is-active { opacity: 1; }
-.xz-dg-node {
-  stroke: var(--page-text);
-  stroke-opacity: 1;
-  transition: stroke 0.3s ease;
-}
-.xz-dg-node.is-hooked { stroke: var(--xz-attacker); }
-
-.xz-dg-current {
-  display: flex;
-  justify-content: center;
-  margin-top: 0.625rem;
-}
-.xz-dg-stage-pill {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  padding: 0;
-  border-radius: 0;
-  background: transparent;
-  color: var(--page-text);
-  transition: color 0.3s ease;
-}
-.xz-dg-stage-pill[data-stage="ifunc"],
-.xz-dg-stage-pill[data-stage="attack"] {
-  background: transparent;
-  color: var(--xz-attacker);
-}
-
-.xz-dg-steps {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-.xz-dg-step {
-  padding: 1.25rem 0 1.25rem 1.5rem;
-  border-left: 2px solid var(--page-text);
-  margin-bottom: 1.5rem;
-  opacity: 1;
-  transition: border-color 0.3s ease;
-}
-.xz-dg-step[data-active="true"] {
-  opacity: 1;
-}
-/* Scroll distance between steps for scrollama; last step gets none
-   so the section doesn't end with empty space. */
-.xz-dg-step:not(:last-child) {
-  min-height: 32vh;
-}
-.xz-dg-step-legitimate[data-active="true"] {
-  border-left-color: var(--xz-infra);
-}
-.xz-dg-step-ifunc[data-active="true"],
-.xz-dg-step-attack[data-active="true"] {
-  border-left-color: var(--xz-attacker);
-}
-.xz-dg-title {
-  margin: 0 0 0.5rem;
-  font-size: var(--xz-fs-xl);
-  font-weight: 600;
-  letter-spacing: -0.01em;
-  color: var(--page-text);
-}
-.xz-dg-body {
-  margin: 0;
-  font-size: var(--xz-fs-lg);
-  line-height: 1.6;
-  color: var(--text-secondary);
-  max-width: 60ch;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .xz-dg-svg *,
-  .xz-dg-edge,
-  .xz-dg-step,
-  .xz-dg-stage-pill {
-    transition: none !important;
-  }
-}
-@media (max-width: 720px) {
-  .xz-dg-sticky {
-    position: static;
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
-  }
-}
 
 /* ─────────────────────────────────────────────────────────────────────────
    "Try it yourself" callout — RE-course aside.
@@ -1160,4 +518,273 @@
 }
 .xz-tryit a:hover {
   border-bottom-style: solid;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   Inline dep-path diagram (Act IV) — sshd → libsystemd → liblzma.
+   Pure SVG, no interactivity. Uses page-text as currentColor.
+───────────────────────────────────────────────────────────────────────── */
+
+.xz-deppath {
+  margin: 1.75rem 0 1.25rem;
+  color: var(--page-text);
+}
+.xz-deppath svg {
+  width: 100%;
+  height: auto;
+  max-width: 420px;
+  display: block;
+  margin-inline: auto;
+}
+.xz-deppath figcaption {
+  text-align: center;
+  font-size: 13.5px;
+  color: var(--muted);
+  margin-top: 0.875rem;
+  font-family: var(--font-serif, Newsreader, Georgia, serif);
+  font-style: italic;
+  line-height: 1.5;
+}
+.xz-deppath figcaption code {
+  font-family: var(--font-mono);
+  font-style: normal;
+  font-size: 0.875em;
+  color: var(--page-text);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   Cast — dramatis personae before Act I.
+   2×2 grid on desktop, single column on mobile. Color-coded left spine
+   per role (target / attacker / defender). Solid colors, no transparency.
+───────────────────────────────────────────────────────────────────────── */
+
+.xz-cast {
+  margin: 2.5rem 0 3rem;
+}
+.xz-cast-title {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--page-text);
+  margin: 0 0 1.25rem;
+}
+.xz-cast-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem 1.5rem;
+}
+.xz-cast-card {
+  position: relative;
+  padding: 1rem 1.125rem 1.125rem 1.375rem;
+  border-left: 4px solid var(--page-text);
+}
+.xz-cast-card.is-attacker { border-left-color: var(--xz-attacker); }
+.xz-cast-card.is-defender { border-left-color: var(--xz-defender); }
+.xz-cast-card.is-target { border-left-color: var(--page-text); }
+
+.xz-cast-card-head {
+  margin: 0 0 0.5rem;
+}
+.xz-cast-role {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--page-text);
+  margin-bottom: 0.25rem;
+}
+.xz-cast-card.is-attacker .xz-cast-role { color: var(--xz-attacker); }
+.xz-cast-card.is-defender .xz-cast-role { color: var(--xz-defender); }
+
+.xz-cast-name {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.012em;
+  color: var(--page-text);
+  display: flex;
+  align-items: baseline;
+  gap: 0.625rem;
+  flex-wrap: wrap;
+}
+.xz-cast-handle {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0;
+  color: var(--xz-attacker);
+  background: var(--xz-attacker-bg);
+  padding: 2px 6px;
+  border-radius: 3px;
+}
+.xz-cast-card p {
+  margin: 0;
+  font-size: 0.9375rem;
+  line-height: 1.55;
+  color: var(--page-text);
+}
+
+@media (max-width: 720px) {
+  .xz-cast-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   Attribution chart — small inline bar chart for Jia Tan commit counts
+   by weekday (Karty/Henniger). Solid colors, no transparency washes.
+───────────────────────────────────────────────────────────────────────── */
+
+.xz-attrchart {
+  margin: 1.75rem 0 1.5rem;
+  color: var(--page-text);
+}
+.xz-attrchart svg {
+  width: 100%;
+  height: auto;
+  max-width: 480px;
+  display: block;
+  margin-inline: auto;
+}
+.xz-attrchart figcaption {
+  text-align: center;
+  font-size: 13px;
+  color: var(--muted);
+  margin-top: 0.875rem;
+  font-family: var(--font-serif, Newsreader, Georgia, serif);
+  font-style: italic;
+  line-height: 1.5;
+  max-width: 56ch;
+  margin-inline: auto;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   Timezone map — Wikipedia world map base + overlay bands.
+   Bands placed at approximate longitudes; honest disclaimer in caption.
+───────────────────────────────────────────────────────────────────────── */
+
+.xz-tzmap {
+  margin: 1.5rem 0 2rem;
+  color: var(--page-text);
+}
+.xz-tzmap-frame {
+  position: relative;
+  width: 100%;
+  max-width: 760px;
+  margin-inline: auto;
+  aspect-ratio: 950 / 620;
+}
+/* The inlined Wikipedia SVG. Set fills via CSS so it adapts to theme. */
+.xz-tzmap-base {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.xz-tzmap-base svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.xz-tzmap-base path {
+  fill: var(--page-text);
+  fill-opacity: 0.55;
+}
+:root.light .xz-tzmap-base path {
+  fill-opacity: 0.4;
+}
+
+.xz-tzmap-overlay {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+.xz-tzmap-band.is-actual {
+  fill: var(--xz-defender);
+  fill-opacity: 0.55;
+  stroke: var(--xz-defender);
+  stroke-width: 2;
+}
+.xz-tzmap-band.is-claimed {
+  fill: var(--xz-attacker);
+  fill-opacity: 0.55;
+  stroke: var(--xz-attacker);
+  stroke-width: 2;
+}
+
+/* Labels sit BELOW the map, each centered under its band's longitude.
+   3px top-border in the band's color visually connects to the band. */
+.xz-tzmap-labels {
+  position: relative;
+  height: 5.5rem;
+  margin-top: 0.625rem;
+  max-width: 760px;
+  margin-inline: auto;
+}
+.xz-tzmap-label {
+  position: absolute;
+  top: 0;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  white-space: nowrap;
+  line-height: 1.2;
+  padding: 0.5rem 0.875rem;
+  border-top: 3px solid var(--page-text);
+  background: var(--page-bg);
+}
+.xz-tzmap-label.is-actual { border-top-color: var(--xz-defender); }
+.xz-tzmap-label.is-claimed { border-top-color: var(--xz-attacker); }
+.xz-tzmap-label-tag {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--page-text);
+}
+.xz-tzmap-label-tz {
+  font-family: var(--font-mono);
+  font-size: 15px;
+  font-weight: 700;
+  margin-top: 4px;
+  color: var(--page-text);
+}
+.xz-tzmap-label-where {
+  font-family: var(--font-serif, Newsreader, Georgia, serif);
+  font-style: italic;
+  font-size: 13px;
+  color: var(--page-text);
+  margin-top: 4px;
+}
+.xz-tzmap-label.is-actual .xz-tzmap-label-tag,
+.xz-tzmap-label.is-actual .xz-tzmap-label-tz { color: var(--xz-defender); }
+.xz-tzmap-label.is-claimed .xz-tzmap-label-tag,
+.xz-tzmap-label.is-claimed .xz-tzmap-label-tz { color: var(--xz-attacker); }
+
+.xz-tzmap figcaption {
+  text-align: center;
+  font-size: 13px;
+  color: var(--muted);
+  margin-top: 1rem;
+  font-family: var(--font-serif, Newsreader, Georgia, serif);
+  font-style: italic;
+  line-height: 1.5;
+  max-width: 64ch;
+  margin-inline: auto;
+}
+@media (max-width: 540px) {
+  .xz-tzmap-label-where { display: none; }
+  .xz-tzmap-label-tz { font-size: 12px; }
 }

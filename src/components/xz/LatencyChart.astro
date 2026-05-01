@@ -1,14 +1,15 @@
 ---
 /**
- * Tiny inline SVG bar chart: sshd connection latency before vs after the
- * malicious liblzma was loaded. Numbers from Andres Freund's oss-security
- * post — ~0.3s baseline → ~0.8s with the backdoor active.
+ * Tiny inline SVG bar chart: sshd login timing, clean vs backdoored.
+ * Numbers verbatim from Andres Freund's oss-security disclosure
+ * (`real 0m0.299s` clean, `real 0m0.807s` backdoored).
  *   https://www.openwall.com/lists/oss-security/2024/03/29/4
+ * Andres's email did not break out 5.6.0 vs 5.6.1 timings separately,
+ * so we don't either.
  */
 const bars = [
-  { label: "5.4.6 (clean)", ms: 300, kind: "defender" },
-  { label: "5.6.0 (backdoor)", ms: 800, kind: "attacker" },
-  { label: "5.6.1 (backdoor)", ms: 800, kind: "attacker" },
+  { label: "clean (pre-5.6)", ms: 299, kind: "defender" },
+  { label: "backdoored (5.6.x)", ms: 807, kind: "attacker" },
 ];
 const W = 480;
 const H = 200;

@@ -7,7 +7,7 @@
       "title": "First public commit by Jia Tan",
       "summary": "PR to libarchive that subtly weakens input sanitization (replaces safe_fprintf with fprintf). Merged.",
       "quote": null,
-      "source": "https://research.swtch.com/xz-timeline"
+      "source": "https://github.com/libarchive/libarchive/pull/1609"
     },
     {
       "date": "2022-04-22",
@@ -16,7 +16,7 @@
       "title": "First pressure email to xz-devel",
       "summary": "Sock-puppet email complaining that Jia Tan's patch isn't being merged.",
       "quote": "Patches spend years on this mailing list. There is no reason to think anything is coming soon.",
-      "source": "https://www.mail-archive.com/xz-devel@tukaani.org/msg00566.html"
+      "source": "https://www.mail-archive.com/xz-devel@tukaani.org/msg00557.html"
     },
     {
       "date": "2022-05-19",
@@ -25,7 +25,7 @@
       "title": "Lasse mentions Jia Tan as future co-maintainer",
       "summary": "Reply on xz-devel hinting Jia Tan might have a bigger role in the future.",
       "quote": "Jia Tan has helped me off-list with XZ Utils and he might have a bigger role in the future at least with XZ Utils.",
-      "source": "https://research.swtch.com/xz-timeline"
+      "source": "https://www.mail-archive.com/xz-devel@tukaani.org/msg00563.html"
     },
     {
       "date": "2022-06-08",
@@ -34,7 +34,7 @@
       "title": "Lasse pushes back on the pressure",
       "summary": "Discloses ongoing burnout and longterm mental-health struggles, hinting Jia Tan will likely take a bigger role.",
       "quote": "I haven't lost interest but my ability to care has been fairly limited mostly due to longterm mental health issues but also due to some other things.",
-      "source": "https://research.swtch.com/xz-timeline"
+      "source": "https://www.mail-archive.com/xz-devel@tukaani.org/msg00567.html"
     },
     {
       "date": "2022-06-14",
@@ -43,7 +43,7 @@
       "title": "Second pressure email",
       "summary": "Demands new maintainer; suggests delays are unacceptable.",
       "quote": "With your current rate, I very doubt to see 5.4.0 release this year. The only progress since april has been small changes to test code.",
-      "source": "https://research.swtch.com/xz-timeline"
+      "source": "https://www.mail-archive.com/xz-devel@tukaani.org/msg00568.html"
     },
     {
       "date": "2022-11-30",
@@ -52,7 +52,7 @@
       "title": "Jia Tan listed as co-maintainer",
       "summary": "README.md updated to list both Lasse and Jia Tan as project maintainers.",
       "quote": null,
-      "source": "https://research.swtch.com/xz-timeline"
+      "source": "https://git.tukaani.org/?p=xz.git;a=commitdiff;h=764955e2d4f2a5e8d6d6fec63af694f799e050e7"
     },
     {
       "date": "2023-01-11",
@@ -61,7 +61,16 @@
       "title": "Jia Tan takes over releases",
       "summary": "v5.4.1 ships — the final release Lasse signs. Subsequent releases are signed by Jia Tan.",
       "quote": null,
-      "source": "https://research.swtch.com/xz-timeline"
+      "source": "https://git.tukaani.org/?p=xz.git;a=commitdiff;h=18b845e69752c975dfeda418ec00eda22605c2ee"
+    },
+    {
+      "date": "2023-03-20",
+      "actor": "Jia Tan",
+      "kind": "preparatory",
+      "title": "Adds himself as oss-fuzz primary contact",
+      "summary": "PR #9960 to google/oss-fuzz replaces the primary security contact for xz from lasse.collin@tukaani.org with jiat0218@gmail.com. Approved by Lasse and merged. From this point on, oss-fuzz vulnerability reports route to Jia Tan.",
+      "quote": null,
+      "source": "https://github.com/google/oss-fuzz/pull/9960"
     },
     {
       "date": "2023-07-08",
@@ -70,16 +79,16 @@
       "title": "PR to disable IFUNC fuzzing in oss-fuzz",
       "summary": "Jia Tan asks Google's oss-fuzz to disable IFUNC checks — a detail that only reads as suspicious in retrospect.",
       "quote": null,
-      "source": "https://research.swtch.com/xz-timeline"
+      "source": "https://github.com/google/oss-fuzz/pull/10667"
     },
     {
       "date": "2024-01-19",
       "actor": "Jia Tan",
       "kind": "preparatory",
       "title": "Removes Landlock sandbox feature-test from CMakeLists",
-      "summary": "Small but later-noted hostile preparation; reduces sandboxing on the build.",
+      "summary": "Adds a stray '.' in the CMake landlock check, breaking sandboxing in the build. Reads as innocuous; reads as preparation in retrospect.",
       "quote": null,
-      "source": "https://research.swtch.com/xz-timeline"
+      "source": "https://git.tukaani.org/?p=xz.git;a=commitdiff;h=328c52da8a2bbb81307644efdb58db2c422d9ba7"
     },
     {
       "date": "2024-02-23",
@@ -88,7 +97,7 @@
       "title": "Malicious test files committed",
       "summary": "Adds tests/files/bad-3-corrupt_lzma2.xz and good-large_compressed.lzma — disguised as test corpus, actually contain the obfuscated payload.",
       "quote": null,
-      "source": "https://gist.github.com/thesamesam/223949d5a074ebc3dce9ee78baad9e27"
+      "source": "https://git.tukaani.org/?p=xz.git;a=commitdiff;h=cf44e4b7f5dfdbf8c78aef377c10f71e274f63c0"
     },
     {
       "date": "2024-02-24",
@@ -97,7 +106,7 @@
       "title": "xz-utils 5.6.0 released",
       "summary": "Tarball ships with a modified m4/build-to-host.m4 that triggers the payload during ./configure. The modification exists only in the tarball, not in git.",
       "quote": null,
-      "source": "https://www.openwall.com/lists/oss-security/2024/03/29/4"
+      "source": "https://git.tukaani.org/?p=xz.git;a=commitdiff;h=2d7d862e3ffa8cec4fd3fdffcd84e984a17aa429"
     },
     {
       "date": "2024-03-09",
@@ -106,31 +115,35 @@
       "title": "xz-utils 5.6.1 released",
       "summary": "Updated payload — fixes Valgrind errors that were tipping off Debian's autopkgtest. The hurried fix is itself a tell.",
       "quote": null,
-      "source": "https://www.openwall.com/lists/oss-security/2024/03/29/4"
+      "source": "https://git.tukaani.org/?p=xz.git;a=commitdiff;h=fd1b975b7851e081ed6e5cf63df946cd5cbdbb94"
     },
     {
       "date": "2024-03-25",
+      "actor": "Jia Tan",
+      "kind": "malicious",
+      "title": "Updates SECURITY.md to prefer private email reports",
+      "summary": "Four days before discovery, Jia Tan changes xz's SECURITY.md to prefer reports sent over private email rather than via GitHub security advisories. Combined with the oss-fuzz contact change, vulnerability reports were now expected to flow privately to Jia Tan first — bypassing the wider community.",
+      "quote": null,
+      "source": "https://github.com/tukaani-project/xz/commits/v5.6.1/SECURITY.md"
+    },
+    {
+      "date": "2024-03-?",
       "actor": "Andres Freund",
       "kind": "discovery",
       "subkind": "anomaly",
-      "title": "An anomaly during PostgreSQL benchmarking",
-      "summary": "While micro-benchmarking PostgreSQL on Debian sid, Andres Freund notices that ssh logins to his test box are taking ~500 ms longer than they should. He files it under \"weird\" and keeps benchmarking.",
+      "title": "Symptoms with sshd on Debian sid",
+      "summary": "Andres Freund notices, on a Debian sid box, valgrind errors and a ~0.5 s extra CPU on ssh logins (clean: 0m0.299s; backdoored: 0m0.807s). His own framing in the disclosure is \"odd symptoms around liblzma … over the last weeks\" — the exact start date is not in the public record.",
       "quote": null,
       "source": "https://www.openwall.com/lists/oss-security/2024/03/29/4"
     },
     {
-      "date": "2024-03-28",
+      "date": "2024-03-?",
       "actor": "Andres Freund",
       "kind": "discovery",
       "subkind": "trace",
-      "title": "Valgrind trace points at liblzma",
-      "summary": "He runs valgrind on sshd, sees uninitialized-memory errors firing inside liblzma's CRC64 path. That is the wrong dependency — sshd doesn't link liblzma. The Debian sd_notify patch is the bridge that brings it in.",
+      "title": "Tracing the divergence",
+      "summary": "Per the disclosure, Andres uses perf record -e intel_pt//ub to find where execution in the slow sshd diverges from a clean baseline, then attaches gdb with breakpoints before the divergence. The trail leads into liblzma's CRC64 path — which sshd has no upstream reason to call.",
       "quote": null,
-      "trace": {
-        "cmd": "ldd $(which sshd) | grep lzma",
-        "out": "    liblzma.so.5 => /lib/x86_64-linux-gnu/liblzma.so.5",
-        "comment": "sshd → libsystemd → liblzma · the Debian sd_notify patch is the bridge"
-      },
       "source": "https://www.openwall.com/lists/oss-security/2024/03/29/4"
     },
     {

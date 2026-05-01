@@ -1,0 +1,8 @@
+---
+/**
+ * Inlines a simplified Wikipedia world map (CC0).
+ * Path fills are set via CSS so the map adapts to light/dark themes.
+ */
+import worldSvg from './world-map.svg?raw';
+---
+<div class="xz-tzmap-base" set:html={worldSvg} aria-hidden="true"></div>

