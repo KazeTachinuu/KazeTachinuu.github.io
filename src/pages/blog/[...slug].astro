@@ -7,10 +7,11 @@ import ArticleHeader from '~/components/ArticleHeader.astro';
 import ArticleFooter from '~/components/ArticleFooter.astro';
 import TableOfContents from '~/components/TableOfContents.astro';
 import ArticleLikes from '~/components/ArticleLikes.astro';
+import DraftBanner from '~/components/DraftBanner.astro';
 import * as MDX from '~/components/mdx';
 
 export const getStaticPaths = (async () => {
-  const posts = await getCollection('blog', (e) => import.meta.env.DEV || !e.data.draft);
+  const posts = await getCollection('blog');
   return posts.map((p) => ({ params: { slug: p.id }, props: { post: p } }));
 }) satisfies GetStaticPaths;
 
@@ -22,13 +23,15 @@ const category = post.data.categories[0]
   : 'Blog';
 ---
 
-<Layout title={post.data.title} description={post.data.description} mainClass="article-layout px-6 py-16">
+<Layout title={post.data.title} description={post.data.description} mainClass="article-layout px-6 py-16" noindex={post.data.draft}>
   <div class="article-main">
     <Breadcrumb items={[
       { label: 'Home', href: '/' },
       { label: 'Blog', href: '/blog/' },
       { label: post.data.title },
     ]} />
+
+    {post.data.draft && <DraftBanner />}
 
     <ArticleHeader
       title={post.data.title}

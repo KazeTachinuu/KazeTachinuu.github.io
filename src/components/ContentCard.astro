@@ -8,9 +8,10 @@ interface Props {
   footer?: string;
   searchData?: string;
   dataCat?: string;
+  draft?: boolean;
 }
 
-const { href, title, description, category, meta, footer, searchData, dataCat } = Astro.props;
+const { href, title, description, category, meta, footer, searchData, dataCat, draft } = Astro.props;
 
 function pillClass(cat: string): string {
   const key = cat.toLowerCase().replace(/[^a-z]/g, '');
@@ -25,9 +26,12 @@ function pillClass(cat: string): string {
   data-search={searchData}
   data-cat={dataCat}
 >
-  {(category || meta) && (
+  {(category || meta || draft) && (
     <div class="wu-card-header">
-      {category && <span class={`wu-card-pill ${pillClass(category)}`}>{category}</span>}
+      <div class="wu-card-pills">
+        {category && <span class={`wu-card-pill ${pillClass(category)}`}>{category}</span>}
+        {draft && <span class="wu-card-pill wu-pill-draft">draft</span>}
+      </div>
       {meta && <span class="wu-card-ctf">{meta}</span>}
     </div>
   )}

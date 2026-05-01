@@ -11,9 +11,10 @@ interface Props {
   description?: string;
   image?: string;
   mainClass?: string;
+  noindex?: boolean;
 }
 
-const { title, description = SITE.description, image, mainClass = 'max-w-3xl mx-auto px-6 py-16' } = Astro.props;
+const { title, description = SITE.description, image, mainClass = 'max-w-3xl mx-auto px-6 py-16', noindex = false } = Astro.props;
 const fullTitle = title && title !== SITE.title ? `${title} · ${SITE.title}` : SITE.title;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const ogImage = image ? new URL(image, Astro.site).href : undefined;
@@ -28,6 +29,7 @@ const ogImage = image ? new URL(image, Astro.site).href : undefined;
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
     <meta name="author" content={SITE.author} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
 
     <link rel="canonical" href={canonicalURL} />
     <meta property="og:title" content={fullTitle} />

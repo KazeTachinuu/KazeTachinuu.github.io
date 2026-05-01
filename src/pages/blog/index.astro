@@ -5,7 +5,7 @@ import ContentCard from '~/components/ContentCard.astro';
 import { getCollection } from 'astro:content';
 import { fmtDateShort } from '~/lib/fmt';
 
-const posts = (await getCollection('blog', (e) => !e.data.draft)).sort(
+const posts = (await getCollection('blog')).sort(
   (a, b) => +new Date(b.data.date) - +new Date(a.data.date),
 );
 ---
@@ -25,6 +25,7 @@ const posts = (await getCollection('blog', (e) => !e.data.draft)).sort(
         description={p.data.description}
         category={p.data.categories[0] ?? 'blog'}
         footer={fmtDateShort(p.data.date)}
+        draft={p.data.draft}
       />
     ))}
   </div>

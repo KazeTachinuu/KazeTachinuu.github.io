@@ -1090,6 +1090,7 @@ a { color: inherit; text-decoration: none; }
   .dark .wu-card { border-color: hsl(225deg 12% 24%); }
   .wu-card:hover { border-color: var(--accent); transform: translateY(-2px); }
   .wu-card-header { @apply flex items-center justify-between mb-5; }
+  .wu-card-pills { @apply flex items-center gap-2; }
   .wu-card-pill {
     @apply text-[11px] font-medium px-2.5 py-1 rounded-full;
   }
@@ -1107,6 +1108,14 @@ a { color: inherit; text-decoration: none; }
   .wu-pill-pwn { background: rgba(249,115,22,0.15); color: #fdba74; }
   .wu-pill-general { background: rgba(52,211,153,0.15); color: #6ee7b7; }
   .wu-pill-default { background: rgba(255,255,255,0.08); color: var(--muted); }
+  .wu-pill-draft {
+    background: rgba(202,138,4,0.18);
+    color: #fde68a;
+    font-family: var(--font-mono);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 10px;
+  }
 
   /* Light mode pill overrides */
   :root .wu-pill-crypto { background: rgba(37,99,235,0.1); color: #2563eb; }
@@ -1118,8 +1127,42 @@ a { color: inherit; text-decoration: none; }
   :root .wu-pill-pwn { background: rgba(234,88,12,0.1); color: #ea580c; }
   :root .wu-pill-general { background: rgba(16,185,129,0.1); color: #059669; }
   :root .wu-pill-default { background: var(--subtle-bg); color: var(--muted); }
+  :root .wu-pill-draft { background: rgba(202,138,4,0.12); color: #b45309; }
 
   .wu-hidden { display: none !important; }
+
+  /* Draft post banner — slim status strip on the post page itself. */
+  .draft-banner {
+    --draft-color: #b45309;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.625rem 0.875rem;
+    margin: 0 0 1.5rem;
+    border: 1px dashed color-mix(in srgb, var(--draft-color) 50%, transparent);
+    border-radius: 8px;
+    background: color-mix(in srgb, var(--draft-color) 8%, transparent);
+    font-size: 13px;
+    line-height: 1.4;
+    color: var(--text-secondary);
+  }
+  .dark .draft-banner { --draft-color: #fcd34d; }
+  .draft-banner-pill {
+    flex-shrink: 0;
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 0.18rem 0.5rem;
+    border-radius: 3px;
+    background: color-mix(in srgb, var(--draft-color) 18%, transparent);
+    color: var(--draft-color);
+  }
+  .draft-banner-text { overflow-wrap: anywhere; }
+  @media (max-width: 540px) {
+    .draft-banner { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
+  }
 
 }
 
@@ -1518,12 +1561,13 @@ a { color: inherit; text-decoration: none; }
 /* --- Table of Contents --- */
 
 .toc-title {
-  font-size: 0.8125rem;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
   font-weight: 600;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--text-secondary);
-  margin-bottom: 1.25rem;
+  color: var(--muted);
+  margin-bottom: 0.875rem;
 }
 
 .toc-list {
@@ -1538,10 +1582,10 @@ a { color: inherit; text-decoration: none; }
 
 .toc-list a {
   display: block;
-  padding: 0.35rem 0;
-  font-size: 0.9375rem;
+  padding: 0.25rem 0;
+  font-size: 0.8125rem;
   line-height: 1.45;
-  color: var(--text-secondary);
+  color: var(--muted);
   transition: color var(--duration-fast) var(--ease-smooth);
 }
 
@@ -1554,9 +1598,10 @@ a { color: inherit; text-decoration: none; }
 }
 
 .toc-h3 a {
-  padding-left: 1rem;
-  font-size: 0.8125rem;
+  padding-left: 0.875rem;
+  font-size: 0.75rem;
   color: var(--muted);
+  opacity: 0.7;
 }
 .toc-h3 a:hover { color: var(--page-text); }
 .toc-h3 a.toc-active { color: var(--accent); }
