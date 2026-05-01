@@ -38,5 +38,8 @@
   },
   "resolutions": {
     "vite": "7.3.2"
+  },
+  "devDependencies": {
+    "rehype-external-links": "^3.0.0"
   }
 }
