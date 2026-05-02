@@ -152,7 +152,7 @@
       "kind": "discovery",
       "subkind": "disclosure",
       "title": "Public disclosure on oss-security",
-      "summary": "He posts to oss-security at 08:51 UTC. Subject: \"backdoor in upstream xz/liblzma leading to ssh server compromise.\"",
+      "summary": "He posts to oss-security at 15:51 UTC (08:51 PDT). Subject: \"backdoor in upstream xz/liblzma leading to ssh server compromise.\"",
       "quote": "After observing a few odd symptoms around liblzma (part of the xz package) on Debian sid installations over the last weeks (logins with ssh taking a lot of CPU, valgrind errors) I figured out the answer: The upstream xz repository and the xz tarballs have been backdoored.",
       "source": "https://www.openwall.com/lists/oss-security/2024/03/29/4"
     },

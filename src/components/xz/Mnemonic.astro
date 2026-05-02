@@ -1,32 +1,180 @@
 ---
 /**
- * Inline-link an x86-64 mnemonic to its AsmLookup entry.
- * Usage in MDX:  <Mnemonic op="cmovne">cmovne</Mnemonic>
+ * Inline x86-64 mnemonic with a small hover popover (mnemonic + name +
+ * one-line summary). Click the trigger to open the full /tools/asm-lookup/
+ * page (suffix-aware: callq → call, movq → mov).
  *
- * The op prop is the AsmLookup slug (lowercased mnemonic). The link opens
- * in a new tab so the reader doesn't lose their place in the article.
+ * Usage:  <Mnemonic op="callq">callq</Mnemonic>
  */
+import { OPS, type Op } from '../../data/asm-ops';
+
 interface Props {
   op: string;
 }
 const { op } = Astro.props;
+
+const mnemonicTokens = (o: Op) =>
+  o.mnemonic.toLowerCase().split(/[\s/]+/).filter(Boolean);
+
+function resolveOp(raw: string): Op | null {
+  const q = raw.toLowerCase();
+  const bySlug = OPS.find((o) => o.slug.toLowerCase() === q);
+  if (bySlug) return bySlug;
+  const byMnemonic = OPS.find((o) => mnemonicTokens(o).includes(q));
+  if (byMnemonic) return byMnemonic;
+  if (/^[a-z]+[bwlq]$/.test(q)) {
+    const stripped = q.slice(0, -1);
+    return (
+      OPS.find(
+        (o) =>
+          o.slug.toLowerCase() === stripped || mnemonicTokens(o).includes(stripped)
+      ) ?? null
+    );
+  }
+  return null;
+}
+
+const resolved = resolveOp(op);
+const slug = resolved?.slug ?? op;
+const href = `/tools/asm-lookup/?op=${slug}`;
 ---
-<a
-  class="xz-mnemonic"
-  href={`/tools/asm-lookup/?op=${op}`}
-  target="_blank"
-  rel="noopener"
-  title={`Look up ${op} in AsmLookup`}
-><slot /></a>
+<span class="xz-mn">
+  <a class="xz-mn-trigger" href={href} target="_blank" rel="noopener"><slot /></a>
+  {resolved && (
+    <span class="xz-mn-pop" role="tooltip">
+      <span class="xz-mn-pop-head">
+        <code class="xz-mn-pop-mn">{op}</code>
+        <span class="xz-mn-pop-name">{resolved.name}</span>
+      </span>
+      <span class="xz-mn-pop-summary">{resolved.summary}</span>
+      <span class="xz-mn-pop-cta">
+        <span class="xz-mn-pop-cta-arrow" aria-hidden>↗</span>
+        click to open the full reference
+      </span>
+    </span>
+  )}
+</span>
 
 <style>
-.xz-mnemonic {
-  text-decoration: underline dotted;
-  text-underline-offset: 0.18em;
-  color: inherit;
-}
-.xz-mnemonic:hover {
-  color: var(--accent, currentColor);
-  text-decoration-style: solid;
-}
+  .xz-mn {
+    position: relative;
+    display: inline-block;
+    font-style: normal;
+  }
+  .xz-mn-trigger {
+    text-decoration: underline dotted;
+    text-underline-offset: 0.18em;
+    color: inherit;
+    cursor: help;
+  }
+  .xz-mn-trigger:hover,
+  .xz-mn-trigger:focus-visible {
+    color: var(--xz-attacker, currentColor);
+    text-decoration-style: solid;
+  }
+
+  .xz-mn-pop {
+    position: absolute;
+    bottom: calc(100% + 0.55rem);
+    left: 50%;
+    transform: translateX(-50%) translateY(0.25rem);
+    z-index: 30;
+
+    width: max-content;
+    max-width: min(20rem, 92vw);
+
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+
+    background: var(--page-bg);
+    color: var(--page-text);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 0.6rem 0.8rem 0.65rem;
+    box-shadow:
+      0 14px 28px rgba(0, 0, 0, 0.16),
+      0 2px 6px rgba(0, 0, 0, 0.08);
+
+    font-style: normal;
+    font-weight: 400;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    text-align: left;
+
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.14s ease, transform 0.14s ease, visibility 0.14s;
+  }
+  .xz-mn-pop::before {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    height: 0.55rem;
+  }
+  .xz-mn-pop::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%) rotate(45deg);
+    width: 8px;
+    height: 8px;
+    background: var(--page-bg);
+    border-right: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    margin-top: -5px;
+  }
+  .xz-mn:hover .xz-mn-pop,
+  .xz-mn:focus-within .xz-mn-pop {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+    pointer-events: auto;
+  }
+
+  .xz-mn-pop-head {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+  .xz-mn-pop-mn {
+    font-family: var(--font-mono, JetBrains Mono);
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--xz-attacker);
+    background: none;
+    padding: 0;
+    border: 0;
+  }
+  .xz-mn-pop-name {
+    color: var(--text-secondary, var(--page-text));
+    font-weight: 600;
+  }
+  .xz-mn-pop-summary {
+    color: var(--page-text);
+  }
+  .xz-mn-pop-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-size: 0.74rem;
+    color: var(--muted, var(--text-secondary));
+    font-style: italic;
+  }
+  .xz-mn-pop-cta-arrow {
+    font-style: normal;
+    color: var(--xz-attacker);
+    font-weight: 600;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .xz-mn-pop {
+      transition: none;
+    }
+  }
 </style>

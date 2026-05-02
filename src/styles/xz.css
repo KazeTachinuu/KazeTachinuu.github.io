@@ -532,7 +532,7 @@
 .xz-deppath svg {
   width: 100%;
   height: auto;
-  max-width: 420px;
+  max-width: 520px;
   display: block;
   margin-inline: auto;
 }
@@ -693,32 +693,112 @@
   height: 100%;
   display: block;
 }
+/* Default fill for every country path. */
 .xz-tzmap-base path {
   fill: var(--page-text);
-  fill-opacity: 0.55;
+  fill-opacity: 0.32;
+  transition: fill-opacity 0.15s ease;
 }
 :root.light .xz-tzmap-base path {
-  fill-opacity: 0.4;
+  fill-opacity: 0.22;
 }
 
-.xz-tzmap-overlay {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-}
-.xz-tzmap-band.is-actual {
-  fill: var(--xz-defender);
-  fill-opacity: 0.55;
-  stroke: var(--xz-defender);
-  stroke-width: 2;
-}
-.xz-tzmap-band.is-claimed {
+/* UTC+8 (claimed): countries observing China Standard Time / Singapore /
+   Malaysia / Philippines / AWST year-round. Source: IANA tzdata.
+   Indonesia and Australia are split-zone — only the UTC+8 islands of
+   Indonesia (WITA) are shaded; Australia is one path so cannot be split. */
+.xz-tzmap-base path#china,
+.xz-tzmap-base path#hainan,
+.xz-tzmap-base path#taiwan,
+.xz-tzmap-base path#mongolia,
+.xz-tzmap-base path#malaysia,
+.xz-tzmap-base path[id="east malaysia"],
+.xz-tzmap-base path#brunei,
+.xz-tzmap-base path#luzon,
+.xz-tzmap-base path#palawan,
+.xz-tzmap-base path#mindoro,
+.xz-tzmap-base path#samar,
+.xz-tzmap-base path#negros,
+.xz-tzmap-base path#cebu,
+.xz-tzmap-base path#bali,
+.xz-tzmap-base path#sulawesi,
+.xz-tzmap-base path#flores,
+.xz-tzmap-base path#lombok,
+.xz-tzmap-base path#sumba {
   fill: var(--xz-attacker);
-  fill-opacity: 0.55;
-  stroke: var(--xz-attacker);
-  stroke-width: 2;
+  fill-opacity: 0.78;
+}
+
+/* UTC+2 / UTC+3 (actual): the full real-world band — Eastern Europe through
+   the Levant, the Arabian peninsula, and most of east + southern Africa.
+   Russia is split: only its western portion (Kaliningrad through the Urals)
+   is rendered in defender color, via the clipped overlay path injected by
+   WorldMap.astro. Iran is excluded (UTC+3:30 — half-hour zone). */
+.xz-tzmap-base path#finland,
+.xz-tzmap-base path#estonia,
+.xz-tzmap-base path#hiumaa,
+.xz-tzmap-base path#saaremaa,
+.xz-tzmap-base path#lithuania,
+.xz-tzmap-base path#belarus,
+.xz-tzmap-base path#ukraine,
+.xz-tzmap-base path#moldova,
+.xz-tzmap-base path#romania,
+.xz-tzmap-base path#bulgaria,
+.xz-tzmap-base path#greece,
+.xz-tzmap-base path#crete,
+.xz-tzmap-base path#cyprus,
+.xz-tzmap-base path#thrace,
+.xz-tzmap-base path#turkey,
+.xz-tzmap-base path#syria,
+.xz-tzmap-base path#lebanon,
+.xz-tzmap-base path#israel,
+.xz-tzmap-base path#jordan,
+.xz-tzmap-base path#iraq,
+.xz-tzmap-base path#kuwait,
+.xz-tzmap-base path#saudi,
+.xz-tzmap-base path#qatar,
+.xz-tzmap-base path#yemen,
+/* Africa — all year-round UTC+2/+3 countries */
+.xz-tzmap-base path#libya,
+.xz-tzmap-base path#egypt,
+.xz-tzmap-base path#sudan,
+.xz-tzmap-base path#south_sudan,
+.xz-tzmap-base path#ethiopia,
+.xz-tzmap-base path#eritrea,
+.xz-tzmap-base path#djibouti,
+.xz-tzmap-base path#somalia,
+.xz-tzmap-base path#somaliland,
+.xz-tzmap-base path#kenya,
+.xz-tzmap-base path#tanzania,
+.xz-tzmap-base path#uganda,
+.xz-tzmap-base path#rwanda,
+.xz-tzmap-base path#burundi,
+.xz-tzmap-base path#zambia,
+.xz-tzmap-base path#zimbabwe,
+.xz-tzmap-base path#botswana,
+.xz-tzmap-base path[id="south africa"],
+.xz-tzmap-base path#lesotho,
+.xz-tzmap-base path#swaziland,
+.xz-tzmap-base path#mozambique,
+.xz-tzmap-base path#malawi,
+.xz-tzmap-base path#namibia,
+.xz-tzmap-base path#madagascar,
+.xz-tzmap-base path#mayotte,
+.xz-tzmap-base path[id="grande comore"],
+/* Russia — western (UTC+3) portion via clipped overlay */
+.xz-tzmap-base .xz-tzmap-russia-utc3 {
+  fill: var(--xz-defender);
+  fill-opacity: 0.78;
+}
+
+/* UTC+8 split-zone overlays: Russia (Irkutsk Oblast + Buryatia) and
+   Australia (Western Australia / Perth, AWST). Both observe UTC+8 year-round
+   inside countries that span multiple zones, so we clip the duplicate path
+   to just the UTC+8 longitude band. */
+.xz-tzmap-base .xz-tzmap-russia-utc8,
+.xz-tzmap-base .xz-tzmap-australia-utc8 {
+  fill: var(--xz-attacker);
+  fill-opacity: 0.78;
 }
 
 /* Labels sit BELOW the map, each centered under its band's longitude.

@@ -1,8 +1,33 @@
 ---
 /**
  * Inlines a simplified Wikipedia world map (CC0).
- * Path fills are set via CSS so the map adapts to light/dark themes.
+ *
+ * Three split-zone countries get a clipped overlay so each portion can
+ * be colored according to its actual UTC offset:
+ *   - Russia: UTC+2/+3 west of 60°E (Urals); UTC+8 in the Irkutsk stripe
+ *   - Australia: UTC+8 in Western Australia (Perth)
+ *
+ * Calibration: x = lon * 2.975 + 456.2 (derived from the Russia path bbox
+ * against known city longitudes). 60°E ≈ x=634 (Urals); 96–118°E ≈ x=741–809
+ * (Irkutsk Oblast + Buryatia); 113–129°E ≈ x=793–840 (Western Australia).
+ *
+ * China is intentionally NOT split: since 1949, the PRC officially
+ * observes a single timezone (UTC+8) across the entire country. The
+ * informal Xinjiang UTC+6 has no legal status.
  */
 import worldSvg from './world-map.svg?raw';
+
+const russiaMatch = worldSvg.match(/<path id="russia" d="([^"]+)"\s*\/>/);
+const australiaMatch = worldSvg.match(/<path id="australia" d="([^"]+)"\s*\/>/);
+const russiaD = russiaMatch?.[1] ?? '';
+const australiaD = australiaMatch?.[1] ?? '';
+
+const overlay = `<defs>
+  <clipPath id="xz-clip-utc3-west" clipPathUnits="userSpaceOnUse"><rect x="0" y="0" width="634" height="620" /></clipPath>
+  <clipPath id="xz-clip-utc8-irkutsk" clipPathUnits="userSpaceOnUse"><rect x="741" y="0" width="68" height="620" /></clipPath>
+  <clipPath id="xz-clip-utc8-wa" clipPathUnits="userSpaceOnUse"><rect x="793" y="0" width="48" height="620" /></clipPath>
+</defs>${russiaD ? `<path d="${russiaD}" class="xz-tzmap-russia-utc3" clip-path="url(#xz-clip-utc3-west)" />` : ''}${russiaD ? `<path d="${russiaD}" class="xz-tzmap-russia-utc8" clip-path="url(#xz-clip-utc8-irkutsk)" />` : ''}${australiaD ? `<path d="${australiaD}" class="xz-tzmap-australia-utc8" clip-path="url(#xz-clip-utc8-wa)" />` : ''}`;
+
+const finalSvg = worldSvg.replace(/<\/svg>\s*$/, `${overlay}</svg>`);
 ---
-<div class="xz-tzmap-base" set:html={worldSvg} aria-hidden="true"></div>
+<div class="xz-tzmap-base" set:html={finalSvg} aria-hidden="true"></div>

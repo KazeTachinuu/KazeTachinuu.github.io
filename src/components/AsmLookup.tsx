@@ -88,6 +88,21 @@ function slugFromUrl(): string | null {
   return new URLSearchParams(window.location.search).get('op');
 }
 
+/* Resolve a URL ?op= value to an OP, accepting AT&T size suffixes
+   (movq → mov, callq → call) so external/inline links don't 404. */
+function resolveFromUrl(): Op | null {
+  const raw = slugFromUrl();
+  if (!raw) return null;
+  const q = raw.toLowerCase();
+  const direct = OPS.find((o) => exactTokens(o).includes(q));
+  if (direct) return direct;
+  if (/^[a-z]+[bwlq]$/.test(q)) {
+    const stripped = q.slice(0, -1);
+    return OPS.find((o) => exactTokens(o).includes(stripped)) ?? null;
+  }
+  return null;
+}
+
 interface Token {
   content: string;
   color?: string;
@@ -120,8 +135,12 @@ function CodeBlock({ tokens, fallback }: { tokens: Token[][] | null; fallback: s
 }
 
 export default function AsmLookup() {
-  const [query, setQuery] = useState('');
-  const [selectedSlug, setSelectedSlug] = useState<string | null>(slugFromUrl);
+  // Initialize query AND slug from the URL together. If we only seed slug,
+  // the empty-query effect below clears the selection on mount.
+  const [query, setQuery] = useState(() => resolveFromUrl()?.mnemonic ?? '');
+  const [selectedSlug, setSelectedSlug] = useState<string | null>(
+    () => resolveFromUrl()?.slug ?? null
+  );
   const [highlighter, setHighlighter] = useState<any>(null);
   const [dark, setDark] = useState(
     typeof document !== 'undefined' && document.documentElement.classList.contains('dark')
@@ -150,15 +169,27 @@ export default function AsmLookup() {
   }, [selectedSlug]);
 
   useEffect(() => {
-    const handler = () => setSelectedSlug(slugFromUrl());
+    const handler = () => {
+      const op = resolveFromUrl();
+      setSelectedSlug(op?.slug ?? null);
+      if (op) setQuery(op.mnemonic);
+    };
     window.addEventListener('popstate', handler);
     return () => window.removeEventListener('popstate', handler);
   }, []);
 
-  const selected = useMemo(
-    () => (selectedSlug ? OPS.find((o) => o.slug === selectedSlug) ?? null : null),
-    [selectedSlug]
-  );
+  const selected = useMemo(() => {
+    if (!selectedSlug) return null;
+    const q = selectedSlug.toLowerCase();
+    const direct = OPS.find((o) => exactTokens(o).includes(q));
+    if (direct) return direct;
+    // AT&T size suffix (b/w/l/q): movq → mov, callq → call
+    if (/^[a-z]+[bwlq]$/.test(q)) {
+      const stripped = q.slice(0, -1);
+      return OPS.find((o) => exactTokens(o).includes(stripped)) ?? null;
+    }
+    return null;
+  }, [selectedSlug]);
 
   const filtered = useMemo(() => OPS.filter((o) => opMatches(o, query)), [query]);
 
