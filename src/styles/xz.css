@@ -521,38 +521,6 @@
 }
 
 /* ─────────────────────────────────────────────────────────────────────────
-   Inline dep-path diagram (Act IV) — sshd → libsystemd → liblzma.
-   Pure SVG, no interactivity. Uses page-text as currentColor.
-───────────────────────────────────────────────────────────────────────── */
-
-.xz-deppath {
-  margin: 1.75rem 0 1.25rem;
-  color: var(--page-text);
-}
-.xz-deppath svg {
-  width: 100%;
-  height: auto;
-  max-width: 520px;
-  display: block;
-  margin-inline: auto;
-}
-.xz-deppath figcaption {
-  text-align: center;
-  font-size: 13.5px;
-  color: var(--muted);
-  margin-top: 0.875rem;
-  font-family: var(--font-serif, Newsreader, Georgia, serif);
-  font-style: italic;
-  line-height: 1.5;
-}
-.xz-deppath figcaption code {
-  font-family: var(--font-mono);
-  font-style: normal;
-  font-size: 0.875em;
-  color: var(--page-text);
-}
-
-/* ─────────────────────────────────────────────────────────────────────────
    Cast — dramatis personae before Act I.
    2×2 grid on desktop, single column on mobile. Color-coded left spine
    per role (target / attacker / defender). Solid colors, no transparency.
@@ -638,6 +606,184 @@
 }
 
 /* ─────────────────────────────────────────────────────────────────────────
+   Auth-flow diagram (Act IV · The hook) — three-step illustration of
+   how a crafted SSH cert flows through the rewritten GOT into system().
+   HTML/CSS hybrid: SVG only for the inner cert-structure visual, the rest
+   is plain HTML so explanations can wrap and stay readable on mobile.
+───────────────────────────────────────────────────────────────────────── */
+
+.xz-authflow {
+  margin: 2rem 0 1.5rem;
+  max-width: 760px;
+  margin-inline: auto;
+  color: var(--page-text);
+  font-family: var(--font-sans, system-ui, sans-serif);
+}
+
+.xz-authflow-eyebrow {
+  text-align: center;
+  font-family: var(--font-mono, JetBrains Mono);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  margin: 0 0 1.25rem;
+}
+
+.xz-authflow-step {
+  display: grid;
+  grid-template-columns: 2.75rem 1fr;
+  gap: 1.1rem;
+  align-items: start;
+  padding: 1.25rem 1.4rem;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--page-bg);
+}
+
+.xz-authflow-num {
+  width: 2.4rem;
+  height: 2.4rem;
+  border-radius: 999px;
+  background: var(--xz-attacker);
+  color: var(--page-bg);
+  display: grid;
+  place-items: center;
+  font-family: var(--font-mono, JetBrains Mono);
+  font-weight: 700;
+  font-size: 1.1rem;
+  line-height: 1;
+}
+
+.xz-authflow-body {
+  min-width: 0;
+}
+
+.xz-authflow-body h4 {
+  margin: 0.15rem 0 0.55rem;
+  font-size: 1.08rem;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--page-text);
+}
+
+.xz-authflow-body p {
+  margin: 0 0 0.7rem;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--page-text);
+}
+
+.xz-authflow-body p:last-child {
+  margin-bottom: 0;
+}
+
+.xz-authflow-body code {
+  font-family: var(--font-mono, JetBrains Mono);
+  font-size: 0.88em;
+  background: color-mix(in srgb, var(--page-text) 6%, transparent);
+  padding: 0.05em 0.35em;
+  border-radius: 3px;
+  color: var(--page-text);
+}
+
+.xz-authflow-body code.is-att {
+  color: var(--xz-attacker);
+  font-weight: 700;
+  background: color-mix(in oklch, var(--xz-attacker) 14%, var(--page-bg));
+}
+
+.xz-authflow-body .xz-authflow-note {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  line-height: 1.55;
+}
+
+.xz-authflow-cert {
+  width: 100%;
+  height: auto;
+  max-width: 540px;
+  display: block;
+  margin: 0.75rem 0 1rem;
+}
+
+.xz-authflow-redirect {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  padding: 0.85rem 1rem;
+  margin: 0.85rem 0 0.9rem;
+  border: 1.5px solid var(--xz-attacker);
+  border-radius: 6px;
+  background: color-mix(in oklch, var(--xz-attacker) 8%, var(--page-bg));
+}
+
+.xz-authflow-redirect code {
+  background: none;
+  padding: 0;
+  font-size: 0.92rem;
+}
+
+.xz-authflow-redirect-arrow {
+  color: var(--xz-attacker);
+  font-weight: 700;
+  font-size: 1.25rem;
+  line-height: 1;
+}
+
+.xz-authflow-actions {
+  margin: 0.5rem 0 0.85rem;
+  padding-left: 1.5rem;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--page-text);
+}
+
+.xz-authflow-actions li {
+  margin: 0.15rem 0;
+}
+
+.xz-authflow-actions li code {
+  font-size: 0.9em;
+}
+
+.xz-authflow-outcome {
+  margin-top: 0.85rem !important;
+  padding: 0.75rem 0.95rem !important;
+  border-left: 3px solid var(--xz-attacker);
+  background: color-mix(in oklch, var(--xz-attacker) 6%, var(--page-bg));
+  border-radius: 0 5px 5px 0;
+  font-size: 0.95rem !important;
+}
+
+.xz-authflow-link {
+  text-align: center;
+  font-size: 1.6rem;
+  line-height: 1;
+  color: var(--xz-attacker);
+  margin: 0.4rem 0;
+}
+
+@media (max-width: 540px) {
+  .xz-authflow-step {
+    grid-template-columns: 2.25rem 1fr;
+    gap: 0.85rem;
+    padding: 1rem 1.1rem;
+  }
+  .xz-authflow-num {
+    width: 2.1rem;
+    height: 2.1rem;
+    font-size: 1rem;
+  }
+  .xz-authflow-body h4 {
+    font-size: 1rem;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
    Attribution chart — small inline bar chart for Jia Tan commit counts
    by weekday (Karty/Henniger). Solid colors, no transparency washes.
 ───────────────────────────────────────────────────────────────────────── */
@@ -655,13 +801,13 @@
 }
 .xz-attrchart figcaption {
   text-align: center;
-  font-size: 13px;
-  color: var(--muted);
-  margin-top: 0.875rem;
-  font-family: var(--font-serif, Newsreader, Georgia, serif);
-  font-style: italic;
-  line-height: 1.5;
-  max-width: 56ch;
+  font-size: 0.9375rem;
+  color: var(--text-secondary);
+  margin-top: 1.1rem;
+  font-family: var(--font-sans, system-ui, sans-serif);
+  font-style: normal;
+  line-height: 1.55;
+  max-width: 58ch;
   margin-inline: auto;
 }
 
@@ -855,12 +1001,12 @@
 
 .xz-tzmap figcaption {
   text-align: center;
-  font-size: 13px;
-  color: var(--muted);
-  margin-top: 1rem;
-  font-family: var(--font-serif, Newsreader, Georgia, serif);
-  font-style: italic;
-  line-height: 1.5;
+  font-size: 0.9375rem;
+  color: var(--text-secondary);
+  margin-top: 1.1rem;
+  font-family: var(--font-sans, system-ui, sans-serif);
+  font-style: normal;
+  line-height: 1.55;
   max-width: 64ch;
   margin-inline: auto;
 }
