@@ -1,0 +1,3 @@
+flowchart LR
+    A["GOT writable<br/>ld.so resolves symbols"] --> B["IFUNC resolvers run<br/>⚠ can write to GOT"]
+    B --> C["mprotect READ-ONLY<br/>RELRO fires"]

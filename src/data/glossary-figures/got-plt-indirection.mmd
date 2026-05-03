@@ -1,0 +1,4 @@
+flowchart LR
+    A["call func at plt"] --> B["PLT stub<br/>jmp via GOT slot"]
+    B --> C["GOT slot<br/>8 bytes"]
+    C --> D["resolved<br/>libfunc address"]

@@ -1,32 +1,25 @@
 ---
 /**
- * Inlines a simplified Wikipedia world map (CC0).
+ * Inlined Wikipedia world map (CC0). Russia and Australia get clipped
+ * overlays so their internal timezone splits can be colored separately.
  *
- * Three split-zone countries get a clipped overlay so each portion can
- * be colored according to its actual UTC offset:
- *   - Russia: UTC+2/+3 west of 60°E (Urals); UTC+8 in the Irkutsk stripe
- *   - Australia: UTC+8 in Western Australia (Perth)
+ * Calibration: x = lon * 2.975 + 456.2 (from the Russia path bbox).
+ *   60°E ≈ x=634        - Urals (Russia UTC+2/+3 ⇄ +5+ boundary)
+ *   96°E–118°E ≈ x=741–809 - Russia: Irkutsk Oblast + Buryatia (UTC+8)
+ *   113°E–129°E ≈ x=793–841 - Western Australia (Perth, AWST UTC+8)
  *
- * Calibration: x = lon * 2.975 + 456.2 (derived from the Russia path bbox
- * against known city longitudes). 60°E ≈ x=634 (Urals); 96–118°E ≈ x=741–809
- * (Irkutsk Oblast + Buryatia); 113–129°E ≈ x=793–840 (Western Australia).
- *
- * China is intentionally NOT split: since 1949, the PRC officially
- * observes a single timezone (UTC+8) across the entire country. The
- * informal Xinjiang UTC+6 has no legal status.
+ * China is intentionally NOT split: UTC+8 nationwide since 1949.
  */
 import worldSvg from './world-map.svg?raw';
 
-const russiaMatch = worldSvg.match(/<path id="russia" d="([^"]+)"\s*\/>/);
-const australiaMatch = worldSvg.match(/<path id="australia" d="([^"]+)"\s*\/>/);
-const russiaD = russiaMatch?.[1] ?? '';
-const australiaD = australiaMatch?.[1] ?? '';
+const russiaD = worldSvg.match(/<path id="russia" d="([^"]+)"\s*\/>/)?.[1] ?? '';
+const australiaD = worldSvg.match(/<path id="australia" d="([^"]+)"\s*\/>/)?.[1] ?? '';
 
 const overlay = `<defs>
-  <clipPath id="xz-clip-utc3-west" clipPathUnits="userSpaceOnUse"><rect x="0" y="0" width="634" height="620" /></clipPath>
-  <clipPath id="xz-clip-utc8-irkutsk" clipPathUnits="userSpaceOnUse"><rect x="741" y="0" width="68" height="620" /></clipPath>
-  <clipPath id="xz-clip-utc8-wa" clipPathUnits="userSpaceOnUse"><rect x="793" y="0" width="48" height="620" /></clipPath>
-</defs>${russiaD ? `<path d="${russiaD}" class="xz-tzmap-russia-utc3" clip-path="url(#xz-clip-utc3-west)" />` : ''}${russiaD ? `<path d="${russiaD}" class="xz-tzmap-russia-utc8" clip-path="url(#xz-clip-utc8-irkutsk)" />` : ''}${australiaD ? `<path d="${australiaD}" class="xz-tzmap-australia-utc8" clip-path="url(#xz-clip-utc8-wa)" />` : ''}`;
+  <clipPath id="xz-tz-west" clipPathUnits="userSpaceOnUse"><rect x="0" y="0" width="634" height="620" /></clipPath>
+  <clipPath id="xz-tz-irkutsk" clipPathUnits="userSpaceOnUse"><rect x="741" y="0" width="68" height="620" /></clipPath>
+  <clipPath id="xz-tz-wa" clipPathUnits="userSpaceOnUse"><rect x="793" y="0" width="48" height="620" /></clipPath>
+</defs>${russiaD ? `<path d="${russiaD}" class="xz-tz-defender" clip-path="url(#xz-tz-west)" />` : ''}${russiaD ? `<path d="${russiaD}" class="xz-tz-attacker" clip-path="url(#xz-tz-irkutsk)" />` : ''}${australiaD ? `<path d="${australiaD}" class="xz-tz-attacker" clip-path="url(#xz-tz-wa)" />` : ''}`;
 
 const finalSvg = worldSvg.replace(/<\/svg>\s*$/, `${overlay}</svg>`);
 ---

@@ -8,7 +8,7 @@ const writeups = await getCollection('writeups', (e) => !e.data.draft && e.data.
 const writing = [...blog, ...writeups]
   .sort((a, b) => +new Date(b.data.date ?? 0) - +new Date(a.data.date ?? 0));
 
-// Popular content — all writing, sorted client-side by likes
+// Popular content - all writing, sorted client-side by likes
 const popular = writing.slice(0, 10);
 ---
 

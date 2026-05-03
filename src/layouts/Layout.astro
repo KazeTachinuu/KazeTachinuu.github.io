@@ -73,7 +73,7 @@ const ogImage = image ? new URL(image, Astro.site).href : undefined;
     <Footer />
 
     <script>
-      // Theme toggle — preserves classes on icons (uses CSS to swap moon/sun)
+      // Theme toggle - preserves classes on icons (uses CSS to swap moon/sun)
       function toggleTheme() {
         const root = document.documentElement;
         const next = root.classList.contains('dark') ? 'light' : 'dark';
@@ -117,7 +117,7 @@ const ogImage = image ? new URL(image, Astro.site).href : undefined;
       setInterval(updateLiveTime, 30000);
     </script>
 
-    {/* Code block copy buttons — wrapped outside expressive-code's CSS scope */}
+    {/* Code block copy buttons - wrapped outside expressive-code's CSS scope */}
     <script>
       function createSvg(d: string, strokeWidth = '1.75') {
         const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
@@ -177,7 +177,7 @@ const ogImage = image ? new URL(image, Astro.site).href : undefined;
       document.addEventListener('astro:after-swap', initCopyButtons);
     </script>
 
-    {/* Heading anchor links — inject # after h2/h3/h4 with an id */}
+    {/* Heading anchor links - inject # after h2/h3/h4 with an id */}
     <script>
       function initHeadingAnchors() {
         document.querySelectorAll('article h2[id], article h3[id], article h4[id], .jh-callout-title[id]').forEach((h) => {
@@ -194,7 +194,7 @@ const ogImage = image ? new URL(image, Astro.site).href : undefined;
       document.addEventListener('astro:after-swap', initHeadingAnchors);
     </script>
 
-    {/* Image lightbox — medium-zoom for prose images */}
+    {/* Image lightbox - medium-zoom for prose images */}
     <script>
       import mediumZoom from 'medium-zoom';
 
@@ -210,7 +210,7 @@ const ogImage = image ? new URL(image, Astro.site).href : undefined;
       document.addEventListener('astro:after-swap', initZoom);
     </script>
 
-    {/* Reading progress bar — only on article pages */}
+    {/* Reading progress bar - only on article pages */}
     <script>
       let progressCleanup: (() => void) | null = null;
 

@@ -3,9 +3,9 @@
  * Imported by src/content/blog/xz-backdoor/index.mdx.
  *
  * Semantic colors (per spec §"Voice and aesthetic"):
- *   --xz-attacker  ember  — JiaT75, malicious commits, encrypted bytes
- *   --xz-defender  slate  — Lasse Collin, Andres Freund, clean code
- *   --xz-infra     grey   — autoconf, sshd, libsystemd, distro nodes
+ *   --xz-attacker  ember  - JiaT75, malicious commits, encrypted bytes
+ *   --xz-defender  slate  - Lasse Collin, Andres Freund, clean code
+ *   --xz-infra     grey   - autoconf, sshd, libsystemd, distro nodes
  *
  * Every widget below pulls its sizes / radii / fade levels from the
  * token block on .xz-widget. No raw rem/px values for repeating roles.
@@ -27,7 +27,7 @@
 }
 
 /* ─────────────────────────────────────────────────────────────────────────
-   .xz-widget — every widget on this page extends from this rule.
+   .xz-widget - every widget on this page extends from this rule.
    Owns shared typography + the token scale below.
 ───────────────────────────────────────────────────────────────────────── */
 
@@ -45,7 +45,7 @@
   -moz-osx-font-smoothing: grayscale;
   font-feature-settings: "kern", "ss01";
 
-  /* Type scale — every font-size below references one of these. */
+  /* Type scale - every font-size below references one of these. */
   --xz-fs-3xs: 0.5625rem; /* tiny uppercase keys (size / sha-256 / e_shnum) */
   --xz-fs-2xs: 0.625rem; /* role pills, step numbers */
   --xz-fs-xs: 0.6875rem; /* code caps, version btn, mono micro */
@@ -83,7 +83,7 @@
 
 
 /* ─────────────────────────────────────────────────────────────────────────
-   Timeline (①) — Aceternity-style sticky-phase + scroll-beam pattern.
+   Timeline (①) - Aceternity-style sticky-phase + scroll-beam pattern.
    Two-column desktop: sticky phase title on left, events on right.
    A vertical line on the far left has an animated gradient fill that
    tracks scroll progress through the section.
@@ -103,7 +103,7 @@
   padding-block: 1rem 2rem;
 }
 
-/* Vertical beam — full-height background line + animated fill on top.
+/* Vertical beam - full-height background line + animated fill on top.
    Anchored to the left edge of the inner container. */
 .xz-tl-beam {
   position: absolute;
@@ -166,7 +166,7 @@
   align-self: start;
 }
 
-/* Phase marker — solid filled circle on the beam line at row top. */
+/* Phase marker - solid filled circle on the beam line at row top. */
 .xz-tl-phase-marker {
   position: absolute;
   left: 0.5rem;
@@ -301,7 +301,7 @@
   max-width: 60ch;
 }
 
-/* Verbatim quote — pulled-quote treatment. Big hanging opening mark in
+/* Verbatim quote - pulled-quote treatment. Big hanging opening mark in
    the accent color does the visual work; italic Newsreader body at full
    ink. Generous top margin so the glyph doesn't crash into the summary
    above. No closing glyph (the inset alone signals end-of-quote). */
@@ -372,7 +372,7 @@
   opacity: 0.75;
 }
 
-/* Email block — distinctive flourish for the disclosure event. */
+/* Email block - distinctive flourish for the disclosure event. */
 .xz-tl-email {
   margin: 1rem 0;
   border: 2px solid var(--xz-defender);
@@ -459,7 +459,7 @@
 
 
 /* ─────────────────────────────────────────────────────────────────────────
-   "Try it yourself" callout — RE-course aside.
+   "Try it yourself" callout - RE-course aside.
    Marked .not-prose so Tailwind Typography doesn't auto-quote it.
 ───────────────────────────────────────────────────────────────────────── */
 
@@ -519,9 +519,16 @@
 .xz-tryit a:hover {
   border-bottom-style: solid;
 }
+.xz-tryit-note {
+  margin-top: 0.5rem;
+  padding-top: 0.75rem;
+  border-top: 1px dashed color-mix(in srgb, var(--border) 80%, transparent);
+  font-size: var(--xz-fs-sm);
+  color: color-mix(in srgb, var(--text-secondary) 85%, transparent);
+}
 
 /* ─────────────────────────────────────────────────────────────────────────
-   Cast — dramatis personae before Act I.
+   Cast - dramatis personae before Act I.
    2×2 grid on desktop, single column on mobile. Color-coded left spine
    per role (target / attacker / defender). Solid colors, no transparency.
 ───────────────────────────────────────────────────────────────────────── */
@@ -606,7 +613,591 @@
 }
 
 /* ─────────────────────────────────────────────────────────────────────────
-   Auth-flow diagram (Act IV · The hook) — three-step illustration of
+   Asm line highlight (Act IV · The resolver) - Expressive Code's built-in
+   {N} line-mark syntax is intercepted by MDX in this Astro setup, so we
+   target the 13th .ec-line of the single asm block on this page (the
+   callq at offset 0x27 - the hostile branch into .Lx86_code.part.0).
+───────────────────────────────────────────────────────────────────────── */
+
+.expressive-code pre[data-language="asm"] code > .ec-line:nth-child(13) {
+  background: color-mix(in oklch, var(--xz-attacker) 14%, transparent);
+  box-shadow: inset 3px 0 0 var(--xz-attacker);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   Sabotage grid (Act I) - four cards showing the takeover actions that
+   happened in places no source-code review would catch. Each card: when,
+   what changed, the defensive effect, and a link to the primary source.
+───────────────────────────────────────────────────────────────────────── */
+
+.xz-sabotage {
+  margin: 1.5rem 0 1.75rem;
+  max-width: 760px;
+  margin-inline: auto;
+}
+
+.xz-sabotage-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.85rem;
+}
+
+.xz-sabotage-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  padding: 1rem 1.1rem 1.05rem;
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--xz-attacker);
+  border-radius: 8px;
+  background: var(--page-bg);
+  font-family: var(--font-sans, system-ui, sans-serif);
+}
+
+.xz-sabotage-head {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.xz-sabotage-when {
+  font-family: var(--font-mono, JetBrains Mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--xz-attacker);
+}
+
+.xz-sabotage-card h4 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--page-text);
+}
+
+.xz-sabotage-effect {
+  margin: 0;
+  font-size: 0.92rem;
+  line-height: 1.5;
+  color: var(--text-secondary);
+  flex-grow: 1;
+}
+
+.xz-sabotage-src {
+  display: inline-block;
+  font-family: var(--font-mono, JetBrains Mono);
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px dotted color-mix(in srgb, var(--accent) 50%, transparent);
+  align-self: flex-start;
+}
+
+.xz-sabotage-src:hover {
+  border-bottom-style: solid;
+}
+
+@media (max-width: 640px) {
+  .xz-sabotage-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   Byte-flow stack (Act III · Stage 2) - vertical pipeline showing the
+   byte counts at each transformation, from compressed test fixture down
+   to the Stage-2 shell script.
+───────────────────────────────────────────────────────────────────────── */
+
+.xz-byteflow {
+  margin: 1.5rem auto;
+  max-width: 580px;
+  padding: 1.1rem 1.25rem 1.25rem;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--page-bg);
+}
+
+.xz-byteflow-steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.xz-byteflow-row {
+  display: grid;
+  grid-template-columns: 5.5rem 1fr;
+  gap: 1rem;
+  align-items: center;
+  padding: 0.45rem 0.7rem;
+  border-radius: 5px;
+  background: color-mix(in srgb, var(--page-text) 4%, transparent);
+}
+
+.xz-byteflow-bytes {
+  font-family: var(--font-mono, JetBrains Mono);
+  font-size: 0.95rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  color: var(--page-text);
+}
+
+.xz-byteflow-label {
+  font-family: var(--font-sans, system-ui, sans-serif);
+  font-size: 0.88rem;
+  line-height: 1.4;
+  color: var(--text-secondary);
+}
+
+.xz-byteflow-label code {
+  font-family: var(--font-mono, JetBrains Mono);
+  font-size: 0.92em;
+  background: color-mix(in srgb, var(--page-text) 6%, transparent);
+  padding: 0.05em 0.3em;
+  border-radius: 3px;
+  color: var(--page-text);
+}
+
+.xz-byteflow-row.is-out {
+  background: color-mix(in oklch, var(--xz-attacker) 8%, var(--page-bg));
+  border: 1px solid color-mix(in oklch, var(--xz-attacker) 35%, var(--border));
+}
+
+.xz-byteflow-row.is-out .xz-byteflow-bytes {
+  color: var(--xz-attacker);
+}
+
+.xz-byteflow-op {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  padding: 0.15rem 0.7rem 0.2rem;
+  flex-wrap: wrap;
+}
+
+.xz-byteflow-op::before {
+  content: "↓";
+  font-family: var(--font-mono, JetBrains Mono);
+  font-size: 1rem;
+  color: var(--text-secondary);
+  width: 5.5rem;
+  text-align: right;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.xz-byteflow-op-cmd {
+  font-family: var(--font-mono, JetBrains Mono);
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--xz-attacker);
+  flex-shrink: 0;
+}
+
+.xz-byteflow-op-note {
+  font-family: var(--font-mono, JetBrains Mono);
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+@media (max-width: 540px) {
+  .xz-byteflow-row {
+    grid-template-columns: 4.5rem 1fr;
+    gap: 0.7rem;
+  }
+  .xz-byteflow-op::before {
+    width: 4.5rem;
+  }
+  .xz-byteflow-bytes {
+    font-size: 0.85rem;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   m4-flow diagram (Act II) - what the build-to-host.m4 variables evaluate
+   to, and the pipeline they assemble into. Pure HTML/CSS; replaces the
+   prose walkthrough that was dense with inline `code` runs.
+───────────────────────────────────────────────────────────────────────── */
+
+.xz-m4flow {
+  margin: 1.75rem 0 1.25rem;
+  max-width: 720px;
+  margin-inline: auto;
+  padding: 1.25rem 1.5rem 1.5rem;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--page-bg);
+  font-family: var(--font-sans, system-ui, sans-serif);
+}
+
+.xz-m4flow-eyebrow {
+  margin: 0 0 0.85rem;
+  font-family: var(--font-mono, JetBrains Mono);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.xz-m4flow-eyebrow-bottom {
+  margin: 1.4rem 0 0.85rem;
+  text-transform: none;
+  letter-spacing: 0;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--page-text);
+  font-family: var(--font-sans, system-ui, sans-serif);
+}
+
+.xz-m4flow-eyebrow code,
+.xz-m4flow-eyebrow-bottom code {
+  font-family: var(--font-mono, JetBrains Mono);
+  font-size: 0.92em;
+  background: color-mix(in srgb, var(--page-text) 6%, transparent);
+  padding: 0.05em 0.3em;
+  border-radius: 3px;
+  color: var(--page-text);
+  font-weight: 600;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.xz-m4flow-vars {
+  margin: 0;
+  display: grid;
+  grid-template-columns: minmax(8.5rem, max-content) 1fr;
+  column-gap: 1.25rem;
+  row-gap: 0.7rem;
+  align-items: baseline;
+}
+
+.xz-m4flow-vars dt {
+  margin: 0;
+}
+
+.xz-m4flow-vars dt code {
+  font-family: var(--font-mono, JetBrains Mono);
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--page-text);
+  background: none;
+  padding: 0;
+}
+
+.xz-m4flow-vars dd {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 0;
+}
+
+.xz-m4flow-val {
+  font-family: var(--font-mono, JetBrains Mono);
+  font-size: 0.9rem;
+  color: var(--xz-attacker);
+  font-weight: 600;
+  background: none;
+  padding: 0;
+  overflow-wrap: anywhere;
+}
+
+.xz-m4flow-note {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.45;
+}
+
+.xz-m4flow-note code {
+  font-family: var(--font-mono, JetBrains Mono);
+  font-size: 0.92em;
+  background: color-mix(in srgb, var(--page-text) 6%, transparent);
+  padding: 0 0.25em;
+  border-radius: 2px;
+  color: var(--page-text);
+}
+
+.xz-m4flow-pipe {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  counter-reset: m4flow-step;
+}
+
+.xz-m4flow-pipe li {
+  position: relative;
+  padding: 0.55rem 0.85rem 0.55rem 2.6rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: color-mix(in srgb, var(--page-text) 3%, transparent);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.3rem 0.85rem;
+  counter-increment: m4flow-step;
+}
+
+.xz-m4flow-pipe li::before {
+  content: counter(m4flow-step);
+  position: absolute;
+  left: 0.7rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1.4rem;
+  height: 1.4rem;
+  border-radius: 999px;
+  background: var(--xz-attacker);
+  color: var(--page-bg);
+  display: grid;
+  place-items: center;
+  font-family: var(--font-mono, JetBrains Mono);
+  font-size: 0.78rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.xz-m4flow-pipe li code {
+  font-family: var(--font-mono, JetBrains Mono);
+  font-size: 0.9rem;
+  font-weight: 600;
+  background: none;
+  padding: 0;
+  color: var(--page-text);
+}
+
+.xz-m4flow-pipe li code.is-att {
+  color: var(--xz-attacker);
+}
+
+.xz-m4flow-out {
+  margin: 1rem 0 0;
+  text-align: center;
+  font-family: var(--font-mono, JetBrains Mono);
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--xz-attacker);
+}
+
+@media (max-width: 540px) {
+  .xz-m4flow {
+    padding: 1rem 1.1rem 1.25rem;
+  }
+  .xz-m4flow-vars {
+    grid-template-columns: 1fr;
+    row-gap: 0.85rem;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   sshd-startup timeline (Act IV · IFUNC, before RELRO) - two parallel
+   tracks: events in ld.so on the left, GOT state on the right. Both
+   tracks divert at step 3 (the attack window): events keep moving while
+   the GOT is - illegitimately - still writable.
+───────────────────────────────────────────────────────────────────────── */
+
+.xz-startup {
+  margin: 1.75rem 0 1.5rem;
+  max-width: 760px;
+  margin-inline: auto;
+  padding: 1.25rem 1.5rem 1.5rem;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--page-bg);
+  font-family: var(--font-sans, system-ui, sans-serif);
+}
+
+.xz-startup-eyebrow {
+  margin: 0 0 1rem;
+  font-family: var(--font-mono, JetBrains Mono);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.xz-startup-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 0.65fr);
+  column-gap: 1.25rem;
+  row-gap: 0.4rem;
+  align-items: stretch;
+}
+
+.xz-startup-head {
+  font-family: var(--font-mono, JetBrains Mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted, var(--text-secondary));
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 0.35rem;
+}
+
+.xz-startup-event {
+  display: grid;
+  grid-template-columns: 2.2rem 1fr;
+  gap: 0.85rem;
+  align-items: start;
+  padding: 0.6rem 0.6rem 0.6rem 0;
+  border-radius: 6px;
+}
+
+.xz-startup-num {
+  width: 2.2rem;
+  height: 2.2rem;
+  border-radius: 999px;
+  background: var(--page-bg);
+  border: 2px solid color-mix(in srgb, var(--page-text) 22%, transparent);
+  color: var(--text-secondary);
+  display: grid;
+  place-items: center;
+  font-family: var(--font-mono, JetBrains Mono);
+  font-weight: 700;
+  font-size: 0.95rem;
+  line-height: 1;
+}
+
+.xz-startup-body {
+  min-width: 0;
+  padding-top: 0.2rem;
+}
+
+.xz-startup-body h4 {
+  margin: 0 0 0.3rem;
+  font-size: 0.98rem;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--page-text);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.45rem;
+}
+
+.xz-startup-tag {
+  font-family: var(--font-mono, JetBrains Mono);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--xz-attacker);
+  background: color-mix(in oklch, var(--xz-attacker) 14%, var(--page-bg));
+  padding: 0.15em 0.55em;
+  border-radius: 3px;
+}
+
+.xz-startup-body p {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--text-secondary);
+}
+
+.xz-startup-body code {
+  font-family: var(--font-mono, JetBrains Mono);
+  font-size: 0.88em;
+  background: color-mix(in srgb, var(--page-text) 6%, transparent);
+  padding: 0.05em 0.3em;
+  border-radius: 3px;
+  color: var(--page-text);
+}
+
+.xz-startup-state {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.2rem;
+  padding: 0.6rem 0.85rem;
+  border-radius: 6px;
+  background: color-mix(in srgb, var(--page-text) 4%, transparent);
+  border: 1px solid color-mix(in srgb, var(--page-text) 8%, transparent);
+}
+
+.xz-startup-state-label {
+  font-family: var(--font-mono, JetBrains Mono);
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  letter-spacing: 0.01em;
+}
+
+.xz-startup-state-note {
+  font-family: var(--font-sans, system-ui, sans-serif);
+  font-size: 0.78rem;
+  color: var(--muted, var(--text-secondary));
+  line-height: 1.4;
+}
+
+/* Attack-window step - both columns highlighted in attacker color */
+.xz-startup-event.is-window {
+  background: color-mix(in oklch, var(--xz-attacker) 6%, transparent);
+}
+
+.xz-startup-event.is-window .xz-startup-num {
+  background: var(--xz-attacker);
+  border-color: var(--xz-attacker);
+  color: var(--page-bg);
+}
+
+.xz-startup-state.is-window {
+  background: color-mix(in oklch, var(--xz-attacker) 12%, var(--page-bg));
+  border: 1px solid var(--xz-attacker);
+}
+
+.xz-startup-state.is-window .xz-startup-state-label {
+  color: var(--xz-attacker);
+}
+
+.xz-startup-state.is-window .xz-startup-state-note {
+  color: var(--xz-attacker);
+  font-weight: 600;
+  opacity: 0.9;
+}
+
+/* Locked-GOT steps - slate (defender) tint to show the window is closed */
+.xz-startup-state.is-locked {
+  background: color-mix(in oklch, var(--xz-defender) 8%, var(--page-bg));
+  border: 1px solid color-mix(in srgb, var(--xz-defender) 30%, var(--border));
+}
+
+.xz-startup-state.is-locked .xz-startup-state-label {
+  color: var(--xz-defender);
+}
+
+@media (max-width: 620px) {
+  /* Collapse to single column: each event followed by its state. */
+  .xz-startup-grid {
+    grid-template-columns: 1fr;
+  }
+  .xz-startup-head-state {
+    display: none;
+  }
+  .xz-startup-state {
+    margin-left: 3.05rem;
+    margin-bottom: 0.2rem;
+  }
+  .xz-startup {
+    padding: 1rem 1.1rem 1.25rem;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   Auth-flow diagram (Act IV · The hook) - three-step illustration of
    how a crafted SSH cert flows through the rewritten GOT into system().
    HTML/CSS hybrid: SVG only for the inner cert-structure visual, the rest
    is plain HTML so explanations can wrap and stay readable on mobile.
@@ -784,7 +1375,7 @@
 }
 
 /* ─────────────────────────────────────────────────────────────────────────
-   Attribution chart — small inline bar chart for Jia Tan commit counts
+   Attribution chart - small inline bar chart for Jia Tan commit counts
    by weekday (Karty/Henniger). Solid colors, no transparency washes.
 ───────────────────────────────────────────────────────────────────────── */
 
@@ -812,7 +1403,7 @@
 }
 
 /* ─────────────────────────────────────────────────────────────────────────
-   Timezone map — Wikipedia world map base + overlay bands.
+   Timezone map - Wikipedia world map base + overlay bands.
    Bands placed at approximate longitudes; honest disclaimer in caption.
 ───────────────────────────────────────────────────────────────────────── */
 
@@ -827,32 +1418,35 @@
   margin-inline: auto;
   aspect-ratio: 950 / 620;
 }
-/* The inlined Wikipedia SVG. Set fills via CSS so it adapts to theme. */
+/* Inlined world map. Three opaque tokens - gray, defender (UTC+2/+3),
+   attacker (UTC+8) - mixed in sRGB to keep the muted "78% over page-bg"
+   look without transparency, so split-zone overlays render the same shade
+   as direct fills. */
 .xz-tzmap-base {
+  --tz-gray: color-mix(in srgb, var(--page-text) 32%, var(--page-bg));
+  --tz-defender: color-mix(in srgb, var(--xz-defender) 78%, var(--page-bg));
+  --tz-attacker: color-mix(in srgb, var(--xz-attacker) 78%, var(--page-bg));
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
+}
+:root.light .xz-tzmap-base {
+  --tz-gray: color-mix(in srgb, var(--page-text) 22%, var(--page-bg));
 }
 .xz-tzmap-base svg {
   width: 100%;
   height: 100%;
   display: block;
 }
-/* Default fill for every country path. */
 .xz-tzmap-base path {
-  fill: var(--page-text);
-  fill-opacity: 0.32;
-  transition: fill-opacity 0.15s ease;
-}
-:root.light .xz-tzmap-base path {
-  fill-opacity: 0.22;
+  fill: var(--tz-gray);
+  transition: fill 0.15s ease;
 }
 
-/* UTC+8 (claimed): countries observing China Standard Time / Singapore /
-   Malaysia / Philippines / AWST year-round. Source: IANA tzdata.
-   Indonesia and Australia are split-zone — only the UTC+8 islands of
-   Indonesia (WITA) are shaded; Australia is one path so cannot be split. */
+/* UTC+8 (claimed): China Standard Time / SGT / MYT / PHT / AWST.
+   Indonesia is split - only its WITA islands shade. Russia (Irkutsk) and
+   Western Australia land here via the .xz-tz-attacker overlay. */
 .xz-tzmap-base path#china,
 .xz-tzmap-base path#hainan,
 .xz-tzmap-base path#taiwan,
@@ -870,16 +1464,14 @@
 .xz-tzmap-base path#sulawesi,
 .xz-tzmap-base path#flores,
 .xz-tzmap-base path#lombok,
-.xz-tzmap-base path#sumba {
-  fill: var(--xz-attacker);
-  fill-opacity: 0.78;
+.xz-tzmap-base path#sumba,
+.xz-tzmap-base .xz-tz-attacker {
+  fill: var(--tz-attacker);
 }
 
-/* UTC+2 / UTC+3 (actual): the full real-world band — Eastern Europe through
-   the Levant, the Arabian peninsula, and most of east + southern Africa.
-   Russia is split: only its western portion (Kaliningrad through the Urals)
-   is rendered in defender color, via the clipped overlay path injected by
-   WorldMap.astro. Iran is excluded (UTC+3:30 — half-hour zone). */
+/* UTC+2/+3 (actual): Eastern Europe → Levant → Arabia → east+southern Africa.
+   Russia's western (UTC+3) slice lands here via the .xz-tz-defender overlay.
+   Iran (UTC+3:30) excluded as a half-hour zone. */
 .xz-tzmap-base path#finland,
 .xz-tzmap-base path#estonia,
 .xz-tzmap-base path#hiumaa,
@@ -904,7 +1496,6 @@
 .xz-tzmap-base path#saudi,
 .xz-tzmap-base path#qatar,
 .xz-tzmap-base path#yemen,
-/* Africa — all year-round UTC+2/+3 countries */
 .xz-tzmap-base path#libya,
 .xz-tzmap-base path#egypt,
 .xz-tzmap-base path#sudan,
@@ -931,20 +1522,8 @@
 .xz-tzmap-base path#madagascar,
 .xz-tzmap-base path#mayotte,
 .xz-tzmap-base path[id="grande comore"],
-/* Russia — western (UTC+3) portion via clipped overlay */
-.xz-tzmap-base .xz-tzmap-russia-utc3 {
-  fill: var(--xz-defender);
-  fill-opacity: 0.78;
-}
-
-/* UTC+8 split-zone overlays: Russia (Irkutsk Oblast + Buryatia) and
-   Australia (Western Australia / Perth, AWST). Both observe UTC+8 year-round
-   inside countries that span multiple zones, so we clip the duplicate path
-   to just the UTC+8 longitude band. */
-.xz-tzmap-base .xz-tzmap-russia-utc8,
-.xz-tzmap-base .xz-tzmap-australia-utc8 {
-  fill: var(--xz-attacker);
-  fill-opacity: 0.78;
+.xz-tzmap-base .xz-tz-defender {
+  fill: var(--tz-defender);
 }
 
 /* Labels sit BELOW the map, each centered under its band's longitude.

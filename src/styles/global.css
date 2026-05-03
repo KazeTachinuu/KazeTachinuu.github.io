@@ -33,7 +33,7 @@
   --color-gray-1000: hsl(225deg 15% 15%);
 }
 
-/* Semantic utilities — map theme tokens to Tailwind classes */
+/* Semantic utilities - map theme tokens to Tailwind classes */
 @utility text-page { color: var(--page-text); }
 @utility text-muted { color: var(--muted); }
 @utility text-secondary { color: var(--text-secondary); }
@@ -116,7 +116,7 @@ a { color: inherit; text-decoration: none; }
   }
 }
 
-/* Skip to content — hidden until focused */
+/* Skip to content - hidden until focused */
 .skip-link {
   position: fixed;
   top: 0.5rem;
@@ -167,7 +167,7 @@ a { color: inherit; text-decoration: none; }
 }
 .dark .prose :where(h2):not(:where([class~="not-prose"] *)) { color: var(--accent); }
 
-/* Heading anchor links — # appears on hover */
+/* Heading anchor links - # appears on hover */
 .heading-anchor {
   color: var(--accent);
   text-decoration: none;
@@ -218,13 +218,13 @@ a { color: inherit; text-decoration: none; }
   overflow-x: hidden !important;
 }
 
-/* Hide expressive-code's built-in copy button — we add our own outside its scope */
+/* Hide expressive-code's built-in copy button - we add our own outside its scope */
 .expressive-code .copy { display: none !important; }
 
-/* Our copy button — lives in .code-block-wrapper, outside expressive-code's all:revert.
+/* Our copy button - lives in .code-block-wrapper, outside expressive-code's all:revert.
    Wrapper is a flex column: button first (order:-1), then code block.
    Button is sticky so it follows the viewport while scrolling through long code. */
-/* Code block copy button — matches Josh Comeau's pattern exactly:
+/* Code block copy button - matches Josh Comeau's pattern exactly:
    sticky button before the code, negative margin to overlap. */
 .code-block-wrapper {
   --copy-btn-size: 2.25rem;
@@ -937,7 +937,7 @@ a { color: inherit; text-decoration: none; }
   }
   @keyframes asm-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
 
-  /* Selected-chip + detail entrance — spring-style overshoot. */
+  /* Selected-chip + detail entrance - spring-style overshoot. */
   @keyframes asm-bounce {
     0%   { opacity: 0; transform: translateY(14px) scale(0.96); }
     55%  { opacity: 1; transform: translateY(-3px) scale(1.015); }
@@ -988,7 +988,7 @@ a { color: inherit; text-decoration: none; }
     margin: 3rem 0;
   }
 
-  /* Detail view — bounces in just after the chip pops.
+  /* Detail view - bounces in just after the chip pops.
      Container has no hardcoded width: prose children constrain themselves
      to a reading column (ch units, sans-serif context); the code block
      constrains itself to 80 mono chars (ch units, mono context). */
@@ -1029,7 +1029,7 @@ a { color: inherit; text-decoration: none; }
 
   /* Width-budgeting trick: setting font-family+size on the frame makes
      `1ch` here resolve to the mono-glyph width, so 80ch is *exactly*
-     80 characters of code — regardless of what font is chosen later. */
+     80 characters of code - regardless of what font is chosen later. */
   .asm-code {
     font-family: var(--font-mono);
     font-size: 0.875rem;
@@ -1061,6 +1061,351 @@ a { color: inherit; text-decoration: none; }
     color: var(--accent);
     text-decoration: underline;
     text-underline-offset: 2px;
+  }
+
+  /* ─── Glossary lookup ─────────────────────────────────────────────
+     All-mono reference aesthetic. Hierarchy via size + weight +
+     letter-spacing, never via font-family change. No italics, no
+     serif. The only non-mono surface is the page background. */
+
+  .gloss-page { max-width: 56rem; margin-inline: auto; padding: 0 1.5rem 6rem; }
+  .gloss { width: 100%; font-family: var(--font-mono); font-feature-settings: "ss02", "ss03", "calt"; }
+
+  /* Hero */
+  .gloss-hero {
+    text-align: center;
+    padding-top: calc(18vh - var(--header-h));
+    transition: padding-top 0.4s var(--ease-smooth);
+  }
+  .gloss-active .gloss-hero { padding-top: 2rem; }
+
+  .gloss-title {
+    font-family: var(--font-mono);
+    font-size: clamp(2rem, 4.5vw, 2.625rem);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    color: var(--page-text);
+    margin: 0 0 0.85rem;
+    transition: font-size 0.35s var(--ease-smooth), margin-bottom 0.35s var(--ease-smooth);
+  }
+  .gloss-title::before {
+    content: "/";
+    color: var(--accent);
+    margin-right: 0.35rem;
+    font-weight: 500;
+    opacity: 0.7;
+  }
+  .gloss-active .gloss-title {
+    font-size: clamp(1.125rem, 2.2vw, 1.375rem);
+    margin-bottom: 0.25rem;
+  }
+
+  .gloss-sub {
+    font-family: var(--font-mono);
+    color: var(--muted);
+    font-size: 0.875rem;
+    line-height: 1.6;
+    margin: 0 auto 2.25rem;
+    max-width: 38rem;
+  }
+  .gloss-active .gloss-sub { display: none; }
+
+  /* Search */
+  .gloss-search {
+    display: flex; align-items: center; gap: 0.625rem;
+    max-width: 34rem; width: 100%;
+    margin: 0 auto 3rem;
+    padding: 0.85rem 1rem;
+    border-style: solid;
+    border-width: 0 0 2px 0;
+    border-color: var(--border);
+    color: var(--muted);
+    transition: border-color 0.2s var(--ease-smooth);
+  }
+  .gloss-search:focus-within { border-bottom-color: var(--accent); }
+  .gloss-search input {
+    flex: 1; background: none;
+    border-width: 0; outline: none; box-shadow: none;
+    font-family: var(--font-mono);
+    font-size: 1.0625rem; font-weight: 500;
+    letter-spacing: -0.005em;
+    color: var(--page-text);
+    text-align: center;
+  }
+  .gloss-search input:focus, .gloss-search input:focus-visible { outline: none; box-shadow: none; }
+  .gloss-search input::placeholder { color: var(--color-gray-400); font-weight: 400; }
+  .dark .gloss-search input::placeholder { color: var(--color-gray-700); }
+  .gloss-active .gloss-search input {
+    font-size: 1.375rem; font-weight: 600;
+    transition: font-size 0.35s var(--ease-smooth);
+  }
+  .gloss-search-x {
+    background: none; border: none; cursor: pointer;
+    color: var(--muted); font-size: 1.25rem; line-height: 1;
+    padding: 0 0.25rem;
+    transition: color 0.15s;
+  }
+  .gloss-search-x:hover { color: var(--page-text); }
+
+  /* Grid + chips */
+  .gloss-grid-wrap {
+    animation: gloss-in 0.3s var(--ease-smooth) both;
+    animation-delay: 0.05s;
+  }
+  @keyframes gloss-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes gloss-bounce {
+    0%   { opacity: 0; transform: translateY(14px) scale(0.97); }
+    55%  { opacity: 1; transform: translateY(-2px) scale(1.012); }
+    80%  { transform: translateY(1px) scale(0.998); }
+    100% { transform: translateY(0) scale(1); }
+  }
+
+  .gloss-group { margin-bottom: 2.75rem; }
+  .gloss-group:last-child { margin-bottom: 0; }
+
+  .gloss-group-label {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-align: center;
+    margin: 0 0 1.125rem;
+    position: relative;
+  }
+  .gloss-group-label::before,
+  .gloss-group-label::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: 2.5rem;
+    height: 1px;
+    background: var(--border);
+  }
+  .gloss-group-label::before { right: calc(50% + 6rem); }
+  .gloss-group-label::after  { left:  calc(50% + 6rem); }
+
+  .gloss-chips {
+    list-style: none; padding: 0; margin: 0 auto;
+    max-width: 40rem;
+    display: flex; flex-wrap: wrap; justify-content: center;
+    gap: 0.55rem;
+  }
+  .gloss-chip {
+    min-width: 3.75rem;
+    padding: 0.55rem 1rem;
+    border-width: 1px; border-style: solid; border-color: var(--border);
+    border-radius: 0.5rem;
+    background: var(--subtle-bg);
+    color: var(--page-text);
+    font-family: var(--font-mono);
+    font-size: 0.875rem; font-weight: 600;
+    line-height: 1;
+    cursor: pointer;
+    transition: border-color 0.15s var(--ease-smooth),
+                color 0.15s var(--ease-smooth),
+                background 0.15s var(--ease-smooth),
+                transform 0.15s var(--ease-smooth);
+  }
+  .gloss-chip:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: color-mix(in srgb, var(--accent) 8%, var(--subtle-bg));
+    transform: translateY(-1px);
+  }
+
+  .gloss-empty {
+    text-align: center;
+    color: var(--muted);
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    margin: 3rem 0;
+  }
+
+  /* Detail view */
+  .gloss-detail {
+    animation: gloss-bounce 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+    animation-delay: 0.06s;
+    margin: 0 auto;
+    transform-origin: top center;
+  }
+  .gloss-detail-head {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-rows: auto auto;
+    column-gap: 1rem;
+    row-gap: 0.35rem;
+    padding: 1.75rem 0 1.1rem;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 1.75rem;
+  }
+  .gloss-detail-term {
+    grid-column: 1;
+    grid-row: 1;
+    font-family: var(--font-mono);
+    font-size: clamp(1.625rem, 4vw, 2.25rem);
+    font-weight: 700;
+    color: var(--accent);
+    background: none; padding: 0; border: 0;
+    letter-spacing: -0.025em;
+    line-height: 1.05;
+  }
+  .gloss-detail-exp {
+    grid-column: 1;
+    grid-row: 2;
+    font-family: var(--font-mono);
+    font-size: 0.9375rem;
+    font-weight: 500;
+    letter-spacing: -0.005em;
+    color: var(--text-secondary);
+  }
+  .gloss-detail-kind {
+    grid-column: 2;
+    grid-row: 1;
+    align-self: center;
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 0.35rem 0.625rem;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    white-space: nowrap;
+  }
+
+  .gloss-detail-summary {
+    max-width: 66ch;
+    margin: 0 auto 1.75rem;
+    font-family: var(--font-mono);
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 1.6;
+    color: var(--page-text);
+  }
+  .gloss-detail-summary code {
+    font-family: var(--font-mono);
+    color: var(--accent);
+    background: none; padding: 0;
+  }
+
+  .gloss-detail-body { max-width: 66ch; margin: 0 auto; }
+  .gloss-para {
+    font-family: var(--font-mono);
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+    line-height: 1.8;
+    margin: 0 0 1.25rem;
+  }
+  .gloss-para code {
+    font-family: var(--font-mono);
+    color: var(--accent);
+    background: none;
+    padding: 0;
+  }
+
+  /* Pedagogical figure - inline SVG schematic or external image. */
+  .gloss-figure {
+    max-width: calc(80ch + 3rem);
+    width: 100%;
+    margin: 2.25rem auto 1.25rem;
+    padding: 1.25rem 1.5rem;
+    border: 1px solid var(--code-border);
+    background: var(--code-bg);
+    border-radius: 0.75rem;
+  }
+  .gloss-figure-svg svg,
+  .gloss-figure img {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+    color: var(--page-text);
+  }
+  /* External SVG diagrams from Wikimedia ship as black-on-white. Invert
+     them in dark mode so they read against the dark figure surround;
+     hue-rotate keeps any non-greyscale strokes in their original
+     perceptual key. Inline SVG (rendered through <InlineSvg>) gets the
+     same treatment via .gloss-figure-svg svg. Raster images opt-in
+     via data-invert (set by the glossary entry's image.invert flag)
+     so colour heatmaps like spectrograms keep their native palette. */
+  .dark .gloss-figure-svg svg,
+  .dark .gloss-figure img[src$=".svg"],
+  .dark .gloss-figure img[data-invert] {
+    filter: invert(0.92) hue-rotate(180deg);
+  }
+  .gloss-figure figcaption {
+    margin-top: 0.85rem;
+    text-align: center;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--muted);
+    letter-spacing: 0.01em;
+    line-height: 1.5;
+  }
+
+  /* Example code block - same 80ch width-budgeting as .asm-code */
+  .gloss-code {
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    max-width: calc(80ch + 3rem);
+    width: 100%;
+    margin: 2.25rem auto;
+    border-width: 1px; border-style: solid; border-color: var(--code-border);
+    background: var(--code-bg);
+    border-radius: 0.75rem;
+    overflow: hidden;
+    position: relative;
+  }
+  .gloss-code::before {
+    content: attr(data-lang);
+    position: absolute;
+    top: 0.6rem;
+    right: 0.9rem;
+    font-family: var(--font-mono);
+    font-size: 0.625rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    opacity: 0.55;
+    pointer-events: none;
+  }
+  .gloss-code pre {
+    margin: 0;
+    padding: 1.4rem 1.5rem 1.25rem;
+    font-family: inherit; font-size: inherit; line-height: 1.7;
+    color: var(--page-text);
+    overflow-x: auto;
+  }
+  .gloss-code pre code {
+    font-family: inherit; font-size: inherit;
+    color: inherit; background: none; padding: 0; border: 0;
+  }
+  .gloss-code pre .line { display: inline; }
+
+  .gloss-more {
+    max-width: 66ch;
+    margin: 2.25rem auto 0;
+    text-align: center;
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    color: var(--muted);
+  }
+  .gloss-more a {
+    color: var(--accent);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-color: color-mix(in srgb, var(--accent) 35%, transparent);
+    transition: text-decoration-color 0.15s var(--ease-smooth);
+  }
+  .gloss-more a:hover { text-decoration-color: var(--accent); }
+  .gloss-more-arrow { color: var(--accent); margin-left: 0.3rem; font-weight: 700; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .gloss-grid-wrap, .gloss-detail { animation: none; }
   }
 
   /* --- Writeup listing --- */
@@ -1131,7 +1476,7 @@ a { color: inherit; text-decoration: none; }
 
   .wu-hidden { display: none !important; }
 
-  /* Draft post banner — slim status strip on the post page itself. */
+  /* Draft post banner - slim status strip on the post page itself. */
   .draft-banner {
     --draft-color: #b45309;
     display: flex;

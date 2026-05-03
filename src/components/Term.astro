@@ -1,0 +1,176 @@
+---
+/**
+ * Inline glossary term with a hover popover (term + expansion + summary).
+ * Click the trigger to open the full /tools/glossary/ entry.
+ *
+ * Mirrors the Mnemonic component but neutral-palette and site-wide.
+ *
+ * Usage:  <Term slug="got">GOT</Term>
+ *         <Term slug="rsa-public-decrypt">`RSA_public_decrypt`</Term>
+ *
+ * If the slug is not found, the slot text renders un-decorated so the
+ * MDX still compiles cleanly during edits.
+ */
+import { getEntry } from '../data/glossary';
+
+interface Props { slug: string; }
+const { slug } = Astro.props;
+const entry = getEntry(slug);
+const href = `/tools/glossary/?slug=${slug}`;
+---
+{entry ? (
+  <span class="term">
+    <a class="term-trigger" href={href}><slot /></a>
+    <span class="term-pop" role="tooltip">
+      <span class="term-pop-head">
+        <code class="term-pop-name">{entry.term}</code>
+        {entry.expansion && <span class="term-pop-exp">{entry.expansion}</span>}
+      </span>
+      <span class="term-pop-summary">{entry.summary}</span>
+      <span class="term-pop-cta">
+        <span class="term-pop-cta-arrow" aria-hidden="true">↗</span>
+        click for the full reference
+      </span>
+    </span>
+  </span>
+) : <slot />}
+
+<style>
+  .term {
+    position: relative;
+    display: inline-block;
+    font-style: normal;
+  }
+  .term-trigger {
+    text-decoration: underline dotted;
+    text-decoration-color: color-mix(in srgb, currentColor 38%, transparent);
+    text-underline-offset: 0.18em;
+    color: inherit;
+    cursor: help;
+    transition: text-decoration-color 0.15s var(--ease-smooth, ease),
+                color 0.15s var(--ease-smooth, ease);
+  }
+  .term-trigger:hover,
+  .term-trigger:focus-visible {
+    color: var(--accent);
+    text-decoration-color: var(--accent);
+    text-decoration-style: solid;
+  }
+
+  /* Popover */
+  .term-pop {
+    position: absolute;
+    bottom: calc(100% + 0.55rem);
+    left: 50%;
+    transform: translateX(-50%) translateY(0.25rem);
+    z-index: 30;
+
+    width: max-content;
+    max-width: min(22rem, 92vw);
+
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+
+    background: var(--page-bg);
+    color: var(--page-text);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.7rem 0.9rem 0.75rem;
+    box-shadow:
+      0 16px 32px -8px color-mix(in srgb, var(--page-text) 18%, transparent),
+      0 2px 6px color-mix(in srgb, var(--page-text) 8%, transparent);
+
+    font-style: normal;
+    font-weight: 400;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    text-align: left;
+
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.16s var(--ease-smooth, ease),
+                transform 0.16s var(--ease-smooth, ease),
+                visibility 0.16s;
+  }
+  /* Hover bridge so the popover survives the gap below the trigger */
+  .term-pop::before {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    height: 0.55rem;
+  }
+  /* Arrow */
+  .term-pop::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%) rotate(45deg);
+    width: 8px;
+    height: 8px;
+    background: var(--page-bg);
+    border-right: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    margin-top: -5px;
+  }
+  .term:hover .term-pop,
+  .term:focus-within .term-pop {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+    pointer-events: auto;
+  }
+
+  .term-pop-head {
+    display: flex;
+    align-items: baseline;
+    gap: 0.55rem;
+    flex-wrap: wrap;
+  }
+  .term-pop-name {
+    font-family: var(--font-mono, JetBrains Mono);
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--accent);
+    background: none;
+    padding: 0;
+    border: 0;
+    letter-spacing: -0.01em;
+  }
+  .term-pop-exp {
+    font-family: var(--font-mono);
+    color: var(--text-secondary, var(--page-text));
+    font-weight: 500;
+    font-size: 0.78rem;
+    letter-spacing: -0.005em;
+  }
+  .term-pop-summary {
+    color: var(--page-text);
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    line-height: 1.55;
+  }
+  .term-pop-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    font-weight: 500;
+    color: var(--muted, var(--text-secondary));
+    letter-spacing: 0.04em;
+  }
+  .term-pop-cta-arrow {
+    font-style: normal;
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .term-pop { transition: none; }
+  }
+</style>

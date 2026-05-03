@@ -2,16 +2,16 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Build the interactive blog post specified in `docs/superpowers/specs/2026-04-25-xz-backdoor-explainer-design.md` — an editorial-voice, Distill/Ciechanowski-grade explainer of CVE-2024-3094, with three set-piece interactives, three inline widgets, and disassembly snippets cross-linked to the existing AsmLookup tool.
+**Goal:** Build the interactive blog post specified in `docs/superpowers/specs/2026-04-25-xz-backdoor-explainer-design.md` - an editorial-voice, Distill/Ciechanowski-grade explainer of CVE-2024-3094, with three set-piece interactives, three inline widgets, and disassembly snippets cross-linked to the existing AsmLookup tool.
 
 **Architecture:** Astro 6 + Preact islands + Tailwind v4. Each interactive widget is a `client:visible` Preact island. Data is pre-computed at build time from `xz-artifacts/` (gitignored, already populated). Prose lives in MDX at `src/content/blog/xz-backdoor/index.mdx`; components are imported per-page (not registered globally in `src/components/mdx/`).
 
 **Tech Stack:**
-- `scrollama` — IntersectionObserver-based scroll-step orchestration
-- `motion` (Motion One) — tween animations, framework-agnostic
-- `@nanostores/preact` — cross-island state (only if needed)
-- `expressive-code` — already-installed code-block renderer; reused for disassembly snippets
-- svgl.app — fetched at build time via custom script
+- `scrollama` - IntersectionObserver-based scroll-step orchestration
+- `motion` (Motion One) - tween animations, framework-agnostic
+- `@nanostores/preact` - cross-island state (only if needed)
+- `expressive-code` - already-installed code-block renderer; reused for disassembly snippets
+- svgl.app - fetched at build time via custom script
 
 **Test approach (project-specific):** This repo has no test framework. Adding vitest for a single page is overkill. Pragmatic adaptation:
 - **Data scripts** end with inline `assert` blocks that verify output shape and known-good hashes; the script throws if invariants break.
@@ -20,9 +20,9 @@
 
 This is not classical TDD but matches the project's existing pattern (`AsmLookup`, `RevShellGen`).
 
-**Build order rationale:** the SedPipeline centerpiece (Task 8) lands by mid-plan as a checkpoint — Hugo can review direction before committing to the rest. Subsequent widgets (Timeline, DepGraph) follow only after centerpiece is approved.
+**Build order rationale:** the SedPipeline centerpiece (Task 8) lands by mid-plan as a checkpoint - Hugo can review direction before committing to the rest. Subsequent widgets (Timeline, DepGraph) follow only after centerpiece is approved.
 
-**Prose authoring:** This plan builds the *infrastructure*. Hugo writes the prose himself in his own voice. The MDX skeleton (Task 15) ships with section headers, embedded components, and one-line stubs marking what each section needs to cover — but the actual prose is left blank for him to write.
+**Prose authoring:** This plan builds the *infrastructure*. Hugo writes the prose himself in his own voice. The MDX skeleton (Task 15) ships with section headers, embedded components, and one-line stubs marking what each section needs to cover - but the actual prose is left blank for him to write.
 
 ---
 
@@ -31,33 +31,33 @@ This is not classical TDD but matches the project's existing pattern (`AsmLookup
 ```
 src/
 ├── content/blog/xz-backdoor/
-│   └── index.mdx                              # T16 — section skeleton with embedded components
+│   └── index.mdx                              # T16 - section skeleton with embedded components
 ├── components/xz/
-│   ├── Mnemonic.astro                         # T7 — wraps AT&T mnemonic, links to AsmLookup
-│   ├── SedPipeline.tsx                        # T8 — set piece ③ (centerpiece, CHECKPOINT)
-│   ├── TarballDiff.astro                      # T11 — inline widget ②
-│   ├── LatencyChart.astro                     # T12 — inline widget ⑤
-│   ├── DistroGrid.astro                       # T13 — inline widget ⑥
-│   ├── Timeline.tsx                           # T14 — set piece ①
-│   ├── DepGraph.tsx                           # T15 — set piece ④
+│   ├── Mnemonic.astro                         # T7 - wraps AT&T mnemonic, links to AsmLookup
+│   ├── SedPipeline.tsx                        # T8 - set piece ③ (centerpiece, CHECKPOINT)
+│   ├── TarballDiff.astro                      # T11 - inline widget ②
+│   ├── LatencyChart.astro                     # T12 - inline widget ⑤
+│   ├── DistroGrid.astro                       # T13 - inline widget ⑥
+│   ├── Timeline.tsx                           # T14 - set piece ①
+│   ├── DepGraph.tsx                           # T15 - set piece ④
 │   └── shared/
-│       ├── stores.ts                          # not created — T14 + T15 don't need cross-island state
-│       └── motion.ts                          # T8 — Motion One helper (reduced-motion aware)
+│       ├── stores.ts                          # not created - T14 + T15 don't need cross-island state
+│       └── motion.ts                          # T8 - Motion One helper (reduced-motion aware)
 ├── data/
-│   ├── xz-pipeline.json                       # T6 — emitted by build-xz-pipeline-data.ts
-│   ├── xz-timeline.json                       # T9 — hand-authored from Russ Cox + primary sources
-│   ├── xz-distros.json                        # T10 — hand-authored
-│   └── xz-icons/                              # T13 — fetched from svgl.app
+│   ├── xz-pipeline.json                       # T6 - emitted by build-xz-pipeline-data.ts
+│   ├── xz-timeline.json                       # T9 - hand-authored from Russ Cox + primary sources
+│   ├── xz-distros.json                        # T10 - hand-authored
+│   └── xz-icons/                              # T13 - fetched from svgl.app
 │       ├── debian.svg
 │       ├── fedora.svg
 │       └── … (8 distro icons)
 └── styles/
-    └── xz.css                                 # T2 — page-scoped overrides
+    └── xz.css                                 # T2 - page-scoped overrides
 
 scripts/
-├── build-xz-pipeline-data.ts                  # T6 — runs real xz/tr against xz-artifacts/, emits JSON
-├── extract-disasm.sh                          # T5 — objdump on liblzma_la-crc64-fast.o, slices into .s files
-└── fetch-svgl-icons.ts                        # T13 — fetches 8 distro SVGs from svgl.app
+├── build-xz-pipeline-data.ts                  # T6 - runs real xz/tr against xz-artifacts/, emits JSON
+├── extract-disasm.sh                          # T5 - objdump on liblzma_la-crc64-fast.o, slices into .s files
+└── fetch-svgl-icons.ts                        # T13 - fetches 8 distro SVGs from svgl.app
 
 xz-artifacts/                                  # already populated, gitignored
 └── analysis/disasm/                           # populated by T5
@@ -65,12 +65,12 @@ xz-artifacts/                                  # already populated, gitignored
     ├── got_walker.s
     └── rsa_public_decrypt_hook.s
 
-package.json                                   # T1 — add deps: scrollama, motion
+package.json                                   # T1 - add deps: scrollama, motion
 ```
 
 **Files NOT created by this plan:**
-- `src/components/xz/shared/stores.ts` — only if Tasks 14 or 16 require cross-island state. Defer.
-- `src/styles/xz.css` — created in T2 even if empty, so per-page imports compile. Actual rules added per-task as needed.
+- `src/components/xz/shared/stores.ts` - only if Tasks 14 or 16 require cross-island state. Defer.
+- `src/styles/xz.css` - created in T2 even if empty, so per-page imports compile. Actual rules added per-task as needed.
 
 ---
 
@@ -90,7 +90,7 @@ cd /Users/hugo/dev/Github/KazeTachinuu.github.io
 bun add scrollama motion
 ```
 
-Expected: `package.json` updated; `bun.lock` updated. Versions at install time should be `scrollama@^3` and `motion@^11+`. If versions differ wildly, investigate before proceeding. (Note: `scrollama` v3+ ships its own TypeScript types — no separate `@types/scrollama` package is needed or available on npm.)
+Expected: `package.json` updated; `bun.lock` updated. Versions at install time should be `scrollama@^3` and `motion@^11+`. If versions differ wildly, investigate before proceeding. (Note: `scrollama` v3+ ships its own TypeScript types - no separate `@types/scrollama` package is needed or available on npm.)
 
 - [ ] **Step 2: Create directory scaffolding**
 
@@ -135,16 +135,16 @@ Write `src/styles/xz.css`:
  * Page-scoped overrides for /blog/xz-backdoor/.
  * Imported by src/content/blog/xz-backdoor/index.mdx.
  * Semantic colors per spec §"Voice and aesthetic":
- *   --xz-attacker  ember  — JiaT75, malicious commits, encrypted bytes
- *   --xz-defender  slate  — Lasse Collin, Andres Freund, clean code
- *   --xz-infra     grey   — autoconf, sshd, libsystemd, distro nodes
+ *   --xz-attacker  ember  - JiaT75, malicious commits, encrypted bytes
+ *   --xz-defender  slate  - Lasse Collin, Andres Freund, clean code
+ *   --xz-infra     grey   - autoconf, sshd, libsystemd, distro nodes
  * All three tuned for both light and dark mode at AAA contrast.
  */
 
 :root {
-  --xz-attacker: oklch(58% 0.14 35);   /* muted ember — light */
-  --xz-defender: oklch(52% 0.06 250);  /* cool slate — light */
-  --xz-infra:    oklch(55% 0.02 250);  /* neutral grey — light */
+  --xz-attacker: oklch(58% 0.14 35);   /* muted ember - light */
+  --xz-defender: oklch(52% 0.06 250);  /* cool slate - light */
+  --xz-infra:    oklch(55% 0.02 250);  /* neutral grey - light */
 }
 
 :root.dark {
@@ -203,7 +203,7 @@ Write `src/content/blog/xz-backdoor/index.mdx`:
 ```mdx
 ---
 title: "The XZ backdoor"
-description: "An interactive walkthrough of CVE-2024-3094 — how a two-year social-engineering campaign almost shipped a sshd backdoor in liblzma."
+description: "An interactive walkthrough of CVE-2024-3094 - how a two-year social-engineering campaign almost shipped a sshd backdoor in liblzma."
 date: 2026-04-25
 draft: true
 categories: ["security"]
@@ -240,7 +240,7 @@ git commit -m "xz: stub MDX entry (draft) for routing scaffolding"
 
 ## Task 4: Verify local artifacts are present and consistent
 
-**Files:** none modified — verification task. Must pass before T5–T7 can run.
+**Files:** none modified - verification task. Must pass before T5–T7 can run.
 
 - [ ] **Step 1: Confirm `xz-artifacts/` exists and is gitignored**
 
@@ -271,7 +271,7 @@ ecda10d8877d555dbda4a4eba329e146b2be8ac4b7915fb723eaacc9f89d16bd  xz-artifacts/e
 b418bfd34aa246b2e7b5cb5d263a640e5d080810f767370c4d2c24662a274963  analysis/xzre/liblzma_la-crc64-fast.o
 ```
 
-If any hash differs, do not proceed — re-fetch from `xz-artifacts/README.md` instructions.
+If any hash differs, do not proceed - re-fetch from `xz-artifacts/README.md` instructions.
 
 - [ ] **Step 3: Verify required tools are installed**
 
@@ -281,7 +281,7 @@ which xz tr objdump shasum
 
 All four must resolve. On macOS, `objdump` ships with the Apple/LLVM toolchain (also available as `gobjdump` via `brew install binutils`); `xz` ships with brew or coreutils. If `objdump` is missing, install: `brew install binutils && export PATH="/opt/homebrew/opt/binutils/bin:$PATH"`.
 
-- [ ] **Step 4: No commit** — pure verification. Move on to T5.
+- [ ] **Step 4: No commit** - pure verification. Move on to T5.
 
 ---
 
@@ -299,7 +299,7 @@ Write `scripts/extract-disasm.sh`:
 #!/usr/bin/env bash
 # Extract three named disassembly regions from liblzma_la-crc64-fast.o
 # (the malicious object shipped in smx-smx/xzre).
-# Output: xz-artifacts/analysis/disasm/{name}.s — AT&T syntax, used by §4.
+# Output: xz-artifacts/analysis/disasm/{name}.s - AT&T syntax, used by §4.
 #
 # Determinism: re-runnable; output is git-ignored. Function-name choices
 # follow smx-smx/xzre's reverse-engineering documentation (attributed in
@@ -330,12 +330,12 @@ trap "rm -f $TMP" EXIT
 objdump -d -M att --no-show-raw-insn --demangle "$OBJ" > "$TMP"
 
 # 3. Slice named functions. The names below come from smx-smx/xzre's symbol
-#    table — confirm they appear in the disassembly before slicing.
+#    table - confirm they appear in the disassembly before slicing.
 extract_fn() {
   local fn="$1"
   local out="$2"
   if ! grep -qE "<${fn}>:" "$TMP"; then
-    echo "WARN: function <${fn}> not found in $OBJ — skipping ${out}" >&2
+    echo "WARN: function <${fn}> not found in $OBJ - skipping ${out}" >&2
     return 0
   fi
   awk -v fn="$fn" '
@@ -364,7 +364,7 @@ chmod +x scripts/extract-disasm.sh
 ./scripts/extract-disasm.sh
 ```
 
-Expected: at least one `.s` file written to `xz-artifacts/analysis/disasm/`. **It is acceptable if some `WARN: function not found` messages appear** — the function names in `smx-smx/xzre` may have changed, in which case the next step adapts the names.
+Expected: at least one `.s` file written to `xz-artifacts/analysis/disasm/`. **It is acceptable if some `WARN: function not found` messages appear** - the function names in `smx-smx/xzre` may have changed, in which case the next step adapts the names.
 
 - [ ] **Step 3: If any function was not found, identify the correct name**
 
@@ -373,9 +373,9 @@ objdump -d -M att xz-artifacts/analysis/xzre/liblzma_la-crc64-fast.o | grep -E "
 ```
 
 This lists every function in the object. Find the three semantically-correct ones:
-- The **IFUNC resolver entry** — likely contains `cpuid` in the name or is the only function returning a function pointer
-- The **GOT walker** — likely named `_resolve`, `resolve_symbol`, or similar; contains references to `link_map` / `_dl_*`
-- The **`RSA_public_decrypt` hook** — exact name `RSA_public_decrypt`
+- The **IFUNC resolver entry** - likely contains `cpuid` in the name or is the only function returning a function pointer
+- The **GOT walker** - likely named `_resolve`, `resolve_symbol`, or similar; contains references to `link_map` / `_dl_*`
+- The **`RSA_public_decrypt` hook** - exact name `RSA_public_decrypt`
 
 Update `scripts/extract-disasm.sh` `extract_fn` calls with the correct names, re-run, verify all three `.s` files exist.
 
@@ -403,7 +403,7 @@ git commit -m "xz: script to extract named disassembly regions from the maliciou
 - Create: `scripts/build-xz-pipeline-data.ts`
 - Will produce: `src/data/xz-pipeline.json`
 
-This script runs the **actual** stage-1 transforms (`tr`, `xz -d`) against the local malicious test files and emits a JSON describing each stage's input/output. The bytes shown in the SedPipeline widget are *the* bytes — never re-implemented in JS.
+This script runs the **actual** stage-1 transforms (`tr`, `xz -d`) against the local malicious test files and emits a JSON describing each stage's input/output. The bytes shown in the SedPipeline widget are *the* bytes - never re-implemented in JS.
 
 - [ ] **Step 1: Write the script**
 
@@ -414,7 +414,7 @@ Write `scripts/build-xz-pipeline-data.ts`:
  * Pre-compute the sed-pipeline stage data for src/components/xz/SedPipeline.tsx.
  *
  * Runs the *actual* shell transforms against xz-artifacts/extracted/xz-5.6.1/tests/files/.
- * Emits src/data/xz-pipeline.json — an ordered list of stages with inputs,
+ * Emits src/data/xz-pipeline.json - an ordered list of stages with inputs,
  * outputs, byte-range provenance, and the script tokens that produced each.
  *
  * Determinism: re-runnable; output is checked into git via the data/ collection.
@@ -461,7 +461,7 @@ const s1in = hex(stage1Input);
 stages.push({
   id: 's1-input',
   label: 'tests/files/bad-3-corrupt_lzma2.xz',
-  command: '# raw bytes — looks like a corrupted xz test fixture',
+  command: '# raw bytes - looks like a corrupted xz test fixture',
   scriptTokens: [],
   inputBytes: s1in.hex,
   outputBytes: s1in.hex,
@@ -520,11 +520,11 @@ writeFileSync('xz-artifacts/stages/01-stage1.sh', stage3Output);
 //   xz-5.6.1 uses 16 cycles + final head -c +939, then tail -c +31233,
 //          then tr "\114-\321\322-\377\35-\47\14-\34\0-\13\50-\113" "\0-\377"
 //   xz-5.6.0 uses different values (head -c +724, tail -c +31233, different tr table).
-// The values below are for 5.6.1 only — verified against the actual decoded
+// The values below are for 5.6.1 only - verified against the actual decoded
 // stage-1 script in xz-artifacts/stages/01-stage1.sh.
 //
 // PORTABILITY: chained `head -c` in subshells has different pipe-buffering
-// semantics on BSD vs GNU. Use `dd` substitution if running on macOS — see
+// semantics on BSD vs GNU. Use `dd` substitution if running on macOS - see
 // the implementer's adaptation in scripts/build-xz-pipeline-data.ts. The
 // resulting bytes are byte-identical to the canonical Linux pipeline (hash
 // 654c673c…10bbf6a1 for the final stage-2.sh).
@@ -606,7 +606,7 @@ if (!s3str.includes('eval') && !s3str.includes('srcdir')) {
 const s8str = stage8Out.toString('utf8', 0, 200);
 if (!s8str.includes('AWK') && !s8str.includes('eval') && !s8str.includes('srcdir')) {
   console.warn(`Stage-8 output (first 200 bytes utf8): ${s8str}`);
-  // Don't throw — RC4-decoded shell can have non-utf8 prefix; just warn.
+  // Don't throw - RC4-decoded shell can have non-utf8 prefix; just warn.
 }
 if (stages.length !== 8) throw new Error(`Expected 8 stages, got ${stages.length}`);
 
@@ -614,7 +614,7 @@ if (stages.length !== 8) throw new Error(`Expected 8 stages, got ${stages.length
 const out = 'src/data/xz-pipeline.json';
 mkdirSync(dirname(out), { recursive: true });
 writeFileSync(out, JSON.stringify({ stages, generatedAt: new Date().toISOString() }, null, 2));
-console.log(`wrote ${out} — ${stages.length} stages, ${Buffer.byteLength(JSON.stringify(stages))} bytes`);
+console.log(`wrote ${out} - ${stages.length} stages, ${Buffer.byteLength(JSON.stringify(stages))} bytes`);
 ```
 
 - [ ] **Step 2: Run the script**
@@ -623,7 +623,7 @@ console.log(`wrote ${out} — ${stages.length} stages, ${Buffer.byteLength(JSON.
 bun run scripts/build-xz-pipeline-data.ts
 ```
 
-Expected output: `wrote src/data/xz-pipeline.json — 8 stages, ~XXXXXX bytes`. If anything throws, **stop and investigate** — the malicious-file hashes are pinned, so unexpected output means the pipeline itself is misconfigured (most likely the head-chunker count or the tr substitution syntax differs from what shell expects).
+Expected output: `wrote src/data/xz-pipeline.json - 8 stages, ~XXXXXX bytes`. If anything throws, **stop and investigate** - the malicious-file hashes are pinned, so unexpected output means the pipeline itself is misconfigured (most likely the head-chunker count or the tr substitution syntax differs from what shell expects).
 
 - [ ] **Step 3: Manually inspect the output**
 
@@ -655,7 +655,7 @@ git commit -m "xz: pre-compute sed-pipeline stages (8) from real artifact bytes"
 **Files:**
 - Create: `src/components/xz/Mnemonic.astro`
 
-Astro component (not Preact) — it's a tiny static wrapper, no need for client-side JS.
+Astro component (not Preact) - it's a tiny static wrapper, no need for client-side JS.
 
 - [ ] **Step 1: Write the component**
 
@@ -698,7 +698,7 @@ const { op } = Astro.props;
 
 - [ ] **Step 2: Smoke test by referencing it from the stub MDX**
 
-Modify `src/content/blog/xz-backdoor/index.mdx` — add an import + a sample mnemonic usage at the bottom of the stub:
+Modify `src/content/blog/xz-backdoor/index.mdx` - add an import + a sample mnemonic usage at the bottom of the stub:
 
 ```mdx
 import Mnemonic from '~/components/xz/Mnemonic.astro';
@@ -725,20 +725,20 @@ Restore `src/content/blog/xz-backdoor/index.mdx` to the T3 stub.
 
 ```bash
 git add src/components/xz/Mnemonic.astro src/content/blog/xz-backdoor/index.mdx
-git commit -m "xz: <Mnemonic> shortcode — links AT&T mnemonics to AsmLookup"
+git commit -m "xz: <Mnemonic> shortcode - links AT&T mnemonics to AsmLookup"
 ```
 
 ---
 
-## Task 8: SedPipeline widget (REVERTED 2026-04-25 — needs redesign)
+## Task 8: SedPipeline widget (REVERTED 2026-04-25 - needs redesign)
 
 **Status:** all T8 implementation reverted on 2026-04-25 after multiple iterations failed Hugo's visual review. The infrastructure (data extraction, Shiki integration, ELF parsing) was sound; the *content design* was not. Specifically, hex-grid views of binary data were illegible, vertical stacks were too long, and hand-written interpretive prose ("defense in depth", "decoy continued", etc.) was hallucinated rather than sourced.
 
-**Before re-attempting T8:** read the memory entries `feedback_xz_widget_design_lessons.md` (what failed) and `project_xz_payload_facts.md` (verified-correct values to use directly). Brainstorm the design with Hugo *before* coding — the simplest answer (three Expressive Code blocks + Hugo's prose, no widget at all) is on the table.
+**Before re-attempting T8:** read the memory entries `feedback_xz_widget_design_lessons.md` (what failed) and `project_xz_payload_facts.md` (verified-correct values to use directly). Brainstorm the design with Hugo *before* coding - the simplest answer (three Expressive Code blocks + Hugo's prose, no widget at all) is on the table.
 
-**Files to (re)create when T8 is redesigned:** `src/components/xz/SedPipeline.tsx` (or replacement), possibly `src/components/xz/shared/motion.ts`, possibly `src/data/xz-pipeline.json` + `scripts/build-xz-pipeline-data.ts` (the data-extraction logic itself was verified-correct against Russ Cox xz-script — preserved in the git history at commit `a3c06cf` if useful).
+**Files to (re)create when T8 is redesigned:** `src/components/xz/SedPipeline.tsx` (or replacement), possibly `src/components/xz/shared/motion.ts`, possibly `src/data/xz-pipeline.json` + `scripts/build-xz-pipeline-data.ts` (the data-extraction logic itself was verified-correct against Russ Cox xz-script - preserved in the git history at commit `a3c06cf` if useful).
 
-— Original task description below for reference —
+- Original task description below for reference -
 
 
 
@@ -866,7 +866,7 @@ export default function SedPipeline() {
       <p class="xz-sedpipe-hint">
         {!isLast
           ? <>Press <kbd>→</kbd> to advance · {STAGES.length - step - 1} stages remain.</>
-          : <>Final stage — these bytes become <code>liblzma_la-crc64-fast.o</code>.</>}
+          : <>Final stage - these bytes become <code>liblzma_la-crc64-fast.o</code>.</>}
       </p>
     </figure>
   );
@@ -986,7 +986,7 @@ Modify `src/content/blog/xz-backdoor/index.mdx`:
 ```mdx
 ---
 title: "The XZ backdoor"
-description: "An interactive walkthrough of CVE-2024-3094 — how a two-year social-engineering campaign almost shipped a sshd backdoor in liblzma."
+description: "An interactive walkthrough of CVE-2024-3094 - how a two-year social-engineering campaign almost shipped a sshd backdoor in liblzma."
 date: 2026-04-25
 draft: true
 categories: ["security"]
@@ -996,7 +996,7 @@ tags: ["xz", "cve-2024-3094", "supply-chain", "reverse-engineering"]
 import '../../../styles/xz.css';
 import SedPipeline from '~/components/xz/SedPipeline';
 
-## Stage CHECKPOINT — SedPipeline widget
+## Stage CHECKPOINT - SedPipeline widget
 
 <SedPipeline client:visible />
 ```
@@ -1021,7 +1021,7 @@ Open `http://localhost:4321/blog/xz-backdoor/` in a browser. Visual checklist:
 
 ```bash
 git add src/components/xz/SedPipeline.tsx src/components/xz/shared/motion.ts src/styles/xz.css src/content/blog/xz-backdoor/index.mdx
-git commit -m "xz: SedPipeline widget — centerpiece, CHECKPOINT for review"
+git commit -m "xz: SedPipeline widget - centerpiece, CHECKPOINT for review"
 ```
 
 **Pause execution. Ask Hugo to review the rendered SedPipeline against the spec's "Stacked transforms widget" description. Wait for explicit approval (or change requests + iteration) before proceeding to T9.**
@@ -1101,7 +1101,7 @@ Write `src/data/xz-timeline.json` (15-20 events; this is the canonical curated l
       "actor": "Jia Tan",
       "kind": "preparatory",
       "title": "Jia Tan takes over releases",
-      "summary": "Lasse releases v5.4.1 — the final release Lasse signs. Subsequent releases are signed by Jia Tan.",
+      "summary": "Lasse releases v5.4.1 - the final release Lasse signs. Subsequent releases are signed by Jia Tan.",
       "quote": null,
       "source": "https://research.swtch.com/xz-timeline"
     },
@@ -1128,7 +1128,7 @@ Write `src/data/xz-timeline.json` (15-20 events; this is the canonical curated l
       "actor": "Jia Tan",
       "kind": "malicious",
       "title": "Malicious test files committed",
-      "summary": "Adds tests/files/bad-3-corrupt_lzma2.xz and good-large_compressed.lzma — disguised as test corpus, actually contain the obfuscated payload.",
+      "summary": "Adds tests/files/bad-3-corrupt_lzma2.xz and good-large_compressed.lzma - disguised as test corpus, actually contain the obfuscated payload.",
       "quote": null,
       "source": "https://gist.github.com/thesamesam/223949d5a074ebc3dce9ee78baad9e27"
     },
@@ -1146,7 +1146,7 @@ Write `src/data/xz-timeline.json` (15-20 events; this is the canonical curated l
       "actor": "Jia Tan",
       "kind": "malicious",
       "title": "xz-utils 5.6.1 released",
-      "summary": "Updated payload — fixes Valgrind errors that were tipping off Debian's autopkgtest. The hurried fix is itself a tell.",
+      "summary": "Updated payload - fixes Valgrind errors that were tipping off Debian's autopkgtest. The hurried fix is itself a tell.",
       "quote": null,
       "source": "https://www.openwall.com/lists/oss-security/2024/03/29/4"
     },
@@ -1155,7 +1155,7 @@ Write `src/data/xz-timeline.json` (15-20 events; this is the canonical curated l
       "actor": "Andres Freund",
       "kind": "discovery",
       "title": "Public disclosure on oss-security",
-      "summary": "Andres Freund posts to oss-security@lists.openwall.com at 08:51 UTC -0700. Subject: 'backdoor in upstream xz/liblzma leading to ssh server compromise'. He found it while micro-benchmarking PostgreSQL on Debian sid — sshd connections were taking 500 ms of extra CPU and producing Valgrind errors.",
+      "summary": "Andres Freund posts to oss-security@lists.openwall.com at 08:51 UTC -0700. Subject: 'backdoor in upstream xz/liblzma leading to ssh server compromise'. He found it while micro-benchmarking PostgreSQL on Debian sid - sshd connections were taking 500 ms of extra CPU and producing Valgrind errors.",
       "quote": "I observed sshd processes were using a surprising amount of CPU, despite immediately failing because of wrong usernames etc.",
       "source": "https://www.openwall.com/lists/oss-security/2024/03/29/4"
     },
@@ -1207,8 +1207,8 @@ Write `src/data/xz-distros.json`:
     { "id": "fedora-rawhide",   "name": "Fedora Rawhide",     "icon": "fedora.svg",   "status": "exploitable",     "shipped": "5.6.x",         "note": null },
     { "id": "opensuse-tw",      "name": "openSUSE Tumbleweed","icon": "opensuse.svg", "status": "exploitable",     "shipped": "5.6.1",         "note": null },
     { "id": "kali",             "name": "Kali rolling",       "icon": "kali.svg",     "status": "exploitable",     "shipped": "5.6.0 (briefly)", "note": "Pulled within hours." },
-    { "id": "arch",             "name": "Arch Linux",         "icon": "arch.svg",     "status": "shipped-inert",   "shipped": "5.6.0 / 5.6.1", "note": "Arch's openssh does not link libsystemd by default — backdoor present but path to sshd missing." },
-    { "id": "alpine-edge",      "name": "Alpine edge",        "icon": "alpine.svg",   "status": "shipped-inert",   "shipped": "5.6.x",         "note": "musl, not glibc — wrong ABI for the IFUNC trick." },
+    { "id": "arch",             "name": "Arch Linux",         "icon": "arch.svg",     "status": "shipped-inert",   "shipped": "5.6.0 / 5.6.1", "note": "Arch's openssh does not link libsystemd by default - backdoor present but path to sshd missing." },
+    { "id": "alpine-edge",      "name": "Alpine edge",        "icon": "alpine.svg",   "status": "shipped-inert",   "shipped": "5.6.x",         "note": "musl, not glibc - wrong ABI for the IFUNC trick." },
     { "id": "debian-stable",    "name": "Debian stable",      "icon": "debian.svg",   "status": "spared",          "shipped": "5.4.x only",    "note": "Stable never received the malicious release." },
     { "id": "ubuntu-lts",       "name": "Ubuntu LTS",         "icon": "ubuntu.svg",   "status": "spared",          "shipped": "5.4.x only",    "note": "All LTS lines safe." },
     { "id": "rhel",             "name": "RHEL",               "icon": "redhat.svg",   "status": "spared",          "shipped": "≤5.2.4",        "note": "Stable Red Hat never shipped 5.6." },
@@ -1361,7 +1361,7 @@ import TarballDiff from '~/components/xz/TarballDiff.astro';
 
 ```bash
 git add src/components/xz/TarballDiff.astro src/content/blog/xz-backdoor/index.mdx
-git commit -m "xz: TarballDiff inline widget — git vs tarball asymmetry"
+git commit -m "xz: TarballDiff inline widget - git vs tarball asymmetry"
 ```
 
 ---
@@ -1448,7 +1448,7 @@ const rowH = innerH / bars.length;
     ))}
   </svg>
   <figcaption>
-    Approximate sshd connection time, clean vs backdoored — the 500 ms anomaly that tipped Andres Freund off.
+    Approximate sshd connection time, clean vs backdoored - the 500 ms anomaly that tipped Andres Freund off.
   </figcaption>
 </figure>
 
@@ -1470,7 +1470,7 @@ const rowH = innerH / bars.length;
 
 ```bash
 git add src/components/xz/LatencyChart.astro src/content/blog/xz-backdoor/index.mdx
-git commit -m "xz: LatencyChart inline widget — sshd latency anomaly"
+git commit -m "xz: LatencyChart inline widget - sshd latency anomaly"
 ```
 
 ---
@@ -1536,7 +1536,7 @@ for (const [outName, query] of Object.entries(WANTED)) {
 
 console.log(`\n${ok} icons fetched, ${miss} missing.`);
 if (miss > 0) {
-  console.error('Some icons missing — adjust WANTED map and re-run.');
+  console.error('Some icons missing - adjust WANTED map and re-run.');
   process.exit(1);
 }
 ```
@@ -1667,7 +1667,7 @@ git commit -m "xz: DistroGrid widget + svgl.app icon fetch script"
 **Files:**
 - Create: `src/components/xz/Timeline.tsx`
 
-Set piece ① — sticky-vis scrollytelling per spec. Uses `scrollama` to drive a step index; horizontal timeline arc renders as SVG.
+Set piece ① - sticky-vis scrollytelling per spec. Uses `scrollama` to drive a step index; horizontal timeline arc renders as SVG.
 
 - [ ] **Step 1: Write the Timeline component**
 
@@ -1871,7 +1871,7 @@ Remove smoke-test addition after.
 
 ```bash
 git add src/components/xz/Timeline.tsx src/styles/xz.css src/content/blog/xz-backdoor/index.mdx
-git commit -m "xz: Timeline set-piece — sticky scrollytelling with playhead tween"
+git commit -m "xz: Timeline set-piece - sticky scrollytelling with playhead tween"
 ```
 
 ---
@@ -1896,7 +1896,7 @@ type Stage = 'legitimate' | 'ifunc' | 'attack';
 const NODES: Record<string, { x: number; y: number; label: string; sub?: string }> = {
   sshd:        { x: 50,  y: 50,  label: 'sshd',                sub: 'OpenSSH server' },
   libsystemd:  { x: 250, y: 50,  label: 'libsystemd.so.0',     sub: 'sd_notify (distro patch)' },
-  liblzma:     { x: 450, y: 50,  label: 'liblzma.so.5',        sub: 'compression — and the backdoor' },
+  liblzma:     { x: 450, y: 50,  label: 'liblzma.so.5',        sub: 'compression - and the backdoor' },
   rsa:         { x: 250, y: 200, label: 'RSA_public_decrypt',  sub: 'libcrypto / OpenSSL' },
   ifunc:       { x: 450, y: 200, label: 'IFUNC resolver',      sub: '_get_cpuid (malicious)' },
 };
@@ -1981,11 +1981,11 @@ export default function DepGraph() {
       <ol class="xz-dg-steps">
         <li class="xz-dg-step" data-stage="legitimate">
           <h4>1. The legitimate path</h4>
-          <p>OpenSSH upstream does <em>not</em> link libsystemd. Most distros patch <code>sshd</code> to call <code>sd_notify()</code> for socket activation — and <code>libsystemd</code> in turn links <code>liblzma</code> for journal compression. That's how a compression library ends up loaded into the SSH daemon.</p>
+          <p>OpenSSH upstream does <em>not</em> link libsystemd. Most distros patch <code>sshd</code> to call <code>sd_notify()</code> for socket activation - and <code>libsystemd</code> in turn links <code>liblzma</code> for journal compression. That's how a compression library ends up loaded into the SSH daemon.</p>
         </li>
         <li class="xz-dg-step" data-stage="ifunc">
           <h4>2. The IFUNC resolver fires</h4>
-          <p>Glibc calls IFUNC resolvers exactly once per process, very early — before RELRO marks the GOT read-only. The malicious <code>_get_cpuid</code> resolver walks the dynamic linker's link map, finds sshd's GOT entry for <code>RSA_public_decrypt</code>, and overwrites it with a pointer to the attacker's stub.</p>
+          <p>Glibc calls IFUNC resolvers exactly once per process, very early - before RELRO marks the GOT read-only. The malicious <code>_get_cpuid</code> resolver walks the dynamic linker's link map, finds sshd's GOT entry for <code>RSA_public_decrypt</code>, and overwrites it with a pointer to the attacker's stub.</p>
         </li>
         <li class="xz-dg-step" data-stage="attack">
           <h4>3. An attack key arrives</h4>
@@ -2043,7 +2043,7 @@ Append to `src/styles/xz.css`:
 
 ```bash
 git add src/components/xz/DepGraph.tsx src/styles/xz.css
-git commit -m "xz: DepGraph set-piece — 5-node hijack chain with 3 scrolly states"
+git commit -m "xz: DepGraph set-piece - 5-node hijack chain with 3 scrolly states"
 ```
 
 ---
@@ -2052,7 +2052,7 @@ git commit -m "xz: DepGraph set-piece — 5-node hijack chain with 3 scrolly sta
 **Files:**
 - Modify: `src/content/blog/xz-backdoor/index.mdx`
 
-Drop the stub. Replace with the full page skeleton — section headers, embedded components, prose stubs marking what each section should cover. **Hugo writes the actual prose himself** in his own voice. The plan's job is to ensure every component is wired and every section is structured.
+Drop the stub. Replace with the full page skeleton - section headers, embedded components, prose stubs marking what each section should cover. **Hugo writes the actual prose himself** in his own voice. The plan's job is to ensure every component is wired and every section is structured.
 
 - [ ] **Step 1: Write the skeleton MDX**
 
@@ -2061,7 +2061,7 @@ Replace `src/content/blog/xz-backdoor/index.mdx` with:
 ```mdx
 ---
 title: "The XZ backdoor"
-description: "An interactive walkthrough of CVE-2024-3094 — how a two-year social-engineering campaign almost shipped a sshd backdoor in liblzma."
+description: "An interactive walkthrough of CVE-2024-3094 - how a two-year social-engineering campaign almost shipped a sshd backdoor in liblzma."
 date: 2026-04-25
 draft: true
 categories: ["security"]
@@ -2077,53 +2077,53 @@ import DepGraph from '~/components/xz/DepGraph';
 import LatencyChart from '~/components/xz/LatencyChart.astro';
 import DistroGrid from '~/components/xz/DistroGrid.astro';
 
-{/* §0 — Prelude (~150 words) — what xz is, why a compression library shipped a sshd backdoor, what's at stake */}
+{/* §0 - Prelude (~150 words) - what xz is, why a compression library shipped a sshd backdoor, what's at stake */}
 
-> _PROSE STUB §0:_ open with the surprising premise — a compression library backdoored sshd. Frame the question the rest of the post answers. ~150 words.
+> _PROSE STUB §0:_ open with the surprising premise - a compression library backdoored sshd. Frame the question the rest of the post answers. ~150 words.
 
-{/* §1 — Act I: Arrival (~600 words) — Lasse's burnout, JiaT75's first patches, Jigar/Dennis pressure campaign, co-maintainer status */}
+{/* §1 - Act I: Arrival (~600 words) - Lasse's burnout, JiaT75's first patches, Jigar/Dennis pressure campaign, co-maintainer status */}
 
-## Act I — Arrival
+## Act I - Arrival
 
 > _PROSE STUB §1:_ narrate the social-engineering arc. Cite Russ Cox xz-timeline. Quote the Jigar Kumar emails verbatim. End with Jia Tan signing 5.4.1 in Jan 2023. ~600 words.
 
 <Timeline client:visible />
 
-{/* §2 — Act II: The Trigger (~500 words) — autoconf, tarball-vs-git asymmetry, build-to-host.m4, test-file trick */}
+{/* §2 - Act II: The Trigger (~500 words) - autoconf, tarball-vs-git asymmetry, build-to-host.m4, test-file trick */}
 
-## Act II — The Trigger
+## Act II - The Trigger
 
 > _PROSE STUB §2:_ explain autoconf for non-RE readers; introduce the tarball-vs-git distinction; flag the test-file trick. Cite Russ Cox xz-script. ~500 words.
 
 <TarballDiff />
 
-{/* §3 — Act III: The Payload (~700 words) — the sed/tr/xz pipeline, centerpiece */}
+{/* §3 - Act III: The Payload (~700 words) - the sed/tr/xz pipeline, centerpiece */}
 
-## Act III — The Payload
+## Act III - The Payload
 
-> _PROSE STUB §3:_ walk the reader through the pipeline. Use the widget below as the spine — for each stage, one sentence in prose explaining what's about to happen, then let the widget show the bytes. Stage-1 produces a shell script; Stage-2 produces a binary object. End at the ELF magic moment. ~700 words.
+> _PROSE STUB §3:_ walk the reader through the pipeline. Use the widget below as the spine - for each stage, one sentence in prose explaining what's about to happen, then let the widget show the bytes. Stage-1 produces a shell script; Stage-2 produces a binary object. End at the ELF magic moment. ~700 words.
 
 <SedPipeline client:visible />
 
-{/* §4 — Act IV: The Hijack (~800 words, RE-course weighted) — sshd→libsystemd→liblzma, IFUNC, GOT, RSA hook, Ed448 gate */}
+{/* §4 - Act IV: The Hijack (~800 words, RE-course weighted) - sshd→libsystemd→liblzma, IFUNC, GOT, RSA hook, Ed448 gate */}
 
-## Act IV — The Hijack
+## Act IV - The Hijack
 
 > _PROSE STUB §4:_ this is the longest, most technical section. Three subsections:
 >
-> 1. **The path** — explain the surprising sshd → libsystemd → liblzma chain (the `sd_notify` distro patch). Use the dep-graph below.
-> 2. **The resolver** — IFUNC mechanics. Why running before RELRO matters. Walk the reader through three textual disassembly snippets:
->    - `_get_cpuid` — the IFUNC entry that pretends to return CPU info
->    - The GOT walker — finds sshd's entry for `RSA_public_decrypt`
->    - The hooked `RSA_public_decrypt` — parses `[tag][ed448_sig][cmd]` from the malicious RSA `N` field
+> 1. **The path** - explain the surprising sshd → libsystemd → liblzma chain (the `sd_notify` distro patch). Use the dep-graph below.
+> 2. **The resolver** - IFUNC mechanics. Why running before RELRO matters. Walk the reader through three textual disassembly snippets:
+>    - `_get_cpuid` - the IFUNC entry that pretends to return CPU info
+>    - The GOT walker - finds sshd's entry for `RSA_public_decrypt`
+>    - The hooked `RSA_public_decrypt` - parses `[tag][ed448_sig][cmd]` from the malicious RSA `N` field
 >    Use `<Mnemonic op="…">…</Mnemonic>` around any AT&T mnemonic that benefits from a click-through to AsmLookup.
-> 3. **The gate** — Ed448 signature verification keeps everyone but the attacker locked out. Reference amlweems/xzbot for the working PoC.
+> 3. **The gate** - Ed448 signature verification keeps everyone but the attacker locked out. Reference amlweems/xzbot for the working PoC.
 >
 > ~800 words. Cite smx-smx/xzre for function naming. Link the local artifact path in the "Try it yourself" box below.
 
 <DepGraph client:visible />
 
-{/* Disassembly snippets — extracted by scripts/extract-disasm.sh from xz-artifacts/analysis/xzre/liblzma_la-crc64-fast.o */}
+{/* Disassembly snippets - extracted by scripts/extract-disasm.sh from xz-artifacts/analysis/xzre/liblzma_la-crc64-fast.o */}
 
 ```asm title="liblzma_la-crc64-fast.o · _get_cpuid (IFUNC resolver)"
 {/* Replace this code-fence body with the contents of xz-artifacts/analysis/disasm/get_cpuid.s.
@@ -2146,15 +2146,15 @@ import DistroGrid from '~/components/xz/DistroGrid.astro';
 > - In `gdb`, set a breakpoint on `RSA_public_decrypt` and inspect the stack when an SSH client connects with a custom certificate.
 > - amlweems/xzbot has a working honeypot patch for OpenSSH and the attacker's Ed448 public key extracted.
 
-{/* §5 — Act V: The Discovery (~400 words) — Andres Freund, 500ms, valgrind, oss-security */}
+{/* §5 - Act V: The Discovery (~400 words) - Andres Freund, 500ms, valgrind, oss-security */}
 
-## Act V — The Discovery
+## Act V - The Discovery
 
-> _PROSE STUB §5:_ narrate the discovery — Andres Freund's accidental find while micro-benchmarking PostgreSQL. Quote his oss-security email opener verbatim. ~400 words.
+> _PROSE STUB §5:_ narrate the discovery - Andres Freund's accidental find while micro-benchmarking PostgreSQL. Quote his oss-security email opener verbatim. ~400 words.
 
 <LatencyChart />
 
-{/* §6 — Coda (~250 words) — distros affected vs spared, cleanup, lessons */}
+{/* §6 - Coda (~250 words) - distros affected vs spared, cleanup, lessons */}
 
 ## Coda
 
@@ -2162,7 +2162,7 @@ import DistroGrid from '~/components/xz/DistroGrid.astro';
 
 <DistroGrid />
 
-{/* §7 — Notes & sources */}
+{/* §7 - Notes & sources */}
 
 ## Notes & sources
 
@@ -2173,7 +2173,7 @@ import DistroGrid from '~/components/xz/DistroGrid.astro';
 - Paste the disasm contents directly, or
 - Build a tiny `<DisasmBlock src="…">` component that does `await import('xz-artifacts/analysis/disasm/get_cpuid.s?raw')`.
 
-Either is trivial — defer to Hugo's preference.
+Either is trivial - defer to Hugo's preference.
 
 - [ ] **Step 2: Build to confirm everything compiles**
 
@@ -2199,13 +2199,13 @@ Open `http://localhost:4321/blog/xz-backdoor/`. Confirm:
 
 ```bash
 git add src/content/blog/xz-backdoor/index.mdx
-git commit -m "xz: full MDX skeleton — every section + widget wired (prose stubs)"
+git commit -m "xz: full MDX skeleton - every section + widget wired (prose stubs)"
 ```
 
 ---
 
 
-## Task 17: Final integration — drop draft flag, verify a11y, performance
+## Task 17: Final integration - drop draft flag, verify a11y, performance
 
 **Files:**
 - Modify: `src/content/blog/xz-backdoor/index.mdx` (set `draft: false` only when Hugo says so)
@@ -2270,7 +2270,7 @@ git commit -m "xz: a11y + performance polish; draft flag still on pending prose"
 
 Final state for handoff:
 - All widgets working, all data pre-computed, all components committed.
-- Post is `draft: true` — won't appear in `/blog/` index until prose is written and Hugo flips the flag.
+- Post is `draft: true` - won't appear in `/blog/` index until prose is written and Hugo flips the flag.
 - Suggest Hugo write prose section by section, previewing in dev server, then flipping `draft: false` in a final commit when ready.
 
 ---
@@ -2287,7 +2287,7 @@ Final state for handoff:
 | Layout: 680px prose, 960px widget breakout | T2 (`.xz-widget`) |
 | Semantic colors (attacker/defender/infra), light+dark | T2 |
 | Hex-grid texture in pipeline only | T2 (`.xz-byte-canvas`) |
-| Signature flourish (bytes → ELF magic) | NOT IMPLEMENTED — see "Open follow-ups" |
+| Signature flourish (bytes → ELF magic) | NOT IMPLEMENTED - see "Open follow-ups" |
 | § Structure (8 sections, ~3400 words) | T16 (skeleton; prose by Hugo) |
 | ① Timeline (sticky scrollytelling) | T9 (data) + T14 (component) |
 | ② TarballDiff | T11 |
@@ -2301,21 +2301,21 @@ Final state for handoff:
 | `xz-artifacts/` directory | Already populated (committed in `638f2fd`); verified in T4 |
 | `scripts/build-xz-pipeline-data.ts` | T6 |
 | `scripts/extract-disasm.sh` | T5 |
-| Library choices (scrollama, motion, nanostores) | T1 (install); nanostores deferred (Tasks 14 + 16 don't need cross-island state — the spec already noted this is a "defer until needed" item) |
+| Library choices (scrollama, motion, nanostores) | T1 (install); nanostores deferred (Tasks 14 + 16 don't need cross-island state - the spec already noted this is a "defer until needed" item) |
 | a11y, reduced-motion, mobile responsive | T2 / T8 / T14 / T15 / T17 |
 | Performance budget (<200KB JS) | T17 |
 
 **Gaps identified during self-review:**
 
-1. **Signature flourish (bytes → ELF magic morph)** — the spec calls for a one-time "ELF magic appears" moment at the end of the SedPipeline. Task 8 ships the SedPipeline without this animation. **Recommendation:** add as a follow-up after Task 8's CHECKPOINT review. If Hugo wants it, draft a Task 8.5 that animates `7F 45 4C 46 …` over the final stage's bytes using Motion One.
+1. **Signature flourish (bytes → ELF magic morph)** - the spec calls for a one-time "ELF magic appears" moment at the end of the SedPipeline. Task 8 ships the SedPipeline without this animation. **Recommendation:** add as a follow-up after Task 8's CHECKPOINT review. If Hugo wants it, draft a Task 8.5 that animates `7F 45 4C 46 …` over the final stage's bytes using Motion One.
 
-2. **`<DisasmBlock>` component** — Task 15 leaves disassembly code blocks as `{/* … */}` placeholders. The cleanest implementation is a tiny Astro component that imports the `.s` file as `?raw` and feeds it to Expressive Code. **Recommendation:** add as Task 15.5 if Hugo wants the component vs. just pasting the contents.
+2. **`<DisasmBlock>` component** - Task 15 leaves disassembly code blocks as `{/* … */}` placeholders. The cleanest implementation is a tiny Astro component that imports the `.s` file as `?raw` and feeds it to Expressive Code. **Recommendation:** add as Task 15.5 if Hugo wants the component vs. just pasting the contents.
 
-3. **Cross-tab keyboard hint for SedPipeline arrow keys** — Task 8 adds `←/→` buttons but no global keyboard listener. If desired, add `useEffect` keyboard handler. Defer unless Hugo asks.
+3. **Cross-tab keyboard hint for SedPipeline arrow keys** - Task 8 adds `←/→` buttons but no global keyboard listener. If desired, add `useEffect` keyboard handler. Defer unless Hugo asks.
 
-**Placeholder scan:** none (`grep -E "TBD|TODO|FIXME|XXX|fill in" docs/superpowers/plans/2026-04-25-xz-backdoor-explainer.md` returns the plan's own warning lines about not using these terms — no real placeholders).
+**Placeholder scan:** none (`grep -E "TBD|TODO|FIXME|XXX|fill in" docs/superpowers/plans/2026-04-25-xz-backdoor-explainer.md` returns the plan's own warning lines about not using these terms - no real placeholders).
 
-**Type/name consistency:** the `Stage` interface in T6 (data emission) and T8 (component consumption) both have the same fields. The `Event` interface in T9 and T14 match. The `Distro` and `StatusMeta` interfaces in T10 and T13 match. `Stage` (DepGraph stages: `'legitimate' | 'ifunc' | 'attack'`) is distinct from `Stage` (SedPipeline pipeline stages) — they live in different files, no collision.
+**Type/name consistency:** the `Stage` interface in T6 (data emission) and T8 (component consumption) both have the same fields. The `Event` interface in T9 and T14 match. The `Distro` and `StatusMeta` interfaces in T10 and T13 match. `Stage` (DepGraph stages: `'legitimate' | 'ifunc' | 'attack'`) is distinct from `Stage` (SedPipeline pipeline stages) - they live in different files, no collision.
 
 ---
 
@@ -2325,8 +2325,8 @@ Plan complete and saved to `docs/superpowers/plans/2026-04-25-xz-backdoor-explai
 
 **Two execution options:**
 
-1. **Subagent-Driven (recommended)** — I dispatch a fresh subagent per task, review between tasks, fast iteration. Best for a long plan with a CHECKPOINT in the middle (Task 8) where direction may pivot.
+1. **Subagent-Driven (recommended)** - I dispatch a fresh subagent per task, review between tasks, fast iteration. Best for a long plan with a CHECKPOINT in the middle (Task 8) where direction may pivot.
 
-2. **Inline Execution** — Execute tasks in this session using executing-plans, batch with checkpoints for review.
+2. **Inline Execution** - Execute tasks in this session using executing-plans, batch with checkpoints for review.
 
 Which approach?

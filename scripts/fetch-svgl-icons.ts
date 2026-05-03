@@ -5,8 +5,8 @@
  *   bun run scripts/fetch-svgl-icons.ts
  *
  * Sources:
- *   - svgl.app (https://api.svgl.app)              — for tech-brand logos
- *   - simple-icons.org (CC0, raw GitHub)           — for everything else
+ *   - svgl.app (https://api.svgl.app)              - for tech-brand logos
+ *   - simple-icons.org (CC0, raw GitHub)           - for everything else
  *
  * svgl.app's catalogue is brand-focused and doesn't carry most Linux
  * distros, so we fall back to simple-icons for those. The fetch is
@@ -65,7 +65,7 @@ for (const [outName, { svgl, simple }] of Object.entries(WANTED)) {
   }
 
   if (!svg) {
-    console.warn(`MISS ${outName} — no source matched`);
+    console.warn(`MISS ${outName} - no source matched`);
     miss++;
     continue;
   }

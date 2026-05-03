@@ -59,7 +59,7 @@
       "actor": "Jia Tan",
       "kind": "preparatory",
       "title": "Jia Tan takes over releases",
-      "summary": "v5.4.1 ships — the final release Lasse signs. Subsequent releases are signed by Jia Tan.",
+      "summary": "v5.4.1 ships - the final release Lasse signs. Subsequent releases are signed by Jia Tan.",
       "quote": null,
       "source": "https://git.tukaani.org/?p=xz.git;a=commitdiff;h=18b845e69752c975dfeda418ec00eda22605c2ee"
     },
@@ -77,25 +77,25 @@
       "actor": "Jia Tan",
       "kind": "preparatory",
       "title": "PR to disable IFUNC fuzzing in oss-fuzz",
-      "summary": "Jia Tan asks Google's oss-fuzz to disable IFUNC checks — a detail that only reads as suspicious in retrospect.",
+      "summary": "Jia Tan asks Google's oss-fuzz to disable IFUNC checks - a detail that only reads as suspicious in retrospect.",
       "quote": null,
       "source": "https://github.com/google/oss-fuzz/pull/10667"
     },
     {
-      "date": "2024-01-19",
+      "date": "2024-02-26",
       "actor": "Jia Tan",
       "kind": "preparatory",
-      "title": "Removes Landlock sandbox feature-test from CMakeLists",
-      "summary": "Adds a stray '.' in the CMake landlock check, breaking sandboxing in the build. Reads as innocuous; reads as preparation in retrospect.",
+      "title": "Breaks the Landlock sandbox feature-test",
+      "summary": "Commit titled 'Fix Linux Landlock feature test' rewrites the CMakeLists feature-check as a multi-line C-source compile probe - and slips a stray '.' on its own line into the source, which makes the probe never compile. HAVE_LINUX_LANDLOCK is silently never defined; the runtime sandbox is silently disabled. Lands between 5.6.0 (Feb 24) and 5.6.1 (Mar 9), so it ships in 5.6.1.",
       "quote": null,
-      "source": "https://git.tukaani.org/?p=xz.git;a=commitdiff;h=328c52da8a2bbb81307644efdb58db2c422d9ba7"
+      "source": "https://github.com/tukaani-project/xz/commit/328c52da8a2bbb81307644efdb58db2c422d9ba7"
     },
     {
       "date": "2024-02-23",
       "actor": "Jia Tan",
       "kind": "malicious",
       "title": "Malicious test files committed",
-      "summary": "Adds tests/files/bad-3-corrupt_lzma2.xz and good-large_compressed.lzma — disguised as test corpus, actually contain the obfuscated payload.",
+      "summary": "Adds tests/files/bad-3-corrupt_lzma2.xz and good-large_compressed.lzma - disguised as test corpus, actually contain the obfuscated payload.",
       "quote": null,
       "source": "https://git.tukaani.org/?p=xz.git;a=commitdiff;h=cf44e4b7f5dfdbf8c78aef377c10f71e274f63c0"
     },
@@ -113,7 +113,7 @@
       "actor": "Jia Tan",
       "kind": "malicious",
       "title": "xz-utils 5.6.1 released",
-      "summary": "Updated payload — fixes Valgrind errors that were tipping off Debian's autopkgtest. The hurried fix is itself a tell.",
+      "summary": "Updated payload - fixes Valgrind errors that were tipping off Debian's autopkgtest. The hurried fix is itself a tell.",
       "quote": null,
       "source": "https://git.tukaani.org/?p=xz.git;a=commitdiff;h=fd1b975b7851e081ed6e5cf63df946cd5cbdbb94"
     },
@@ -122,7 +122,7 @@
       "actor": "Jia Tan",
       "kind": "malicious",
       "title": "Updates SECURITY.md to prefer private email reports",
-      "summary": "Four days before discovery, Jia Tan changes xz's SECURITY.md to prefer reports sent over private email rather than via GitHub security advisories. Combined with the oss-fuzz contact change, vulnerability reports were now expected to flow privately to Jia Tan first — bypassing the wider community.",
+      "summary": "Four days before discovery, Jia Tan changes xz's SECURITY.md to prefer reports sent over private email rather than via GitHub security advisories. Combined with the oss-fuzz contact change, vulnerability reports were now expected to flow privately to Jia Tan first - bypassing the wider community.",
       "quote": null,
       "source": "https://github.com/tukaani-project/xz/commits/v5.6.1/SECURITY.md"
     },
@@ -132,7 +132,7 @@
       "kind": "discovery",
       "subkind": "anomaly",
       "title": "Symptoms with sshd on Debian sid",
-      "summary": "Andres Freund notices, on a Debian sid box, valgrind errors and a ~0.5 s extra CPU on ssh logins (clean: 0m0.299s; backdoored: 0m0.807s). His own framing in the disclosure is \"odd symptoms around liblzma … over the last weeks\" — the exact start date is not in the public record.",
+      "summary": "Andres Freund notices, on a Debian sid box, valgrind errors and a ~0.5 s extra CPU on ssh logins (clean: 0m0.299s; backdoored: 0m0.807s). His own framing in the disclosure is \"odd symptoms around liblzma … over the last weeks\" - the exact start date is not in the public record.",
       "quote": null,
       "source": "https://www.openwall.com/lists/oss-security/2024/03/29/4"
     },
@@ -142,7 +142,7 @@
       "kind": "discovery",
       "subkind": "trace",
       "title": "Tracing the divergence",
-      "summary": "Per the disclosure, Andres uses perf record -e intel_pt//ub to find where execution in the slow sshd diverges from a clean baseline, then attaches gdb with breakpoints before the divergence. The trail leads into liblzma's CRC64 path — which sshd has no upstream reason to call.",
+      "summary": "Per the disclosure, Andres uses perf record -e intel_pt//ub to find where execution in the slow sshd diverges from a clean baseline, then attaches gdb with breakpoints before the divergence. The trail leads into liblzma's CRC64 path - which sshd has no upstream reason to call.",
       "quote": null,
       "source": "https://www.openwall.com/lists/oss-security/2024/03/29/4"
     },

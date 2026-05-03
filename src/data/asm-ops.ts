@@ -52,9 +52,9 @@ export const OPS: Op[] = [
     kind: 'basics',
     summary: 'Copy data from source to destination.',
     body: [
-      'The workhorse of assembly. `mov` copies a value — it does not move it; the source is left unchanged.',
+      'The workhorse of assembly. `mov` copies a value - it does not move it; the source is left unchanged.',
       'In AT&T syntax the source comes first: `movq $25, %rax` puts the constant `25` into `%rax`.',
-      'The size suffix (`b`, `w`, `l`, `q`) must match the operand width. Memory-to-memory is not allowed — one side has to be a register or an immediate.',
+      'The size suffix (`b`, `w`, `l`, `q`) must match the operand width. Memory-to-memory is not allowed - one side has to be a register or an immediate.',
     ],
     syntax: [
       'movq $imm, %reg',
@@ -74,12 +74,12 @@ movq  %rcx, 8(%rdi)      # *(rdi+8) = rcx`,
     mnemonic: 'nop',
     name: 'No operation',
     kind: 'basics',
-    summary: 'Do nothing — just advance %rip by one byte (0x90).',
+    summary: 'Do nothing - just advance %rip by one byte (0x90).',
     body: [
       'Three everyday uses: **alignment padding** (`.p2align` emits them for you), **branch disarming** during debugging (overwrite a `jz` with `nop nop` to kill it without shifting the rest of the code), and **hot-patch slots** (reserve a few bytes the linker or a runtime can later rewrite into a real instruction).',
     ],
     syntax: ['nop'],
-    example: `# disable a branch in place while debugging — no code shift
+    example: `# disable a branch in place while debugging - no code shift
     cmpq  $0, %rdi
     nop                  # was 'jz   handler'  (2 bytes → 90 90)
     nop
@@ -112,7 +112,7 @@ addq  %rbx, %rax         # rax = 17   (register += register)`,
     kind: 'arith',
     summary: 'Subtract source from destination.',
     body: [
-      '`subq %rbx, %rax` computes `rax = rax - rbx`. Order matters in AT&T — source is subtracted from destination.',
+      '`subq %rbx, %rax` computes `rax = rax - rbx`. Order matters in AT&T - source is subtracted from destination.',
       'Also the common way to reserve stack space: `subq $32, %rsp` grows the stack by 32 bytes.',
     ],
     syntax: ['subq $imm, %dst', 'subq %src, %dst'],
@@ -130,7 +130,7 @@ subq  $32, %rsp          # allocate 32 bytes on the stack`,
     body: [
       'Two-operand form: `imulq %src, %dst` does `dst *= src`. Three-operand form takes an immediate: `imulq $3, %rax, %rbx` puts `rax*3` into `rbx`.',
       'For small multiplications by a constant (×2, ×3, ×4, ×5, ×8, ×9), `lea` is often faster and doesn\'t touch flags.',
-      'Unsigned multiply is `mul` — it always writes the full 128-bit product across `%rdx:%rax`.',
+      'Unsigned multiply is `mul` - it always writes the full 128-bit product across `%rdx:%rax`.',
     ],
     syntax: [
       'imulq %src, %dst',
@@ -149,7 +149,7 @@ imulq $3, %rax, %rsi     # rsi = 126   (3-op: rax*3 → rsi)`,
     summary: 'Unsigned integer multiply; 128-bit result in %rdx:%rax.',
     body: [
       '`mulq %src` multiplies `%rax` by src and writes the full 128-bit product across `%rdx:%rax`: the low 64 bits land in `%rax`, the high 64 bits in `%rdx`.',
-      'Only the one-operand form exists. For ordinary same-register multiplication, prefer `imul` — it has 2- and 3-operand forms and doesn\'t clobber `%rdx`.',
+      'Only the one-operand form exists. For ordinary same-register multiplication, prefer `imul` - it has 2- and 3-operand forms and doesn\'t clobber `%rdx`.',
     ],
     syntax: ['mulq %src'],
     example: `movq  $0x100000000, %rax
@@ -183,7 +183,7 @@ idivq %rcx               # rax = -3 (quot), rdx = -2 (rem)`,
     summary: 'Unsigned integer divide; quotient in %rax, remainder in %rdx.',
     body: [
       'Divides the 128-bit value `%rdx:%rax` by the operand. `%rax` gets the quotient, `%rdx` the remainder.',
-      '**Before dividing, zero `%rdx`** with `xorq %rdx, %rdx` — leftover bits in `%rdx` make the dividend huge and give wildly wrong results (or a trap).',
+      '**Before dividing, zero `%rdx`** with `xorq %rdx, %rdx` - leftover bits in `%rdx` make the dividend huge and give wildly wrong results (or a trap).',
       'For signed values, use `idiv` together with `cqto`.',
     ],
     syntax: ['divq %src'],
@@ -199,11 +199,11 @@ divq  %rcx               # rax = 14 (100 / 7)
     mnemonic: 'cqto / cdq / cdqe',
     name: 'Sign-extend (for divide)',
     kind: 'arith',
-    summary: 'Sign-extend a register into the wider pair — the companion to idiv.',
+    summary: 'Sign-extend a register into the wider pair - the companion to idiv.',
     body: [
       '`cqto` copies the sign bit of `%rax` across all of `%rdx`, producing a 128-bit signed dividend in `%rdx:%rax`. Always pair it with `idivq`.',
       '32-bit sibling: `cdq` sign-extends `%eax` into `%edx:%eax` (before `idivl`). `cdqe` sign-extends `%eax` into the full `%rax`.',
-      'Intel spells `cqto` as `cqo` — same instruction, different assembler name.',
+      'Intel spells `cqto` as `cqo` - same instruction, different assembler name.',
     ],
     syntax: ['cqto', 'cdq', 'cdqe'],
     example: `movq  $-42, %rax
@@ -219,7 +219,7 @@ idivq %rcx               # rax = -8, rdx = -2`,
     kind: 'arith',
     summary: 'Add 1 to operand.',
     body: [
-      'Equivalent to `add $1, op`, but shorter. Updates ZF, SF, OF — but **not** CF. Use `add` inside loops that rely on carry.',
+      'Equivalent to `add $1, op`, but shorter. Updates ZF, SF, OF - but **not** CF. Use `add` inside loops that rely on carry.',
     ],
     syntax: ['incq %dst', 'incq (%addr)'],
     example: `# walk to the end of a C string: while (*s) s++;
@@ -238,7 +238,7 @@ done:`,
     kind: 'arith',
     summary: 'Subtract 1 from operand.',
     body: [
-      'Like `inc`, but subtracts. Updates ZF, SF, OF — not CF. Common loop pattern: `decq %rcx; jnz loop`.',
+      'Like `inc`, but subtracts. Updates ZF, SF, OF - not CF. Common loop pattern: `decq %rcx; jnz loop`.',
     ],
     syntax: ['decq %dst', 'decq (%addr)'],
     example: `movq  $5, %rcx
@@ -287,7 +287,7 @@ andq  $0xff, %rax        # rax = 0x34  (keep low byte)`,
     kind: 'logic',
     summary: 'Bitwise OR of source and destination.',
     body: [
-      'Sets bits in `dst` that are one in `src`. The classic use: combining flag bitmasks — each flag is a power of two, `or` merges them into one value.',
+      'Sets bits in `dst` that are one in `src`. The classic use: combining flag bitmasks - each flag is a power of two, `or` merges them into one value.',
     ],
     syntax: ['orq $imm, %dst', 'orq %src, %dst'],
     example: `# build the flags for open("w"): O_WRONLY | O_CREAT | O_TRUNC
@@ -305,8 +305,8 @@ orq   $0x200, %rsi       # | O_TRUNC (0x200)
     summary: 'Bitwise exclusive OR.',
     body: [
       'Sets bits that differ between the two operands.',
-      'The idiomatic way to zero a register is `xorq %rax, %rax` — shorter and faster than `movq $0, %rax`, and the CPU recognises it as a dependency-breaker.',
-      'Classic trick: swap two registers with three XORs, no temporary — `a^=b; b^=a; a^=b`.',
+      'The idiomatic way to zero a register is `xorq %rax, %rax` - shorter and faster than `movq $0, %rax`, and the CPU recognises it as a dependency-breaker.',
+      'Classic trick: swap two registers with three XORs, no temporary - `a^=b; b^=a; a^=b`.',
     ],
     syntax: ['xorq $imm, %dst', 'xorq %src, %dst'],
     example: `# swap rax and rbx without a temporary (XOR swap)
@@ -326,7 +326,7 @@ xorq  %rbx, %rax         # rax = 4 ^ 3 = 7  (old rbx)
     summary: 'One\'s-complement: flip every bit.',
     body: [
       'Inverts all bits of the operand. Does not touch flags.',
-      'Common trick: build a mask that clears specific bits — `not` the mask first, then `and` it with the target.',
+      'Common trick: build a mask that clears specific bits - `not` the mask first, then `and` it with the target.',
     ],
     syntax: ['notq %dst'],
     example: `# clear bit 4 of rax  (rax &= ~0x10)
@@ -342,11 +342,11 @@ andq  %rbx, %rax         # rax now has bit 4 cleared`,
     kind: 'logic',
     summary: 'Logical shift left by N bits.',
     body: [
-      '`shlq $3, %rax` shifts `rax` left by 3 — same as multiplying by 8. Fills vacated bits with zero.',
+      '`shlq $3, %rax` shifts `rax` left by 3 - same as multiplying by 8. Fills vacated bits with zero.',
       '`sal` is the arithmetic alias; for left shifts they behave identically.',
     ],
     syntax: ['shlq $imm, %dst', 'shlq %cl, %dst'],
-    example: `# fast multiply by 8 — one cycle, no imul
+    example: `# fast multiply by 8 - one cycle, no imul
 movq  $7, %rax
 shlq  $3, %rax           # rax = 7 << 3 = 56   (7 * 8)`,
     moreHref: cloutier('sal:sar:shl:shr'),
@@ -359,7 +359,7 @@ shlq  $3, %rax           # rax = 7 << 3 = 56   (7 * 8)`,
     summary: 'Shift right, filling with zeros.',
     body: [
       'Divides unsigned values by powers of two. Fills vacated high bits with zero.',
-      'For signed values, use `sar` — it preserves the sign bit.',
+      'For signed values, use `sar` - it preserves the sign bit.',
     ],
     syntax: ['shrq $imm, %dst', 'shrq %cl, %dst'],
     example: `# fast unsigned divide by 4
@@ -377,7 +377,7 @@ shrq  $2, %rax           # rax = 100 >> 2 = 25   (100 / 4)`,
       'Like `shr`, but the vacated high bits are filled with the original sign bit. Equivalent to integer division by 2ⁿ for signed values.',
     ],
     syntax: ['sarq $imm, %dst', 'sarq %cl, %dst'],
-    example: `# signed divide by 2 — sign bit preserved
+    example: `# signed divide by 2 - sign bit preserved
 movq  $-8, %rax
 sarq  $1, %rax           # rax = -4   (shr would lose sign)`,
     moreHref: cloutier('sal:sar:shl:shr'),
@@ -391,8 +391,8 @@ sarq  $1, %rax           # rax = -4   (shr would lose sign)`,
     kind: 'memory',
     summary: 'Compute an address expression without accessing memory.',
     body: [
-      'Despite the name, `lea` never touches memory — it computes the address the operand *would* resolve to and writes it to a register.',
-      'Programmers abuse it for fast arithmetic. The memory form `offset(base, index, scale)` evaluates to `base + index*scale + offset` in a single instruction — and without touching flags.',
+      'Despite the name, `lea` never touches memory - it computes the address the operand *would* resolve to and writes it to a register.',
+      'Programmers abuse it for fast arithmetic. The memory form `offset(base, index, scale)` evaluates to `base + index*scale + offset` in a single instruction - and without touching flags.',
       '`leaq (%rdi, %rdi, 4), %rax` gives `rax = rdi * 5`.',
       'P.S. Also happens to be the name of my favourite person. ♡',
     ],
@@ -410,9 +410,9 @@ leaq  (%rdi, %rsi), %rax      # rax = rdi + rsi`,
     kind: 'memory',
     summary: 'Load a narrower value into a wider register, filling high bits with 0.',
     body: [
-      '`movzbq (%rdi), %rax` reads one byte from memory and zero-extends it to 64 bits — the canonical way to walk a C string one character at a time.',
+      '`movzbq (%rdi), %rax` reads one byte from memory and zero-extends it to 64 bits - the canonical way to walk a C string one character at a time.',
       'Suffix pair spells the widths: `bq` = byte→quad, `wq` = word→quad, `bl`/`wl` = byte/word → long (32-bit). Intel calls it `movzx`.',
-      'Writing a 32-bit register (`movl`) already zeroes the upper 32 bits of its 64-bit parent, so `movzlq` is rarely needed — plain `movl` does the job.',
+      'Writing a 32-bit register (`movl`) already zeroes the upper 32 bits of its 64-bit parent, so `movzlq` is rarely needed - plain `movl` does the job.',
     ],
     syntax: ['movzbq src, %dst', 'movzwq src, %dst', 'movzbl src, %dst'],
     example: `# strlen loop: len = 0; while (*s) { len++; s++; }
@@ -434,7 +434,7 @@ done:                        # rax = strlen(s)`,
     kind: 'memory',
     summary: 'Load a narrower value into a wider register, filling high bits with the sign bit.',
     body: [
-      'Mirror of `movz`, but preserves the sign of the smaller value. Use it when reading signed fields — `int8_t`, `int16_t`, `int32_t` — into a 64-bit register.',
+      'Mirror of `movz`, but preserves the sign of the smaller value. Use it when reading signed fields - `int8_t`, `int16_t`, `int32_t` - into a 64-bit register.',
       'Intel calls it `movsx` / `movsxd`. Don\'t confuse it with the string-move `movsb` / `movsw` / `movsq` (no operands), which are different instructions that copy from `%rsi` to `%rdi`.',
     ],
     syntax: ['movsbq src, %dst', 'movswq src, %dst', 'movslq src, %dst'],
@@ -450,7 +450,7 @@ movslq (%rdi), %rax      # rax = *(int32_t*)rdi, sign-ext
     mnemonic: 'cmp',
     name: 'Compare',
     kind: 'control',
-    summary: 'Subtract without storing — just set flags.',
+    summary: 'Subtract without storing - just set flags.',
     body: [
       '`cmpq %rbx, %rax` evaluates `rax - rbx` and updates flags, but discards the result. Pair it with a conditional jump.',
       'Note the AT&T operand order: write `cmpq %rbx, %rax` and read it as "compare rax to rbx". Then `jg label` jumps when `%rax > %rbx`.',
@@ -471,9 +471,9 @@ rdi_wins:
     mnemonic: 'test',
     name: 'Test bits',
     kind: 'control',
-    summary: 'Bitwise AND, discarded — sets flags only.',
+    summary: 'Bitwise AND, discarded - sets flags only.',
     body: [
-      '`testq %rax, %rax` sets ZF if `%rax == 0`. The canonical zero-check before a branch — shorter and faster than `cmpq $0, %rax`.',
+      '`testq %rax, %rax` sets ZF if `%rax == 0`. The canonical zero-check before a branch - shorter and faster than `cmpq $0, %rax`.',
       'You can also test a single bit: `testq $0x10, %rax` sets ZF iff bit 4 is clear.',
     ],
     syntax: ['testq $imm, %src', 'testq %a, %b'],
@@ -487,7 +487,7 @@ jz    null_case          # taken when rdi == 0`,
     mnemonic: 'jmp',
     name: 'Unconditional jump',
     kind: 'control',
-    summary: 'Go to a label — always.',
+    summary: 'Go to a label - always.',
     body: [
       'Transfers control unconditionally. The operand can be a label, a register (indirect), or a memory location.',
       'Indirect `jmp *%rax` is how jump tables and computed gotos are implemented.',
@@ -510,7 +510,7 @@ done:                        # rax = 10`,
     kind: 'control',
     summary: 'Branch when the previous compare was equal (ZF=1).',
     body: [
-      '`je` and `jz` are aliases — both jump when ZF is set. Natural after `cmp` (equal) or `test` (zero).',
+      '`je` and `jz` are aliases - both jump when ZF is set. Natural after `cmp` (equal) or `test` (zero).',
     ],
     syntax: ['je label', 'jz label'],
     example: `# if (a == b) return 1; else return 0;
@@ -549,7 +549,7 @@ loop:
     summary: 'Branch on signed comparison.',
     body: [
       'After `cmpq %b, %a`: `jg` taken if `a > b`, `jl` if `a < b`, `jge` / `jle` for the inclusive versions.',
-      'Use these when your values are signed integers (`int`, `long`). For addresses, counts or unsigned values use `ja` / `jb` / `jae` / `jbe` — "above" and "below" instead of "greater" and "less".',
+      'Use these when your values are signed integers (`int`, `long`). For addresses, counts or unsigned values use `ja` / `jb` / `jae` / `jbe` - "above" and "below" instead of "greater" and "less".',
     ],
     syntax: ['jg label', 'jl label', 'jge label', 'jle label'],
     example: `# classify the sign of rdi
@@ -585,7 +585,7 @@ zero:
     kind: 'control',
     summary: 'Branch when the last result was negative (SF=1).',
     body: [
-      '`js` jumps when SF is 1 — the previous flag-setting instruction produced a negative result. `jns` is the inverse.',
+      '`js` jumps when SF is 1 - the previous flag-setting instruction produced a negative result. `jns` is the inverse.',
       'The idiomatic syscall error check: a Linux syscall returns a negative value on failure, so `testq %rax, %rax; js error` catches every error case in two instructions.',
     ],
     syntax: ['js label', 'jns label'],
@@ -628,7 +628,7 @@ my_fn:
     summary: 'Load (%rsp) into destination, then increment %rsp by 8.',
     body: [
       'The inverse of `push`. Reads 8 bytes from the top of the stack, then adjusts `%rsp` upward.',
-      'Pushes and pops must balance on every path — a stray push without a matching pop leaks 8 bytes of stack and will usually break the next `ret`.',
+      'Pushes and pops must balance on every path - a stray push without a matching pop leaks 8 bytes of stack and will usually break the next `ret`.',
     ],
     syntax: ['popq %dst'],
     example: `# swap rax and rbx via the stack
@@ -646,7 +646,7 @@ popq  %rbx               # rbx = (old) rax`,
     summary: 'Push return address, then jump to the target.',
     body: [
       '`call func` pushes the address of the next instruction onto the stack, then jumps to `func`. The callee later returns via `ret`, which pops that address back into `%rip`.',
-      'The System V ABI requires `%rsp` to be 16-byte-aligned **before** the `call`. On entry to the callee, `%rsp % 16 == 8` — the return address took up one slot. Your prologue (a single `pushq %rbx`, or `subq $8, %rsp`) restores alignment before any further calls.',
+      'The System V ABI requires `%rsp` to be 16-byte-aligned **before** the `call`. On entry to the callee, `%rsp % 16 == 8` - the return address took up one slot. Your prologue (a single `pushq %rbx`, or `subq $8, %rsp`) restores alignment before any further calls.',
       'For libc or other external functions, use `call func@PLT`.',
     ],
     syntax: ['call label', 'call func@PLT', 'call *%reg'],
@@ -664,7 +664,7 @@ popq  %rbx               # rbx = (old) rax`,
     summary: 'Pop return address into %rip and jump there.',
     body: [
       'Undoes `call`. The return value (if any) is conventionally in `%rax`.',
-      'Every `call` must be balanced by exactly one `ret` on every path — otherwise a later `ret` pops the wrong address and the program jumps into the weeds.',
+      'Every `call` must be balanced by exactly one `ret` on every path - otherwise a later `ret` pops the wrong address and the program jumps into the weeds.',
     ],
     syntax: ['ret'],
     example: `# long square(long x) { return x * x; }
@@ -681,7 +681,7 @@ square:
     kind: 'stack',
     summary: 'Undo a frame-pointer prologue in one instruction.',
     body: [
-      '`leave` is exactly `movq %rbp, %rsp; popq %rbp`. It tears down the stack frame that `pushq %rbp; movq %rsp, %rbp; subq $N, %rsp` built — no matter how much space `N` was.',
+      '`leave` is exactly `movq %rbp, %rsp; popq %rbp`. It tears down the stack frame that `pushq %rbp; movq %rsp, %rbp; subq $N, %rsp` built - no matter how much space `N` was.',
       'Pair it with `ret` at the end of a function that uses a frame pointer.',
     ],
     syntax: ['leave'],
@@ -706,7 +706,7 @@ my_fn:
     body: [
       'On Linux x86-64, put the syscall number in `%rax`, arguments in `%rdi`, `%rsi`, `%rdx`, `%r10`, `%r8`, `%r9`, then `syscall`. The return value comes back in `%rax`.',
       'Common numbers: `0` = read, `1` = write, `2` = open, `3` = close, `60` = exit. Full table: `/usr/include/asm/unistd_64.h`.',
-      'The kernel clobbers `%rcx` and `%r11` — treat them as trashed across the call.',
+      'The kernel clobbers `%rcx` and `%r11` - treat them as trashed across the call.',
     ],
     syntax: ['syscall'],
     example: `# write(1, "hi\\n", 3)

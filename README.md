@@ -1,6 +1,6 @@
 # hugosibony.com
 
-Personal site — portfolio, blog, snippets, CTF writeups, and small tools. Built with Astro, deployed on Cloudflare.
+Personal site - portfolio, blog, snippets, CTF writeups, and small tools. Built with Astro, deployed on Cloudflare.
 
 ## Stack
 

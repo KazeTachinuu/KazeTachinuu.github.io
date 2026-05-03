@@ -1,0 +1,12 @@
+---
+import Layout from '~/layouts/Layout.astro';
+import GlossaryLookup from '~/components/GlossaryLookup';
+---
+
+<Layout
+  title="Glossary"
+  description="Technical terms used across the site, defined once. Search a term or browse the catalog."
+  mainClass="gloss-page"
+>
+  <GlossaryLookup client:load />
+</Layout>

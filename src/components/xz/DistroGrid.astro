@@ -18,7 +18,7 @@ const distros: Distro[] = distrosData.distros;
 const statuses: Record<string, StatusMeta> = distrosData.statuses;
 
 /* Inline SVGs at build time. Vite's ?raw query gives the file contents
-   as a string — no runtime fetch, no extra HTTP. */
+   as a string - no runtime fetch, no extra HTTP. */
 const icons = import.meta.glob("../../data/xz-icons/*.svg", {
   query: "?raw",
   import: "default",

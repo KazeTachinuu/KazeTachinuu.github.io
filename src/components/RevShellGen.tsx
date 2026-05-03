@@ -403,9 +403,9 @@ export default function RevShellGen() {
               </>)}
 
               <h3>Encoding</h3>
-              <p><strong>Raw</strong> — paste directly into a terminal.</p>
-              <p><strong>Base64</strong> — for injection: <code>{"echo <payload> | base64 -d | bash"}</code></p>
-              <p><strong>URL Encode</strong> — for payloads in URL parameters where <code>&amp;</code> <code>|</code> <code>;</code> would break.</p>
+              <p><strong>Raw</strong> - paste directly into a terminal.</p>
+              <p><strong>Base64</strong> - for injection: <code>{"echo <payload> | base64 -d | bash"}</code></p>
+              <p><strong>URL Encode</strong> - for payloads in URL parameters where <code>&amp;</code> <code>|</code> <code>;</code> would break.</p>
             </div>
           </details>
         </div>

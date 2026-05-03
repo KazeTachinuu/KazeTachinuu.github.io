@@ -10,7 +10,8 @@
     "dev": "astro dev",
     "build": "astro build && pagefind --site dist",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "figures": "for f in src/data/glossary-figures/*.mmd; do mmdc -i \"$f\" -o \"public/glossary/$(basename \"${f%.mmd}\").svg\" -c src/data/glossary-figures/mermaid.json -b transparent; done"
   },
   "dependencies": {
     "@astrojs/mdx": "^5.0.3",
@@ -40,6 +41,7 @@
     "vite": "7.3.2"
   },
   "devDependencies": {
+    "@mermaid-js/mermaid-cli": "^11.14.0",
     "rehype-external-links": "^3.0.0"
   }
 }

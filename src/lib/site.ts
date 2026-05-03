@@ -2,7 +2,7 @@
 export const SITE = {
   title: 'Hugo Sibony',
   tagline: 'Ethical hacker, cybersecurity student, CTF player.',
-  description: 'Ethical Hacker — Cybersecurity Engineering @ EPITA',
+  description: 'Ethical Hacker - Cybersecurity Engineering @ EPITA',
   author: 'Hugo Sibony',
   email: 'hsibony@pm.me',
   location: 'Paris, France',

@@ -178,7 +178,7 @@ $$
 t^2 - D w^2 = 1
 $$
 
-C'est une **équation de Pell-Fermat** classique.
+C'est une <Term slug="pell-equation">**équation de Pell-Fermat**</Term> classique.
 
 Pour chaque solution $(t, w)$, on a :
 
@@ -192,7 +192,7 @@ Il faut donc que $t \equiv -1 \pmod{6}$ pour que $y$ soit entier.
 
 <Callout type="note" title="4. Résolution algorithmique détaillée" icon="code">
 
-Pour résoudre l'équation de Pell $t^2 - D w^2 = 1$, on utilise la méthode des fractions continues pour trouver la solution fondamentale $(t_1, w_1)$, puis on génère les solutions suivantes par récurrence :
+Pour résoudre l'équation de Pell $t^2 - D w^2 = 1$, on utilise la méthode des <Term slug="continued-fractions">fractions continues</Term> pour trouver la solution fondamentale $(t_1, w_1)$, puis on génère les solutions suivantes par récurrence :
 
 - $(t_{k+1}, w_{k+1}) = (t_1 t_k + D w_1 w_k, t_1 w_k + w_1 t_k)$
 

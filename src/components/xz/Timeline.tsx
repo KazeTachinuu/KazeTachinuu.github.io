@@ -22,8 +22,8 @@ const EVENTS: Event[] = data.events as Event[];
 
 type Phase = "infiltration" | "release" | "discovery";
 const PHASES: Record<Phase, { num: string; title: string; range: string }> = {
-  infiltration: { num: "I", title: "Infiltration", range: "Oct 2021 — Jan 2024" },
-  release: { num: "II", title: "Release", range: "Feb — Mar 2024" },
+  infiltration: { num: "I", title: "Infiltration", range: "Oct 2021 - Jan 2024" },
+  release: { num: "II", title: "Release", range: "Feb - Mar 2024" },
   discovery: { num: "III", title: "Discovery", range: "Mar 29, 2024" },
 };
 
@@ -91,7 +91,7 @@ export default function Timeline() {
       aria-label="Timeline of the XZ backdoor attack"
     >
       <div class="xz-tl-inner" ref={innerRef}>
-        {/* Vertical beam — full-height background line + animated fill */}
+        {/* Vertical beam - full-height background line + animated fill */}
         <div class="xz-tl-beam" aria-hidden>
           <div
             class="xz-tl-beam-fill"

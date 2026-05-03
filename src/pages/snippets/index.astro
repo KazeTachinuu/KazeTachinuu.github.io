@@ -20,7 +20,7 @@ const snippets = (await getCollection('snippets', (e) => !e.data.draft)).sort(
     {snippets.map((s) => (
       <li>
         <a href={`/snippets/${s.id}/`}>
-          <span class="row-year">{s.data.language?.toLowerCase() ?? '—'}</span>
+          <span class="row-year">{s.data.language?.toLowerCase() ?? '-'}</span>
           <span class="row-title">{s.data.title}</span>
           <span class="row-meta">{s.data.description}</span>
           <span class="row-arrow">→</span>

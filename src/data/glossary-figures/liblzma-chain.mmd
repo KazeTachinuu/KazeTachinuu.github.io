@@ -1,0 +1,5 @@
+flowchart LR
+    sshd["sshd<br/>(distro patch)"] -->|sd_notify| libsystemd
+    libsystemd -->|journal compression| liblzma
+    classDef root fill:#3a2222,stroke:#c2604f,color:#f4d6c5
+    class sshd root

@@ -50,7 +50,7 @@ La fonction `encrypt` prend un message en entrée et, pour chaque caractère pr�
 
 Le message chiffré est la concaténation de ces caractères résultants.
 
-Pour déchiffrer, nous devons inverser ce processus. Pour un caractère chiffré avec l'indice $y$, nous devons trouver l'indice original $x$ tel que $2^x \equiv y \pmod{67}$. Ceci est le problème du **logarithme discret**.
+Pour déchiffrer, nous devons inverser ce processus. Pour un caractère chiffré avec l'indice $y$, nous devons trouver l'indice original $x$ tel que $2^x \equiv y \pmod{67}$. Ceci est le problème du <Term slug="discrete-log">**logarithme discret**</Term>.
 
 Comme le module (67) est un petit nombre premier, nous pouvons résoudre ce problème en précalculant les puissances de 2 modulo 67.
 

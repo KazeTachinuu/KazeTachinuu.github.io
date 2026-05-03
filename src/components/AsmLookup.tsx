@@ -7,10 +7,10 @@ import lightTheme from '../../themes/josh-light.js';
 import { OPS, type Op } from '../data/asm-ops';
 
 /* Inline markdown: `code`, **bold**, *italic*.
-   Token scanner so bold/italic can wrap code (or each other) correctly —
+   Token scanner so bold/italic can wrap code (or each other) correctly -
    `**...`code`...**` now parses as a single bold span that happens to
    contain a code child. Code spans themselves are terminal (their inner
-   text is literal — backticks don't nest further). */
+   text is literal - backticks don't nest further). */
 let _k = 0;
 function renderInline(text: string): (VNode | string)[] {
   const nodes: (VNode | string)[] = [];
@@ -42,7 +42,7 @@ function renderInline(text: string): (VNode | string)[] {
         continue;
       }
     }
-    // Code: `...`  (terminal — inner text is literal)
+    // Code: `...`  (terminal - inner text is literal)
     else if (text[i] === '`') {
       const end = text.indexOf('`', i + 1);
       if (end > i) {
@@ -70,7 +70,7 @@ function opMatches(op: Op, q: string) {
   );
 }
 
-/* Tokens the user might type to pick this entry exactly —
+/* Tokens the user might type to pick this entry exactly -
    its slug plus each mnemonic segment (e.g. "je / jz" → ["je", "jz"]). */
 function exactTokens(op: Op): string[] {
   const parts = op.mnemonic.toLowerCase().split(/[\s/]+/).filter(Boolean);
@@ -109,7 +109,7 @@ interface Token {
   fontStyle?: number;
 }
 
-/* Render Shiki tokens as Preact spans — no HTML strings, no innerHTML.
+/* Render Shiki tokens as Preact spans - no HTML strings, no innerHTML.
    Each token's color comes straight from the highlighter. */
 function CodeBlock({ tokens, fallback }: { tokens: Token[][] | null; fallback: string }) {
   if (!tokens) return <pre>{fallback}</pre>;
@@ -289,7 +289,7 @@ export default function AsmLookup() {
                     class="asm-chip"
                     onClick={() => pick(op.slug)}
                     title={op.name}
-                    aria-label={`${op.mnemonic} — ${op.name}`}
+                    aria-label={`${op.mnemonic} - ${op.name}`}
                   >
                     {op.mnemonic}
                   </button>

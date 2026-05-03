@@ -1,0 +1,20 @@
+{
+  "theme": "neutral",
+  "themeVariables": {
+    "fontFamily": "JetBrains Mono, ui-monospace, monospace",
+    "primaryColor": "#f0eef0",
+    "primaryTextColor": "#1a1a1a",
+    "primaryBorderColor": "#444",
+    "lineColor": "#444",
+    "actorBkg": "#f0eef0",
+    "actorBorder": "#444",
+    "actorTextColor": "#1a1a1a",
+    "noteBkgColor": "#fff8e0",
+    "noteBorderColor": "#444",
+    "noteTextColor": "#1a1a1a",
+    "sequenceNumberColor": "#555",
+    "labelBoxBkgColor": "#f0eef0",
+    "labelBoxBorderColor": "#444",
+    "messageTextColor": "#1a1a1a"
+  }
+}

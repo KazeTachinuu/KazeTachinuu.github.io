@@ -38,7 +38,7 @@ const clipId = `heart-fill-${slug.replace(/\//g, '-')}`;
       const ctx = audioCtx;
       const t = ctx.currentTime;
 
-      // Main tone — bright ping
+      // Main tone - bright ping
       const osc1 = ctx.createOscillator();
       const g1 = ctx.createGain();
       osc1.type = 'sine';
@@ -50,7 +50,7 @@ const clipId = `heart-fill-${slug.replace(/\//g, '-')}`;
       osc1.start(t);
       osc1.stop(t + 0.12);
 
-      // Harmonic — warmth
+      // Harmonic - warmth
       const osc2 = ctx.createOscillator();
       const g2 = ctx.createGain();
       osc2.type = 'triangle';
@@ -119,7 +119,7 @@ const clipId = `heart-fill-${slug.replace(/\//g, '-')}`;
         void btn.offsetWidth;
         btn.classList.add('likes-pop');
 
-        // Sound — pitch increases with fill level
+        // Sound - pitch increases with fill level
         const pitch = 1 + (userLikes / maxLikes) * 0.5;
         playPop(pitch);
 

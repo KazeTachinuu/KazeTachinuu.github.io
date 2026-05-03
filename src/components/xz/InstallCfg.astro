@@ -1,0 +1,200 @@
+---
+/**
+ * Reduced control-flow graph of `_get_cpuia` - the malicious IFUNC resolver's
+ * installer. IDA/Binja-style blocks; spine on the left, branches on the right.
+ *
+ * Schematic, not 1:1. Block labels are abstract (loc_*) and instructions are
+ * the load-bearing minimum - what a reverser would label, not what objdump
+ * prints byte-for-byte. Open `liblzma_la-crc64-fast.o` in Binary Ninja and
+ * jump to `_get_cpuia` for the unreduced graph.
+ */
+---
+
+<figure
+  class="xz-cfg not-prose"
+  role="img"
+  aria-label="Control-flow graph of _get_cpuia. The function walks _r_debug looking for sshd's link_map; on match, it resolves RSA_public_decrypt in sshd's dynamic symbol table and overwrites the corresponding GOT slot. Two terminal blocks: silent return on no match, hooked return when the GOT has been rewritten."
+>
+  <svg viewBox="180 0 460 600" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+    <defs>
+      <marker id="xz-cfg-arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5.5" markerHeight="5.5" orient="auto-start-reverse">
+        <path d="M0,0 L10,5 L0,10 z" class="xz-cfg-arr-fill" />
+      </marker>
+      <marker id="xz-cfg-arr-hot" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5.5" markerHeight="5.5" orient="auto-start-reverse">
+        <path d="M0,0 L10,5 L0,10 z" class="xz-cfg-arr-fill-hot" />
+      </marker>
+    </defs>
+
+    {/* edges (under blocks) */}
+    <path class="xz-cfg-edge" d="M 320 92 L 320 120" marker-end="url(#xz-cfg-arr)" />
+    <path class="xz-cfg-edge" d="M 320 192 L 320 220" marker-end="url(#xz-cfg-arr)" />
+    <path class="xz-cfg-edge" d="M 440 156 L 480 156" marker-end="url(#xz-cfg-arr)" />
+    <path class="xz-cfg-edge" d="M 440 256 L 480 256" marker-end="url(#xz-cfg-arr)" />
+    <path class="xz-cfg-edge xz-cfg-edge-hot" d="M 320 292 L 320 320" marker-end="url(#xz-cfg-arr-hot)" />
+    <path class="xz-cfg-edge xz-cfg-edge-hot" d="M 320 392 L 320 420" marker-end="url(#xz-cfg-arr-hot)" />
+    <path class="xz-cfg-edge xz-cfg-edge-hot" d="M 320 492 L 320 520" marker-end="url(#xz-cfg-arr-hot)" />
+    <path class="xz-cfg-edge xz-cfg-edge-loop" d="M 560 220 L 560 110 L 380 110 L 380 120" marker-end="url(#xz-cfg-arr)" />
+
+    {/* blocks (over edges) */}
+    <g class="xz-cfg-blk">
+      <rect x="200" y="20" width="240" height="72" />
+      <text class="xz-cfg-h" x="212" y="38">loc_entry</text>
+      <text class="xz-cfg-l" x="212" y="60">endbr64</text>
+      <text class="xz-cfg-l" x="212" y="78">mov   rdi, [_r_debug+8]<tspan class="xz-cfg-c">  ; lm</tspan></text>
+    </g>
+
+    <g class="xz-cfg-blk">
+      <rect x="200" y="120" width="240" height="72" />
+      <text class="xz-cfg-h" x="212" y="138">loc_loop</text>
+      <text class="xz-cfg-l" x="212" y="160">test  rdi, rdi</text>
+      <text class="xz-cfg-l" x="212" y="178">je    loc_no_match</text>
+    </g>
+
+    <g class="xz-cfg-blk">
+      <rect x="480" y="130" width="160" height="52" />
+      <text class="xz-cfg-h" x="492" y="148">loc_no_match</text>
+      <text class="xz-cfg-l" x="492" y="170">ret</text>
+    </g>
+
+    <g class="xz-cfg-blk">
+      <rect x="200" y="220" width="240" height="72" />
+      <text class="xz-cfg-h" x="212" y="238">loc_match</text>
+      <text class="xz-cfg-l" x="212" y="260">call  match_sshd</text>
+      <text class="xz-cfg-l" x="212" y="278">je    loc_advance</text>
+    </g>
+
+    <g class="xz-cfg-blk">
+      <rect x="480" y="220" width="160" height="72" />
+      <text class="xz-cfg-h" x="492" y="238">loc_advance</text>
+      <text class="xz-cfg-l" x="492" y="260">mov   rdi, [rdi+24]</text>
+      <text class="xz-cfg-l" x="492" y="278">jmp   loc_loop</text>
+    </g>
+
+    <g class="xz-cfg-blk xz-cfg-blk-hot">
+      <rect x="200" y="320" width="240" height="72" />
+      <text class="xz-cfg-h" x="212" y="338">loc_resolve</text>
+      <text class="xz-cfg-l" x="212" y="360">call  walk_dynsym</text>
+      <text class="xz-cfg-l" x="212" y="378"><tspan class="xz-cfg-c">; rax = sshd.GOT slot</tspan></text>
+    </g>
+
+    <g class="xz-cfg-blk xz-cfg-blk-hot">
+      <rect x="200" y="420" width="240" height="72" />
+      <text class="xz-cfg-h" x="212" y="438">loc_install</text>
+      <text class="xz-cfg-l xz-cfg-l-emph" x="212" y="460">mov   qword [rax], rcx</text>
+      <text class="xz-cfg-l" x="212" y="478"><tspan class="xz-cfg-c">; ← the hook</tspan></text>
+    </g>
+
+    <g class="xz-cfg-blk">
+      <rect x="200" y="520" width="240" height="52" />
+      <text class="xz-cfg-h" x="212" y="538">loc_exit</text>
+      <text class="xz-cfg-l" x="212" y="560">ret</text>
+    </g>
+
+    {/* edge labels - rendered after blocks so they sit on top */}
+    <text class="xz-cfg-lbl" text-anchor="middle" x="460" y="150">NULL</text>
+    <text class="xz-cfg-lbl" text-anchor="middle" x="460" y="250">no match</text>
+    <text class="xz-cfg-lbl xz-cfg-lbl-hot" x="328" y="308">matched</text>
+    <text class="xz-cfg-lbl" text-anchor="middle" x="470" y="104">loop</text>
+  </svg>
+
+  <figcaption class="xz-cfg-cap">
+    Reduced CFG of <code>_get_cpuia</code>. The ember spine is the attack path - taken when the current <code>link_map</code> matches sshd; from there <code>RSA_public_decrypt</code>'s GOT slot is rewritten before <code>main()</code> runs. Open <code>liblzma_la-crc64-fast.o</code> in Binary Ninja for the unreduced graph.
+  </figcaption>
+</figure>
+
+<style>
+  .xz-cfg {
+    margin: 1.75rem auto 2rem;
+    max-width: min(100%, 620px);
+  }
+  .xz-cfg svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    font-family: var(--font-mono);
+  }
+
+  /* blocks - same visual weight for every block; hot blocks differ only in
+     header color and a single emphasized instruction line */
+  .xz-cfg-blk rect {
+    fill: var(--page-bg);
+    stroke: var(--border);
+    stroke-width: 1;
+  }
+  .xz-cfg-blk-hot rect {
+    stroke: var(--xz-attacker);
+  }
+
+  /* typography */
+  .xz-cfg-h {
+    font-size: 11px;
+    font-weight: 700;
+    fill: var(--page-text);
+    letter-spacing: 0.01em;
+  }
+  .xz-cfg-blk-hot .xz-cfg-h {
+    fill: var(--xz-attacker);
+  }
+  .xz-cfg-l {
+    font-size: 11.5px;
+    fill: var(--text-secondary);
+    font-feature-settings: "calt" 0, "liga" 0;
+  }
+  .xz-cfg-l-emph {
+    fill: var(--xz-attacker) !important;
+    font-weight: 700;
+  }
+  .xz-cfg-c {
+    fill: var(--muted);
+    font-style: italic;
+  }
+
+  /* edges */
+  .xz-cfg-edge {
+    fill: none;
+    stroke: color-mix(in srgb, var(--page-text) 45%, transparent);
+    stroke-width: 1.25;
+  }
+  .xz-cfg-edge-hot {
+    stroke: var(--xz-attacker);
+    stroke-width: 1.5;
+  }
+  .xz-cfg-edge-loop {
+    stroke-dasharray: 3 3;
+    stroke: color-mix(in srgb, var(--page-text) 35%, transparent);
+  }
+  .xz-cfg-arr-fill {
+    fill: color-mix(in srgb, var(--page-text) 55%, transparent);
+  }
+  .xz-cfg-arr-fill-hot {
+    fill: var(--xz-attacker);
+  }
+
+  /* edge labels - no chips, just small inline text */
+  .xz-cfg-lbl {
+    font-size: 9.5px;
+    font-weight: 600;
+    fill: var(--muted);
+    letter-spacing: 0.02em;
+  }
+  .xz-cfg-lbl-hot {
+    fill: var(--xz-attacker);
+  }
+
+  /* caption */
+  .xz-cfg-cap {
+    margin-top: 1rem;
+    font-size: 0.875rem;
+    line-height: 1.55;
+    color: var(--text-secondary);
+    text-align: left;
+  }
+  .xz-cfg-cap code {
+    font-family: var(--font-mono);
+    font-size: 0.875em;
+    color: var(--page-text);
+    padding: 0.05em 0.3em;
+    background: color-mix(in srgb, var(--page-text) 5%, transparent);
+    border-radius: 3px;
+  }
+</style>

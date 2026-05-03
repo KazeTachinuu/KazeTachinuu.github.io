@@ -46,7 +46,7 @@
       "icon": "arch.svg",
       "status": "shipped-inert",
       "shipped": "5.6.0 / 5.6.1",
-      "note": "Arch's openssh does not link libsystemd by default — backdoor present but path to sshd missing."
+      "note": "Arch's openssh does not link libsystemd by default - backdoor present but path to sshd missing."
     },
     {
       "id": "alpine-edge",
@@ -54,7 +54,7 @@
       "icon": "alpine.svg",
       "status": "shipped-inert",
       "shipped": "5.6.x",
-      "note": "musl, not glibc — wrong ABI for the IFUNC trick."
+      "note": "musl, not glibc - wrong ABI for the IFUNC trick."
     },
     {
       "id": "debian-stable",

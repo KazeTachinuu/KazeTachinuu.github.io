@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Extract three named disassembly regions from liblzma_la-crc64-fast.o
 # (the malicious object shipped in smx-smx/xzre).
-# Output: xz-artifacts/analysis/disasm/{name}.s — AT&T syntax, used by §4.
+# Output: xz-artifacts/analysis/disasm/{name}.s - AT&T syntax, used by §4.
 #
 # Determinism: re-runnable; output is git-ignored.
 #
@@ -9,7 +9,7 @@
 # ---------------------
 # The plan originally asked for `_get_cpuid`, `_resolve` (GOT walker), and
 # `RSA_public_decrypt` (the hook). Only `_get_cpuid` exists as a named
-# function in the .o — by design. The malicious backdoor in liblzma 5.6.1
+# function in the .o - by design. The malicious backdoor in liblzma 5.6.1
 # blobs the GOT walker, the RSA_public_decrypt hook stub, the x86
 # disassembler, and the rest of the runtime payload into a single opaque
 # function `.Lx86_code.part.0` (2719 bytes, ~745 disasm lines), invoked
@@ -18,9 +18,9 @@
 # IFUNC has installed the hooks into the live process. So this script
 # extracts the three best-available slices from the on-disk .o:
 #
-#   1. _get_cpuid           — the IFUNC resolver entry point.
-#   2. _cpuid               — the CPUID-feature-check helper called by it.
-#   3. .Lx86_code.part.0    — the opaque payload blob containing the
+#   1. _get_cpuid           - the IFUNC resolver entry point.
+#   2. _cpuid               - the CPUID-feature-check helper called by it.
+#   3. .Lx86_code.part.0    - the opaque payload blob containing the
 #                             GOT walker, hook installation, and
 #                             RSA_public_decrypt stub (pre-extraction).
 #
@@ -58,7 +58,7 @@ extract_fn() {
   local out="$2"
   # Match `<fn>:` allowing the leading address column from objdump.
   if ! grep -qE "<${fn}>:" "$TMP"; then
-    echo "WARN: function <${fn}> not found in $OBJ — skipping ${out}" >&2
+    echo "WARN: function <${fn}> not found in $OBJ - skipping ${out}" >&2
     return 0
   fi
   awk -v fn="$fn" '
