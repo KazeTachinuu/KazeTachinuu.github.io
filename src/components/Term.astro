@@ -7,20 +7,31 @@
  *
  * Usage:  <Term slug="got">GOT</Term>
  *         <Term slug="rsa-public-decrypt">`RSA_public_decrypt`</Term>
+ *         <Term slug="cve" href="https://nvd.nist.gov/vuln/detail/CVE-2024-3094">CVE-2024-3094</Term>
+ *
+ * The popover always shows the glossary entry's term/expansion/summary.
+ * `href` overrides the click target — useful when wrapping a specific
+ * instance (a CVE id, an RFC number) rather than the concept itself.
  *
  * If the slug is not found, the slot text renders un-decorated so the
  * MDX still compiles cleanly during edits.
  */
 import { getEntry } from '../data/glossary';
 
-interface Props { slug: string; }
-const { slug } = Astro.props;
+interface Props { slug: string; href?: string; }
+const { slug, href: hrefOverride } = Astro.props;
 const entry = getEntry(slug);
-const href = `/tools/glossary/?slug=${slug}`;
+const href = hrefOverride ?? `/tools/glossary/?slug=${slug}`;
+const external = !!hrefOverride && /^https?:\/\//.test(hrefOverride);
 ---
 {entry ? (
   <span class="term">
-    <a class="term-trigger" href={href}><slot /></a>
+    <a
+      class="term-trigger"
+      href={href}
+      target={external ? '_blank' : undefined}
+      rel={external ? 'noopener noreferrer' : undefined}
+    ><slot /></a>
     <span class="term-pop" role="tooltip">
       <span class="term-pop-head">
         <code class="term-pop-name">{entry.term}</code>
