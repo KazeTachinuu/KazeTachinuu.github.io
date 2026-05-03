@@ -4,10 +4,10 @@ import { SITE } from '../lib/site';
 import type { APIContext } from 'astro';
 
 export async function GET(context: APIContext) {
-  const blog = await getCollection('blog', (e) => !e.data.draft);
+  const blog = await getCollection('blog', (e) => import.meta.env.DEV || !e.data.draft);
   const writeups = await getCollection(
     'writeups',
-    (e) => !e.data.draft && e.data.cat === 'chal',
+    (e) => (import.meta.env.DEV || !e.data.draft) && e.data.cat === 'chal',
   );
 
   const items = [

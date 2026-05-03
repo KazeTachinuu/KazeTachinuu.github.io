@@ -3,7 +3,7 @@ import Layout from '~/layouts/Layout.astro';
 import PageHeader from '~/components/PageHeader.astro';
 import { getCollection } from 'astro:content';
 
-const snippets = (await getCollection('snippets', (e) => !e.data.draft)).sort(
+const snippets = (await getCollection('snippets', (e) => import.meta.env.DEV || !e.data.draft)).sort(
   (a, b) => +new Date(b.data.date) - +new Date(a.data.date),
 );
 ---

@@ -3,7 +3,7 @@ import Layout from '~/layouts/Layout.astro';
 import PageHeader from '~/components/PageHeader.astro';
 import { getCollection } from 'astro:content';
 
-const tools = await getCollection('tools', (e) => !e.data.draft);
+const tools = await getCollection('tools', (e) => import.meta.env.DEV || !e.data.draft);
 ---
 
 <Layout title="Tools" mainClass="max-w-3xl mx-auto px-6 py-16">

@@ -8,7 +8,7 @@ import ArticleFooter from '~/components/ArticleFooter.astro';
 import * as MDX from '~/components/mdx';
 
 export const getStaticPaths = (async () => {
-  const snippets = await getCollection('snippets', (e) => !e.data.draft);
+  const snippets = await getCollection('snippets', (e) => import.meta.env.DEV || !e.data.draft);
   return snippets.map((s) => ({ params: { slug: s.id }, props: { post: s } }));
 }) satisfies GetStaticPaths;
 

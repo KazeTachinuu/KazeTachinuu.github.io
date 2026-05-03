@@ -4,7 +4,7 @@ import PageHeader from '~/components/PageHeader.astro';
 import WriteupTree from '~/components/WriteupTree.astro';
 import { getCollection } from 'astro:content';
 
-const all = await getCollection('writeups', (e) => !e.data.draft);
+const all = await getCollection('writeups', (e) => import.meta.env.DEV || !e.data.draft);
 const challenges = all.filter((w) => w.data.cat === 'chal');
 const solved = challenges.filter((w) => w.data.solved).length;
 const ctfs = new Set(challenges.map((w) => w.id.split('/')[0])).size;

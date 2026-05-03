@@ -10,7 +10,7 @@ import ArticleLikes from '~/components/ArticleLikes.astro';
 import * as MDX from '~/components/mdx';
 
 export const getStaticPaths = (async () => {
-  const writeups = await getCollection('writeups', (e) => !e.data.draft && e.data.cat === 'chal');
+  const writeups = await getCollection('writeups', (e) => (import.meta.env.DEV || !e.data.draft) && e.data.cat === 'chal');
   return writeups.map((w) => ({ params: { slug: w.id }, props: { post: w } }));
 }) satisfies GetStaticPaths;
 

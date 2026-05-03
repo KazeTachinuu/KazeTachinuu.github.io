@@ -3,8 +3,8 @@ import Layout from '~/layouts/Layout.astro';
 import { SITE } from '~/lib/site';
 import { getCollection } from 'astro:content';
 
-const blog = await getCollection('blog', (e) => !e.data.draft);
-const writeups = await getCollection('writeups', (e) => !e.data.draft && e.data.cat === 'chal');
+const blog = await getCollection('blog', (e) => import.meta.env.DEV || !e.data.draft);
+const writeups = await getCollection('writeups', (e) => (import.meta.env.DEV || !e.data.draft) && e.data.cat === 'chal');
 const writing = [...blog, ...writeups]
   .sort((a, b) => +new Date(b.data.date ?? 0) - +new Date(a.data.date ?? 0));
 

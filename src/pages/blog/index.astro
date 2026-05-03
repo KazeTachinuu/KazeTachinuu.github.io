@@ -5,9 +5,9 @@ import ContentCard from '~/components/ContentCard.astro';
 import { getCollection } from 'astro:content';
 import { fmtDateShort } from '~/lib/fmt';
 
-const posts = (await getCollection('blog')).sort(
-  (a, b) => +new Date(b.data.date) - +new Date(a.data.date),
-);
+const posts = (
+  await getCollection('blog', (e) => import.meta.env.DEV || !e.data.draft)
+).sort((a, b) => +new Date(b.data.date) - +new Date(a.data.date));
 ---
 
 <Layout title="Blog" mainClass="max-w-5xl mx-auto px-6 py-16">

@@ -2,7 +2,7 @@
 import Layout from '~/layouts/Layout.astro';
 import { getCollection } from 'astro:content';
 
-const recent = (await getCollection('blog', (e) => !e.data.draft))
+const recent = (await getCollection('blog', (e) => import.meta.env.DEV || !e.data.draft))
   .sort((a, b) => +new Date(b.data.date) - +new Date(a.data.date))
   .slice(0, 3);
 ---
