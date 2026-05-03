@@ -277,10 +277,10 @@ Linked into `liblzma.so.5`, the .o ships as part of a signed, hash-verified, rep
 
 Three Linux primitives carry the runtime hijack:
 
-- **IFUNC** - *indirect functions*: a way for a library to pick the right implementation of a function at startup (e.g., a CLMUL-accelerated CRC64 on capable CPUs, a table-lookup fallback elsewhere).
-- **GOT** - *Global Offset Table*: a small in-memory table the dynamic linker fills with function addresses so the program can call functions in shared libraries.
-- **PLT** - *Procedure Linkage Table*: the per-call-site stub that dispatches through a GOT slot. sshd's `RSA_public_decrypt` call site never moves; it always indirects through one GOT entry, so rewriting that one entry redirects every call sshd ever makes.
-- **RELRO** - *RELocation Read-Only*: after the linker finishes resolving symbols, it `mprotect`s the GOT read-only so nothing can rewrite those addresses at runtime.
+- <Term slug="ifunc">**IFUNC**</Term> - *indirect functions*: a way for a library to pick the right implementation of a function at startup (e.g., a <Term slug="clmul">CLMUL</Term>-accelerated CRC64 on capable CPUs, a table-lookup fallback elsewhere).
+- <Term slug="got">**GOT**</Term> - *Global Offset Table*: a small in-memory table the dynamic linker fills with function addresses so the program can call functions in shared libraries.
+- <Term slug="plt">**PLT**</Term> - *Procedure Linkage Table*: the per-call-site stub that dispatches through a GOT slot. sshd's `RSA_public_decrypt` call site never moves; it always indirects through one GOT entry, so rewriting that one entry redirects every call sshd ever makes.
+- <Term slug="relro">**RELRO**</Term> - *RELocation Read-Only*: after the linker finishes resolving symbols, it `mprotect`s the GOT read-only so nothing can rewrite those addresses at runtime.
 
 Plus a downstream patch to OpenSSH that brings `liblzma` into `sshd`'s address space in the first place.
 
@@ -485,7 +485,7 @@ By the time sshd's `main()` runs, the GOT slot for `RSA_public_decrypt` no longe
 
 ### The gate
 
-The signature scheme is Ed448, not Ed25519 - EdDSA over Curve448, providing roughly 224-bit security. [amlweems/xzbot](https://github.com/amlweems/xzbot) confirmed it with a working proof-of-concept, extracting the attacker's embedded Ed448 public key and shipping a honeypot patch for OpenSSH. Without the matching private key, even a connection that knows the modulus layout produces no system call. The signature gate keeps blast radius to whoever holds the private key, and stops opportunistic abuse the moment the binary ships.
+The signature scheme is <Term slug="ed448">Ed448</Term>, not Ed25519 - EdDSA over Curve448, providing roughly 224-bit security. [amlweems/xzbot](https://github.com/amlweems/xzbot) confirmed it with a working proof-of-concept, extracting the attacker's embedded Ed448 public key and shipping a honeypot patch for OpenSSH. Without the matching private key, even a connection that knows the modulus layout produces no system call. The signature gate keeps blast radius to whoever holds the private key, and stops opportunistic abuse the moment the binary ships.
 
 Between the binary shipping and any operator using it, what caught the backdoor wasn't cryptanalysis. It was a 500-millisecond latency spike on ssh logins.
 
@@ -541,7 +541,7 @@ Almost every Jia Tan commit is timestamped **UTC+8** - Chinese Standard Time. A 
     </div>
   </div>
 
-  <figcaption>Countries shaded by year-round UTC offset (<a href="https://www.iana.org/time-zones">IANA tzdata</a>). Russia and Australia are split at their internal timezone boundaries: Russia west of the Urals → UTC+2/+3 (slate); the Russian Irkutsk-Buryatia stripe and Western Australia → UTC+8 (ember). China is officially a single timezone (UTC+8) across the whole country since 1949 - there is nothing to split. Iran (UTC+3:30) excluded; tiny territories not in the SVG (Singapore, Hong Kong, Macau, Bahrain, Latvia, Palestine) are absorbed into their neighbors.</figcaption>
+  <figcaption>Countries shaded by year-round UTC offset (<Term slug="iana-tzdata">IANA tzdata</Term>). Russia and Australia are split at their internal timezone boundaries: Russia west of the Urals → UTC+2/+3 (slate); the Russian Irkutsk-Buryatia stripe and Western Australia → UTC+8 (ember). China is officially a single timezone (UTC+8) across the whole country since 1949 - there is nothing to split. Iran (UTC+3:30) excluded; tiny territories not in the SVG (Singapore, Hong Kong, Macau, Bahrain, Latvia, Palestine) are absorbed into their neighbors.</figcaption>
 </figure>
 
 The slipups Karty and Henniger logged are concrete:

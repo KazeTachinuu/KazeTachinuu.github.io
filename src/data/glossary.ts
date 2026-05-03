@@ -136,7 +136,7 @@ Relocation section '.rela.plt' at offset 0x1090:
 RSA_public_decrypt@plt:
     jmp    *RSA_public_decrypt@got(%rip)   # indirect jump through GOT
     push   $0x42                           # symbol index (lazy resolve)
-    jmp    .plt.start                      # → dl_runtime_resolve`,
+    jmp    .plt.start                      # -> dl_runtime_resolve`,
     exampleLang: 'asm',
     moreHref: 'https://www.airs.com/blog/archives/41',
     moreLabel: 'Ian Lance Taylor - How GOT and PLT work',
@@ -386,18 +386,16 @@ with bn.load('./binary') as bv:
       "Multi-architecture; the decompiler produces C-like pseudocode for every supported processor. Analyses run against P-code, Ghidra's machine-independent IR, so a single pass works on any architecture the front end can lift.",
       "Headless mode (`analyzeHeadless`) drives a project from the command line for batch processing. Scripting is Java by default with a Python (Jython) layer; community PyGhidra adds CPython.",
     ],
-    example: `# headless analysis: import a binary and run a script
+    example: `# headless analysis: import a binary and run a Java script
 $ analyzeHeadless /tmp/proj MyProj \\
     -import ./binary \\
     -postScript ListFunctions.java
-# ListFunctions.java
-import ghidra.app.script.GhidraScript;
-public class ListFunctions extends GhidraScript {
-  public void run() throws Exception {
-    for (var f : currentProgram.getFunctionManager().getFunctions(true))
-      println(f.getEntryPoint() + "  " + f.getName());
-  }
-}`,
+
+# the script (ListFunctions.java) lives in your scripts/ directory
+# and uses the GhidraScript API to walk the program
+
+$ ls -1 ~/.ghidra/.ghidra_*/Extensions
+$ ls $GHIDRA_INSTALL_DIR/Ghidra/Features/Base/ghidra_scripts | head`,
     exampleLang: 'bash',
     moreHref: 'https://ghidra-sre.org/',
     moreLabel: 'NSA - Ghidra',
@@ -728,7 +726,7 @@ chip[i] = G1[i] ^ G2[(i + tau_k) % 1023]`,
       invert: true,
     },
     example: `// Arduino: 8-bit PWM on pin 9, ~490 Hz default carrier
-// duty = value / 255   - 128 = 50%
+// duty cycle = value / 255   (so 128 -> 50%)
 analogWrite(9, 128);`,
     exampleLang: 'c',
     moreHref: 'https://en.wikipedia.org/wiki/Pulse-width_modulation',
@@ -925,20 +923,28 @@ pk.verify(sig, msg)                   # raises InvalidSignature on tamper`,
       "Maximum base score is 9.8: network-reachable, no privileges, no user interaction, total impact across vulnerable and subsequent systems. The 10.0 ceiling additionally requires a Modified Safety metric (`MSI:S`/`MSA:S`) in the Environmental group.",
       "v4.0 (November 2023) replaces v3.1's *Scope* metric with separate Vulnerable (`VC/VI/VA`) and Subsequent (`SC/SI/SA`) impact triads, and adds Attack Requirements (`AT`) for environmental preconditions.",
     ],
-    example: `CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:H/VI:H/VA:H/SC:H/SI:H/SA:H
-→ 9.8  Critical
+    example: `# vector string  (URL-shareable, parser-friendly)
+CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:H/VI:H/VA:H/SC:H/SI:H/SA:H
 
-  AV  Attack Vector              N  Network
-  AC  Attack Complexity          L  Low
-  AT  Attack Requirements        N  None
-  PR  Privileges Required        N  None
-  UI  User Interaction           N  None
-  VC  Vulnerable Confidentiality H  High
-  VI  Vulnerable Integrity       H  High
-  VA  Vulnerable Availability    H  High
-  SC  Subsequent Confidentiality H  High
-  SI  Subsequent Integrity       H  High
-  SA  Subsequent Availability    H  High`,
+# decoded
+  Base score   9.8 / 10   Critical
+
+  Exploitability
+    AV  Attack Vector           = N   Network
+    AC  Attack Complexity       = L   Low
+    AT  Attack Requirements     = N   None
+    PR  Privileges Required     = N   None
+    UI  User Interaction        = N   None
+
+  Vulnerable system  (the asset under attack)
+    VC  Confidentiality         = H   High
+    VI  Integrity               = H   High
+    VA  Availability            = H   High
+
+  Subsequent system  (anything reached via the vuln)
+    SC  Confidentiality         = H   High
+    SI  Integrity               = H   High
+    SA  Availability            = H   High`,
     exampleLang: 'text',
     moreHref: 'https://www.first.org/cvss/v4-0/',
     moreLabel: 'FIRST - CVSS v4.0 specification',
