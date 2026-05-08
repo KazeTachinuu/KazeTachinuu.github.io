@@ -506,6 +506,58 @@ a { color: inherit; text-decoration: none; }
   }
   .row-list > li > a:hover .row-arrow { @apply opacity-100 translate-x-0; color: var(--page-text); }
 
+  /* --- Bookmark grid (start-page style) --- */
+
+  .bookmark-grid {
+    column-gap: 1.5rem;
+    column-count: 1;
+  }
+  @media (min-width: 640px) { .bookmark-grid { column-count: 2; } }
+  @media (min-width: 1024px) { .bookmark-grid { column-count: 3; } }
+
+  .bookmark-card {
+    @apply rounded-xl p-5 mb-6;
+    break-inside: avoid;
+    border: 1px solid var(--border);
+    background: var(--page-bg);
+    transition: border-color var(--duration-fast) var(--ease-smooth);
+  }
+  .bookmark-card:hover { border-color: var(--color-gray-400); }
+
+  .bookmark-card-head { @apply mb-3 pb-3; border-bottom: 1px solid var(--border); }
+  .bookmark-card-title {
+    @apply text-sm font-semibold tracking-tight uppercase;
+    letter-spacing: 0.06em;
+    color: var(--page-text);
+  }
+  .bookmark-card-desc { @apply mt-1 text-xs; color: var(--muted); }
+
+  .bookmark-list { @apply list-none p-0 m-0 flex flex-col; }
+
+  .bookmark-item {
+    @apply grid items-center gap-x-3 py-2 px-2 -mx-2 rounded-md transition-colors duration-150;
+    grid-template-columns: 16px 1fr auto;
+    color: var(--page-text);
+  }
+  .bookmark-item:hover { background: var(--subtle-bg); }
+
+  .bookmark-favicon {
+    @apply w-4 h-4 rounded-sm;
+    grid-row: span 2;
+    object-fit: contain;
+  }
+
+  .bookmark-name { @apply text-sm font-medium truncate; }
+  .bookmark-host {
+    @apply font-mono text-[10px] tabular-nums opacity-0 transition-opacity duration-150;
+    color: var(--muted);
+  }
+  .bookmark-item:hover .bookmark-host { @apply opacity-100; }
+  .bookmark-desc {
+    @apply col-start-2 text-xs leading-snug truncate;
+    color: var(--muted);
+  }
+
   /* --- Project card --- */
 
   .project-card {
