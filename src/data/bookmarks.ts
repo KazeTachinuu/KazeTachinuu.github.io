@@ -1,5 +1,4 @@
-// Curated bookmarks — useful tools I keep coming back to.
-// Each entry is a category with a list of links. Add freely.
+// Curated bookmarks — open-source tools that do one thing well.
 
 export type Bookmark = {
   name: string;
@@ -9,55 +8,108 @@ export type Bookmark = {
 
 export type BookmarkCategory = {
   title: string;
-  description?: string;
   bookmarks: Bookmark[];
 };
 
 export const BOOKMARKS: BookmarkCategory[] = [
   {
-    title: 'PDF',
-    description: 'Edit, merge, split, compress, OCR.',
+    title: 'PDF & Documents',
     bookmarks: [
-      { name: 'iLovePDF', url: 'https://www.ilovepdf.com/', description: 'Merge, split, compress, convert' },
-      { name: 'PDF24 Tools', url: 'https://tools.pdf24.org/', description: 'All-in-one PDF toolkit, no signup' },
-      { name: 'Sejda', url: 'https://www.sejda.com/', description: 'In-browser PDF editor' },
+      {
+        name: 'Stirling-PDF',
+        url: 'https://github.com/Stirling-Tools/Stirling-PDF',
+        description: 'Self-hosted PDF toolkit — watermark, merge, split, redact',
+      },
+      {
+        name: 'OCRmyPDF',
+        url: 'https://github.com/ocrmypdf/OCRmyPDF',
+        description: 'Adds a searchable OCR text layer to scanned PDFs',
+      },
+      {
+        name: 'Pandoc',
+        url: 'https://pandoc.org/',
+        description: 'Universal document converter, every format to every format',
+      },
     ],
   },
   {
     title: 'Images',
-    description: 'Compress, convert, remove background or watermarks.',
     bookmarks: [
-      { name: 'Squoosh', url: 'https://squoosh.app/', description: 'Image compression in the browser' },
-      { name: 'TinyPNG', url: 'https://tinypng.com/', description: 'PNG / JPG / WebP compression' },
-      { name: 'remove.bg', url: 'https://www.remove.bg/', description: 'Background removal' },
-      { name: 'Dewatermark', url: 'https://dewatermark.ai/', description: 'AI watermark removal' },
+      {
+        name: 'Squoosh',
+        url: 'https://squoosh.app/',
+        description: 'In-browser image compression with side-by-side preview',
+      },
+      {
+        name: 'ImageMagick',
+        url: 'https://imagemagick.org/',
+        description: 'CLI image manipulation toolkit — resize, watermark, convert',
+      },
+      {
+        name: 'Upscayl',
+        url: 'https://upscayl.org/',
+        description: 'AI image upscaling, fully offline desktop app',
+      },
     ],
   },
   {
-    title: 'File conversion',
-    description: 'Convert anything to anything.',
+    title: 'Diagrams',
     bookmarks: [
-      { name: 'CloudConvert', url: 'https://cloudconvert.com/', description: '200+ formats, file & video' },
-      { name: 'Convertio', url: 'https://convertio.co/', description: 'Quick browser conversions' },
+      {
+        name: 'Excalidraw',
+        url: 'https://excalidraw.com/',
+        description: 'Hand-drawn-style virtual whiteboard',
+      },
+      {
+        name: 'draw.io',
+        url: 'https://app.diagrams.net/',
+        description: 'Comprehensive diagramming, runs in-browser',
+      },
+      {
+        name: 'Mermaid Live',
+        url: 'https://mermaid.live/',
+        description: 'Generate flowcharts and sequence diagrams from text',
+      },
     ],
   },
   {
     title: 'Dev & Security',
-    description: 'Daily companions for hacking and dev.',
     bookmarks: [
-      { name: 'CyberChef', url: 'https://gchq.github.io/CyberChef/', description: 'The cyber Swiss army knife' },
-      { name: 'regex101', url: 'https://regex101.com/', description: 'Regex builder & explainer' },
-      { name: 'jwt.io', url: 'https://jwt.io/', description: 'Decode and verify JWTs' },
-      { name: 'crontab.guru', url: 'https://crontab.guru/', description: 'Crontab expression editor' },
+      {
+        name: 'CyberChef',
+        url: 'https://gchq.github.io/CyberChef/',
+        description: 'The cyber Swiss army knife — encode, decode, transform',
+      },
+      {
+        name: 'IT-Tools',
+        url: 'https://it-tools.tech/',
+        description: 'Bundle of small dev utilities, all client-side',
+      },
+      {
+        name: 'regexr',
+        url: 'https://regexr.com/',
+        description: 'Regex playground with live explanations',
+      },
     ],
   },
   {
-    title: 'Productivity',
-    description: 'Drawing, sharing, quick utilities.',
+    title: 'Files & Sharing',
     bookmarks: [
-      { name: 'Excalidraw', url: 'https://excalidraw.com/', description: 'Hand-drawn-style diagrams' },
-      { name: 'tldraw', url: 'https://www.tldraw.com/', description: 'Collaborative whiteboard' },
-      { name: '0x0.st', url: 'https://0x0.st/', description: 'Null-pointer file sharing' },
+      {
+        name: '0x0.st',
+        url: 'https://0x0.st/',
+        description: 'Null-pointer file paste — single-shot, no account',
+      },
+      {
+        name: 'OnionShare',
+        url: 'https://onionshare.org/',
+        description: 'Anonymous file sharing through Tor',
+      },
+      {
+        name: 'Send',
+        url: 'https://send.tuta.com/',
+        description: 'End-to-end encrypted file transfer (Firefox Send fork)',
+      },
     ],
   },
 ];

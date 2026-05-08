@@ -3,43 +3,27 @@ import Layout from '~/layouts/Layout.astro';
 import PageHeader from '~/components/PageHeader.astro';
 import { BOOKMARKS } from '~/data/bookmarks';
 
-function hostOf(url: string) {
-  try { return new URL(url).hostname.replace(/^www\./, ''); }
-  catch { return url; }
-}
-
 const total = BOOKMARKS.reduce((n, c) => n + c.bookmarks.length, 0);
 ---
 
-<Layout title="Bookmarks" mainClass="max-w-6xl mx-auto px-6 py-16">
+<Layout title="Bookmarks" mainClass="max-w-4xl mx-auto px-6 py-16">
   <PageHeader
     title="Bookmarks"
     section="bookmarks"
-    description={`${total} curated tools across ${BOOKMARKS.length} categories — the sites I actually keep coming back to.`}
+    description={`${total} single-purpose, open-source tools I actually use.`}
   />
 
   <div class="bookmark-grid">
     {BOOKMARKS.map((cat) => (
-      <section class="bookmark-card">
-        <header class="bookmark-card-head">
-          <h2 class="bookmark-card-title">{cat.title}</h2>
-          {cat.description && <p class="bookmark-card-desc">{cat.description}</p>}
-        </header>
+      <section class="bookmark-section">
+        <h2 class="bookmark-section-title">{cat.title}</h2>
         <ul class="bookmark-list">
           {cat.bookmarks.map((b) => (
             <li>
-              <a class="bookmark-item" href={b.url} target="_blank" rel="noopener noreferrer">
-                <img
-                  class="bookmark-favicon"
-                  src={`https://icons.duckduckgo.com/ip3/${hostOf(b.url)}.ico`}
-                  alt=""
-                  loading="lazy"
-                  width="16"
-                  height="16"
-                />
+              <a class="bookmark-link" href={b.url} target="_blank" rel="noopener noreferrer">
                 <span class="bookmark-name">{b.name}</span>
+                <span class="bookmark-arrow" aria-hidden="true">↗</span>
                 {b.description && <span class="bookmark-desc">{b.description}</span>}
-                <span class="bookmark-host">{hostOf(b.url)}</span>
               </a>
             </li>
           ))}
