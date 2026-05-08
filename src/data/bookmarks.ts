@@ -1,4 +1,4 @@
-// Curated bookmarks — open-source tools that do one thing well.
+// Curated bookmarks — open-source tools that do ONE thing, and do it great.
 
 export type Bookmark = {
   name: string;
@@ -28,7 +28,7 @@ export const BOOKMARKS: BookmarkCategory[] = [
       {
         name: 'Pandoc',
         url: 'https://pandoc.org/',
-        description: 'Universal document converter, every format to every format',
+        description: 'Universal document converter — every format to every format',
       },
     ],
   },
@@ -43,12 +43,7 @@ export const BOOKMARKS: BookmarkCategory[] = [
       {
         name: 'ImageMagick',
         url: 'https://imagemagick.org/',
-        description: 'CLI image manipulation toolkit — resize, watermark, convert',
-      },
-      {
-        name: 'Upscayl',
-        url: 'https://upscayl.org/',
-        description: 'AI image upscaling, fully offline desktop app',
+        description: 'CLI image manipulation — resize, watermark, convert',
       },
     ],
   },
@@ -70,10 +65,40 @@ export const BOOKMARKS: BookmarkCategory[] = [
         url: 'https://mermaid.live/',
         description: 'Generate flowcharts and sequence diagrams from text',
       },
+      {
+        name: 'Asciiflow',
+        url: 'https://asciiflow.com/',
+        description: 'Draw ASCII-art diagrams to drop straight into READMEs',
+      },
     ],
   },
   {
-    title: 'Dev & Security',
+    title: 'Code',
+    bookmarks: [
+      {
+        name: 'carbon.now.sh',
+        url: 'https://carbon.now.sh/',
+        description: 'Beautiful code screenshots with syntax themes',
+      },
+      {
+        name: 'shellcheck',
+        url: 'https://www.shellcheck.net/',
+        description: 'Static analysis for shell scripts, in your browser',
+      },
+      {
+        name: 'explainshell',
+        url: 'https://explainshell.com/',
+        description: 'Paste any shell command, see each flag explained',
+      },
+      {
+        name: 'regexr',
+        url: 'https://regexr.com/',
+        description: 'Regex playground with live tokenized explanations',
+      },
+    ],
+  },
+  {
+    title: 'Reverse & CTF',
     bookmarks: [
       {
         name: 'CyberChef',
@@ -81,34 +106,19 @@ export const BOOKMARKS: BookmarkCategory[] = [
         description: 'The cyber Swiss army knife — encode, decode, transform',
       },
       {
-        name: 'IT-Tools',
-        url: 'https://it-tools.tech/',
-        description: 'Bundle of small dev utilities, all client-side',
+        name: 'Compiler Explorer',
+        url: 'https://godbolt.org/',
+        description: 'Inspect the assembly your compiler emits, live',
       },
       {
-        name: 'regexr',
-        url: 'https://regexr.com/',
-        description: 'Regex playground with live explanations',
-      },
-    ],
-  },
-  {
-    title: 'Files & Sharing',
-    bookmarks: [
-      {
-        name: '0x0.st',
-        url: 'https://0x0.st/',
-        description: 'Null-pointer file paste — single-shot, no account',
+        name: 'dogbolt',
+        url: 'https://dogbolt.org/',
+        description: 'Run a binary through every decompiler at once',
       },
       {
-        name: 'OnionShare',
-        url: 'https://onionshare.org/',
-        description: 'Anonymous file sharing through Tor',
-      },
-      {
-        name: 'Send',
-        url: 'https://send.tuta.com/',
-        description: 'End-to-end encrypted file transfer (Firefox Send fork)',
+        name: 'Aperisolve',
+        url: 'https://www.aperisolve.com/',
+        description: 'Drop an image, get every steganography tool ran on it',
       },
     ],
   },
