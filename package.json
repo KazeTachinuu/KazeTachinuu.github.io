@@ -11,7 +11,8 @@
     "build": "astro build && pagefind --site dist",
     "preview": "astro preview",
     "astro": "astro",
-    "figures": "for f in src/data/glossary-figures/*.mmd; do mmdc -i \"$f\" -o \"public/glossary/$(basename \"${f%.mmd}\").svg\" -c src/data/glossary-figures/mermaid.json -b transparent; done"
+    "figures": "for f in src/data/glossary-figures/*.mmd; do mmdc -i \"$f\" -o \"public/glossary/$(basename \"${f%.mmd}\").svg\" -c src/data/glossary-figures/mermaid.json -b transparent; done",
+    "prepare": "husky"
   },
   "dependencies": {
     "@astrojs/mdx": "^5.0.3",
@@ -42,6 +43,11 @@
   },
   "devDependencies": {
     "@mermaid-js/mermaid-cli": "^11.14.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.4.0",
     "rehype-external-links": "^3.0.0"
+  },
+  "lint-staged": {
+    "src/content/**/*.{md,mdx}": "bun run scripts/stamp-updated.ts"
   }
 }

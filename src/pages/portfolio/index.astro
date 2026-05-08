@@ -4,7 +4,7 @@ import PageHeader from '~/components/PageHeader.astro';
 import { getCollection } from 'astro:content';
 
 const projects = (await getCollection('portfolio', (e) => import.meta.env.DEV || !e.data.draft)).sort(
-  (a, b) => +new Date(b.data.date) - +new Date(a.data.date),
+  (a, b) => +new Date(b.data.updated ?? b.data.date) - +new Date(a.data.updated ?? a.data.date),
 );
 
 function ghPin(p: typeof projects[number]) {

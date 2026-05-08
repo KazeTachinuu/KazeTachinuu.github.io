@@ -1,8 +1,9 @@
 ---
 title: "Chris Titus Tools"
 description: "The Ultimate Windows Utility"
-language: "PowerShell"
+category: "Windows"
 date: 2024-06-06T17:41:36-04:00
+updated: 2026-05-08
 ---
 
 

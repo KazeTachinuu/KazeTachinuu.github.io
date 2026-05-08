@@ -41,7 +41,7 @@ const snippets = defineCollection({
     date: z.coerce.date(),
     updated: z.coerce.date().optional(),
     draft: z.boolean().default(false),
-    language: z.string().optional(),
+    category: z.string().optional(),
   }),
 });
 

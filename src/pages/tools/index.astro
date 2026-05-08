@@ -3,7 +3,9 @@ import Layout from '~/layouts/Layout.astro';
 import PageHeader from '~/components/PageHeader.astro';
 import { getCollection } from 'astro:content';
 
-const tools = await getCollection('tools', (e) => import.meta.env.DEV || !e.data.draft);
+const tools = (await getCollection('tools', (e) => import.meta.env.DEV || !e.data.draft)).sort(
+  (a, b) => +new Date(b.data.updated ?? b.data.date ?? 0) - +new Date(a.data.updated ?? a.data.date ?? 0),
+);
 ---
 
 <Layout title="Tools" mainClass="max-w-3xl mx-auto px-6 py-16">

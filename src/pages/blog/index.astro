@@ -7,7 +7,7 @@ import { fmtDateShort } from '~/lib/fmt';
 
 const posts = (
   await getCollection('blog', (e) => import.meta.env.DEV || !e.data.draft)
-).sort((a, b) => +new Date(b.data.date) - +new Date(a.data.date));
+).sort((a, b) => +new Date(b.data.updated ?? b.data.date) - +new Date(a.data.updated ?? a.data.date));
 ---
 
 <Layout title="Blog" mainClass="max-w-5xl mx-auto px-6 py-16">
@@ -24,7 +24,7 @@ const posts = (
         title={p.data.title}
         description={p.data.description}
         category={p.data.categories[0] ?? 'blog'}
-        footer={fmtDateShort(p.data.date)}
+        footer={fmtDateShort(p.data.updated ?? p.data.date)}
         draft={p.data.draft}
       />
     ))}
