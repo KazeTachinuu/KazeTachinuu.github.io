@@ -506,62 +506,69 @@ a { color: inherit; text-decoration: none; }
   }
   .row-list > li > a:hover .row-arrow { @apply opacity-100 translate-x-0; color: var(--page-text); }
 
-  /* --- Bookmarks --- */
+  /* --- Bookmarks (start.me-style widget grid) --- */
 
-  .bookmark-grid {
-    @apply grid;
-    grid-template-columns: 1fr;
-    row-gap: 3.5rem;
+  .bm-grid {
+    column-count: 1;
+    column-gap: 1.25rem;
   }
-  @media (min-width: 720px) {
-    .bookmark-grid {
-      grid-template-columns: 1fr 1fr;
-      column-gap: 4rem;
-      row-gap: 3.5rem;
-    }
+  @media (min-width: 640px) { .bm-grid { column-count: 2; } }
+  @media (min-width: 1024px) { .bm-grid { column-count: 3; } }
+
+  .bm-card {
+    @apply rounded-xl mb-5 overflow-hidden;
+    break-inside: avoid;
+    border: 1px solid var(--border);
+    background: var(--page-bg);
+    transition: border-color var(--duration-fast) var(--ease-smooth);
   }
+  .bm-card:hover { border-color: var(--color-gray-400); }
 
-  .bookmark-section { @apply min-w-0; }
-
-  .bookmark-section-title {
-    @apply text-[0.7rem] font-semibold uppercase mb-4;
-    letter-spacing: 0.18em;
+  .bm-card-head {
+    @apply flex items-baseline justify-between px-4 py-3;
+    background: var(--subtle-bg);
+    border-bottom: 1px solid var(--border);
+  }
+  .bm-card-title {
+    @apply text-[0.7rem] font-semibold uppercase m-0;
+    letter-spacing: 0.16em;
+    color: var(--page-text);
+  }
+  .bm-card-count {
+    @apply font-mono text-[0.65rem] tabular-nums;
     color: var(--muted);
   }
 
-  .bookmark-list { @apply list-none p-0 m-0; }
-  .bookmark-list > li + li {
+  .bm-card-list { @apply list-none p-1.5 m-0; }
+  .bm-card-list > li + li {
     border-top: 1px solid var(--border);
+    margin-top: 0.125rem;
+    padding-top: 0.125rem;
   }
 
-  .bookmark-link {
-    @apply grid items-baseline gap-x-3 py-3 px-2 -mx-2 rounded-md;
+  .bm-link {
+    @apply grid items-baseline gap-x-3 px-2.5 py-2 rounded-md;
     grid-template-columns: 1fr auto;
     color: var(--page-text);
     transition: background-color var(--duration-fast) var(--ease-smooth);
   }
-  .bookmark-link:hover { background: var(--subtle-bg); }
+  .bm-link:hover { background: var(--subtle-bg); }
 
-  .bookmark-name {
-    @apply font-medium tracking-tight;
-    font-size: 0.95rem;
-    color: var(--page-text);
+  .bm-link-name {
+    @apply text-sm font-medium tracking-tight truncate;
   }
-
-  .bookmark-arrow {
+  .bm-link-arrow {
     @apply text-xs justify-self-end;
     color: var(--color-gray-300);
     transition: color var(--duration-fast) var(--ease-smooth),
       transform var(--duration-fast) var(--ease-smooth);
   }
-  .bookmark-link:hover .bookmark-arrow {
+  .bm-link:hover .bm-link-arrow {
     color: var(--page-text);
     transform: translate(2px, -2px);
   }
-
-  .bookmark-desc {
-    @apply col-start-1 col-span-2 mt-1 leading-snug;
-    font-size: 0.8125rem;
+  .bm-link-desc {
+    @apply col-start-1 col-span-2 text-[0.75rem] leading-snug mt-0.5;
     color: var(--muted);
   }
 

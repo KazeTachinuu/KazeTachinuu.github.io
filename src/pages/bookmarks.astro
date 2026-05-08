@@ -6,29 +6,32 @@ import { BOOKMARKS } from '~/data/bookmarks';
 const total = BOOKMARKS.reduce((n, c) => n + c.bookmarks.length, 0);
 ---
 
-<Layout title="Bookmarks" mainClass="max-w-4xl mx-auto px-6 py-16">
+<Layout title="Bookmarks" mainClass="max-w-5xl mx-auto px-6 py-16">
   <PageHeader
     title="Bookmarks"
     section="bookmarks"
     description={`${total} single-purpose, open-source tools I actually use.`}
   />
 
-  <div class="bookmark-grid">
+  <div class="bm-grid">
     {BOOKMARKS.map((cat) => (
-      <section class="bookmark-section">
-        <h2 class="bookmark-section-title">{cat.title}</h2>
-        <ul class="bookmark-list">
+      <article class="bm-card">
+        <header class="bm-card-head">
+          <h2 class="bm-card-title">{cat.title}</h2>
+          <span class="bm-card-count">{cat.bookmarks.length}</span>
+        </header>
+        <ul class="bm-card-list">
           {cat.bookmarks.map((b) => (
             <li>
-              <a class="bookmark-link" href={b.url} target="_blank" rel="noopener noreferrer">
-                <span class="bookmark-name">{b.name}</span>
-                <span class="bookmark-arrow" aria-hidden="true">↗</span>
-                {b.description && <span class="bookmark-desc">{b.description}</span>}
+              <a class="bm-link" href={b.url} target="_blank" rel="noopener noreferrer">
+                <span class="bm-link-name">{b.name}</span>
+                <span class="bm-link-arrow" aria-hidden="true">↗</span>
+                {b.description && <span class="bm-link-desc">{b.description}</span>}
               </a>
             </li>
           ))}
         </ul>
-      </section>
+      </article>
     ))}
   </div>
 </Layout>

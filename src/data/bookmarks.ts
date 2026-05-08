@@ -1,4 +1,8 @@
 // Curated bookmarks — open-source tools that do ONE thing, and do it great.
+//
+// Add a tool: push a new entry into a category's `bookmarks` array.
+// Add a category: append a new object below.
+// Order of categories = display order. Order within `bookmarks` = display order.
 
 export type Bookmark = {
   name: string;
