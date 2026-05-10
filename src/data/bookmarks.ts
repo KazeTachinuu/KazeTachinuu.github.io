@@ -1,9 +1,6 @@
 /**
- * Curated bookmarks — open-source tools that do ONE thing, and do it great.
- *
- * Add a tool      → append `{ name, url, description }` to a category's array.
- * Add a category  → add a new key below. Display order = insertion order.
- * Reorder         → rearrange entries; everything is rendered as authored.
+ * Curated bookmarks — one pick per job.
+ * The tool I'd actually name if asked.
  */
 
 export type Bookmark = {
@@ -13,103 +10,185 @@ export type Bookmark = {
 };
 
 export const BOOKMARKS = {
-  'PDF & Documents': [
+  "Code & Shell": [
     {
-      name: 'Stirling-PDF',
-      url: 'https://github.com/Stirling-Tools/Stirling-PDF',
-      description: 'Self-hosted PDF toolkit — watermark, merge, split, redact',
+      name: "ray.so",
+      url: "https://ray.so/",
+      description: "Code screenshots, fast and sane",
     },
     {
-      name: 'OCRmyPDF',
-      url: 'https://github.com/ocrmypdf/OCRmyPDF',
-      description: 'Adds a searchable OCR text layer to scanned PDFs',
+      name: "regex101",
+      url: "https://regex101.com/",
+      description: "Regex playground with a real explainer",
+    },
+  ],
+
+  "Reverse Engineering": [
+    {
+      name: "CyberChef",
+      url: "https://gchq.github.io/CyberChef/",
+      description: "Cyber Swiss army knife — 477 ops, all local",
     },
     {
-      name: 'Pandoc',
-      url: 'https://pandoc.org/',
-      description: 'Universal document converter — every format to every format',
+      name: "Compiler Explorer",
+      url: "https://godbolt.org/",
+      description: "See the assembly your compiler emits",
+    },
+    {
+      name: "dogbolt",
+      url: "https://dogbolt.org/",
+      description: "Every decompiler, side by side, on one binary",
+    },
+    {
+      name: "felixcloutier x86",
+      url: "https://www.felixcloutier.com/x86/",
+      description: "Searchable Intel SDM, one instruction per page",
+    },
+    {
+      name: "asm-lookup",
+      url: "/tools/asm-lookup",
+      description: "AT&T x86-64 instruction lookup — mine",
+    },
+    {
+      name: "hexed.it",
+      url: "https://hexed.it/",
+      description: "Browser hex editor that actually works",
+    },
+  ],
+
+  "CTF & Crypto": [
+    {
+      name: "dcode.fr",
+      url: "https://www.dcode.fr/en",
+      description: "900+ ciphers and codes, auto-identified",
+    },
+    {
+      name: "CrackStation",
+      url: "https://crackstation.net/",
+      description: "Hash lookup before firing up hashcat",
+    },
+    {
+      name: "Aperi'Solve",
+      url: "https://www.aperisolve.com/",
+      description: "Drop an image, every stego tool runs on it",
+    },
+    {
+      name: "libc.rip",
+      url: "https://libc.rip/",
+      description: "Identify libc from leaked offsets, for ret2libc",
+    },
+    {
+      name: "GTFOBins",
+      url: "https://gtfobins.github.io/",
+      description: "Unix binaries for privesc and bypass",
+    },
+    {
+      name: "LOLBAS",
+      url: "https://lolbas-project.github.io/",
+      description: "Windows living-off-the-land binaries",
+    },
+  ],
+
+  Drawing: [
+    {
+      name: "Excalidraw",
+      url: "https://excalidraw.com/",
+      description: "Hand-drawn whiteboard, my default sketch",
+    },
+    {
+      name: "Mermaid Live",
+      url: "https://mermaid.live/",
+      description: "Diagrams from text that render in any README",
+    },
+    {
+      name: "Asciiflow",
+      url: "https://asciiflow.com/",
+      description: "ASCII art for code comments and READMEs",
     },
   ],
 
   Images: [
     {
-      name: 'Squoosh',
-      url: 'https://squoosh.app/',
-      description: 'In-browser image compression with side-by-side preview',
+      name: "Squoosh",
+      url: "https://squoosh.app/",
+      description: "In-browser compression, A/B every codec",
     },
     {
-      name: 'ImageMagick',
-      url: 'https://imagemagick.org/',
-      description: 'CLI image manipulation — resize, watermark, convert',
-    },
-  ],
-
-  Diagrams: [
-    {
-      name: 'Excalidraw',
-      url: 'https://excalidraw.com/',
-      description: 'Hand-drawn-style virtual whiteboard',
+      name: "Photopea",
+      url: "https://www.photopea.com/",
+      description: "Photoshop in the browser, opens PSDs",
     },
     {
-      name: 'draw.io',
-      url: 'https://app.diagrams.net/',
-      description: 'Comprehensive diagramming, runs in-browser',
-    },
-    {
-      name: 'Mermaid Live',
-      url: 'https://mermaid.live/',
-      description: 'Generate flowcharts and sequence diagrams from text',
-    },
-    {
-      name: 'Asciiflow',
-      url: 'https://asciiflow.com/',
-      description: 'Draw ASCII-art diagrams to drop straight into READMEs',
+      name: "SVGOMG",
+      url: "https://jakearchibald.github.io/svgomg/",
+      description: "SVG optimizer with every toggle exposed",
     },
   ],
 
-  Code: [
+  "Privacy & Hide": [
     {
-      name: 'carbon.now.sh',
-      url: 'https://carbon.now.sh/',
-      description: 'Beautiful code screenshots with syntax themes',
+      name: "SimpleLogin",
+      url: "https://simplelogin.io/",
+      description: "Long-term email aliases I keep around",
     },
     {
-      name: 'shellcheck',
-      url: 'https://www.shellcheck.net/',
-      description: 'Static analysis for shell scripts, in your browser',
+      name: "mail.tm",
+      url: "https://mail.tm/",
+      description: "Throwaway inbox when a site demands an email",
     },
     {
-      name: 'explainshell',
-      url: 'https://explainshell.com/',
-      description: 'Paste any shell command, see each flag explained',
-    },
-    {
-      name: 'regexr',
-      url: 'https://regexr.com/',
-      description: 'Regex playground with live tokenized explanations',
+      name: "nadanada.me",
+      url: "https://nadanada.me/",
+      description: "Anonymous UK phone numbers, crypto-pay",
     },
   ],
 
-  'Reverse & CTF': [
+  "Audit One Shot": [
     {
-      name: 'CyberChef',
-      url: 'https://gchq.github.io/CyberChef/',
-      description: 'The cyber Swiss army knife — encode, decode, transform',
+      name: "ipleak.net",
+      url: "https://ipleak.net/",
+      description: "IP, DNS, WebRTC — what your browser is leaking",
     },
     {
-      name: 'Compiler Explorer',
-      url: 'https://godbolt.org/',
-      description: 'Inspect the assembly your compiler emits, live',
+      name: "Cover Your Tracks",
+      url: "https://coveryourtracks.eff.org/",
+      description: "EFF fingerprint and tracker audit",
+    },
+  ],
+
+  Leaks: [
+    {
+      name: "HaveIBeenPwned",
+      url: "https://haveibeenpwned.com/",
+      description: "Free email and domain breach lookup — the baseline",
     },
     {
-      name: 'dogbolt',
-      url: 'https://dogbolt.org/',
-      description: 'Run a binary through every decompiler at once',
+      name: "DeHashed",
+      url: "https://dehashed.com/",
+      description: "Credential breach search across leaked databases",
     },
     {
-      name: 'Aperisolve',
-      url: 'https://www.aperisolve.com/',
-      description: 'Drop an image, get every steganography tool ran on it',
+      name: "IntelX",
+      url: "https://intelx.io/",
+      description: "Intel search across leaks, pastes, darknet",
+    },
+    {
+      name: "LeakIX",
+      url: "https://leakix.net/",
+      description: "Exposed services, open databases, public leaks",
+    },
+  ],
+
+  "Build a Legend": [
+    {
+      name: "Fake Name Generator",
+      url: "https://www.fakenamegenerator.com/",
+      description: "Coherent identity — name, DOB, address, employment",
+    },
+    {
+      name: "This Person Does Not Exist",
+      url: "https://thispersondoesnotexist.com/",
+      description: "StyleGAN face per refresh — the persona photo",
     },
   ],
 } as const satisfies Record<string, readonly Bookmark[]>;
