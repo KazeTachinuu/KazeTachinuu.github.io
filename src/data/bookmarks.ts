@@ -69,6 +69,11 @@ export const BOOKMARKS = {
       url: "https://syscalls.mebeim.net/",
       description: "Linux syscall tables, every arch and kernel",
     },
+    {
+      name: "Hashlookup",
+      url: "https://hashlookup.circl.lu/",
+      description: "Hash known-good lookup against NSRL — by CIRCL",
+    },
   ],
 
   "CTF & Crypto": [
@@ -76,11 +81,6 @@ export const BOOKMARKS = {
       name: "dcode.fr",
       url: "https://www.dcode.fr/en",
       description: "900+ ciphers and codes, auto-identified",
-    },
-    {
-      name: "Name-That-Hash",
-      url: "https://nth.skerritt.blog/",
-      description: "Identify the hash type before you crack it",
     },
     {
       name: "CrackStation",
@@ -101,11 +101,6 @@ export const BOOKMARKS = {
       name: "GTFOBins",
       url: "https://gtfobins.github.io/",
       description: "Unix binaries for privesc and bypass",
-    },
-    {
-      name: "LOLBAS",
-      url: "https://lolbas-project.github.io/",
-      description: "Windows living-off-the-land binaries",
     },
   ],
 
@@ -139,11 +134,6 @@ export const BOOKMARKS = {
       description: "Photoshop in the browser, opens PSDs",
     },
     {
-      name: "SVGOMG",
-      url: "https://jakearchibald.github.io/svgomg/",
-      description: "SVG optimizer with every toggle exposed",
-    },
-    {
       name: "Yandex Images",
       url: "https://yandex.com/images/",
       description: "Reverse image search — beats Google on faces and EU/RU",
@@ -160,6 +150,11 @@ export const BOOKMARKS = {
       name: "MuPDF WebViewer",
       url: "https://webviewer.mupdf.com/",
       description: "Annotate, sign, truly destructive redaction — all local",
+    },
+    {
+      name: "Pandora",
+      url: "https://pandora.circl.lu/",
+      description: "Drop a suspicious file, full malware analysis — by CIRCL",
     },
   ],
 
@@ -179,18 +174,10 @@ export const BOOKMARKS = {
       url: "https://nadanada.me/",
       description: "Anonymous UK phone numbers, crypto-pay",
     },
-  ],
-
-  "Audit One Shot": [
     {
       name: "ipleak.net",
       url: "https://ipleak.net/",
       description: "IP, DNS, WebRTC — what your browser is leaking",
-    },
-    {
-      name: "Cover Your Tracks",
-      url: "https://coveryourtracks.eff.org/",
-      description: "EFF fingerprint and tracker audit",
     },
   ],
 
@@ -237,6 +224,11 @@ export const BOOKMARKS = {
       name: "urlscan.io",
       url: "https://urlscan.io/",
       description: "Detonate a URL, see what it actually does",
+    },
+    {
+      name: "Lookyloo",
+      url: "https://lookyloo.circl.lu/",
+      description: "Capture a URL, visualize its redirect tree — by CIRCL",
     },
     {
       name: "Wayback Machine",
