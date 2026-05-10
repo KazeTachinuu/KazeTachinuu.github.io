@@ -21,6 +21,11 @@ export const BOOKMARKS = {
       url: "https://regex101.com/",
       description: "Regex playground with a real explainer",
     },
+    {
+      name: "jwt.io",
+      url: "https://jwt.io/",
+      description: "Decode JWTs — never paste production tokens",
+    },
   ],
 
   "Reverse Engineering": [
@@ -54,6 +59,16 @@ export const BOOKMARKS = {
       url: "https://hexed.it/",
       description: "Browser hex editor that actually works",
     },
+    {
+      name: "defuse.ca x86",
+      url: "https://defuse.ca/online-x86-assembler.htm",
+      description: "Paste asm → bytes, paste bytes → asm",
+    },
+    {
+      name: "syscalls.mebeim",
+      url: "https://syscalls.mebeim.net/",
+      description: "Linux syscall tables, every arch and kernel",
+    },
   ],
 
   "CTF & Crypto": [
@@ -61,6 +76,11 @@ export const BOOKMARKS = {
       name: "dcode.fr",
       url: "https://www.dcode.fr/en",
       description: "900+ ciphers and codes, auto-identified",
+    },
+    {
+      name: "Name-That-Hash",
+      url: "https://nth.skerritt.blog/",
+      description: "Identify the hash type before you crack it",
     },
     {
       name: "CrackStation",
@@ -123,6 +143,24 @@ export const BOOKMARKS = {
       url: "https://jakearchibald.github.io/svgomg/",
       description: "SVG optimizer with every toggle exposed",
     },
+    {
+      name: "Yandex Images",
+      url: "https://yandex.com/images/",
+      description: "Reverse image search — beats Google on faces and EU/RU",
+    },
+  ],
+
+  "PDF & Documents": [
+    {
+      name: "LocalPDF",
+      url: "https://localpdf.online/",
+      description: "Swiss-army PDF — merge, split, watermark, all browser-local",
+    },
+    {
+      name: "MuPDF WebViewer",
+      url: "https://webviewer.mupdf.com/",
+      description: "Annotate, sign, truly destructive redaction — all local",
+    },
   ],
 
   "Privacy & Hide": [
@@ -176,6 +214,34 @@ export const BOOKMARKS = {
       name: "LeakIX",
       url: "https://leakix.net/",
       description: "Exposed services, open databases, public leaks",
+    },
+    {
+      name: "HudsonRock Cavalier",
+      url: "https://cavalier.hudsonrock.com/",
+      description: "Stealer-log exposure check — what HIBP misses",
+    },
+  ],
+
+  OSINT: [
+    {
+      name: "WhatsMyName",
+      url: "https://whatsmyname.app/",
+      description: "Username search across 600+ sites",
+    },
+    {
+      name: "crt.sh",
+      url: "https://crt.sh/",
+      description: "Subdomain enum via Certificate Transparency",
+    },
+    {
+      name: "urlscan.io",
+      url: "https://urlscan.io/",
+      description: "Detonate a URL, see what it actually does",
+    },
+    {
+      name: "Wayback Machine",
+      url: "https://web.archive.org/",
+      description: "View a page as it existed on any date",
     },
   ],
 
