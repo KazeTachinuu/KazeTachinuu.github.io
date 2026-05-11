@@ -19,7 +19,7 @@ export const BOOKMARKS = {
     {
       name: "regex101",
       url: "https://regex101.com/",
-      description: "Regex playground with a real explainer",
+      description: "Regex tester with token-by-token explainer",
     },
     {
       name: "jwt.io",
@@ -57,7 +57,7 @@ export const BOOKMARKS = {
     {
       name: "hexed.it",
       url: "https://hexed.it/",
-      description: "Browser hex editor that actually works",
+      description: "Hex editor in the browser, no install",
     },
     {
       name: "defuse.ca x86",
@@ -136,7 +136,7 @@ export const BOOKMARKS = {
     {
       name: "Yandex Images",
       url: "https://yandex.com/images/",
-      description: "Reverse image search — beats Google on faces and EU/RU",
+      description: "Reverse image search — faces and EU/RU coverage",
     },
   ],
 
@@ -144,7 +144,7 @@ export const BOOKMARKS = {
     {
       name: "LocalPDF",
       url: "https://localpdf.online/",
-      description: "Swiss-army PDF — merge, split, watermark, all browser-local",
+      description: "Merge, split, watermark, OCR — all browser-local",
     },
     {
       name: "MuPDF WebViewer",
@@ -154,7 +154,7 @@ export const BOOKMARKS = {
     {
       name: "Pandora",
       url: "https://pandora.circl.lu/",
-      description: "Drop a suspicious file, full malware analysis — by CIRCL",
+      description: "Drop a suspicious file, every analyzer runs on it — by CIRCL",
     },
   ],
 
@@ -223,7 +223,7 @@ export const BOOKMARKS = {
     {
       name: "urlscan.io",
       url: "https://urlscan.io/",
-      description: "Detonate a URL, see what it actually does",
+      description: "Detonate a URL, see its requests and behavior",
     },
     {
       name: "Lookyloo",
