@@ -613,6 +613,84 @@
 }
 
 /* ─────────────────────────────────────────────────────────────────────────
+   Article typography — sans body (Wotfard, site default), tighter
+   hierarchy, justified prose. Newsreader is loaded italic-only site-wide
+   so we use serif italic only for the em emphasis. */
+
+.article-main .prose {
+  font-size: 1.0625rem;
+  line-height: 1.7;
+  letter-spacing: -0.003em;
+}
+
+.article-main .prose :where(p, blockquote):not(:where([class~="not-prose"] *)) {
+  text-align: justify;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+}
+
+.article-main .prose :where(h2):not(:where([class~="not-prose"] *)) {
+  font-size: 1.875rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  margin-top: 3.5rem;
+  margin-bottom: 0.875rem;
+}
+
+.article-main .prose :where(h3):not(:where([class~="not-prose"] *)) {
+  font-size: 1.375rem;
+  font-weight: 700;
+  letter-spacing: -0.012em;
+  line-height: 1.25;
+  margin-top: 2.25rem;
+  margin-bottom: 0.5rem;
+}
+
+.article-main .prose :where(h4):not(:where([class~="not-prose"] *)) {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  margin-top: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Em uses Newsreader italic (the one variant actually loaded) — gives
+   editorial accent without breaking the body. */
+.article-main .prose :where(em):not(:where([class~="not-prose"] *)) {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 500;
+}
+
+/* Code blocks: shrink the font and never wrap. On wide viewports the
+   block also breaks out a few rem on each side (using the unused margin
+   around the centered article). Targets this page only. */
+.article-main figure.expressive-code pre,
+.article-main figure.expressive-code pre code,
+.article-main figure.expressive-code .ec-line,
+.article-main figure.expressive-code .ec-line .code {
+  font-size: 0.78rem;
+  line-height: 1.55;
+  white-space: pre;
+  word-break: normal;
+  overflow-wrap: normal;
+}
+.article-main figure.expressive-code pre {
+  overflow-x: auto;
+}
+@media (min-width: 1024px) {
+  .article-main figure.expressive-code {
+    margin-left: -3rem;
+    margin-right: -3rem;
+    max-width: calc(100% + 6rem);
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
    Asm line highlight (Act IV · The resolver) - Expressive Code's built-in
    {N} line-mark syntax is intercepted by MDX in this Astro setup, so we
    target the 13th .ec-line of the single asm block on this page (the
@@ -1197,184 +1275,6 @@
 }
 
 /* ─────────────────────────────────────────────────────────────────────────
-   Auth-flow diagram (Act IV · The hook) - three-step illustration of
-   how a crafted SSH cert flows through the rewritten GOT into system().
-   HTML/CSS hybrid: SVG only for the inner cert-structure visual, the rest
-   is plain HTML so explanations can wrap and stay readable on mobile.
-───────────────────────────────────────────────────────────────────────── */
-
-.xz-authflow {
-  margin: 2rem 0 1.5rem;
-  max-width: 760px;
-  margin-inline: auto;
-  color: var(--page-text);
-  font-family: var(--font-sans, system-ui, sans-serif);
-}
-
-.xz-authflow-eyebrow {
-  text-align: center;
-  font-family: var(--font-mono, JetBrains Mono);
-  font-size: 0.78rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--text-secondary);
-  margin: 0 0 1.25rem;
-}
-
-.xz-authflow-step {
-  display: grid;
-  grid-template-columns: 2.75rem 1fr;
-  gap: 1.1rem;
-  align-items: start;
-  padding: 1.25rem 1.4rem;
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  background: var(--page-bg);
-}
-
-.xz-authflow-num {
-  width: 2.4rem;
-  height: 2.4rem;
-  border-radius: 999px;
-  background: var(--xz-attacker);
-  color: var(--page-bg);
-  display: grid;
-  place-items: center;
-  font-family: var(--font-mono, JetBrains Mono);
-  font-weight: 700;
-  font-size: 1.1rem;
-  line-height: 1;
-}
-
-.xz-authflow-body {
-  min-width: 0;
-}
-
-.xz-authflow-body h4 {
-  margin: 0.15rem 0 0.55rem;
-  font-size: 1.08rem;
-  font-weight: 700;
-  line-height: 1.3;
-  color: var(--page-text);
-}
-
-.xz-authflow-body p {
-  margin: 0 0 0.7rem;
-  font-size: 0.95rem;
-  line-height: 1.6;
-  color: var(--page-text);
-}
-
-.xz-authflow-body p:last-child {
-  margin-bottom: 0;
-}
-
-.xz-authflow-body code {
-  font-family: var(--font-mono, JetBrains Mono);
-  font-size: 0.88em;
-  background: color-mix(in srgb, var(--page-text) 6%, transparent);
-  padding: 0.05em 0.35em;
-  border-radius: 3px;
-  color: var(--page-text);
-}
-
-.xz-authflow-body code.is-att {
-  color: var(--xz-attacker);
-  font-weight: 700;
-  background: color-mix(in oklch, var(--xz-attacker) 14%, var(--page-bg));
-}
-
-.xz-authflow-body .xz-authflow-note {
-  font-size: 0.875rem;
-  color: var(--text-secondary);
-  line-height: 1.55;
-}
-
-.xz-authflow-cert {
-  width: 100%;
-  height: auto;
-  max-width: 540px;
-  display: block;
-  margin: 0.75rem 0 1rem;
-}
-
-.xz-authflow-redirect {
-  display: flex;
-  align-items: center;
-  gap: 0.7rem;
-  justify-content: center;
-  flex-wrap: wrap;
-  padding: 0.85rem 1rem;
-  margin: 0.85rem 0 0.9rem;
-  border: 1.5px solid var(--xz-attacker);
-  border-radius: 6px;
-  background: color-mix(in oklch, var(--xz-attacker) 8%, var(--page-bg));
-}
-
-.xz-authflow-redirect code {
-  background: none;
-  padding: 0;
-  font-size: 0.92rem;
-}
-
-.xz-authflow-redirect-arrow {
-  color: var(--xz-attacker);
-  font-weight: 700;
-  font-size: 1.25rem;
-  line-height: 1;
-}
-
-.xz-authflow-actions {
-  margin: 0.5rem 0 0.85rem;
-  padding-left: 1.5rem;
-  font-size: 0.95rem;
-  line-height: 1.6;
-  color: var(--page-text);
-}
-
-.xz-authflow-actions li {
-  margin: 0.15rem 0;
-}
-
-.xz-authflow-actions li code {
-  font-size: 0.9em;
-}
-
-.xz-authflow-outcome {
-  margin-top: 0.85rem !important;
-  padding: 0.75rem 0.95rem !important;
-  border-left: 3px solid var(--xz-attacker);
-  background: color-mix(in oklch, var(--xz-attacker) 6%, var(--page-bg));
-  border-radius: 0 5px 5px 0;
-  font-size: 0.95rem !important;
-}
-
-.xz-authflow-link {
-  text-align: center;
-  font-size: 1.6rem;
-  line-height: 1;
-  color: var(--xz-attacker);
-  margin: 0.4rem 0;
-}
-
-@media (max-width: 540px) {
-  .xz-authflow-step {
-    grid-template-columns: 2.25rem 1fr;
-    gap: 0.85rem;
-    padding: 1rem 1.1rem;
-  }
-  .xz-authflow-num {
-    width: 2.1rem;
-    height: 2.1rem;
-    font-size: 1rem;
-  }
-  .xz-authflow-body h4 {
-    font-size: 1rem;
-  }
-}
-
-/* ─────────────────────────────────────────────────────────────────────────
    Attribution chart - small inline bar chart for Jia Tan commit counts
    by weekday (Karty/Henniger). Solid colors, no transparency washes.
 ───────────────────────────────────────────────────────────────────────── */
@@ -1592,4 +1492,331 @@
 @media (max-width: 540px) {
   .xz-tzmap-label-where { display: none; }
   .xz-tzmap-label-tz { font-size: 12px; }
+}
+
+/* GOT before/after — sshd's function-pointer table after the IFUNC resolver
+   (one row rewritten, the rest byte-identical) */
+.xz-gotrewrite {
+  margin: 1.5rem 0;
+}
+.xz-gotrewrite-eyebrow {
+  font-family: var(--font-mono);
+  font-size: var(--xz-fs-xs);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  margin: 0 0 0.75rem;
+}
+.xz-gotrewrite-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+.xz-gotrewrite-col {
+  background: var(--subtle-bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 1rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+}
+.xz-gotrewrite-col.is-after {
+  border-color: var(--xz-attacker);
+  background: var(--xz-attacker-bg);
+}
+.xz-gotrewrite-h {
+  font-family: var(--font-mono);
+  font-size: var(--xz-fs-xs);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  margin: 0 0 0.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border);
+  font-weight: 500;
+}
+.xz-gotrewrite-col.is-after .xz-gotrewrite-h {
+  color: var(--xz-attacker);
+  border-bottom-color: color-mix(in oklch, var(--xz-attacker) 35%, transparent);
+}
+.xz-gotrewrite-rows {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: var(--xz-fs-md);
+  line-height: 1.5;
+}
+.xz-gotrewrite-rows li {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 0.3rem 0;
+  gap: 1rem;
+}
+.xz-gotrewrite-rows li span { color: var(--text-secondary); }
+.xz-gotrewrite-rows li.is-muted code,
+.xz-gotrewrite-rows li.is-muted span { color: var(--muted); }
+.xz-gotrewrite-rows li.is-poisoned {
+  background: color-mix(in oklch, var(--xz-attacker) 14%, transparent);
+  margin: 0 -0.5rem;
+  padding: 0.3rem 0.5rem 0.3rem 0.4rem;
+  border-radius: 4px;
+  border-left: 2px solid var(--xz-attacker);
+}
+.xz-gotrewrite-rows li.is-poisoned code,
+.xz-gotrewrite-rows li.is-poisoned span {
+  color: var(--xz-attacker);
+  font-weight: 600;
+}
+.xz-gotrewrite figcaption {
+  margin-top: 0.6rem;
+  font-size: 0.9375rem;
+  color: var(--text-secondary);
+  font-style: italic;
+  font-family: var(--font-sans, system-ui, sans-serif);
+  line-height: 1.55;
+  max-width: 64ch;
+}
+@media (max-width: 640px) {
+  .xz-gotrewrite-grid { grid-template-columns: 1fr; }
+}
+
+/* Path-in chain — two patches and one transitive dep bring liblzma into sshd
+   (Act IV · The path). Vertical chain of nodes with "why" annotations between. */
+.xz-pathin {
+  margin: 1.5rem 0;
+  max-width: 760px;
+}
+.xz-pathin-eyebrow {
+  font-family: var(--font-mono);
+  font-size: var(--xz-fs-xs);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  margin: 0 0 0.85rem;
+}
+.xz-pathin-node {
+  padding: 0.7rem 1rem;
+  background: var(--subtle-bg);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--xz-defender);
+  border-radius: 6px;
+  display: flex;
+  align-items: baseline;
+  gap: 0.85rem;
+  flex-wrap: wrap;
+}
+.xz-pathin-node.is-attacker {
+  border-color: var(--xz-attacker);
+  border-left-color: var(--xz-attacker);
+  background: var(--xz-attacker-bg);
+}
+.xz-pathin-node code {
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  color: var(--text);
+  font-weight: 600;
+  background: none;
+  padding: 0;
+}
+.xz-pathin-node.is-attacker code { color: var(--xz-attacker); }
+.xz-pathin-node > span {
+  font-family: var(--font-sans, system-ui, sans-serif);
+  font-style: italic;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+.xz-pathin-link {
+  margin-left: 1rem;
+  padding: 0.55rem 0 0.55rem 1.5rem;
+  border-left: 1px dashed var(--border);
+  display: grid;
+  grid-template-columns: 1.25rem 1fr;
+  gap: 0.5rem;
+  align-items: start;
+}
+.xz-pathin-link .arrow {
+  color: var(--text-secondary);
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  line-height: 1.4;
+}
+.xz-pathin-link > div {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+.xz-pathin-link .h {
+  font-family: var(--font-mono);
+  font-size: var(--xz-fs-md);
+  color: var(--text);
+}
+.xz-pathin-link .h code {
+  background: none;
+  padding: 0;
+  color: var(--xz-attacker);
+  font-size: inherit;
+}
+.xz-pathin-link .p {
+  font-family: var(--font-sans, system-ui, sans-serif);
+  font-style: italic;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+/* The stub — what runs when the hijacked RSA_public_decrypt is called
+   (the cert structure, then the 3 calls inside the stub) */
+.xz-stub {
+  margin: 1.75rem 0;
+}
+.xz-stub-eyebrow {
+  font-family: var(--font-mono);
+  font-size: var(--xz-fs-xs);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  margin: 0 0 1rem;
+}
+
+/* Cert block */
+.xz-stub-cert {
+  background: var(--subtle-bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 1.1rem 1.25rem 1.25rem;
+  margin-bottom: 1rem;
+}
+.xz-stub-cert-h {
+  font-family: var(--font-mono);
+  font-size: var(--xz-fs-xs);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  margin: 0 0 0.85rem;
+}
+.xz-stub-cert-svg {
+  display: block;
+  width: 100%;
+  max-width: 540px;
+  height: auto;
+}
+.xz-stub-cert-view {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 0.4rem 1.25rem;
+  margin: 1rem 0 0;
+  font-family: var(--font-mono);
+  font-size: var(--xz-fs-md);
+  align-items: baseline;
+}
+.xz-stub-cert-view dt {
+  color: var(--muted);
+  font-size: var(--xz-fs-xs);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+.xz-stub-cert-view dd {
+  margin: 0;
+  color: var(--text-secondary);
+}
+.xz-stub-cert-view dd.is-att {
+  color: var(--xz-attacker);
+  font-weight: 600;
+}
+
+/* The stub flow */
+.xz-stub-flow {
+  background: var(--subtle-bg);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--xz-attacker);
+  border-radius: 6px;
+  padding: 0 1.25rem 0.85rem;
+}
+.xz-stub-flow-h {
+  display: flex;
+  gap: 0.75rem;
+  align-items: baseline;
+  padding: 0.85rem 0 0.75rem;
+  border-bottom: 1px solid var(--border);
+  flex-wrap: wrap;
+}
+.xz-stub-flow-tag {
+  font-family: var(--font-mono);
+  font-size: var(--xz-fs-3xs);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--xz-attacker);
+  padding: 0.15rem 0.5rem;
+  border: 1px solid var(--xz-attacker);
+  border-radius: 3px;
+}
+.xz-stub-flow-fn {
+  font-family: var(--font-mono);
+  font-size: var(--xz-fs-md);
+  color: var(--text);
+}
+.xz-stub-flow-fn s {
+  color: var(--muted);
+  text-decoration-color: var(--xz-attacker);
+}
+.xz-stub-flow-steps {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.xz-stub-flow-steps li {
+  display: grid;
+  grid-template-columns: 2.25rem 1fr;
+  gap: 0.75rem;
+  padding: 0.7rem 0;
+  border-top: 1px solid var(--border);
+  align-items: baseline;
+}
+.xz-stub-flow-steps li:first-child { border-top: 0; }
+.xz-stub-flow-steps li .n {
+  font-family: var(--font-mono);
+  font-size: var(--xz-fs-2xs);
+  letter-spacing: 0.18em;
+  color: var(--xz-attacker);
+  padding-top: 0.15rem;
+}
+.xz-stub-flow-steps li > div {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+.xz-stub-flow-steps li .call {
+  font-family: var(--font-mono);
+  font-size: var(--xz-fs-md);
+  color: var(--text);
+}
+.xz-stub-flow-steps li .call em {
+  color: var(--text-secondary);
+  font-style: normal;
+}
+.xz-stub-flow-steps li .call strong {
+  color: var(--xz-attacker);
+  font-weight: 600;
+}
+.xz-stub-flow-steps li .note {
+  font-family: var(--font-sans, system-ui, sans-serif);
+  font-style: italic;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  line-height: 1.45;
+}
+.xz-stub-flow-steps li.is-terminal .call {
+  color: var(--xz-attacker);
+}
+
+.xz-stub figcaption {
+  margin-top: 0.75rem;
+  font-size: 0.9375rem;
+  color: var(--text-secondary);
+  font-style: italic;
+  font-family: var(--font-sans, system-ui, sans-serif);
+  line-height: 1.55;
+  max-width: 72ch;
 }
