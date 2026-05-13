@@ -1,0 +1,709 @@
+/* =============================================================================
+ * Print stylesheet for blog/xz-backdoor/
+ *
+ * Print strategy: preserve the article's visual language instead of flattening
+ * it into a generic report. We force a light paper palette, keep the ember/slate
+ * accents, disable interactive-only chrome, and make every diagram static and
+ * page-break aware for Chromium/Safari browser PDF export.
+ * ========================================================================== */
+
+@media print {
+  @page {
+    size: A4;
+    margin: 15mm 13mm 17mm;
+  }
+
+  :root,
+  :root.dark,
+  html.dark,
+  html.light {
+    color-scheme: light only;
+    --page-bg: #ffffff !important;
+    --page-text: #111827 !important;
+    --text: #111827 !important;
+    --text-secondary: #374151 !important;
+    --muted: #6b7280 !important;
+    --border: #d7dce2 !important;
+    --subtle-bg: #f7f8fa !important;
+    --code-bg: #f3f5f7 !important;
+    --accent: #1f5f99 !important;
+    --xz-attacker: #b84d2a !important;
+    --xz-defender: #255f9f !important;
+    --xz-infra: #6b7280 !important;
+    --xz-attacker-bg: #fbebe4 !important;
+    --xz-defender-bg: #eaf2fb !important;
+  }
+
+  *, *::before, *::after {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+    animation: none !important;
+    transition: none !important;
+  }
+
+  html, body {
+    margin: 0 !important;
+    background: var(--page-bg) !important;
+    color: var(--page-text) !important;
+    font-size: 10.6pt !important;
+    line-height: 1.52 !important;
+  }
+
+  /* Site chrome / interactive surfaces -------------------------------------- */
+  .skip-link, .site-header, .reading-progress-track, body > footer,
+  .breadcrumb, .article-sidebar, .article-footer, .article-likes,
+  .draft-banner, [data-theme-toggle], [data-mobile-nav], .mobile-nav,
+  .term-pop, .xz-mn-pop, .mnemonic-pop, .glossary-popover {
+    display: none !important;
+  }
+
+  .term-trigger, .xz-mn-trigger {
+    color: inherit !important;
+    text-decoration: none !important;
+    cursor: auto !important;
+    border: 0 !important;
+  }
+
+  /* Page layout -------------------------------------------------------------- */
+  .article-layout {
+    display: block !important;
+    max-width: none !important;
+    width: auto !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+  .article-main {
+    max-width: none !important;
+    width: auto !important;
+    margin: 0 !important;
+  }
+  .article-main .prose,
+  article.prose,
+  .prose-lg {
+    max-width: none !important;
+    width: auto !important;
+    color: var(--page-text) !important;
+    font-size: 11.2pt !important;
+    line-height: 1.58 !important;
+  }
+
+  .xz-five {
+    margin: 7mm 0 9mm !important;
+    padding: 4mm 0 !important;
+    border-top: 1pt solid var(--border) !important;
+    border-bottom: 1pt solid var(--border) !important;
+    break-inside: avoid;
+  }
+  .xz-five-title {
+    margin: 0 0 3mm !important;
+    font-size: 8pt !important;
+    letter-spacing: 0.16em !important;
+    color: var(--xz-attacker) !important;
+  }
+  .xz-five-list {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 2.6mm 6mm !important;
+  }
+  .xz-five-list li {
+    display: grid !important;
+    grid-template-columns: 9mm 24mm 1fr !important;
+    align-items: baseline !important;
+    gap: 2.5mm !important;
+    padding: 0 !important;
+    break-inside: avoid;
+  }
+  .xz-five-list li::before {
+    position: static !important;
+    font-size: 8pt !important;
+    color: var(--xz-defender) !important;
+  }
+  .xz-five-list strong {
+    font-size: 9.8pt !important;
+    margin: 0 !important;
+  }
+  .xz-five-list span {
+    font-size: 9pt !important;
+    line-height: 1.35 !important;
+  }
+
+  /* Make the web article read like a designed report cover. */
+  .article-header {
+    min-height: 245mm;
+    display: flex !important;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    border: 1.1pt solid var(--page-text);
+    border-top: 7pt solid var(--xz-attacker);
+    padding: 22mm 18mm !important;
+    margin: 0 0 12mm !important;
+    break-after: page;
+    page-break-after: always;
+    background:
+      linear-gradient(135deg, rgba(184,77,42,0.07), transparent 44%),
+      linear-gradient(315deg, rgba(37,95,159,0.08), transparent 48%),
+      var(--page-bg) !important;
+  }
+  .article-header::before {
+    content: "";
+    position: absolute;
+    top: 16mm;
+    right: 18mm;
+    width: 34mm;
+    height: 24mm;
+    background: url('/images/epita-logo-crop.png') center / contain no-repeat;
+  }
+  .article-header :is(h1, .article-title) {
+    font-size: 31pt !important;
+    line-height: 1.02 !important;
+    letter-spacing: -0.04em !important;
+    max-width: 14ch !important;
+    margin: 0 0 7mm !important;
+  }
+  .article-header :is(p, .article-description) {
+    max-width: 58ch !important;
+    font-size: 12.5pt !important;
+    line-height: 1.55 !important;
+    color: var(--text-secondary) !important;
+    text-align: left !important;
+  }
+  .article-header :is(.label, .article-category, time, .article-date, .article-updated, .article-filed) {
+    font-family: var(--font-sans, system-ui, sans-serif) !important;
+    letter-spacing: 0 !important;
+    text-transform: none !important;
+    max-width: none !important;
+    white-space: normal !important;
+  }
+  .article-divider { display: none !important; }
+  .article-header::after {
+    content: "Hugo Sibony · Léa Bonet · EPITA · hugosibony.com/blog/xz-backdoor";
+    margin-top: 18mm;
+    padding-top: 5mm;
+    border-top: 0.8pt solid var(--border);
+    font-family: var(--font-mono, ui-monospace, monospace);
+    font-size: 8.5pt;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  /* Printable report brief --------------------------------------------------- */
+  .xz-report-brief {
+    display: block !important;
+    position: relative;
+    break-after: page;
+    page-break-after: always;
+    margin: 0 0 10mm !important;
+    padding: 0 !important;
+  }
+  .xz-report-logo {
+    display: block !important;
+    float: right;
+    width: 31mm !important;
+    height: auto !important;
+    margin: 0 0 4mm 8mm !important;
+  }
+  .xz-report-kicker {
+    margin: 0 0 1.5mm !important;
+    font-family: var(--font-mono, ui-monospace, monospace) !important;
+    font-size: 8pt !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.18em !important;
+    text-transform: uppercase !important;
+    color: var(--xz-attacker) !important;
+  }
+  .xz-report-authors {
+    margin: 0 0 5mm !important;
+    font-family: var(--font-mono, ui-monospace, monospace) !important;
+    font-size: 8.2pt !important;
+    letter-spacing: 0.08em !important;
+    text-transform: uppercase !important;
+    color: var(--muted) !important;
+  }
+  .xz-report-title {
+    margin: 0 0 5.5mm !important;
+    padding: 0 0 4mm !important;
+    border: 0 !important;
+    border-bottom: 2pt solid var(--page-text) !important;
+    break-before: auto !important;
+    page-break-before: auto !important;
+    font-size: 20pt !important;
+    line-height: 1.05 !important;
+    letter-spacing: -0.035em !important;
+    color: var(--page-text) !important;
+  }
+  .xz-report-meta {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 0 !important;
+    margin: 0 0 5.5mm !important;
+    border: 0.8pt solid var(--border) !important;
+    background: #ffffff !important;
+  }
+  .xz-report-meta div {
+    display: grid !important;
+    grid-template-columns: 31mm 1fr !important;
+    gap: 3mm !important;
+    padding: 2.35mm 4mm !important;
+    border-bottom: 0.6pt solid var(--border) !important;
+  }
+  .xz-report-meta div:nth-child(odd) {
+    border-right: 0.6pt solid var(--border) !important;
+  }
+  .xz-report-meta dt {
+    margin: 0 !important;
+    font-family: var(--font-mono, ui-monospace, monospace) !important;
+    font-size: 7.5pt !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.1em !important;
+    text-transform: uppercase !important;
+    color: var(--muted) !important;
+  }
+  .xz-report-meta dd {
+    margin: 0 !important;
+    font-size: 8.6pt !important;
+    line-height: 1.28 !important;
+    color: var(--page-text) !important;
+  }
+  .xz-report-summary {
+    border-left: 4pt solid var(--xz-defender) !important;
+    padding: 0 0 0 5mm !important;
+  }
+  .xz-report-summary h3 {
+    margin: 0 0 2mm !important;
+    font-size: 12pt !important;
+    line-height: 1.2 !important;
+    color: var(--xz-defender) !important;
+  }
+  .xz-report-summary p {
+    margin: 0 !important;
+    font-size: 9.25pt !important;
+    line-height: 1.45 !important;
+    text-align: left !important;
+    hyphens: none !important;
+  }
+  .xz-report-impact {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 3.3mm !important;
+    margin: 5.5mm 0 !important;
+  }
+  .xz-report-impact article {
+    border: 0.8pt solid var(--border) !important;
+    border-top: 3pt solid var(--xz-attacker) !important;
+    background: #ffffff !important;
+    padding: 3mm !important;
+    break-inside: avoid;
+  }
+  .xz-report-impact span {
+    display: block !important;
+    font-family: var(--font-mono, ui-monospace, monospace) !important;
+    font-size: 7.5pt !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.14em !important;
+    text-transform: uppercase !important;
+    color: var(--muted) !important;
+  }
+  .xz-report-impact strong {
+    display: block !important;
+    margin-top: 1mm !important;
+    font-size: 12.2pt !important;
+    line-height: 1.1 !important;
+    color: var(--xz-attacker) !important;
+  }
+  .xz-report-impact p {
+    margin: 2mm 0 0 !important;
+    font-size: 8pt !important;
+    line-height: 1.28 !important;
+    color: var(--text-secondary) !important;
+  }
+  .xz-report-map {
+    list-style: none !important;
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 0 !important;
+    margin: 3mm 0 0 !important;
+    padding: 0 !important;
+    counter-reset: report-map;
+  }
+  .xz-report-map li {
+    counter-increment: report-map;
+    display: grid !important;
+    grid-template-columns: 10mm 30mm 1fr !important;
+    align-items: baseline !important;
+    gap: 3mm !important;
+    padding: 1.15mm 0 !important;
+    border-bottom: 0.5pt solid var(--border) !important;
+    break-inside: avoid;
+  }
+  .xz-report-map li::before {
+    content: counter(report-map, decimal-leading-zero);
+    font-family: var(--font-mono, ui-monospace, monospace);
+    font-weight: 700;
+    color: var(--xz-defender);
+  }
+  .xz-report-map strong {
+    color: var(--page-text) !important;
+  }
+  .xz-report-map span {
+    color: var(--text-secondary) !important;
+    font-size: 8.4pt !important;
+  }
+
+  /* Typography --------------------------------------------------------------- */
+  p, li, blockquote { orphans: 3; widows: 3; }
+  .article-main .prose :where(p, blockquote):not(:where([class~="not-prose"] *)) {
+    text-align: left !important;
+    hyphens: none !important;
+  }
+  .article-main .prose :where(ul, ol):not(:where([class~="not-prose"] *)) {
+    margin: 3mm 0 !important;
+    padding-left: 6mm !important;
+  }
+  .article-main .prose :where(li):not(:where([class~="not-prose"] *)) {
+    margin: 1.4mm 0 !important;
+    padding-left: 1mm !important;
+    text-align: left !important;
+  }
+  .article-main .prose :where(li p):not(:where([class~="not-prose"] *)) {
+    margin: 0 !important;
+    text-align: left !important;
+  }
+  .article-main .prose :where(blockquote):not(:where([class~="not-prose"] *)) {
+    color: var(--page-text) !important;
+    background: var(--subtle-bg) !important;
+    border-left: 3pt solid var(--xz-defender) !important;
+    padding: 3mm 4mm !important;
+  }
+  .article-main .prose :where(blockquote p):not(:where([class~="not-prose"] *)) {
+    color: var(--page-text) !important;
+    font-style: normal !important;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    color: var(--page-text) !important;
+    break-after: avoid;
+    page-break-after: avoid;
+  }
+  .prose h2 {
+    break-before: page;
+    page-break-before: always;
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+    font-size: 21pt !important;
+    line-height: 1.08 !important;
+    border-top: 2pt solid var(--page-text);
+    padding-top: 5mm !important;
+  }
+  .prose > h2:first-of-type { break-before: page; page-break-before: always; }
+  .prose h3 { font-size: 15pt !important; margin-top: 8mm !important; }
+  .prose h4 { font-size: 9pt !important; }
+
+  .prose a {
+    color: #164ea6 !important;
+    text-decoration: none !important;
+    border-bottom: 0.4pt solid rgba(22, 78, 166, 0.35) !important;
+  }
+
+  /* Code --------------------------------------------------------------------- */
+  pre, code, kbd, samp { font-size: 8.3pt !important; }
+  pre {
+    white-space: pre-wrap !important;
+    word-break: break-word !important;
+    overflow: visible !important;
+    background: var(--code-bg) !important;
+    border: 0.7pt solid var(--border) !important;
+  }
+  :not(pre) > code {
+    background: rgba(0,0,0,0.055) !important;
+    color: var(--page-text) !important;
+    padding: 0.04em 0.28em !important;
+    border-radius: 2.5px !important;
+  }
+  figure.expressive-code,
+  .expressive-code,
+  .expressive-code pre {
+    max-width: 100% !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    break-inside: auto;
+    page-break-inside: auto;
+  }
+  .expressive-code .frame,
+  .expressive-code .copy,
+  .expressive-code button { display: none !important; }
+
+  /* Universal figure/widget behavior ---------------------------------------- */
+  figure, figcaption, table, blockquote,
+  .xz-widget, .not-prose,
+  .xz-cast-card, .xz-sabotage-card, .xz-byteflow-row,
+  .xz-m4flow, .xz-startup, .xz-pathin, .xz-gotrewrite,
+  .xz-stub, .xz-latency, .xz-distros, .xz-tzmap, .xz-attrchart,
+  .xz-tarball, .xz-cfg {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+  figcaption {
+    color: var(--text-secondary) !important;
+    font-size: 9pt !important;
+  }
+  svg { max-width: 100% !important; height: auto !important; }
+
+  /* XZ widgets: static, compact, printable ---------------------------------- */
+  .xz-widget, .xz-cast, .xz-sabotage, .xz-byteflow, .xz-m4flow,
+  .xz-startup, .xz-gotrewrite, .xz-pathin, .xz-stub, .xz-tzmap,
+  .xz-attrchart, .xz-tarball, .xz-latency, .xz-distros, .xz-cfg {
+    margin-block: 6mm !important;
+    max-width: 100% !important;
+  }
+
+  .xz-cast-grid, .xz-gotrewrite-grid {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 4mm !important;
+  }
+  .xz-sabotage {
+    margin-top: 7mm !important;
+  }
+  .xz-sabotage-grid {
+    grid-template-columns: 1fr !important;
+    gap: 0 !important;
+    padding-left: 7mm !important;
+  }
+  .xz-sabotage-grid::before {
+    left: 1.2mm !important;
+    width: 1.2pt !important;
+  }
+  .xz-sabotage-card {
+    grid-template-columns: 42mm 1fr !important;
+    gap: 5mm !important;
+    padding: 3.2mm 0 !important;
+    align-items: start !important;
+  }
+  .xz-sabotage-card::before {
+    left: -7.1mm !important;
+    top: 4mm !important;
+    width: 2.6mm !important;
+    height: 2.6mm !important;
+    border-width: 1.2pt !important;
+  }
+  .xz-sabotage-head { display: contents !important; }
+  .xz-sabotage-when {
+    grid-column: 1 !important;
+    grid-row: 1 / span 2 !important;
+    font-size: 8pt !important;
+    line-height: 1.35 !important;
+    letter-spacing: 0.08em !important;
+    color: var(--xz-attacker) !important;
+    overflow-wrap: normal !important;
+  }
+  .xz-sabotage-card h4 {
+    grid-column: 2 !important;
+    font-size: 10.2pt !important;
+    line-height: 1.25 !important;
+    margin: 0 0 1mm !important;
+  }
+  .xz-sabotage-effect {
+    grid-column: 2 !important;
+    font-size: 9.4pt !important;
+    line-height: 1.42 !important;
+    margin: 0 !important;
+    color: var(--text-secondary) !important;
+  }
+  .xz-sabotage-src {
+    display: none !important;
+  }
+  .xz-cast-card, .xz-sabotage-card,
+  .xz-gotrewrite-col, .xz-stub-cert, .xz-stub-flow,
+  .xz-m4flow, .xz-startup, .xz-byteflow {
+    background: #ffffff !important;
+    border-color: var(--border) !important;
+  }
+
+  /* Timeline: compact Mandiant-style incident chronology for print. */
+  .xz-tl, .xz-tl-inner, .xz-tl-row, .xz-tl-event,
+  .xz-tl-beam-fill, .xz-tl-phase {
+    opacity: 1 !important;
+    transform: none !important;
+    visibility: visible !important;
+  }
+  .xz-tl { margin-block: 5mm !important; }
+  .xz-tl-beam,
+  .xz-tl-phase-marker,
+  .xz-tl-event-source,
+  .xz-tl-event-quote {
+    display: none !important;
+  }
+  .xz-tl-row {
+    grid-template-columns: 34mm 1fr !important;
+    gap: 6mm !important;
+    padding: 4mm 0 0 !important;
+    margin: 0 0 7mm !important;
+    break-inside: auto !important;
+    page-break-inside: auto !important;
+    border-top: 1pt solid var(--border);
+  }
+  .xz-tl-phase {
+    position: relative !important;
+    top: auto !important;
+    padding-left: 0 !important;
+  }
+  .xz-tl-phase-name {
+    font-size: 13pt !important;
+    letter-spacing: -0.02em !important;
+  }
+  .xz-tl-phase-num,
+  .xz-tl-phase-range {
+    font-size: 7.5pt !important;
+    color: var(--muted) !important;
+  }
+  .xz-tl-events { gap: 0 !important; }
+  .xz-tl-event {
+    break-inside: avoid;
+    page-break-inside: avoid;
+    padding: 0 0 3mm !important;
+    margin: 0 0 3mm !important;
+    border-bottom: 0.6pt solid var(--border);
+  }
+  .xz-tl-event-meta {
+    margin: 0 0 1mm !important;
+    gap: 2.5mm !important;
+  }
+  .xz-tl-event-date {
+    font-size: 8.3pt !important;
+    color: var(--page-text) !important;
+  }
+  .xz-tl-event-actor,
+  .xz-tl-event-kind { font-size: 8pt !important; }
+  .xz-tl-event-title {
+    font-size: 9.2pt !important;
+    line-height: 1.25 !important;
+    margin: 0 0 1mm !important;
+    max-width: none !important;
+  }
+  .xz-tl-event-summary {
+    font-size: 8.6pt !important;
+    line-height: 1.38 !important;
+    margin: 0 !important;
+    max-width: none !important;
+  }
+  .xz-tl-email {
+    border: 0.7pt solid var(--border) !important;
+    margin: 1.5mm 0 !important;
+  }
+  .xz-tl-email-headers {
+    grid-template-columns: 18mm 1fr !important;
+    padding: 2mm 2.5mm !important;
+    font-size: 7.8pt !important;
+    background: var(--subtle-bg) !important;
+  }
+  .xz-tl-email-body {
+    padding: 2.5mm !important;
+    font-size: 9pt !important;
+    line-height: 1.4 !important;
+  }
+  .xz-tl-event-trace {
+    font-size: 8pt !important;
+    padding: 2mm !important;
+    margin: 1.5mm 0 0 !important;
+  }
+
+  /* Hook installer diagram: force compact two-row layout in PDF. */
+  .xz-install {
+    max-width: 100% !important;
+    margin: 5mm 0 !important;
+    padding: 4mm !important;
+    border-top-width: 2.5pt !important;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+  .xz-install-eyebrow {
+    margin-bottom: 3mm !important;
+    font-size: 7.5pt !important;
+  }
+  .xz-install-diagram {
+    display: grid !important;
+    grid-template-columns: 1fr 7mm 1fr 7mm 1fr !important;
+    gap: 2.5mm !important;
+    align-items: stretch !important;
+  }
+  .xz-install-diagram > * {
+    transform: none !important;
+  }
+  .xz-install-node {
+    min-height: 25mm !important;
+    padding: 3mm !important;
+  }
+  .xz-install-node .k {
+    font-size: 6.4pt !important;
+    margin-bottom: 1.5mm !important;
+  }
+  .xz-install-node strong {
+    font-size: 8.6pt !important;
+    line-height: 1.2 !important;
+  }
+  .xz-install-node p {
+    font-size: 7.4pt !important;
+    line-height: 1.28 !important;
+    margin-top: 1.5mm !important;
+  }
+  .xz-install-arrow {
+    font-size: 12pt !important;
+    min-height: auto !important;
+  }
+  .xz-install-arrow.is-down {
+    grid-column: 3 !important;
+    grid-row: 2 !important;
+    transform: none !important;
+    min-height: 7mm !important;
+  }
+  .xz-install-diagram > :nth-child(1) { grid-column: 1 !important; grid-row: 1 !important; }
+  .xz-install-diagram > :nth-child(2) { grid-column: 2 !important; grid-row: 1 !important; }
+  .xz-install-diagram > :nth-child(3) { grid-column: 3 !important; grid-row: 1 !important; }
+  .xz-install-diagram > :nth-child(4) { grid-column: 4 !important; grid-row: 1 !important; }
+  .xz-install-diagram > :nth-child(5) { grid-column: 5 !important; grid-row: 1 !important; }
+  .xz-install-diagram > :nth-child(7) { grid-column: 1 !important; grid-row: 3 !important; }
+  .xz-install-diagram > :nth-child(8) { grid-column: 2 !important; grid-row: 3 !important; }
+  .xz-install-diagram > :nth-child(9) { grid-column: 3 !important; grid-row: 3 !important; }
+  .xz-install-diagram > :nth-child(10) { grid-column: 4 !important; grid-row: 3 !important; }
+  .xz-install-diagram > :nth-child(11) { grid-column: 5 !important; grid-row: 3 !important; }
+  .xz-install-lock {
+    margin-top: 3mm !important;
+    font-size: 6.6pt !important;
+    gap: 2mm !important;
+  }
+  .xz-install figcaption {
+    margin-top: 3mm !important;
+    padding-top: 2.5mm !important;
+    font-size: 8pt !important;
+    line-height: 1.35 !important;
+  }
+
+  /* Dense diagrams: slightly shrink instead of spilling. */
+  .xz-startup-grid { grid-template-columns: 1.15fr 0.72fr !important; }
+  .xz-startup-body p,
+  .xz-byteflow-label,
+  .xz-m4flow-note,
+  .xz-pathin-link .p,
+  .xz-stub-flow-steps li .note,
+  .xz-distros-note { font-size: 8.7pt !important; }
+
+  .xz-tzmap-frame { max-height: 145mm !important; }
+  .xz-tzmap-labels { height: 18mm !important; }
+  .xz-tzmap figcaption { max-width: 100% !important; }
+
+  /* Correct component class names used by the page. */
+  .xz-distros-list,
+  .xz-distros-body,
+  .xz-distros-shipped,
+  .xz-distros-card,
+  .xz-cfg svg,
+  .xz-latency-svg {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  /* End CTA is useful online, noisy in a report PDF. */
+  .xz-tryit { display: none !important; }
+}
