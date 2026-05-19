@@ -29,131 +29,176 @@ function iconFor(name: string): string {
   const k = Object.keys(icons).find((p) => p.endsWith(`/${name}`));
   return k ? icons[k] : '<svg viewBox="0 0 24 24"></svg>';
 }
+
+const order = ["exploitable", "shipped-inert", "spared"] as const;
+const grouped = order.map((key) => ({
+  key,
+  meta: statuses[key],
+  items: distros.filter((d) => d.status === key),
+}));
 ---
 
-<figure class="xz-widget xz-distros" aria-label="Distros affected by CVE-2024-3094">
-  <div class="xz-distros-legend" role="list">
+<figure class="xz-widget xz-distros not-prose" aria-label="Distros affected by CVE-2024-3094">
+  <div class="xz-distros-grid">
     {
-      Object.entries(statuses).map(([key, meta]) => (
-        <span class="xz-distros-chip" role="listitem" data-status={key}>
-          <span class="xz-distros-dot" style={`background:${meta.color}`} />
-          {meta.label}
-        </span>
+      grouped.map(({ key, meta, items }) => (
+        <section class="xz-distros-col" data-status={key}>
+          <header class="xz-distros-col-head">
+            <span class="xz-distros-col-label">{meta.label}</span>
+            <span class="xz-distros-col-count">{items.length}</span>
+          </header>
+          <ol class="xz-distros-col-list">
+            {items.map((d) => (
+              <li class="xz-distros-item">
+                <div class="xz-distros-item-head">
+                  <span class="xz-distros-item-mark">
+                    <span
+                      class="xz-distros-item-icon"
+                      aria-hidden="true"
+                      set:html={iconFor(d.icon)}
+                    />
+                    <span class="xz-distros-item-name">{d.name}</span>
+                  </span>
+                  <span class="xz-distros-item-ver">{d.shipped}</span>
+                </div>
+                {d.note && <p class="xz-distros-item-note">{d.note}</p>}
+              </li>
+            ))}
+          </ol>
+        </section>
       ))
     }
   </div>
-  <ul class="xz-distros-list" role="list">
-    {
-      distros.map((d) => (
-        <li
-          class={`xz-distros-row xz-distros-${d.status}`}
-          data-status={d.status}
-        >
-          <span class="xz-distros-icon" set:html={iconFor(d.icon)} aria-hidden="true" />
-          <span class="xz-distros-body">
-            <span class="xz-distros-name">{d.name}</span>
-            <span class="xz-distros-shipped">{d.shipped}</span>
-            {d.note && <span class="xz-distros-note">{d.note}</span>}
-          </span>
-        </li>
-      ))
-    }
-  </ul>
 </figure>
 
 <style>
-  .xz-distros-legend {
-    display: flex;
-    gap: 1.25rem;
-    justify-content: center;
-    margin-bottom: 1rem;
-    flex-wrap: wrap;
-    font-family: var(--font-mono);
-    font-size: var(--xz-fs-xs);
-    font-weight: 600;
-    letter-spacing: var(--xz-tracking-caps);
-    text-transform: uppercase;
-    color: var(--muted);
-  }
-  .xz-distros-chip {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.45rem;
-  }
-  .xz-distros-dot {
-    display: inline-block;
-    width: 0.5rem;
-    height: 0.5rem;
-    border-radius: 999px;
+  .xz-distros {
+    margin-block: 2rem;
   }
 
-  .xz-distros-list {
+  .xz-distros-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.5rem;
+    align-items: start;
+  }
+
+  .xz-distros-col {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    min-width: 0;
+  }
+
+  .xz-distros-col-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid currentColor;
+  }
+  .xz-distros-col[data-status="exploitable"] .xz-distros-col-head {
+    color: var(--xz-attacker);
+  }
+  .xz-distros-col[data-status="shipped-inert"] .xz-distros-col-head {
+    color: var(--xz-infra);
+  }
+  .xz-distros-col[data-status="spared"] .xz-distros-col-head {
+    color: var(--xz-defender);
+  }
+
+  .xz-distros-col-label {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: var(--xz-tracking-caps);
+    text-transform: uppercase;
+  }
+  .xz-distros-col-count {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  .xz-distros-col-list {
     list-style: none;
     padding: 0;
     margin: 0;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-    gap: 0.5rem;
-  }
-  .xz-distros-row {
-    display: grid;
-    grid-template-columns: 1.75rem 1fr;
-    align-items: start;
-    gap: 0.75rem;
-    padding: 0.75rem 0.875rem;
-    border: 1px solid var(--border);
-    border-radius: var(--xz-radius-lg);
-    background: var(--page-bg);
-    transition: border-color 0.15s ease;
-  }
-  .xz-distros-row:hover {
-    border-color: color-mix(in srgb, var(--accent) 50%, var(--border));
-  }
-  .xz-distros-exploitable {
-    border-left: 3px solid var(--xz-attacker);
-  }
-  .xz-distros-shipped-inert {
-    border-left: 3px solid var(--xz-infra);
-  }
-  .xz-distros-spared {
-    border-left: 3px solid var(--xz-defender);
-  }
-  .xz-distros-icon {
-    width: 1.75rem;
-    height: 1.75rem;
     display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--page-text);
-    margin-top: 0.05rem;
+    flex-direction: column;
   }
-  .xz-distros-icon :global(svg) {
+
+  .xz-distros-item {
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .xz-distros-item:last-child {
+    border-bottom: 0;
+  }
+
+  .xz-distros-item-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.75rem;
+  }
+  .xz-distros-item-mark {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    min-width: 0;
+  }
+  .xz-distros-item-icon {
+    width: 0.95rem;
+    height: 0.95rem;
+    flex-shrink: 0;
+    display: inline-flex;
+    align-self: center;
+    color: var(--muted);
+    transition: color 0.15s ease;
+  }
+  .xz-distros-col[data-status="exploitable"] .xz-distros-item-icon {
+    color: var(--xz-attacker);
+  }
+  .xz-distros-col[data-status="shipped-inert"] .xz-distros-item-icon {
+    color: var(--xz-infra);
+  }
+  .xz-distros-col[data-status="spared"] .xz-distros-item-icon {
+    color: var(--xz-defender);
+  }
+  .xz-distros-item-icon :global(svg) {
     width: 100%;
     height: 100%;
     fill: currentColor;
   }
-  .xz-distros-body {
-    display: flex;
-    flex-direction: column;
-    gap: 0.15rem;
-    min-width: 0;
-  }
-  .xz-distros-name {
-    font-size: var(--xz-fs-lg);
+  .xz-distros-item-name {
+    font-size: 0.95rem;
     font-weight: 600;
     color: var(--page-text);
-    line-height: 1.3;
+    line-height: 1.25;
   }
-  .xz-distros-shipped {
+  .xz-distros-item-ver {
     font-family: var(--font-mono);
-    font-size: var(--xz-fs-sm);
+    font-size: 0.78rem;
+    font-variant-numeric: tabular-nums;
     color: var(--muted);
-    line-height: 1.3;
+    white-space: nowrap;
+    flex-shrink: 0;
   }
-  .xz-distros-note {
-    font-size: var(--xz-fs-md);
+  .xz-distros-item-note {
+    margin: 0.3rem 0 0 1.45rem;
+    font-size: 0.82rem;
+    line-height: 1.4;
     color: var(--text-secondary);
-    line-height: 1.45;
-    margin-top: 0.25rem;
+  }
+
+  @media (max-width: 720px) {
+    .xz-distros-grid {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 2rem;
+    }
   }
 </style>

@@ -2,7 +2,7 @@
 title: "The XZ backdoor (CVE-2024-3094)"
 description: "A two-year supply-chain operation hid a remote-code-execution backdoor in OpenSSH via the xz compression library. A half-second slowdown on ssh logins caught it days before it would have shipped to every Linux server."
 date: 2026-04-25
-updated: 2026-05-13
+updated: 2026-05-19
 draft: false
 categories: ["security"]
 tags: ["xz", "cve-2024-3094", "supply-chain", "reverse-engineering"]
@@ -164,9 +164,9 @@ Russ Cox's [xz-timeline](https://research.swtch.com/xz-timeline) has the dated p
 
 <Timeline client:visible />
 
-By February 2024, Jia Tan signs releases and controls the security inbox. The hostile code lands next — not in git, but in the release tarball.
-
 ## Act II - The Trigger
+
+By February 2024, Jia Tan signs releases and controls the security inbox. The hostile code lands next — not in git, but in the release tarball.
 
 An xz release has two relevant artifacts: the *git tag* auditors inspect, and the *release tarball* distributions build. They should match. They did not.
 
@@ -764,7 +764,7 @@ Every claim above is sourced to the references below. They're listed in roughly 
 - **[LWN - A backdoor in xz](https://lwn.net/Articles/967180/)** - community coverage of the disclosure week, with focus on the trust-model and packaging-process angle.
 - **[Securelist - Social engineering aspect of the XZ incident](https://securelist.com/xz-backdoor-story-part-2-social-engineering/112476/)** - Kaspersky's breakdown of the sock-puppet pressure campaign and maintainer-takeover playbook.
 
-**Attribution (the Attribution section)**
+**Attribution sources**
 
 - **[Rhea Karty &amp; Simon Henniger - XZ Backdoor: Times, damned times, and scams](https://rheaeve.substack.com/p/xz-backdoor-times-damned-times-and)** - Dartmouth + TU Munich, April 2024. Source for the timezone slipups, the work-hours analysis, and the Chinese-holiday counter-evidence. The single most rigorous open attribution piece.
 - **[Hunted Labs - Where the Wild Things Are](https://www.huntedlabs.com/blog/where-the-wild-things-are-a-complete-analysis-of-jia-tans-github-history-and-the-xz-utils-software-supply-chain-breach)** - broader analysis of Jia Tan's GitHub activity across repositories beyond xz.

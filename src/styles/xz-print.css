@@ -34,6 +34,51 @@
     --xz-defender-bg: #eaf2fb !important;
   }
 
+  /* Tailwind Typography keeps a separate variable system for dark mode via the
+     `dark:prose-invert` class. Those tokens (--tw-prose-bold, -links, -headings,
+     -body, -code, -hr) are set to #fff in invert mode; if we don't override
+     them here, every <strong>, <a>, and <h*> in prose prints white-on-white
+     when the user prints from a dark theme. Re-bind them to the print palette
+     so bold and links are always legible on paper. */
+  .prose,
+  .prose-lg,
+  .article-main .prose {
+    --tw-prose-body: var(--page-text) !important;
+    --tw-prose-headings: var(--page-text) !important;
+    --tw-prose-lead: var(--text-secondary) !important;
+    --tw-prose-links: #164ea6 !important;
+    --tw-prose-bold: var(--page-text) !important;
+    --tw-prose-counters: var(--muted) !important;
+    --tw-prose-bullets: var(--muted) !important;
+    --tw-prose-hr: var(--border) !important;
+    --tw-prose-quotes: var(--page-text) !important;
+    --tw-prose-quote-borders: var(--xz-defender) !important;
+    --tw-prose-captions: var(--text-secondary) !important;
+    --tw-prose-kbd: var(--page-text) !important;
+    --tw-prose-code: var(--page-text) !important;
+    --tw-prose-pre-code: var(--page-text) !important;
+    --tw-prose-pre-bg: var(--code-bg) !important;
+    --tw-prose-th-borders: var(--border) !important;
+    --tw-prose-td-borders: var(--border) !important;
+    --tw-prose-invert-body: var(--page-text) !important;
+    --tw-prose-invert-headings: var(--page-text) !important;
+    --tw-prose-invert-lead: var(--text-secondary) !important;
+    --tw-prose-invert-links: #164ea6 !important;
+    --tw-prose-invert-bold: var(--page-text) !important;
+    --tw-prose-invert-counters: var(--muted) !important;
+    --tw-prose-invert-bullets: var(--muted) !important;
+    --tw-prose-invert-hr: var(--border) !important;
+    --tw-prose-invert-quotes: var(--page-text) !important;
+    --tw-prose-invert-quote-borders: var(--xz-defender) !important;
+    --tw-prose-invert-captions: var(--text-secondary) !important;
+    --tw-prose-invert-kbd: var(--page-text) !important;
+    --tw-prose-invert-code: var(--page-text) !important;
+    --tw-prose-invert-pre-code: var(--page-text) !important;
+    --tw-prose-invert-pre-bg: var(--code-bg) !important;
+    --tw-prose-invert-th-borders: var(--border) !important;
+    --tw-prose-invert-td-borders: var(--border) !important;
+  }
+
   *, *::before, *::after {
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
@@ -358,9 +403,14 @@
 
   /* Typography --------------------------------------------------------------- */
   p, li, blockquote { orphans: 3; widows: 3; }
+  /* Justified prose with auto hyphenation prints cleaner than ragged-right —
+     report-style. Hyphenation is essential here: justifying without it pushes
+     short lines into ugly word-spacing gaps. */
   .article-main .prose :where(p, blockquote):not(:where([class~="not-prose"] *)) {
-    text-align: left !important;
-    hyphens: none !important;
+    text-align: justify !important;
+    hyphens: auto !important;
+    -webkit-hyphens: auto !important;
+    hyphenate-limit-chars: 7 3 3;
   }
   .article-main .prose :where(ul, ol):not(:where([class~="not-prose"] *)) {
     margin: 3mm 0 !important;
@@ -369,11 +419,16 @@
   .article-main .prose :where(li):not(:where([class~="not-prose"] *)) {
     margin: 1.4mm 0 !important;
     padding-left: 1mm !important;
-    text-align: left !important;
+    text-align: justify !important;
+    hyphens: auto !important;
+    -webkit-hyphens: auto !important;
+    hyphenate-limit-chars: 7 3 3;
+    break-inside: avoid;
+    page-break-inside: avoid;
   }
   .article-main .prose :where(li p):not(:where([class~="not-prose"] *)) {
     margin: 0 !important;
-    text-align: left !important;
+    text-align: justify !important;
   }
   .article-main .prose :where(blockquote):not(:where([class~="not-prose"] *)) {
     color: var(--page-text) !important;
@@ -442,13 +497,22 @@
     margin-left: 0 !important;
     margin-right: 0 !important;
     min-height: 0 !important;
-    break-inside: auto;
-    page-break-inside: auto;
+    /* Splitting a code block across pages drops the title bar on the
+       continuation page — the second slice loses all context. Keep each
+       block whole; Chromium falls back to splitting only if the block is
+       genuinely taller than the printable area. */
+    break-inside: avoid;
+    page-break-inside: avoid;
   }
   .expressive-code,
   figure.expressive-code {
     margin-top: 4mm !important;
     margin-bottom: 4mm !important;
+    /* Without an explicit overflow clip, Chromium can render the figure's
+       rounded outline at the bottom of a page even when break-inside: avoid
+       has already moved the figure's content to the next page — leaving an
+       empty stub band. Hidden overflow suppresses that ghost rendering. */
+    overflow: hidden !important;
   }
   .expressive-code > figure > figcaption,
   .expressive-code > figure > pre > code {
@@ -459,6 +523,47 @@
      code block from print). */
   .expressive-code .copy,
   .expressive-code button { display: none !important; }
+
+  /* Sober print palette for code blocks. Expressive-code ships a vibrant
+     syntax theme (indigo / magenta / purple) tuned for screen reading; on a
+     printed security report those colors look loud and casual. Collapse the
+     whole spectrum to a sober black-on-stone palette: all code prints in
+     page-text, italic styling is dropped on keywords (EC uses italic both
+     for comments AND for function-name tokens, which would conflate the two
+     once colors are equalized), and comments are re-identified by their
+     specific comment hue (#3B647A light / #738F9E dark theme), tinted muted. */
+  .expressive-code pre,
+  .expressive-code pre code,
+  .expressive-code pre code .code,
+  .expressive-code pre code span {
+    color: var(--page-text) !important;
+    font-style: normal !important;
+  }
+  .expressive-code pre code span[style*="3B647A"],
+  .expressive-code pre code span[style*="738F9E"] {
+    color: var(--muted) !important;
+    font-style: italic !important;
+  }
+  /* Re-skin the title strip from default dark-theme onto a quiet header. */
+  .expressive-code figcaption.header {
+    background: var(--page-text) !important;
+    color: #ffffff !important;
+  }
+  .expressive-code figcaption.header .title {
+    color: #ffffff !important;
+    font-weight: 600 !important;
+  }
+  /* Diff highlight bands: keep a hint of color so additions still read as
+     additions, but tone them down to a printable wash. */
+  .expressive-code pre code .ec-line.ins,
+  .expressive-code pre code .ec-line.mark,
+  .expressive-code pre code .ec-line[class*="ins"] {
+    background: #e9f4ec !important;
+  }
+  .expressive-code pre code .ec-line.del,
+  .expressive-code pre code .ec-line[class*="del"] {
+    background: #fbeaea !important;
+  }
 
   /* Universal figure/widget behavior ---------------------------------------- */
   figure, figcaption, table, blockquote,
@@ -703,18 +808,114 @@
   .xz-tzmap figcaption { max-width: 100% !important; }
 
   /* Correct component class names used by the page. */
-  .xz-distros-list,
-  .xz-distros-body,
-  .xz-distros-shipped,
-  .xz-distros-card,
+  .xz-distros-grid,
+  .xz-distros-col,
+  .xz-distros-item,
   .xz-cfg svg,
   .xz-latency-svg {
     break-inside: avoid;
     page-break-inside: avoid;
   }
+  .xz-distros { margin: 5mm 0 !important; }
+  .xz-distros-grid {
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 5mm !important;
+    align-items: start !important;
+  }
+  .xz-distros-col { gap: 2mm !important; }
+  .xz-distros-col-head {
+    padding-bottom: 1.5mm !important;
+    border-bottom-width: 1pt !important;
+  }
+  .xz-distros-col-label {
+    font-size: 7.5pt !important;
+    letter-spacing: 0.14em !important;
+  }
+  .xz-distros-col-count {
+    font-size: 13pt !important;
+  }
+  .xz-distros-item {
+    padding: 1.8mm 0 !important;
+    border-bottom: 0.5pt solid var(--border) !important;
+  }
+  .xz-distros-item-mark { gap: 1.6mm !important; }
+  .xz-distros-item-icon {
+    width: 3mm !important;
+    height: 3mm !important;
+  }
+  .xz-distros-item-name {
+    font-size: 9.6pt !important;
+    color: var(--page-text) !important;
+  }
+  .xz-distros-item-ver {
+    font-size: 8pt !important;
+    color: var(--muted) !important;
+  }
+  .xz-distros-item-note {
+    font-size: 8.4pt !important;
+    line-height: 1.35 !important;
+    margin: 1mm 0 0 4.6mm !important;
+    color: var(--text-secondary) !important;
+  }
 
   /* End CTA is useful online, noisy in a report PDF. */
   .xz-tryit { display: none !important; }
+
+  /* Notes & sources — report-style references list. The source markdown is
+     a flat sequence of <p><strong>Group title</strong></p> followed by <ul>
+     of entries; we re-style it to a typographic table:
+       · group titles become caps subheads with a hairline accent rule
+       · each <li> gets breathing room and a hanging indent so the bold link
+         title is visually anchored at the bullet, with description text
+         flowing in a justified column to its right. */
+  #notes--sources ~ p:has(> strong:only-child),
+  .prose > p:has(> strong:only-child) {
+    margin: 8mm 0 2.5mm !important;
+    padding-bottom: 1.2mm !important;
+    border-bottom: 0.5pt solid var(--border) !important;
+    text-align: left !important;
+    hyphens: none !important;
+  }
+  #notes--sources ~ p:has(> strong:only-child) strong,
+  .prose > p:has(> strong:only-child) strong {
+    font-family: var(--font-mono, ui-monospace, monospace) !important;
+    font-size: 8.5pt !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.14em !important;
+    text-transform: uppercase !important;
+    color: var(--xz-attacker) !important;
+  }
+  #notes--sources ~ ul {
+    list-style: none !important;
+    padding-left: 0 !important;
+    margin: 0 !important;
+  }
+  #notes--sources ~ ul > li {
+    position: relative !important;
+    padding: 2.4mm 0 2.4mm 5mm !important;
+    margin: 0 !important;
+    border-bottom: 0.4pt solid var(--border) !important;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+  #notes--sources ~ ul > li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 3.6mm;
+    width: 2.5mm;
+    height: 0.6pt;
+    background: var(--muted);
+  }
+  #notes--sources ~ ul > li > strong:first-child {
+    display: inline !important;
+  }
+  #notes--sources ~ ul > li > strong:first-child a {
+    font-weight: 700 !important;
+    color: var(--page-text) !important;
+    border-bottom: 0 !important;
+  }
 
   /* "What this attack proved" lessons ---------------------------------------- */
   .xz-lessons {
