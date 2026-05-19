@@ -13,7 +13,10 @@ const bars = [
 ];
 const W = 480;
 const H = 200;
-const PAD = { l: 110, r: 28, t: 16, b: 36 };
+// PAD.l must accommodate the widest left-label ("backdoored (5.6.x)") at
+// font-size 11 in JetBrains Mono (~7.3 px / glyph) plus the 10 px gap to the
+// bar — otherwise the label overflows the viewBox and is clipped in print.
+const PAD = { l: 150, r: 28, t: 16, b: 36 };
 const innerW = W - PAD.l - PAD.r;
 const innerH = H - PAD.t - PAD.b;
 const maxMs = 1000;

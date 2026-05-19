@@ -55,7 +55,8 @@
   .skip-link, .site-header, .reading-progress-track, body > footer,
   .breadcrumb, .article-sidebar, .article-footer, .article-likes,
   .draft-banner, [data-theme-toggle], [data-mobile-nav], .mobile-nav,
-  .term-pop, .xz-mn-pop, .mnemonic-pop, .glossary-popover {
+  .term-pop, .xz-mn-pop, .mnemonic-pop, .glossary-popover,
+  .copy-btn, .code-block-wrapper > button {
     display: none !important;
   }
 
@@ -129,16 +130,15 @@
     line-height: 1.35 !important;
   }
 
-  /* Make the web article read like a designed report cover. */
+  /* Cover page: EPITA mark top-right, title block centered, byline pinned to
+     the bottom edge — official-report cadence. */
   .article-header {
     min-height: 245mm;
-    display: flex !important;
-    flex-direction: column;
-    justify-content: center;
+    display: block !important;
     position: relative;
     border: 1.1pt solid var(--page-text);
     border-top: 7pt solid var(--xz-attacker);
-    padding: 22mm 18mm !important;
+    padding: 90mm 18mm 36mm !important;
     margin: 0 0 12mm !important;
     break-after: page;
     page-break-after: always;
@@ -157,11 +157,11 @@
     background: url('/images/epita-logo-crop.png') center / contain no-repeat;
   }
   .article-header :is(h1, .article-title) {
+    margin: 0 0 7mm !important;
     font-size: 31pt !important;
     line-height: 1.02 !important;
     letter-spacing: -0.04em !important;
     max-width: 14ch !important;
-    margin: 0 0 7mm !important;
   }
   .article-header :is(p, .article-description) {
     max-width: 58ch !important;
@@ -180,7 +180,10 @@
   .article-divider { display: none !important; }
   .article-header::after {
     content: "Hugo Sibony · Léa Bonet · EPITA · hugosibony.com/blog/xz-backdoor";
-    margin-top: 18mm;
+    position: absolute;
+    left: 18mm;
+    right: 18mm;
+    bottom: 18mm;
     padding-top: 5mm;
     border-top: 0.8pt solid var(--border);
     font-family: var(--font-mono, ui-monospace, monospace);
@@ -422,16 +425,38 @@
     padding: 0.04em 0.28em !important;
     border-radius: 2.5px !important;
   }
-  figure.expressive-code,
+  /* Expressive-code defaults to `display: flex` on the .expressive-code wrapper
+     and the inner figure/pre, which collapses to height: 0 inside the print
+     content area. Force a block flow so code blocks actually render in PDF.
+     Also reset EC's negative `margin-top` — that's a flex-layout artifact that
+     leaks into block mode and pulls the code block up into the preceding text. */
   .expressive-code,
-  .expressive-code pre {
+  .expressive-code > figure,
+  .expressive-code > figure > pre,
+  figure.expressive-code,
+  figure.expressive-code > pre,
+  .code-block-wrapper {
+    display: block !important;
     max-width: 100% !important;
+    width: auto !important;
     margin-left: 0 !important;
     margin-right: 0 !important;
+    min-height: 0 !important;
     break-inside: auto;
     page-break-inside: auto;
   }
-  .expressive-code .frame,
+  .expressive-code,
+  figure.expressive-code {
+    margin-top: 4mm !important;
+    margin-bottom: 4mm !important;
+  }
+  .expressive-code > figure > figcaption,
+  .expressive-code > figure > pre > code {
+    display: block !important;
+  }
+  /* Hide expressive-code's interactive copy chrome — but NOT the .frame figure
+     itself, which IS the code-block wrapper (display:none would erase the whole
+     code block from print). */
   .expressive-code .copy,
   .expressive-code button { display: none !important; }
 
@@ -558,16 +583,22 @@
     font-size: 7.5pt !important;
     color: var(--muted) !important;
   }
-  .xz-tl-events { gap: 0 !important; }
+  .xz-tl-events {
+    gap: 0 !important;
+    /* Try to keep the last few events of a phase together so a single event
+       doesn't orphan onto the next page without its phase-label column. */
+    widows: 4;
+    orphans: 4;
+  }
   .xz-tl-event {
     break-inside: avoid;
     page-break-inside: avoid;
-    padding: 0 0 3mm !important;
-    margin: 0 0 3mm !important;
+    padding: 0 0 2mm !important;
+    margin: 0 0 2mm !important;
     border-bottom: 0.6pt solid var(--border);
   }
   .xz-tl-event-meta {
-    margin: 0 0 1mm !important;
+    margin: 0 0 0.8mm !important;
     gap: 2.5mm !important;
   }
   .xz-tl-event-date {
@@ -578,13 +609,13 @@
   .xz-tl-event-kind { font-size: 8pt !important; }
   .xz-tl-event-title {
     font-size: 9.2pt !important;
-    line-height: 1.25 !important;
-    margin: 0 0 1mm !important;
+    line-height: 1.22 !important;
+    margin: 0 0 0.8mm !important;
     max-width: none !important;
   }
   .xz-tl-event-summary {
     font-size: 8.6pt !important;
-    line-height: 1.38 !important;
+    line-height: 1.35 !important;
     margin: 0 !important;
     max-width: none !important;
   }
@@ -609,7 +640,9 @@
     margin: 1.5mm 0 0 !important;
   }
 
-  /* Hook installer diagram: force compact two-row layout in PDF. */
+  /* Hook installer diagram (Find sshd → Find GOT slot → Rewrite pointer).
+     A4 content area (~695px) trips the component's 720px mobile MQ, so the
+     desktop 5-column grid has to be re-asserted here. */
   .xz-install {
     max-width: 100% !important;
     margin: 5mm 0 !important;
@@ -622,62 +655,38 @@
     margin-bottom: 3mm !important;
     font-size: 7.5pt !important;
   }
-  .xz-install-diagram {
+  .xz-install-flow {
     display: grid !important;
-    grid-template-columns: 1fr 7mm 1fr 7mm 1fr !important;
+    grid-template-columns: 1fr 6mm 1fr 6mm 1fr !important;
     gap: 2.5mm !important;
     align-items: stretch !important;
   }
-  .xz-install-diagram > * {
-    transform: none !important;
-  }
-  .xz-install-node {
-    min-height: 25mm !important;
+  .xz-install-step {
     padding: 3mm !important;
   }
-  .xz-install-node .k {
-    font-size: 6.4pt !important;
+  .xz-install-step span {
+    font-size: 6.6pt !important;
     margin-bottom: 1.5mm !important;
   }
-  .xz-install-node strong {
-    font-size: 8.6pt !important;
+  .xz-install-step strong {
+    font-size: 9pt !important;
     line-height: 1.2 !important;
   }
-  .xz-install-node p {
-    font-size: 7.4pt !important;
-    line-height: 1.28 !important;
+  .xz-install-step p {
+    font-size: 7.6pt !important;
+    line-height: 1.32 !important;
     margin-top: 1.5mm !important;
   }
   .xz-install-arrow {
-    font-size: 12pt !important;
+    font-size: 11pt !important;
+    transform: none !important;
     min-height: auto !important;
   }
-  .xz-install-arrow.is-down {
-    grid-column: 3 !important;
-    grid-row: 2 !important;
-    transform: none !important;
-    min-height: 7mm !important;
-  }
-  .xz-install-diagram > :nth-child(1) { grid-column: 1 !important; grid-row: 1 !important; }
-  .xz-install-diagram > :nth-child(2) { grid-column: 2 !important; grid-row: 1 !important; }
-  .xz-install-diagram > :nth-child(3) { grid-column: 3 !important; grid-row: 1 !important; }
-  .xz-install-diagram > :nth-child(4) { grid-column: 4 !important; grid-row: 1 !important; }
-  .xz-install-diagram > :nth-child(5) { grid-column: 5 !important; grid-row: 1 !important; }
-  .xz-install-diagram > :nth-child(7) { grid-column: 1 !important; grid-row: 3 !important; }
-  .xz-install-diagram > :nth-child(8) { grid-column: 2 !important; grid-row: 3 !important; }
-  .xz-install-diagram > :nth-child(9) { grid-column: 3 !important; grid-row: 3 !important; }
-  .xz-install-diagram > :nth-child(10) { grid-column: 4 !important; grid-row: 3 !important; }
-  .xz-install-diagram > :nth-child(11) { grid-column: 5 !important; grid-row: 3 !important; }
-  .xz-install-lock {
-    margin-top: 3mm !important;
-    font-size: 6.6pt !important;
-    gap: 2mm !important;
-  }
-  .xz-install figcaption {
-    margin-top: 3mm !important;
+  .xz-install-note {
+    margin-top: 3.5mm !important;
     padding-top: 2.5mm !important;
-    font-size: 8pt !important;
-    line-height: 1.35 !important;
+    font-size: 8.4pt !important;
+    line-height: 1.45 !important;
   }
 
   /* Dense diagrams: slightly shrink instead of spilling. */
@@ -706,4 +715,42 @@
 
   /* End CTA is useful online, noisy in a report PDF. */
   .xz-tryit { display: none !important; }
+
+  /* "What this attack proved" lessons ---------------------------------------- */
+  .xz-lessons {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 3mm !important;
+    margin: 4mm 0 !important;
+  }
+  .xz-lessons article {
+    display: grid !important;
+    grid-template-columns: 9mm 1fr !important;
+    align-items: baseline !important;
+    column-gap: 3mm !important;
+    padding: 3mm 4mm !important;
+    border: 0.7pt solid var(--border) !important;
+    border-top: 2.5pt solid var(--xz-defender) !important;
+    break-inside: avoid;
+  }
+  .xz-lessons article > span {
+    grid-row: 1 / span 2 !important;
+    font-family: var(--font-mono, ui-monospace, monospace) !important;
+    font-size: 11pt !important;
+    font-weight: 700 !important;
+    color: var(--xz-defender) !important;
+  }
+  .xz-lessons article > h4 {
+    margin: 0 !important;
+    font-size: 11.2pt !important;
+    line-height: 1.2 !important;
+    font-weight: 700 !important;
+    color: var(--page-text) !important;
+  }
+  .xz-lessons article > p {
+    margin: 1.5mm 0 0 !important;
+    font-size: 9.3pt !important;
+    line-height: 1.42 !important;
+    color: var(--text-secondary) !important;
+  }
 }
