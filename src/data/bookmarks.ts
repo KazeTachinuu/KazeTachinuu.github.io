@@ -21,11 +21,6 @@ export const BOOKMARKS = {
       url: "https://regex101.com/",
       description: "Regex tester with token-by-token explainer",
     },
-    {
-      name: "jwt.io",
-      url: "https://jwt.io/",
-      description: "Decode JWTs — never paste production tokens",
-    },
   ],
 
   "Reverse Engineering": [
@@ -53,16 +48,6 @@ export const BOOKMARKS = {
       name: "asm-lookup",
       url: "/tools/asm-lookup",
       description: "AT&T x86-64 instruction lookup — mine",
-    },
-    {
-      name: "hexed.it",
-      url: "https://hexed.it/",
-      description: "Hex editor in the browser, no install",
-    },
-    {
-      name: "defuse.ca x86",
-      url: "https://defuse.ca/online-x86-assembler.htm",
-      description: "Paste asm → bytes, paste bytes → asm",
     },
     {
       name: "syscalls.mebeim",
@@ -175,6 +160,11 @@ export const BOOKMARKS = {
       description: "Anonymous UK phone numbers, crypto-pay",
     },
     {
+      name: "This Person Does Not Exist",
+      url: "https://thispersondoesnotexist.com/",
+      description: "StyleGAN face per refresh — the persona photo",
+    },
+    {
       name: "ipleak.net",
       url: "https://ipleak.net/",
       description: "IP, DNS, WebRTC — what your browser is leaking",
@@ -188,24 +178,24 @@ export const BOOKMARKS = {
       description: "Free email and domain breach lookup — the baseline",
     },
     {
+      name: "leakradar.io",
+      url: "https://leakradar.io/",
+      description: "Plain-text creds from stealer logs and breach DBs — pay-per-unlock, Paris-based",
+    },
+    {
+      name: "HudsonRock Cavalier",
+      url: "https://cavalier.hudsonrock.com/",
+      description: "Stealer-log forensics — which malware, what machine, when",
+    },
+    {
       name: "DeHashed",
       url: "https://dehashed.com/",
       description: "Credential breach search across leaked databases",
     },
     {
-      name: "IntelX",
-      url: "https://intelx.io/",
-      description: "Intel search across leaks, pastes, darknet",
-    },
-    {
       name: "LeakIX",
       url: "https://leakix.net/",
       description: "Exposed services, open databases, public leaks",
-    },
-    {
-      name: "HudsonRock Cavalier",
-      url: "https://cavalier.hudsonrock.com/",
-      description: "Stealer-log exposure check — what HIBP misses",
     },
   ],
 
@@ -231,22 +221,15 @@ export const BOOKMARKS = {
       description: "Capture a URL, visualize its redirect tree — by CIRCL",
     },
     {
+      name: "societe.ninja",
+      url: "https://societe.ninja/",
+      description: "French company actes and balance sheets — free, no paywall, by CYBERTRON",
+    },
+    {
       name: "Wayback Machine",
       url: "https://web.archive.org/",
       description: "View a page as it existed on any date",
     },
   ],
 
-  "Build a Legend": [
-    {
-      name: "Fake Name Generator",
-      url: "https://www.fakenamegenerator.com/",
-      description: "Coherent identity — name, DOB, address, employment",
-    },
-    {
-      name: "This Person Does Not Exist",
-      url: "https://thispersondoesnotexist.com/",
-      description: "StyleGAN face per refresh — the persona photo",
-    },
-  ],
 } as const satisfies Record<string, readonly Bookmark[]>;
