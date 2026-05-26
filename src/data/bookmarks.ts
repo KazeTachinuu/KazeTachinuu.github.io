@@ -21,6 +21,11 @@ export const BOOKMARKS = {
       url: "https://regex101.com/",
       description: "Regex tester with token-by-token explainer",
     },
+    {
+      name: "jwt.io",
+      url: "https://jwt.io/",
+      description: "Decode JWTs — never paste production tokens",
+    },
   ],
 
   "Reverse Engineering": [
