@@ -6,18 +6,6 @@ import { getCollection } from 'astro:content';
 const projects = (await getCollection('portfolio', (e) => import.meta.env.DEV || !e.data.draft)).sort(
   (a, b) => +new Date(b.data.updated ?? b.data.date) - +new Date(a.data.updated ?? a.data.date),
 );
-
-function ghPin(p: typeof projects[number]) {
-  if (!p.data.githubCard || !p.data.github?.length) return null;
-  const url = p.data.github[0];
-  const parts = url.replace(/https?:\/\/github\.com\//, '').split('/');
-  if (parts.length < 2) return null;
-  const base = `https://github-readme-stats.vercel.app/api/pin/?username=${parts[0]}&repo=${parts[1]}&hide_border=true&bg_color=00000000`;
-  return {
-    light: `${base}&title_color=171717&text_color=525252&icon_color=171717`,
-    dark: `${base}&title_color=fafafa&text_color=a3a3a3&icon_color=fafafa`,
-  };
-}
 ---
 
 <Layout title="Portfolio" mainClass="max-w-5xl mx-auto px-6 py-16">
@@ -25,19 +13,13 @@ function ghPin(p: typeof projects[number]) {
 
   <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
     {projects.map((p) => {
-      const pin = ghPin(p);
       return (
         <a href={`/portfolio/${p.id}/`} class="project-card">
           <div class="project-img">
-            {pin ? (
-              <>
-                <img src={pin.light} alt="GitHub repo card" loading="lazy" class="!object-contain p-4 dark:hidden" />
-                <img src={pin.dark}  alt="GitHub repo card" loading="lazy" class="!object-contain p-4 hidden dark:block" />
-              </>
-            ) : p.data.image ? (
+            {p.data.image ? (
               <img src={p.data.image} alt="" loading="lazy" />
             ) : (
-              <div class="project-img-empty">⌘</div>
+              <div class="project-img-empty"><span class="project-img-prompt">❯</span>{p.data.title}</div>
             )}
           </div>
           <div class="project-meta">

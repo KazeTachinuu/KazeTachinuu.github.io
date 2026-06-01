@@ -28,18 +28,59 @@ import { SITE } from '~/lib/site';
     </aside>
 
     <div class="about-content">
-      <article class="prose prose-lg dark:prose-invert max-w-none">
-        <p>Cybersecurity engineering student at <a href="https://www.epita.fr/">EPITA</a> in Paris, part-time ethical hacker at <a href="https://welan.fr">WELAN</a> doing cyber threat intelligence and penetration testing.</p>
-        <p>President & CTO at <a href="https://codetruefalse.github.io/">TrueFalse</a>, where we build security tools.</p>
+      <!-- ENGLISH -->
+      <article class="prose prose-lg dark:prose-invert max-w-none about-prose" data-lang-content="en">
+        <p>I'm a cybersecurity engineering student at <a href="https://www.epita.fr/">EPITA</a> in Paris, focused on low-level, offensive security and intelligence (OSINT).</p>
 
-        <h2>Background</h2>
-        <p>Worked at the <strong>CEA</strong> on TOR-like anonymization protocols - building VIPN (Virtual Invisible Private Network) and trying to break TLS 1.3.</p>
-        <p>Summer 2022 at <strong>UC Berkeley</strong> - <a href="https://classes.berkeley.edu/content/2023-summer-compsci-61a-001-lec-001">CS 61A</a> and MATH N1A. <a href="/docs/berkeley.pdf">Trip report</a>.</p>
-        <p>Semester exchange at <strong>James Cook University Singapore</strong> - ethical hacking, network security, data mining. <a href="/docs/jcu.pdf">Trip report</a>.</p>
+        <h2>Experience</h2>
+        <ul>
+          <li><strong><a href="https://welan.fr">WELAN</a></strong> — ethical hacker, 2024–2027 (apprenticeship). Cyber threat intelligence &amp; threat hunting: OSINT on APT groups, in-house threat-hunting tooling, IOC detection on honeypots and client environments, CI/CD on Kubernetes.</li>
+          <li><strong><a href="https://truefalse.fr">TrueFalse</a></strong> — co-founder, President &amp; CTO, 2022–present. An IT firm in Paris: web &amp; application development, infrastructure, and security (CTI, pentest, incident response).</li>
+          <li><strong><a href="https://snowpack.eu/">Snowpack</a></strong> — deeptech (Paris-Saclay / CEA). C++ network-security internship, 2024: VIPN protocols (traffic fragmented into anonymized "snowflakes"), the network's ANSSI certification, and TLS 1.3 integration/vulnerability testing.</li>
+        </ul>
 
-        <h2>CTFs</h2>
-        <p>Writeups from FCSC, 404CTF, PicoCTF, RootMe on the <a href="/writeups/">writeups page</a>.</p>
+        <h2>Education</h2>
+        <ul>
+          <li><strong>EPITA</strong>, 2021–2027 — MEng in Computer Science, major Cybersecurity &amp; Systems. International track; Communication team lead.</li>
+          <li><strong>UC Berkeley</strong>, Summer 2022 — <a href="https://classes.berkeley.edu/content/2023-summer-compsci-61a-001-lec-001">CS 61A</a> and MATH N1A, graduated A-. <a href="/docs/berkeley.pdf">Trip report</a>.</li>
+          <li><strong>James Cook University, Singapore</strong> — exchange semester: ethical hacking, network security, data mining; CCNA; 5.5 GPA. <a href="/docs/jcu.pdf">Trip report</a>.</li>
+        </ul>
+
+        <h2>Projects &amp; writing</h2>
+        <p>I build tools — see the <a href="/portfolio/">portfolio</a> (EpiRootkit, asmlings, …). I play CTFs (top 3% at <strong>FCSC 2025</strong>, plus 404CTF, PicoCTF, RootMe) and publish <a href="/writeups/">writeups</a> and <a href="/blog/">security notes</a> (e.g. the XZ backdoor, CVE-2024-3094).</p>
+
+        <h2>Also</h2>
+        <p>Raised <strong>€353,614</strong> for Amnesty International in 2022 while fending off cyberattacks. Top 100 EU at Hearthstone.</p>
+      </article>
+
+      <!-- FRANÇAIS -->
+      <article class="prose prose-lg dark:prose-invert max-w-none about-prose" data-lang-content="fr" hidden>
+        <p>Étudiant ingénieur en cybersécurité à <a href="https://www.epita.fr/">EPITA</a> (Paris), orienté bas niveau, offensif et renseignement (OSINT).</p>
+
+        <h2>Expérience</h2>
+        <ul>
+          <li><strong><a href="https://welan.fr">WELAN</a></strong> — ethical hacker, 2024–2027 (alternance). Cyber threat intelligence &amp; threat hunting : OSINT sur des groupes APT, développement d'outils internes de threat hunting, détection d'IOC sur honeypots et chez les clients, CI/CD sur Kubernetes.</li>
+          <li><strong><a href="https://truefalse.fr">TrueFalse</a></strong> — co-fondateur, Président &amp; CTO, depuis 2022. Une boîte d'informatique à Paris : développement web &amp; applicatif, infrastructure, et sécurité (CTI, pentest, réponse à incident).</li>
+          <li><strong><a href="https://snowpack.eu/">Snowpack</a></strong> — deeptech (Paris-Saclay / CEA). Stage développeur sécurité réseau en C++, 2024 : protocoles VIPN (trafic fragmenté en « flocons » anonymisés), certification ANSSI du réseau, et tests d'intégration/vulnérabilité sur TLS 1.3.</li>
+        </ul>
+
+        <h2>Formation</h2>
+        <ul>
+          <li><strong>EPITA</strong>, 2021–2027 — diplôme d'ingénieur, majeure Cybersécurité &amp; Systèmes. Section internationale ; chef de l'équipe Communication.</li>
+          <li><strong>UC Berkeley</strong>, été 2022 — <a href="https://classes.berkeley.edu/content/2023-summer-compsci-61a-001-lec-001">CS 61A</a> et MATH N1A, diplômé A-. <a href="/docs/berkeley.pdf">Compte-rendu</a>.</li>
+          <li><strong>James Cook University, Singapour</strong> — semestre d'échange : ethical hacking, sécurité réseau, data mining ; CCNA ; GPA 5.5. <a href="/docs/jcu.pdf">Compte-rendu</a>.</li>
+        </ul>
+
+        <h2>Projets &amp; écrits</h2>
+        <p>Je construis des outils — voir le <a href="/portfolio/">portfolio</a> (EpiRootkit, asmlings, …). Je joue aux CTF (top 3 % au <strong>FCSC 2025</strong>, plus 404CTF, PicoCTF, RootMe) et je publie des <a href="/writeups/">writeups</a> et des <a href="/blog/">notes de sécurité</a> (ex. la backdoor XZ, CVE-2024-3094).</p>
+
+        <h2>Aussi</h2>
+        <p><strong>353 614 €</strong> récoltés pour Amnesty International en 2022 en déjouant des cyberattaques. Top 100 EU à Hearthstone.</p>
       </article>
     </div>
   </div>
 </Layout>
+
+<style>
+  .about-prose p { text-align: justify; hyphens: auto; }
+</style>

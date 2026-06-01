@@ -61,7 +61,7 @@
   --callout-border: var(--color-gray-300);
   --subtle-bg: var(--color-gray-50);
   --text-secondary: var(--color-gray-700);
-  --muted: var(--color-gray-500);
+  --muted: var(--color-gray-700);
   --border: var(--color-gray-200);
   --zoom-overlay: rgba(255, 255, 255, 0.9);
 }
@@ -76,6 +76,7 @@
   --callout-bg: hsl(210deg 15% 12%);
   --callout-border: hsl(225deg 12% 22%);
   --text-secondary: var(--color-gray-300);
+  --muted: var(--color-gray-400);
   --subtle-bg: hsl(210deg 15% 11%);
   --border: hsl(225deg 12% 18%);
   --zoom-overlay: rgba(0, 0, 0, 0.85);
@@ -734,13 +735,20 @@ a { color: inherit; text-decoration: none; }
   .project-img { @apply aspect-[16/10] overflow-hidden relative; background: var(--subtle-bg); }
   .project-img img { @apply w-full h-full object-cover; transition: transform 300ms var(--ease-smooth); }
   .project-card:hover .project-img img { transform: scale(1.04); }
-  .project-img-empty { @apply w-full h-full flex items-center justify-center text-3xl; color: var(--color-gray-300); }
+  .project-img-empty { @apply w-full h-full flex items-center justify-center gap-2 px-5 text-center font-mono text-sm; color: var(--muted); }
+  .project-img-prompt { color: var(--color-gray-400); }
+  /* Hero banner on the project detail page */
+  .project-hero { @apply aspect-[16/9] overflow-hidden rounded-xl my-6; border: 1px solid var(--border); background: var(--subtle-bg); }
+  .project-hero img { @apply w-full h-full object-cover; }
   .project-meta { @apply p-5; }
   .project-title { @apply font-semibold text-base; color: var(--page-text); }
   .project-date { @apply font-mono text-[10px] tabular-nums; color: var(--color-gray-400); }
   .project-desc { @apply mt-1.5 text-sm line-clamp-2; color: var(--muted); }
   .project-tech { @apply mt-4 flex flex-wrap gap-x-3 gap-y-1 font-mono text-[10px] uppercase tracking-[0.12em]; color: var(--muted); }
   .project-tech-item { @apply inline-flex items-center gap-1; }
+  /* Force tech icons monochrome for readable contrast (was faint brand colors on white) */
+  .project-tech-item img { width: 0.95em; height: 0.95em; filter: brightness(0); }
+  .dark .project-tech-item img { filter: brightness(0) invert(1); }
   .project-tech-item img { @apply w-2.5 h-2.5; }
 
   /* --- Callout --- */
@@ -1957,6 +1965,33 @@ a { color: inherit; text-decoration: none; }
   color: var(--accent);
   margin-bottom: 1.5rem;
 }
+
+/* --- Featured --- */
+
+.home-featured { margin: 2.5rem 0 3rem; }
+.featured-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+}
+.featured-card {
+  display: block;
+  padding: 1.1rem 1.2rem;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--page-bg);
+  transition: border-color 200ms var(--ease-smooth);
+}
+.featured-card:hover { border-color: var(--color-gray-400); }
+.featured-tag {
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: 0.62rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.featured-title { margin-top: 0.4rem; font-weight: 600; font-size: 1rem; color: var(--page-text); }
+.featured-desc { margin-top: 0.35rem; font-size: 0.85rem; line-height: 1.5; color: var(--muted); }
 
 /* --- Popular content list --- */
 

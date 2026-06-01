@@ -5,11 +5,23 @@ import { getCollection } from 'astro:content';
 
 const blog = await getCollection('blog', (e) => import.meta.env.DEV || !e.data.draft);
 const writeups = await getCollection('writeups', (e) => (import.meta.env.DEV || !e.data.draft) && e.data.cat === 'chal');
+const portfolio = await getCollection('portfolio', (e) => import.meta.env.DEV || !e.data.draft);
 const writing = [...blog, ...writeups]
   .sort((a, b) => +new Date(b.data.date ?? 0) - +new Date(a.data.date ?? 0));
 
 // Popular content - all writing, sorted client-side by likes
 const popular = writing.slice(0, 10);
+
+// Featured — curated spotlight. Edit this list to change what's highlighted.
+const FEATURED = [
+  { collection: 'portfolio', id: 'epirootkit', href: '/portfolio/epirootkit/', tag: 'Project' },
+  { collection: 'blog', id: 'xz-backdoor', href: '/blog/xz-backdoor/', tag: 'Analysis' },
+  { collection: 'portfolio', id: 'asmlings', href: '/portfolio/asmlings/', tag: 'Open source' },
+] as const;
+const featured = FEATURED.map((f) => {
+  const entry = (f.collection === 'blog' ? blog : portfolio).find((x) => x.id === f.id);
+  return entry ? { ...f, title: entry.data.title, description: entry.data.description } : null;
+}).filter((f): f is NonNullable<typeof f> => f !== null);
 ---
 
 <Layout title={SITE.title} mainClass="home-layout px-6 py-16">
@@ -20,6 +32,22 @@ const popular = writing.slice(0, 10);
     </h1>
     <p class="text-lg text-muted">{SITE.tagline}</p>
   </div>
+
+  {/* Featured */}
+  {featured.length > 0 && (
+    <section class="home-featured">
+      <h2 class="home-section-heading">Featured</h2>
+      <div class="featured-grid">
+        {featured.map((f) => (
+          <a href={f.href} class="featured-card">
+            <span class="featured-tag">{f.tag}</span>
+            <h3 class="featured-title">{f.title}</h3>
+            {f.description && <p class="featured-desc">{f.description}</p>}
+          </a>
+        ))}
+      </div>
+    </section>
+  )}
 
   {/* Two-column */}
   <div class="home-columns">

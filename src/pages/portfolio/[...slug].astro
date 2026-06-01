@@ -37,6 +37,12 @@ const { Content } = await render(post);
     )}
   </ArticleHeader>
 
+  {post.data.image && (
+    <div class="project-hero">
+      <img src={post.data.image} alt={post.data.title} loading="lazy" />
+    </div>
+  )}
+
   <article class="prose prose-lg dark:prose-invert max-w-none">
     <Content components={MDX} />
   </article>

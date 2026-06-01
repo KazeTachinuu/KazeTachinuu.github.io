@@ -1,0 +1,73 @@
+---
+// Reusable in-page language toggle.
+// Shows/hides sibling elements marked `data-lang-content="<lang>"`,
+// persists the choice, and works for any set of languages.
+//
+// Usage:
+//   <LangToggle langs={['en', 'fr']} default="en" storageKey="whoami-lang" />
+//   <article data-lang-content="en"> ... </article>
+//   <article data-lang-content="fr" hidden> ... </article>
+interface Props {
+  langs?: string[];
+  default?: string;
+  storageKey?: string;
+}
+const { langs = ['en', 'fr'], default: def = langs[0], storageKey = 'lang' } = Astro.props;
+---
+
+<div class="lang-toggle" role="group" aria-label="Language" data-storage-key={storageKey}>
+  {langs.map((l) => (
+    <button type="button" data-lang-btn={l} aria-pressed={String(l === def)}>{l.toUpperCase()}</button>
+  ))}
+</div>
+
+<style>
+  .lang-toggle {
+    display: inline-flex;
+    gap: 1px;
+    padding: 2px;
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    font-family: var(--font-mono, ui-monospace, monospace);
+  }
+  .lang-toggle button {
+    padding: 0.2rem 0.5rem;
+    border-radius: 5px;
+    font-size: 0.7rem;
+    line-height: 1;
+    color: var(--muted);
+    background: transparent;
+    cursor: pointer;
+    transition: color 150ms, background 150ms;
+  }
+  .lang-toggle button:hover { color: var(--page-text); }
+  .lang-toggle button[aria-pressed='true'] {
+    background: var(--subtle-bg);
+    color: var(--page-text);
+    font-weight: 600;
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>('.lang-toggle').forEach((toggle) => {
+    const key = toggle.dataset.storageKey || 'lang';
+    const btns = toggle.querySelectorAll<HTMLButtonElement>('[data-lang-btn]');
+    const contents = document.querySelectorAll<HTMLElement>('[data-lang-content]');
+
+    const apply = (lang: string) => {
+      contents.forEach((el) => { el.hidden = el.dataset.langContent !== lang; });
+      btns.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.langBtn === lang)));
+      try { localStorage.setItem(key, lang); } catch {}
+    };
+
+    let saved: string | null = null;
+    try { saved = localStorage.getItem(key); } catch {}
+    const available = [...btns].map((b) => b.dataset.langBtn);
+    const initial = saved && available.includes(saved)
+      ? saved
+      : ([...btns].find((b) => b.getAttribute('aria-pressed') === 'true')?.dataset.langBtn ?? available[0] ?? 'en');
+
+    apply(initial);
+    btns.forEach((b) => b.addEventListener('click', () => { if (b.dataset.langBtn) apply(b.dataset.langBtn); }));
+  });
+</script>
